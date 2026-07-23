@@ -244,7 +244,7 @@
     .provider-registration .consent{display:flex;gap:9px;align-items:flex-start;font-size:13px;line-height:1.4;color:var(--muted);margin-top:12px}
     .provider-registration .consent input{margin-top:3px}
     .provider-compliance{border-left:5px solid var(--aqua)}
-    .provider-badge{display:inline-flex;padding:5px 9px;border-radius:999px;background:#e5f8f4;color:#075e55;font-size:12px;font-weight:850}.provider-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:18px}.provider-service{border:1px solid var(--line);background:white;border-radius:16px;padding:16px;text-align:left;cursor:pointer;transition:.2s}.provider-service:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:var(--aqua)}.provider-service b{display:block;font-size:16px;color:var(--navy);margin:8px 0 4px}.provider-service span{font-size:13px;color:var(--muted);line-height:1.45}.provider-icon{font-size:26px}@media(max-width:560px){.provider-grid{grid-template-columns:1fr}}
+    .provider-badge{display:inline-flex;padding:5px 9px;border-radius:999px;background:#e5f8f4;color:#075e55;font-size:12px;font-weight:850}.provider-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:18px}.provider-service{border:1px solid var(--line);background:white;border-radius:16px;padding:16px;text-align:left;cursor:pointer;transition:.2s}.provider-service:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:var(--aqua)}.provider-service b{display:block;font-size:16px;color:var(--navy);margin:8px 0 4px}.provider-service span{font-size:13px;color:var(--muted);line-height:1.45}.provider-icon{font-size:26px}.provider-results{margin-top:18px}.provider-results-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}.provider-results-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.provider-result-card{display:flex;gap:12px;align-items:flex-start;border:1px solid var(--line);border-radius:16px;padding:14px;background:#fff}.provider-result-photo{width:72px;height:72px;border-radius:13px;object-fit:cover;background:var(--mist);display:grid;place-items:center;font-size:28px;flex:0 0 72px}.provider-result-card h3{margin:0 0 4px;font-size:17px}.provider-result-card p{margin:5px 0;color:var(--muted);font-size:13px;line-height:1.4}.provider-empty{padding:24px;border:1px dashed var(--line);border-radius:16px;text-align:center;color:var(--muted);background:#fff}.provider-back{border:0;background:transparent;color:var(--blue);font-weight:800;cursor:pointer}@media(max-width:560px){.provider-grid,.provider-results-list{grid-template-columns:1fr}.provider-result-photo{width:60px;height:60px;flex-basis:60px}}
   </style>
   <script>
     const PROVIDER_ACTIVITY_LABELS={
@@ -288,7 +288,28 @@
     document.querySelector('#heroProvider').onclick=()=>providerModal.classList.add('open');
     document.querySelector('#closeProvider').onclick=()=>providerModal.classList.remove('open');
     providerModal.addEventListener('click',e=>{if(e.target===providerModal)providerModal.classList.remove('open')});
-    document.querySelectorAll('[data-provider]').forEach(btn=>btn.onclick=()=>{const activity=btn.dataset.provider;providerModal.classList.remove('open');setRole('skipper');setAuthMode('create');accountModal.classList.add('open');setTimeout(()=>{const select=document.querySelector('#providerActivity');if(select)select.value=activity;refreshProviderRegistration();},0)});
+    const providerGrid=document.querySelector('.provider-grid');
+    const providerIntro=providerModal.querySelector('.muted');
+    const providerDialog=providerModal.querySelector('.dialog');
+    const providerResults=document.createElement('div');
+    providerResults.className='provider-results';
+    providerResults.style.display='none';
+    providerDialog.appendChild(providerResults);
+
+    function providerEsc(value){return String(value??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+    function showProviderCategories(){providerResults.style.display='none';providerGrid.style.display='grid';providerIntro.style.display='block'}
+    async function showProviders(activity){
+      providerGrid.style.display='none';providerIntro.style.display='none';providerResults.style.display='block';
+      providerResults.innerHTML=`<div class="provider-results-head"><button class="provider-back" type="button">← Retour aux services</button><strong>${providerEsc(PROVIDER_ACTIVITY_LABELS[activity]||'Prestataires')}</strong></div><div class="provider-empty">Recherche des prestataires disponibles…</div>`;
+      providerResults.querySelector('.provider-back').onclick=showProviderCategories;
+      const {data,error}=await db.from('profiles').select('id,full_name,home_port,rating,profile_photo_url,bio,experience_years,languages,provider_activity,role').eq('verified',true).eq('available',true).eq('provider_activity',activity).in('role',['provider','skipper']);
+      if(error){providerResults.innerHTML=`<div class="provider-results-head"><button class="provider-back" type="button">← Retour aux services</button><strong>${providerEsc(PROVIDER_ACTIVITY_LABELS[activity]||'Prestataires')}</strong></div><div class="provider-empty">Impossible de charger les prestataires pour le moment.</div>`;providerResults.querySelector('.provider-back').onclick=showProviderCategories;return}
+      const list=data||[];
+      providerResults.innerHTML=`<div class="provider-results-head"><button class="provider-back" type="button">← Retour aux services</button><strong>${list.length} résultat${list.length>1?'s':''}</strong></div>${list.length?`<div class="provider-results-list">${list.map(p=>`<article class="provider-result-card">${p.profile_photo_url?`<img class="provider-result-photo" src="${providerEsc(p.profile_photo_url)}" alt="${providerEsc(p.full_name)}">`:`<div class="provider-result-photo">⚓</div>`}<div><h3>${providerEsc(p.full_name||'Prestataire')}</h3><p><strong>${providerEsc(p.home_port||'Port non renseigné')}</strong> · ${p.experience_years||0} an(s) d’expérience</p><p>${providerEsc(p.bio||'Profil professionnel vérifié.')}</p><button class="small-btn fill" type="button" onclick="openProviderContact('${providerEsc(p.id)}','${providerEsc(p.full_name||'Prestataire')}','${providerEsc(p.home_port||'')}','${providerEsc(activity)}')">Voir le profil</button></div></article>`).join('')}</div>`:`<div class="provider-empty"><strong>Aucun prestataire disponible pour ce service.</strong><br>Les profils apparaîtront ici dès leur inscription et leur validation.</div>`}`;
+      providerResults.querySelector('.provider-back').onclick=showProviderCategories;
+    }
+    window.openProviderContact=(id,name,homePort,activity)=>{providerModal.classList.remove('open');if(!currentUser){setRole('client');setAuthMode('login');accountModal.classList.add('open');document.querySelector('#authMessage').textContent='Connectez-vous uniquement pour contacter '+name+'.';return}openBooking(name,'Sur demande',false,homePort||port.value)};
+    document.querySelectorAll('[data-provider]').forEach(btn=>btn.onclick=()=>showProviders(btn.dataset.provider));
 
 
     const providerStatus=document.querySelector('#providerStatus');
