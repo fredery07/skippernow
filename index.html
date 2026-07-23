@@ -34,6 +34,10 @@
   .join-block{display:none!important}
   @media(max-width:560px){.signup-choice-grid{grid-template-columns:1fr}.nav-actions{gap:5px}.nav-actions .primary,.nav-actions .link{padding:9px 10px;font-size:13px}}
 </style>
+<style id="hideRentalPromoHome">
+  #rentalHub{display:none!important}
+</style>
+
 </head>
 <body>
   <header><nav class="shell"><div class="logo"><span class="mark">⚓</span>SkipperNow</div><div class="nav-actions"><select id="languageSelect" class="language-select" aria-label="Langue"><option value="fr">FR</option><option value="en">EN</option><option value="es">ES</option></select><button class="link" id="login" type="button" onclick="document.getElementById('accountModal').classList.add('open');document.getElementById('authLogin').click();return false;">Se connecter</button><button class="primary" id="openSkipper" type="button" onclick="document.getElementById('accountModal').classList.add('open');document.getElementById('authCreate').click();return false;">Créer un compte</button></div></nav></header>
