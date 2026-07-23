@@ -50,11 +50,11 @@
   <div class="modal" id="providerModal"><div class="dialog large"><div class="dialog-top"><div><small>SERVICES NAUTIQUES</small><h2>Trouver un prestataire</h2></div><button class="close" id="closeProvider">×</button></div><p class="muted">Choisissez le service dont vous avez besoin près de votre port.</p><div class="provider-grid"><button class="provider-service" data-provider="cleaning"><span class="provider-icon">🧽</span><b>Nettoyage du bateau</b><span>Lavage, rinçage, intérieur, préparation avant ou après sortie.</span></button><button class="provider-service" data-provider="dock_service"><span class="provider-icon">⚓</span><b>Services à quai</b><span>Amarrage, aide au départ, avitaillement, surveillance et assistance.</span></button><button class="provider-service" data-provider="shipyard"><span class="provider-icon">🛠️</span><b>Chantier et entretien</b><span>Antifouling, peinture, petites réparations, préparation et mise à l’eau.</span></button><button class="provider-service" data-provider="day_sailor"><span class="provider-icon">👷</span><b>Marin à la journée</b><span>Aide à bord, manutention, convoyage court et assistance au propriétaire.</span></button><button class="provider-service" data-provider="skipper"><span class="provider-icon">🧭</span><b>Skipper professionnel</b><span>Sortie, location, convoyage et prise en main du bateau.</span></button></div></div></div>
   <div class="modal" id="skipperFinderModal"><div class="dialog large"><div class="dialog-top"><div><small>SKIPPERS DISPONIBLES</small><h2>Trouver un skipper</h2></div><button class="close" id="closeSkipperFinder">×</button></div><p class="muted">Voici les skippers disponibles selon votre recherche actuelle.</p><div id="skipperFinderResults" class="provider-results" style="display:block"></div></div></div>
   <div class="modal" id="boatFinderModal"><div class="dialog large"><div class="dialog-top"><div><small>LOCATION DE BATEAUX</small><h2>Trouver un bateau en location</h2></div><button class="close" id="closeBoatFinder">×</button></div><p class="muted">Voici les bateaux en location disponibles selon votre recherche actuelle.</p><div id="boatFinderResults" class="provider-results" style="display:block"></div></div></div>
-  <div class="modal" id="accountModal"><div class="dialog"><div class="dialog-top"><div><small>MON COMPTE</small><h2>Créer votre activité sur SkipperNow</h2></div><button class="close" id="closeAccount">×</button></div><div class="toggle"><button class="active" id="authCreate">Créer un compte</button><button id="authLogin">Se connecter</button></div><div id="roleChoice" class="signup-choice-grid">
-  <button class="signup-choice active" id="roleSkipper" type="button"><span>🧭</span><b>Devenir skipper SkipperNow</b><small>Recevoir des demandes de sortie et de convoyage</small></button>
-  <button class="signup-choice" id="roleProvider" type="button"><span>🛠️</span><b>Devenir prestataire d’un service</b><small>Nettoyage, services à quai, chantier ou marin à la journée</small></button>
-  <button class="signup-choice" id="roleOwner" type="button"><span>🚤</span><b>Mettre mon bateau en location</b><small>Créer une annonce avec photos, port et disponibilités</small></button>
-  <button class="signup-choice" id="roleClient" type="button" style="display:none"><span>👤</span><b>Client</b><small>Compte client</small></button>
+  <div class="modal" id="accountModal"><div class="dialog"><div class="dialog-top"><div><small>MON COMPTE</small><h2>Bienvenue sur SkipperNow</h2></div><button class="close" id="closeAccount">×</button></div><div class="toggle"><button class="active" id="authCreate">Créer un compte</button><button id="authLogin">Se connecter</button></div><div id="roleChoice" class="signup-choice-grid">
+  <button class="signup-choice active" id="roleClient" type="button"><span>👤</span><b>Réserver</b><small>Trouver un skipper, un prestataire ou un bateau</small></button>
+  <button class="signup-choice" id="roleOwner" type="button"><span>🚤</span><b>Mettre mon bateau en location</b><small>Créer une annonce propriétaire</small></button>
+  <button class="signup-choice" id="roleSkipper" type="button"><span>🧭</span><b>Être skipper</b><small>Recevoir des demandes de mission</small></button>
+  <button class="signup-choice" id="roleProvider" type="button"><span>🛠️</span><b>Proposer un service</b><small>Nettoyage, quai, chantier ou marin</small></button>
 </div><div class="field" id="accountNameWrap"><label>PRÉNOM ET NOM</label><input id="accountName" placeholder="Votre nom"></div><div class="field"><label>EMAIL</label><input id="accountEmail" type="email" placeholder="nom@email.com"></div><div class="field"><label>MOT DE PASSE</label><input id="accountPassword" type="password" placeholder="8 caractères minimum"></div><div class="field" id="accountPortWrap" style="display:none"><label>PORT PRINCIPAL — VILLE, PORT, PAYS</label><input id="accountPort" type="text" placeholder="Ex. Port Vauban, Antibes, France"></div><p class="muted" id="authMessage"></p><button class="primary wide" id="enterApp">Créer mon compte</button><button class="link wide" id="forgotPassword" style="display:none">Mot de passe oublié ?</button></div></div>
   <div class="modal" id="dashboardModal"><div class="dialog large"><div class="dialog-top"><div><small id="dashRole">ESPACE CLIENT</small><h2 id="dashTitle">Mes réservations</h2></div><button class="close" id="closeDashboard">×</button></div><div id="dashboardBody"></div><button class="small-btn wide" id="switchAccount">Changer de compte</button></div></div>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -237,13 +237,14 @@
   </script>
   <style>
     /* Inscription simplifiée : le choix du rôle ne surcharge plus la fenêtre. */
+    #roleChoice{display:none}
   </style>
   <script>
     // L'inscription générale crée un compte client.
     document.querySelector('#authCreate').onclick=()=>{
       setRole('client');
       setAuthMode('create');
-      document.querySelector('#enterApp').textContent='Continuer';
+      document.querySelector('#enterApp').textContent='Créer mon compte';
     };
     // « Devenir skipper » ouvre directement le bon parcours professionnel.
     document.querySelector('#openSkipper').onclick=()=>{
@@ -582,7 +583,7 @@
 
 <script id="finalSignupFlow">
 (function(){
-  let signupKind='skipper';
+  let signupKind='client';
   const createBtn=document.querySelector('#openSkipper');
   const loginBtn=document.querySelector('#login');
   const roleChoice=document.querySelector('#roleChoice');
@@ -598,7 +599,7 @@
     roleChoice.style.display='grid';
     document.querySelector('#enterApp').textContent='Créer mon compte';
     accountModal.classList.add('open');
-    selectKind(signupKind||'skipper');
+    selectKind(signupKind||'client');
   }
   function selectKind(kind){
     signupKind=kind;
@@ -627,7 +628,7 @@
   }
 
   createBtn.textContent=currentUser?'Mon espace':'Créer un compte';
-  createBtn.onclick=()=>{if(currentUser){openDashboard();return}signupKind='skipper';showCreate();};
+  createBtn.onclick=()=>{if(currentUser){openDashboard();return}signupKind='client';showCreate();};
   loginBtn.onclick=()=>{if(currentUser){openDashboard();return}setRole('client');setAuthMode('login');roleChoice.style.display='none';accountModal.classList.add('open');};
   document.querySelector('#authCreate').onclick=()=>showCreate();
   document.querySelector('#authLogin').onclick=()=>{setAuthMode('login');roleChoice.style.display='none';};
