@@ -25,23 +25,37 @@
     .modal.admin-mode{padding:0;background:#edf2f4}.modal.admin-mode .dialog.large{width:100%;height:100%;max-width:none;max-height:none;border-radius:0;padding:30px 4vw}.modal.admin-mode .dialog-top{position:sticky;top:-30px;background:white;z-index:4;padding:18px 0 12px}.finance-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:14px 0}.finance-kpi{padding:18px;border-radius:16px;background:white;border:1px solid var(--line)}.finance-kpi strong{display:block;font-size:26px;margin-top:5px}.money-in{color:#08794e}.money-out{color:#a45b00}.live-toast{position:fixed;right:18px;top:18px;z-index:200;background:#071d32;color:white;padding:15px 18px;border-radius:14px;box-shadow:0 15px 40px #0004;max-width:340px}.live-toast strong{display:block;margin-bottom:4px}@media(max-width:800px){.finance-kpis{grid-template-columns:repeat(2,1fr)}.live-toast{left:12px;right:12px;top:12px}}
     .admin-shell{display:grid;grid-template-columns:230px minmax(0,1fr);gap:22px;min-height:calc(100vh - 120px)}.admin-side{background:var(--navy);color:white;border-radius:22px;padding:20px;position:sticky;top:80px;height:max-content}.admin-side h3{margin:0 0 6px}.admin-side p{margin:0 0 18px;color:#bcd0d2;font-size:13px}.admin-side button{width:100%;text-align:left;border:0;background:transparent;color:#d9e7e8;border-radius:12px;padding:12px 13px;font-weight:800;cursor:pointer;margin:3px 0}.admin-side button.active,.admin-side button:hover{background:rgba(57,209,197,.16);color:white}.admin-main{min-width:0}.admin-topbar{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:18px}.admin-topbar h2{margin:0}.admin-topbar .sub{color:var(--muted);font-size:13px;margin-top:4px}.kpi-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:18px}.kpi-card{background:white;border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 8px 24px rgba(16,43,63,.04)}.kpi-card span{display:block;color:var(--muted);font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.04em}.kpi-card strong{display:block;font-size:30px;margin:8px 0 4px}.kpi-card small{color:var(--muted)}.admin-columns{display:grid;grid-template-columns:1.1fr .9fr;gap:16px}.admin-box{background:white;border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 8px 24px rgba(16,43,63,.035);margin-bottom:16px}.admin-box h3{margin:0 0 14px}.admin-list{display:grid;gap:10px}.admin-list-row{display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid var(--line);border-radius:14px;padding:12px}.admin-list-row .left{display:flex;align-items:center;gap:12px;min-width:0}.admin-list-row .thumb{width:50px;height:50px;border-radius:12px;object-fit:cover;background:var(--mist);display:grid;place-items:center;flex:0 0 auto}.admin-list-row strong{display:block}.admin-list-row small{display:block;color:var(--muted);margin-top:3px}.admin-actions{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}.admin-badge{display:inline-flex;align-items:center;padding:6px 9px;border-radius:999px;font-size:11px;font-weight:900;background:var(--mist);color:var(--blue)}.admin-badge.warn{background:#fff3d6;color:#8a5a00}.admin-badge.ok{background:#dcf8ef;color:#057554}.admin-badge.danger{background:#ffe8e8;color:#9d2828}.quick-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.quick-action{border:1px solid var(--line);background:white;border-radius:14px;padding:14px;text-align:left;cursor:pointer}.quick-action strong{display:block;margin-bottom:5px}.quick-action small{color:var(--muted)}.admin-empty{padding:24px;border:1px dashed var(--line);border-radius:14px;color:var(--muted);text-align:center}@media(max-width:980px){.admin-shell{grid-template-columns:1fr}.admin-side{position:static;display:flex;overflow:auto;gap:6px;padding:10px}.admin-side h3,.admin-side p{display:none}.admin-side button{width:auto;white-space:nowrap}.kpi-grid{grid-template-columns:repeat(2,1fr)}.admin-columns{grid-template-columns:1fr}}@media(max-width:560px){.kpi-grid{grid-template-columns:1fr 1fr}.quick-grid{grid-template-columns:1fr}.admin-topbar{align-items:flex-start;flex-direction:column}.admin-list-row{align-items:flex-start;flex-direction:column}.admin-actions{justify-content:flex-start}}
   </style>
+
+<style id="signupFlowStyles">
+  .signup-choice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:16px 0}
+  .signup-choice{border:1px solid var(--line);background:#fff;border-radius:14px;padding:14px;text-align:left;cursor:pointer;color:var(--ink)}
+  .signup-choice span{font-size:24px;display:block;margin-bottom:7px}.signup-choice b{display:block;color:var(--navy);font-size:15px}.signup-choice small{display:block;color:var(--muted);font-size:12px;line-height:1.35;margin-top:4px}
+  .signup-choice.active{border-color:var(--aqua);box-shadow:0 0 0 2px rgba(57,209,197,.18);background:var(--mist)}
+  .join-block{display:none!important}
+  @media(max-width:560px){.signup-choice-grid{grid-template-columns:1fr}.nav-actions{gap:5px}.nav-actions .primary,.nav-actions .link{padding:9px 10px;font-size:13px}}
+</style>
 </head>
 <body>
-  <header><nav class="shell"><div class="logo"><span class="mark">⚓</span>SkipperNow</div><div class="nav-actions"><select id="languageSelect" class="language-select" aria-label="Langue"><option value="fr">FR</option><option value="en">EN</option><option value="es">ES</option></select><button class="link" id="openSkipper">Devenir skipper</button><button class="primary" id="login">Se connecter</button></div></nav></header>
+  <header><nav class="shell"><div class="logo"><span class="mark">⚓</span>SkipperNow</div><div class="nav-actions"><select id="languageSelect" class="language-select" aria-label="Langue"><option value="fr">FR</option><option value="en">EN</option><option value="es">ES</option></select><button class="link" id="login">Se connecter</button><button class="primary" id="openSkipper">Créer un compte</button></div></nav></header>
   <section class="hero"><div class="hero-bg"></div><div class="hero-shade"></div><div class="shell hero-layout"><div class="hero-copy"><div class="eyebrow">Disponible dans tous les ports du monde</div><h1>Votre skipper,<br>au bon port, au bon moment.</h1><p>Trouvez un skipper, un marin ou un prestataire nautique dans n’importe quel port du monde, même à la dernière minute.</p><div class="trust"><span>Profils vérifiés</span><span>Réponse rapide</span><span>Paiement sécurisé</span></div><div class="hero-cta"><button class="primary" id="heroFind">Trouver un skipper</button><button class="secondary-light" id="heroProvider" type="button">Trouver un prestataire</button><button class="secondary-light" id="heroListBoat">Trouver un bateau en location</button></div></div></div></section>
   <div class="search-wrap shell"><form class="search-card" id="searchForm"><div class="field port-field"><label>PORT DE DÉPART — MONDE ENTIER</label><input id="port" type="search" autocomplete="off" placeholder="Ex. Cannes, Miami, Ibiza, Las Terrenas…"><input id="portLat" type="hidden"><input id="portLon" type="hidden"><div id="portSuggestions" class="port-suggestions"></div></div><div class="field"><label>DATE</label><input type="date" id="date"></div><div class="field"><label>DURÉE</label><select id="duration"><option>Demi-journée</option><option>Journée</option><option>Plusieurs jours</option></select></div><button class="search-btn" type="submit">Trouver un skipper</button></form></div>
   <main class="shell"><section class="rental-hub" id="rentalHub"><div class="rental-box"><span class="pill-link">🚤 LOCATION DE BATEAUX</span><h3>Mettre mon bateau en location</h3><p>Créez votre compte propriétaire, ajoutez les photos, les caractéristiques, le port d’attache et les disponibilités de votre bateau. Vous pourrez ensuite proposer la location avec ou sans skipper.</p><div class="cta-row"><button class="primary" id="listBoatBtn">Mettre mon bateau en location</button><button class="link" id="seeOwnerFlow">Voir où l’ajouter</button></div><div class="inline-note">Chemin simple : <strong>Mon espace → Mes bateaux → Ajouter mon bateau</strong>.</div></div><div class="rental-box"><span class="pill-link">🌊 EXEMPLES DE BATEAUX</span><h3>Des annonces visibles dès l’accueil</h3><div class="rental-mini-list"><div class="mini-boat"><img src="https://images.unsplash.com/photo-1518546305927-5a555bb7020d?auto=format&fit=crop&w=800&q=80" alt="bateau à louer"><div><strong>Day-boat · Cannes</strong><small>Location avec skipper · Eau turquoise des îles de Lérins</small></div></div><div class="mini-boat"><img src="https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?auto=format&fit=crop&w=800&q=80" alt="bateau à louer"><div><strong>Voilier · Antibes</strong><small>Sortie journée · Avec ou sans skipper</small></div></div></div></div></section><div class="section-head"><div><h2>Skippers disponibles</h2><p>Professionnels vérifiés près de votre port de départ</p></div><div class="count" id="resultCount">0 skipper</div></div>
     <div class="cards" id="cards"></div><div class="empty" id="empty" style="display:block">Les premiers skippers vérifiés apparaîtront ici dès leur activation.</div>
     <section class="availability-showcase" id="availabilityShowcase"><div class="showcase-panel"><h3>Bateaux disponibles</h3><p>Les annonces apparaîtront ici automatiquement dès qu’un propriétaire publiera son bateau.</p><div class="boat-strip" id="homeBoatStrip"><div class="empty-note">Aucun bateau en location pour le moment.</div></div></div><div class="showcase-panel"><h3>Skippers & prestataires</h3><p>Profils vérifiés disponibles dans les ports recherchés.</p><div class="pro-grid" id="homeProGrid"><div class="empty-note">Aucun professionnel disponible pour le moment.</div></div></div></section>
     <section class="compact-how"><h2>Comment ça marche ?</h2><div class="compact-steps"><div class="compact-step"><b>1</b><strong>Je cherche</strong><p>Choisissez un skipper, un prestataire ou un bateau.</p></div><div class="compact-step"><b>2</b><strong>Je réserve</strong><p>Consultez le profil, les disponibilités et envoyez votre demande.</p></div><div class="compact-step"><b>3</b><strong>Je paie en sécurité</strong><p>Le paiement est sécurisé et libéré après validation de la mission.</p></div></div></section>
-    <section class="join-block"><h2>Pourquoi choisir SkipperNow ?</h2><div class="join-grid"><div class="join-card"><h3>Profils vérifiés</h3><p>Skippers et prestataires contrôlés avant leur mise en ligne.</p></div><div class="join-card"><h3>Paiement sécurisé</h3><p>Le paiement reste protégé jusqu’à la validation de la mission.</p></div><div class="join-card"><h3>Disponible partout</h3><p>Recherchez un professionnel ou un bateau dans les ports du monde entier.</p></div></div></section>
+    <section class="join-block"><h2>Rejoindre SkipperNow</h2><div class="join-grid"><div class="join-card"><h3>Propriétaire</h3><p>Ajoutez votre bateau et proposez-le à la location.</p><button class="secondary-light" onclick="openBoatListingFlow()">Ajouter mon bateau</button></div><div class="join-card"><h3>Skipper</h3><p>Créez votre profil, vos disponibilités et recevez des missions.</p><button class="secondary-light" onclick="document.querySelector('#openSkipper').click()">Devenir skipper</button></div><div class="join-card"><h3>Prestataire</h3><p>Proposez vos services de nettoyage, quai, chantier ou marin.</p><button class="secondary-light" onclick="document.querySelector('#openSkipper').click()">Devenir prestataire</button></div></div></section>
   </main>
   <div class="modal" id="modal"><div class="dialog"><div id="booking"><div class="dialog-top"><div><small id="requestType">DEMANDE DE RÉSERVATION</small><h2 id="skipperName">Thomas R.</h2></div><button class="close" id="close">×</button></div><div class="summary"><div class="mission-line"><span>Départ</span><strong id="summaryPort">Cannes</strong></div><div class="mission-line"><span>Mission</span><strong id="summaryPrice">300 €</strong></div><div class="mission-line" id="urgentLine" style="display:none"><span>Priorité urgente</span><strong>19 €</strong></div></div><div class="field"><label>VOTRE NOM</label><input id="bookingName" placeholder="Prénom et nom"></div><div class="field"><label>TÉLÉPHONE</label><input id="bookingPhone" placeholder="06 00 00 00 00"></div><div class="field"><label>TYPE DE BATEAU</label><input id="bookingBoat" placeholder="Ex. Cap Camarat 9.0"></div><div class="payment-note"><span>🔒</span><span>Le paiement est sécurisé. Il sera versé au skipper après le rinçage, le rangement et votre validation de fin de mission.</span></div><p class="muted" id="bookingMessage"></p><button class="primary wide" id="send">Créer la demande</button></div><div class="success" id="success"><div class="check">✓</div><h2>Demande enregistrée</h2><p>Les skippers disponibles peuvent maintenant accepter la mission. Le paiement sécurisé sera ajouté à l’étape Stripe.</p><button class="primary wide" id="done">Voir ma réservation</button></div></div></div>
   <div class="modal" id="skipperModal"><div class="dialog"><div class="dialog-top"><div><small>ESPACE PROFESSIONNEL</small><h2>Rejoindre SkipperNow</h2></div><button class="close" id="closeSkipper">×</button></div><p>Recevez des missions proches de votre port lorsque vous êtes disponible.</p><div class="toggle"><button class="active">Créer mon profil</button><button>J’ai déjà un compte</button></div><div class="field"><label>NOM COMPLET</label><input placeholder="Votre nom"></div><div class="field"><label>PORT PRINCIPAL</label><select><option>Cannes</option><option>Antibes</option><option>Golfe-Juan</option><option>Nice</option><option>Monaco</option></select></div><div class="field"><label>EXPÉRIENCE</label><input placeholder="Ex. 8 ans"></div><div class="payment-note"><span>✓</span><span>Identité, brevet et assurance vérifiés avant l’activation du profil.</span></div><button class="primary wide" id="applySkipper">Commencer mon inscription</button></div></div>
   <div class="modal" id="providerModal"><div class="dialog large"><div class="dialog-top"><div><small>SERVICES NAUTIQUES</small><h2>Trouver un prestataire</h2></div><button class="close" id="closeProvider">×</button></div><p class="muted">Choisissez le service dont vous avez besoin près de votre port.</p><div class="provider-grid"><button class="provider-service" data-provider="cleaning"><span class="provider-icon">🧽</span><b>Nettoyage du bateau</b><span>Lavage, rinçage, intérieur, préparation avant ou après sortie.</span></button><button class="provider-service" data-provider="dock_service"><span class="provider-icon">⚓</span><b>Services à quai</b><span>Amarrage, aide au départ, avitaillement, surveillance et assistance.</span></button><button class="provider-service" data-provider="shipyard"><span class="provider-icon">🛠️</span><b>Chantier et entretien</b><span>Antifouling, peinture, petites réparations, préparation et mise à l’eau.</span></button><button class="provider-service" data-provider="day_sailor"><span class="provider-icon">👷</span><b>Marin à la journée</b><span>Aide à bord, manutention, convoyage court et assistance au propriétaire.</span></button><button class="provider-service" data-provider="skipper"><span class="provider-icon">🧭</span><b>Skipper professionnel</b><span>Sortie, location, convoyage et prise en main du bateau.</span></button></div></div></div>
   <div class="modal" id="skipperFinderModal"><div class="dialog large"><div class="dialog-top"><div><small>SKIPPERS DISPONIBLES</small><h2>Trouver un skipper</h2></div><button class="close" id="closeSkipperFinder">×</button></div><p class="muted">Voici les skippers disponibles selon votre recherche actuelle.</p><div id="skipperFinderResults" class="provider-results" style="display:block"></div></div></div>
   <div class="modal" id="boatFinderModal"><div class="dialog large"><div class="dialog-top"><div><small>LOCATION DE BATEAUX</small><h2>Trouver un bateau en location</h2></div><button class="close" id="closeBoatFinder">×</button></div><p class="muted">Voici les bateaux en location disponibles selon votre recherche actuelle.</p><div id="boatFinderResults" class="provider-results" style="display:block"></div></div></div>
-  <div class="modal" id="accountModal"><div class="dialog"><div class="dialog-top"><div><small>MON COMPTE</small><h2>Bienvenue sur SkipperNow</h2></div><button class="close" id="closeAccount">×</button></div><div class="toggle"><button class="active" id="authCreate">Créer un compte</button><button id="authLogin">Se connecter</button></div><div class="toggle" id="roleChoice"><button class="active" id="roleClient">Je suis client</button><button id="roleSkipper">Je suis skipper</button></div><div class="field" id="accountNameWrap"><label>PRÉNOM ET NOM</label><input id="accountName" placeholder="Votre nom"></div><div class="field"><label>EMAIL</label><input id="accountEmail" type="email" placeholder="nom@email.com"></div><div class="field"><label>MOT DE PASSE</label><input id="accountPassword" type="password" placeholder="8 caractères minimum"></div><div class="field" id="accountPortWrap" style="display:none"><label>PORT PRINCIPAL — VILLE, PORT, PAYS</label><input id="accountPort" type="text" placeholder="Ex. Port Vauban, Antibes, France"></div><p class="muted" id="authMessage"></p><button class="primary wide" id="enterApp">Créer mon compte</button><button class="link wide" id="forgotPassword" style="display:none">Mot de passe oublié ?</button></div></div>
+  <div class="modal" id="accountModal"><div class="dialog"><div class="dialog-top"><div><small>MON COMPTE</small><h2>Créer votre activité sur SkipperNow</h2></div><button class="close" id="closeAccount">×</button></div><div class="toggle"><button class="active" id="authCreate">Créer un compte</button><button id="authLogin">Se connecter</button></div><div id="roleChoice" class="signup-choice-grid">
+  <button class="signup-choice active" id="roleSkipper" type="button"><span>🧭</span><b>Devenir skipper SkipperNow</b><small>Recevoir des demandes de sortie et de convoyage</small></button>
+  <button class="signup-choice" id="roleProvider" type="button"><span>🛠️</span><b>Devenir prestataire d’un service</b><small>Nettoyage, services à quai, chantier ou marin à la journée</small></button>
+  <button class="signup-choice" id="roleOwner" type="button"><span>🚤</span><b>Mettre mon bateau en location</b><small>Créer une annonce avec photos, port et disponibilités</small></button>
+  <button class="signup-choice" id="roleClient" type="button" style="display:none"><span>👤</span><b>Client</b><small>Compte client</small></button>
+</div><div class="field" id="accountNameWrap"><label>PRÉNOM ET NOM</label><input id="accountName" placeholder="Votre nom"></div><div class="field"><label>EMAIL</label><input id="accountEmail" type="email" placeholder="nom@email.com"></div><div class="field"><label>MOT DE PASSE</label><input id="accountPassword" type="password" placeholder="8 caractères minimum"></div><div class="field" id="accountPortWrap" style="display:none"><label>PORT PRINCIPAL — VILLE, PORT, PAYS</label><input id="accountPort" type="text" placeholder="Ex. Port Vauban, Antibes, France"></div><p class="muted" id="authMessage"></p><button class="primary wide" id="enterApp">Créer mon compte</button><button class="link wide" id="forgotPassword" style="display:none">Mot de passe oublié ?</button></div></div>
   <div class="modal" id="dashboardModal"><div class="dialog large"><div class="dialog-top"><div><small id="dashRole">ESPACE CLIENT</small><h2 id="dashTitle">Mes réservations</h2></div><button class="close" id="closeDashboard">×</button></div><div id="dashboardBody"></div><button class="small-btn wide" id="switchAccount">Changer de compte</button></div></div>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
@@ -223,14 +237,13 @@
   </script>
   <style>
     /* Inscription simplifiée : le choix du rôle ne surcharge plus la fenêtre. */
-    #roleChoice{display:none!important}
   </style>
   <script>
     // L'inscription générale crée un compte client.
     document.querySelector('#authCreate').onclick=()=>{
       setRole('client');
       setAuthMode('create');
-      document.querySelector('#enterApp').textContent='Créer mon compte';
+      document.querySelector('#enterApp').textContent='Continuer';
     };
     // « Devenir skipper » ouvre directement le bon parcours professionnel.
     document.querySelector('#openSkipper').onclick=()=>{
@@ -565,6 +578,81 @@
   }catch(e){}
 })();
 </script>
-  <footer class="site-footer"><div class="shell"><div class="footer-grid"><div><div class="logo" style="color:white"><span class="mark">⚓</span>SkipperNow</div><p style="max-width:360px">La plateforme mondiale pour trouver un skipper, un prestataire nautique ou un bateau en location.</p></div><div><h4>Rechercher</h4><a href="#" onclick="document.querySelector('#heroFind').click();return false">Trouver un skipper</a><a href="#" onclick="document.querySelector('#heroProvider').click();return false">Trouver un prestataire</a><a href="#" onclick="document.querySelector('#heroListBoat').click();return false">Trouver un bateau</a></div><div><h4>Aide</h4><a href="#">Comment ça marche</a><a href="#">Centre d’aide</a><a href="#">Nous contacter</a></div><div><h4>Légal</h4><a href="#">Conditions générales</a><a href="#">Confidentialité</a><a href="#">Mentions légales</a></div></div><div class="footer-bottom"><span>© 2026 SkipperNow. Tous droits réservés.</span><span>Plateforme nautique mondiale</span></div></div></footer>
+  <footer class="site-footer"><div class="shell"><div class="footer-grid"><div><div class="logo" style="color:white"><span class="mark">⚓</span>SkipperNow</div><p style="max-width:360px">La plateforme mondiale pour trouver un skipper, un prestataire nautique ou un bateau en location.</p></div><div><h4>Plateforme</h4><a href="#" onclick="document.querySelector('#heroFind').click();return false">Trouver un skipper</a><a href="#" onclick="document.querySelector('#heroProvider').click();return false">Trouver un prestataire</a><a href="#" onclick="document.querySelector('#heroListBoat').click();return false">Trouver un bateau</a></div><div><h4>Professionnels</h4><a href="#" onclick="document.querySelector('#openSkipper').click();return false">Devenir prestataire</a><a href="#" onclick="openBoatListingFlow();return false">Mettre un bateau en location</a></div><div><h4>Informations</h4><a href="#">À propos</a><a href="#">Contact</a><a href="#">Conditions générales</a><a href="#">Confidentialité</a></div></div><div class="footer-bottom"><span>© 2026 SkipperNow. Tous droits réservés.</span><span>Réseaux sociaux à venir</span></div></div></footer>
+
+<script id="finalSignupFlow">
+(function(){
+  let signupKind='skipper';
+  const createBtn=document.querySelector('#openSkipper');
+  const loginBtn=document.querySelector('#login');
+  const roleChoice=document.querySelector('#roleChoice');
+  const choices=[...document.querySelectorAll('.signup-choice')];
+  const ownerBtn=document.querySelector('#roleOwner');
+  const providerBtn=document.querySelector('#roleProvider');
+  const clientBtn=document.querySelector('#roleClient');
+  const skipperBtn=document.querySelector('#roleSkipper');
+
+  function markChoice(id){choices.forEach(b=>b.classList.toggle('active',b.id===id));}
+  function showCreate(){
+    setAuthMode('create');
+    roleChoice.style.display='grid';
+    document.querySelector('#enterApp').textContent='Créer mon compte';
+    accountModal.classList.add('open');
+    selectKind(signupKind||'skipper');
+  }
+  function selectKind(kind){
+    signupKind=kind;
+    if(kind==='client'){
+      setRole('client'); markChoice('roleClient');
+      providerRegistration.classList.remove('visible');
+      document.querySelector('#accountPortWrap').style.display='none';
+    }else if(kind==='owner'){
+      setRole('client'); markChoice('roleOwner');
+      providerRegistration.classList.remove('visible');
+      document.querySelector('#accountPortWrap').style.display='block';
+      document.querySelector('#accountPortWrap label').textContent='PORT D’ATTACHE DU BATEAU';
+    }else if(kind==='skipper'){
+      setRole('skipper'); markChoice('roleSkipper');
+      document.querySelector('#providerActivity').value='skipper';
+      providerRegistration.classList.add('visible');
+      document.querySelector('#accountPortWrap').style.display='block';
+      document.querySelector('#accountPortWrap label').textContent='PORT PRINCIPAL';
+    }else{
+      setRole('skipper'); markChoice('roleProvider');
+      if(document.querySelector('#providerActivity').value==='skipper') document.querySelector('#providerActivity').value='cleaning';
+      providerRegistration.classList.add('visible');
+      document.querySelector('#accountPortWrap').style.display='block';
+      document.querySelector('#accountPortWrap label').textContent='PORT PRINCIPAL';
+    }
+  }
+
+  createBtn.textContent=currentUser?'Mon espace':'Créer un compte';
+  createBtn.onclick=()=>{if(currentUser){openDashboard();return}signupKind='skipper';showCreate();};
+  loginBtn.onclick=()=>{if(currentUser){openDashboard();return}setRole('client');setAuthMode('login');roleChoice.style.display='none';accountModal.classList.add('open');};
+  document.querySelector('#authCreate').onclick=()=>showCreate();
+  document.querySelector('#authLogin').onclick=()=>{setAuthMode('login');roleChoice.style.display='none';};
+  clientBtn.onclick=()=>selectKind('client');
+  ownerBtn.onclick=()=>selectKind('owner');
+  skipperBtn.onclick=()=>selectKind('skipper');
+  providerBtn.onclick=()=>selectKind('provider');
+
+  const oldRefresh=refreshAccount;
+  refreshAccount=function(){
+    oldRefresh();
+    loginBtn.textContent=currentUser?'Mon espace':'Se connecter';
+    createBtn.style.display=currentUser?'none':'inline-flex';
+  };
+  refreshAccount();
+
+  // All old “become...” links now open the single account creation flow.
+  document.querySelectorAll('a,button').forEach(el=>{
+    const t=(el.textContent||'').trim().toLowerCase();
+    if(t.includes('devenir prestataire')||t.includes('devenir skipper')){
+      el.onclick=(e)=>{e.preventDefault();signupKind=t.includes('skipper')?'skipper':'provider';showCreate();};
+    }
+  });
+})();
+</script>
+
 </body>
 </html>
