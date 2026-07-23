@@ -22,3 +22,8 @@
 - Base Supabase sécurisée pour les réservations
 
 Le paiement Stripe et la messagerie seront ajoutés dans l’étape suivante.
+
+
+## Version ports du monde
+
+Le champ de port recherche désormais mondialement via OpenStreetMap/Nominatim et propose aussi une liste rapide de grands ports et marinas. Le nom complet sélectionné est enregistré dans les profils et missions.
