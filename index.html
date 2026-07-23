@@ -719,5 +719,81 @@
   bindCapture(close,()=>modal.classList.remove('open'));
 })();
 </script>
+
+<script id="authFlowCleanFix">
+(function(){
+  const modal=document.getElementById('accountModal');
+  const loginBtn=document.getElementById('login');
+  const createBtn=document.getElementById('openSkipper');
+  const roleChoice=document.getElementById('roleChoice');
+  const authTabs=document.querySelector('#accountModal .toggle');
+  const nameWrap=document.getElementById('accountNameWrap');
+  const portWrap=document.getElementById('accountPortWrap');
+  const forgot=document.getElementById('forgotPassword');
+  const submit=document.getElementById('enterApp');
+  const title=modal?.querySelector('.dialog-top h2');
+  const msg=document.getElementById('authMessage');
+  const providerBox=document.getElementById('providerRegistration');
+  const providerActivity=document.getElementById('providerActivity');
+
+  function resetMessage(){ if(msg) msg.textContent=''; }
+  function capture(el,fn){ if(!el)return; el.addEventListener('click',e=>{e.preventDefault();e.stopImmediatePropagation();fn();},true); }
+
+  function openLoginOnly(){
+    authMode='login';
+    selectedRole='client';
+    if(authTabs) authTabs.style.display='none';
+    if(roleChoice) roleChoice.style.display='none';
+    if(nameWrap) nameWrap.style.display='none';
+    if(portWrap) portWrap.style.display='none';
+    if(providerBox) providerBox.classList.remove('visible');
+    if(forgot) forgot.style.display='block';
+    if(submit) submit.textContent='Se connecter';
+    if(title) title.textContent='Se connecter à SkipperNow';
+    resetMessage();
+    modal?.classList.add('open');
+  }
+
+  function choose(kind){
+    document.querySelectorAll('.signup-choice').forEach(x=>x.classList.remove('active'));
+    const map={skipper:'roleSkipper',provider:'roleProvider',owner:'roleOwner'};
+    document.getElementById(map[kind])?.classList.add('active');
+    if(kind==='skipper'){
+      selectedRole='skipper';
+      if(providerActivity) providerActivity.value='skipper';
+      if(providerBox) providerBox.classList.add('visible');
+      if(portWrap){portWrap.style.display='block';portWrap.querySelector('label').textContent='PORT PRINCIPAL';}
+    }else if(kind==='provider'){
+      selectedRole='skipper';
+      if(providerActivity && providerActivity.value==='skipper') providerActivity.value='cleaning';
+      if(providerBox) providerBox.classList.add('visible');
+      if(portWrap){portWrap.style.display='block';portWrap.querySelector('label').textContent='PORT PRINCIPAL';}
+    }else{
+      selectedRole='client';
+      if(providerBox) providerBox.classList.remove('visible');
+      if(portWrap){portWrap.style.display='block';portWrap.querySelector('label').textContent='PORT D’ATTACHE DU BATEAU';}
+    }
+  }
+
+  function openCreateOnly(){
+    authMode='create';
+    if(authTabs) authTabs.style.display='none';
+    if(roleChoice){roleChoice.style.display='grid';}
+    if(nameWrap) nameWrap.style.display='block';
+    if(forgot) forgot.style.display='none';
+    if(submit) submit.textContent='Créer mon compte';
+    if(title) title.textContent='Créer un compte SkipperNow';
+    resetMessage();
+    choose('skipper');
+    modal?.classList.add('open');
+  }
+
+  capture(loginBtn,openLoginOnly);
+  capture(createBtn,openCreateOnly);
+  capture(document.getElementById('roleSkipper'),()=>choose('skipper'));
+  capture(document.getElementById('roleProvider'),()=>choose('provider'));
+  capture(document.getElementById('roleOwner'),()=>choose('owner'));
+})();
+</script>
 </body>
 </html>
