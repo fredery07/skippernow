@@ -1,0 +1,12 @@
+SKIPPERNOW V2 — INSTALLATION RAPIDE
+
+1. Décompresse ce ZIP.
+2. Dans GitHub, ouvre le dépôt skippernow.
+3. Remplace les anciens fichiers par tous les fichiers de ce dossier.
+4. Garde le fichier principal nommé index.html.
+5. Valide avec « Commit changes ».
+6. GitHub Pages/Netlify redéploiera le site.
+
+Base utilisée : index-prestataires-v19.html
+Cette version contient déjà les comptes Supabase, profils, administration,
+messagerie, disponibilités, prestataires et langues.
