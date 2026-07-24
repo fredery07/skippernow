@@ -65,7 +65,7 @@
   <script>
     const SUPABASE_URL='https://pzvlarwsfvhenrniepkw.supabase.co';
     const SUPABASE_KEY='sb_publishable_OxikOn1mhDcxkAVAucN5Lg_za-bJMS5';
-    const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+    const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,storage:window.localStorage,storageKey:'skippernow-auth'}});
     let currentUser=null,currentProfile=null,currentRequest={},selectedRole='client',authMode='create';
     const dateInput=document.querySelector('#date'); dateInput.min=new Date().toISOString().split('T')[0]; dateInput.value=dateInput.min;
     const form=document.querySelector('#searchForm'),port=document.querySelector('#port'),count=document.querySelector('#resultCount'),empty=document.querySelector('#empty');
@@ -1455,6 +1455,115 @@ body:not(.skippernow-admin) .admin-only{display:none!important}
   window.openDashboard=async function(){await restoreSessionV10();await oldOpenDashboardV10();setTimeout(()=>{appendRentalRequestsV10(true);const body=document.querySelector('#dashboardBody');if(body&&currentUser&&!body.querySelector('#enableRentalNotificationsV10')){const b=document.createElement('button');b.id='enableRentalNotificationsV10';b.className='small-btn';b.textContent='Activer les notifications';b.onclick=activateRentalNotificationsV10;body.prepend(b)}},180)};
 
   db.auth.onAuthStateChange((event,session)=>{if(event==='SIGNED_IN'||event==='TOKEN_REFRESHED'){currentUser=session?.user||currentUser;restoreSessionV10()}if(event==='SIGNED_OUT'&&realtimeChannelV10){db.removeChannel(realtimeChannelV10);realtimeChannelV10=null}});
+})();
+</script>
+
+
+<style id="v11PersistentSessionAndAccountNameStyles">
+#login.account-logged{display:inline-flex;align-items:center;gap:8px;max-width:260px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#login.account-logged::before{content:'👤';font-size:15px}
+</style>
+<script id="v11PersistentSessionAndAccountNameFix">
+(function(){
+  let bootingV11=false;
+
+  function accountNameV11(){
+    return String(currentProfile?.full_name||currentUser?.user_metadata?.full_name||currentUser?.email||'Mon espace').trim();
+  }
+
+  function paintAccountV11(){
+    const button=document.querySelector('#login');
+    if(!button)return;
+    if(currentUser){
+      button.textContent=accountNameV11();
+      button.title='Ouvrir mon espace';
+      button.classList.add('account-logged');
+    }else{
+      button.textContent='Se connecter';
+      button.title='';
+      button.classList.remove('account-logged');
+    }
+  }
+
+  async function restorePersistentSessionV11(){
+    if(bootingV11)return !!currentUser;
+    bootingV11=true;
+    try{
+      let result=await db.auth.getSession();
+      let session=result?.data?.session||null;
+      // Safari peut rendre le stockage quelques millisecondes après le chargement.
+      if(!session){
+        await new Promise(resolve=>setTimeout(resolve,250));
+        result=await db.auth.getSession();
+        session=result?.data?.session||null;
+      }
+      if(!session?.user){
+        currentUser=null;currentProfile=null;paintAccountV11();
+        return false;
+      }
+      currentUser=session.user;
+      const {data:profile,error}=await db.from('profiles').select('*').eq('id',currentUser.id).maybeSingle();
+      if(error)console.error('Profil session V11',error);
+      currentProfile=profile||{id:currentUser.id,role:'client',full_name:currentUser.user_metadata?.full_name||currentUser.email};
+      paintAccountV11();
+      return true;
+    }catch(error){
+      console.error('Restauration session V11',error);
+      paintAccountV11();
+      return false;
+    }finally{bootingV11=false}
+  }
+
+  // Remplace l'affichage ancien « Mon espace » par le nom réel du titulaire.
+  const previousRefreshV11=window.refreshAccount||((typeof refreshAccount==='function')?refreshAccount:null);
+  window.refreshAccount=function(){
+    try{previousRefreshV11?.()}catch(_e){}
+    paintAccountV11();
+  };
+
+  const previousOpenDashboardV11=window.openDashboard;
+  window.openDashboard=async function(){
+    const connected=await restorePersistentSessionV11();
+    if(!connected){
+      dashboardModal?.classList.remove('open');
+      setAuthMode?.('login');
+      accountModal?.classList.add('open');
+      return;
+    }
+    paintAccountV11();
+    return previousOpenDashboardV11?.();
+  };
+
+  // Le bouton relit toujours la session avant de décider d'afficher la connexion.
+  const loginButtonV11=document.querySelector('#login');
+  if(loginButtonV11){
+    loginButtonV11.addEventListener('click',async function(event){
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      const connected=await restorePersistentSessionV11();
+      if(connected)await window.openDashboard();
+      else{setAuthMode?.('login');accountModal?.classList.add('open')}
+    },true);
+  }
+
+  db.auth.onAuthStateChange(async(event,session)=>{
+    if(['INITIAL_SESSION','SIGNED_IN','TOKEN_REFRESHED','USER_UPDATED','PASSWORD_RECOVERY'].includes(event)){
+      currentUser=session?.user||null;
+      if(currentUser){
+        const {data}=await db.from('profiles').select('*').eq('id',currentUser.id).maybeSingle();
+        currentProfile=data||currentProfile||{role:'client',full_name:currentUser.user_metadata?.full_name||currentUser.email};
+      }
+      paintAccountV11();
+    }
+    if(event==='SIGNED_OUT'){
+      currentUser=null;currentProfile=null;paintAccountV11();
+    }
+  });
+
+  document.addEventListener('DOMContentLoaded',restorePersistentSessionV11,{once:true});
+  window.addEventListener('pageshow',restorePersistentSessionV11);
+  setTimeout(restorePersistentSessionV11,50);
+  setTimeout(restorePersistentSessionV11,600);
 })();
 </script>
 
