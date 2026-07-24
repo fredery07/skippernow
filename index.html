@@ -1069,5 +1069,178 @@
 })();
 </script>
 
+
+<style id="stripePaymentsV6Styles">
+.payment-v6{border:1px solid var(--line);background:#fff;border-radius:16px;padding:15px;margin-top:12px}.payment-v6-head{display:flex;justify-content:space-between;gap:12px;align-items:center}.payment-v6-status{font-size:12px;font-weight:900;padding:6px 9px;border-radius:999px;background:#fff0cf;color:#8a5a00}.payment-v6-status.ok{background:#dcf8ef;color:#057554}.payment-v6-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.payment-v6-note{font-size:13px;color:var(--muted);margin-top:8px}.payment-v6-banner{position:fixed;left:50%;top:90px;transform:translateX(-50%);z-index:15000;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow);border-radius:14px;padding:14px 18px;max-width:min(560px,90vw);font-weight:800}.payment-v6-banner.ok{border-color:#7dd9b8}.payment-v6-banner.warn{border-color:#efc570}
+</style>
+<script id="stripePaymentsV6">
+(function(){
+ const esc6=v=>String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+ const money6=c=>((Number(c)||0)/100).toLocaleString('fr-FR',{style:'currency',currency:'EUR'});
+ let paymentBusy=false;
+ function banner(text,type='ok'){
+   document.querySelector('#paymentBannerV6')?.remove();
+   const b=document.createElement('div');b.id='paymentBannerV6';b.className='payment-v6-banner '+type;b.textContent=text;document.body.appendChild(b);setTimeout(()=>b.remove(),6500);
+ }
+ window.startStripePaymentV6=async function(amount,description,missionId='',button=null){
+   if(paymentBusy)return;
+   if(!currentUser){document.querySelector('#accountModal')?.classList.add('open');return banner('Connectez-vous avant de payer.','warn')}
+   amount=Math.round(Number(amount));
+   if(!Number.isInteger(amount)||amount<100)return banner('Montant de paiement incorrect.','warn');
+   paymentBusy=true;const old=button?.textContent;if(button){button.disabled=true;button.textContent='Ouverture du paiement…'}
+   try{
+     const {data,error}=await db.functions.invoke('create-checkout-session',{body:{amount,description:String(description||'Réservation SkipperNow').slice(0,120),missionId:missionId||undefined}});
+     if(error)throw error;
+     if(!data?.url)throw new Error(data?.error||'Lien Stripe introuvable.');
+     location.href=data.url;
+   }catch(err){banner('Paiement impossible : '+(err?.message||'erreur inconnue'),'warn');paymentBusy=false;if(button){button.disabled=false;button.textContent=old||'Payer'}}
+ };
+ async function addClientPayments(){
+   if(currentProfile?.role!=='client'||!currentUser)return;
+   const body=document.querySelector('#dashboardBody');if(!body||body.querySelector('#clientPaymentsV6'))return;
+   const {data,error}=await db.from('missions').select('*').eq('client_id',currentUser.id).order('created_at',{ascending:false});
+   if(error)return;
+   const missions=data||[];
+   const section=document.createElement('section');section.id='clientPaymentsV6';section.style.marginTop='18px';
+   section.innerHTML=`<h3>Paiements sécurisés</h3><div class="payment-v6-note">Le paiement s’ouvre directement sur Stripe. Aucun numéro de carte n’est enregistré sur SkipperNow.</div><div>${missions.map(m=>{const total=(Number(m.amount_cents)||0)+(Number(m.urgent_fee_cents)||0);const paid=['paid','transferred','completed'].includes(m.payment_status||m.status);return `<div class="payment-v6"><div class="payment-v6-head"><div><b>${esc6(m.port||'Réservation')}</b><div class="v3-meta">${m.starts_at?new Date(m.starts_at).toLocaleDateString('fr-FR'):''} · ${esc6(m.boat_type||'Prestation nautique')}</div></div><div><strong>${money6(total)}</strong><br><span class="payment-v6-status ${paid?'ok':''}">${paid?'Payé':'À payer'}</span></div></div>${paid?'':`<div class="payment-v6-actions"><button class="primary" type="button" onclick="startStripePaymentV6(${total},'Réservation SkipperNow - ${esc6(String(m.port||'Mission').replace(/'/g,"\\'"))}','${m.id}',this)">Payer maintenant</button></div>`}</div>`}).join('')||'<div class="v3-empty">Aucune réservation à payer.</div>'}</div>`;
+   body.appendChild(section);
+ }
+ const obs=new MutationObserver(()=>{clearTimeout(window.__payV6Timer);window.__payV6Timer=setTimeout(addClientPayments,120)});
+ const dash=document.querySelector('#dashboardBody');if(dash)obs.observe(dash,{childList:true,subtree:true});
+ const originalBoat=window.openBoatDetailsV5;
+ if(originalBoat)window.openBoatDetailsV5=async function(id){await originalBoat(id);setTimeout(()=>{const m=document.querySelector('#boatDetailModalV5');const b=(typeof boatCacheV5!=='undefined'?boatCacheV5:[]).find?.(x=>String(x.id)===String(id));if(!m||!b)return;const raw=b.price_per_day||b.daily_price||b.price;const euros=Number(String(raw||'').replace(',','.').replace(/[^0-9.]/g,''));if(!euros||euros<=0)return;const actions=m.querySelector('.boat-detail-actions');if(actions&&!actions.querySelector('[data-pay-boat]')){const btn=document.createElement('button');btn.className='primary';btn.dataset.payBoat='1';btn.textContent='Payer '+euros.toLocaleString('fr-FR',{style:'currency',currency:'EUR'});btn.onclick=()=>startStripePaymentV6(Math.round(euros*100),'Location bateau - '+(b.name||'Bateau'),'',btn);actions.prepend(btn)}},80)};
+ const params=new URLSearchParams(location.search);
+ if(params.get('payment')==='success'){setTimeout(()=>banner('Paiement Stripe effectué. La confirmation définitive apparaîtra après vérification du paiement.'),500);history.replaceState({},'',location.pathname)}
+ if(params.get('payment')==='cancelled'){setTimeout(()=>banner('Paiement annulé. Aucun débit n’a été effectué.','warn'),500);history.replaceState({},'',location.pathname)}
+})();
+</script>
+
+
+
+<style id="v7SecurityAndBoatPricesStyles">
+.v7-security-alert{background:#fff3cd;border:1px solid #ffe69c;color:#664d03;border-radius:14px;padding:14px;margin-bottom:14px}
+.v7-price-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.v7-price-grid label{display:grid;gap:6px;font-size:12px;font-weight:850;color:var(--muted)}.v7-price-grid input{width:100%;border:1px solid var(--line);border-radius:11px;padding:11px 12px}
+@media(max-width:650px){.v7-price-grid{grid-template-columns:1fr}}
+</style>
+<script id="v7SecurityAndBoatPricesFix">
+(function(){
+  const esc7=v=>String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+  let openingDashboardV7=false;
+  const previousOpenDashboardV7=window.openDashboard;
+
+  async function refreshAuthenticatedProfileV7(){
+    const {data:userData,error:userError}=await db.auth.getUser();
+    if(userError||!userData?.user){currentUser=null;currentProfile=null;return false}
+    currentUser=userData.user;
+    const {data:profile,error:profileError}=await db.from('profiles').select('*').eq('id',currentUser.id).maybeSingle();
+    if(profileError)throw profileError;
+    currentProfile=profile||null;
+    return !!currentProfile;
+  }
+
+  window.openDashboard=async function(){
+    if(openingDashboardV7)return;
+    openingDashboardV7=true;
+    try{
+      const ok=await refreshAuthenticatedProfileV7();
+      if(!ok){
+        dashboardModal?.classList.remove('open','admin-mode');
+        accountModal?.classList.add('open');
+        alert('Votre session a changé. Reconnectez-vous.');
+        return;
+      }
+      // Le rôle est toujours relu depuis la base pour l’utilisateur réellement connecté.
+      dashboardModal?.classList.toggle('admin-mode',currentProfile.role==='admin');
+      await previousOpenDashboardV7();
+      // Sécurité visuelle supplémentaire : un non-admin ne doit jamais voir le pilotage admin.
+      if(currentProfile.role!=='admin'){
+        dashboardModal?.classList.remove('admin-mode');
+        const adminTitle=(document.querySelector('#dashRole')?.textContent||'')+' '+(document.querySelector('#dashTitle')?.textContent||'');
+        if(/ADMINISTRATEUR|Pilotage complet/i.test(adminTitle)){
+          dashboardModal?.classList.remove('open');
+          alert('Accès administrateur refusé. Rechargez votre espace client.');
+          location.reload();
+        }
+      }
+    }catch(err){
+      console.error(err);alert('Impossible de vérifier les droits du compte : '+(err?.message||err));
+    }finally{openingDashboardV7=false}
+  };
+
+  db.auth.onAuthStateChange(async(event,session)=>{
+    if(event==='SIGNED_OUT'){
+      currentUser=null;currentProfile=null;
+      dashboardModal?.classList.remove('open','admin-mode');
+      refreshAccount?.();
+      return;
+    }
+    if(event==='SIGNED_IN'||event==='TOKEN_REFRESHED'||event==='USER_UPDATED'){
+      currentUser=session?.user||null;
+      currentProfile=null;
+      if(currentUser){try{await refreshAuthenticatedProfileV7()}catch(e){console.error(e)}}
+      refreshAccount?.();
+    }
+  });
+
+  const adminOnlyNames=['v3SetProfile','v3BoatOwnerStatus','deleteProfileV4','saveAdminSelfProfile'];
+  adminOnlyNames.forEach(name=>{
+    const original=window[name];if(typeof original!=='function')return;
+    window[name]=async function(...args){
+      await refreshAuthenticatedProfileV7();
+      if(currentProfile?.role!=='admin')return alert('Accès refusé : cette action est réservée à l’administrateur.');
+      return original.apply(this,args);
+    };
+  });
+
+  function ensureBoatPriceModalV7(){
+    let m=document.querySelector('#boatPriceModalV7');
+    if(!m){m=document.createElement('div');m.id='boatPriceModalV7';m.className='v3-modal';document.body.appendChild(m);m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open')})}
+    return m;
+  }
+
+  window.v3EditBoat=async function(id){
+    await refreshAuthenticatedProfileV7();
+    let b=(typeof v3Boats!=='undefined'?v3Boats:[]).find?.(x=>String(x.id)===String(id));
+    if(!b){const {data}=await db.from('boats').select('*').eq('id',id).maybeSingle();b=data}
+    if(!b)return alert('Bateau introuvable.');
+    const isAdmin=currentProfile?.role==='admin';
+    if(!isAdmin&&String(b.client_id)!==String(currentUser?.id))return alert('Vous ne pouvez modifier que votre propre bateau.');
+    const m=ensureBoatPriceModalV7();
+    m.innerHTML=`<div class="v3-modal-card"><div class="dialog-top"><div><small>ANNONCE BATEAU</small><h2>Modifier ${esc7(b.name||'le bateau')}</h2></div><button class="close" onclick="document.querySelector('#boatPriceModalV7').classList.remove('open')">×</button></div>
+      <div class="v3-edit-grid" style="margin-top:18px"><label>Nom du bateau<input id="v7BoatName" value="${esc7(b.name||'')}"></label><label>Modèle<input id="v7BoatModel" value="${esc7(b.model||'')}"></label><label>Port d’attache<input id="v7BoatPort" value="${esc7(b.home_port||'')}"></label><label>Photo (URL)<input id="v7BoatPhoto" value="${esc7(b.photo_url||'')}"></label></div>
+      <div class="v7-price-grid" style="margin-top:12px"><label>Prix demi-journée (€)<input id="v7BoatHalfPrice" type="number" min="0" step="1" value="${Number(b.price_half_day||b.half_day_price||0)}"></label><label>Prix journée (€)<input id="v7BoatDayPrice" type="number" min="0" step="1" value="${Number(b.price_per_day||b.daily_price||b.price||0)}"></label></div>
+      <label class="v3-edit-full">Description<textarea id="v7BoatDescription">${esc7(b.description||'')}</textarea></label><p class="muted" id="v7BoatMessage"></p><div class="v3-actions"><button class="fill" onclick="saveBoatPricesV7('${esc7(id)}')">Enregistrer l’annonce</button><button onclick="document.querySelector('#boatPriceModalV7').classList.remove('open')">Annuler</button></div></div>`;
+    m.classList.add('open');
+  };
+
+  window.saveBoatPricesV7=async function(id){
+    await refreshAuthenticatedProfileV7();
+    const msg=document.querySelector('#v7BoatMessage');
+    const {data:b,error:loadError}=await db.from('boats').select('id,client_id').eq('id',id).maybeSingle();
+    if(loadError||!b){msg.textContent='Bateau introuvable.';return}
+    if(currentProfile?.role!=='admin'&&String(b.client_id)!==String(currentUser.id)){msg.textContent='Accès refusé.';return}
+    const half=Math.max(0,Number(document.querySelector('#v7BoatHalfPrice').value)||0),day=Math.max(0,Number(document.querySelector('#v7BoatDayPrice').value)||0);
+    if(!half&&!day){msg.textContent='Indique au moins un tarif.';return}
+    msg.textContent='Enregistrement…';
+    const patch={name:document.querySelector('#v7BoatName').value.trim(),model:document.querySelector('#v7BoatModel').value.trim(),home_port:document.querySelector('#v7BoatPort').value.trim(),photo_url:document.querySelector('#v7BoatPhoto').value.trim()||null,description:document.querySelector('#v7BoatDescription').value.trim(),price_half_day:half,price_per_day:day};
+    const {error}=await db.from('boats').update(patch).eq('id',id);
+    if(error){msg.textContent=error.message.includes('price_half_day')?'Les colonnes de tarifs doivent être ajoutées dans Supabase avec le fichier SQL fourni.':'Erreur : '+error.message;return}
+    document.querySelector('#boatPriceModalV7').classList.remove('open');
+    if(typeof refreshHomeBoatsV5==='function')await refreshHomeBoatsV5();
+    await window.openDashboard();
+  };
+
+  const oldBoatDetailsV7=window.openBoatDetailsV5;
+  if(typeof oldBoatDetailsV7==='function')window.openBoatDetailsV5=async function(id){
+    await oldBoatDetailsV7(id);
+    const m=document.querySelector('#boatDetailModalV5');if(!m)return;
+    const {data:b}=await db.from('boats').select('*').eq('id',id).maybeSingle();if(!b)return;
+    const details=m.querySelector('.v3-detail-grid');if(!details)return;
+    details.querySelectorAll('[data-v7-price]').forEach(x=>x.remove());
+    details.insertAdjacentHTML('beforeend',`<div class="v3-detail" data-v7-price><b>Demi-journée</b><br>${Number(b.price_half_day||0)>0?Number(b.price_half_day).toLocaleString('fr-FR')+' €':'Sur demande'}</div><div class="v3-detail" data-v7-price><b>Journée</b><br>${Number(b.price_per_day||b.daily_price||b.price||0)>0?Number(b.price_per_day||b.daily_price||b.price).toLocaleString('fr-FR')+' €':'Sur demande'}</div>`);
+  };
+})();
+</script>
+
 </body>
 </html>
