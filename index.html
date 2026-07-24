@@ -985,5 +985,89 @@
 })();
 </script>
 
+
+<style id="v5BoatDetailsStyles">
+.boat-detail-photo{width:100%;height:280px;object-fit:cover;border-radius:16px;background:var(--mist)}
+.boat-detail-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.mini-boat-card{cursor:pointer}.mini-boat-card:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+</style>
+<script id="v5DeleteAndBoatDetailsFix">
+(function(){
+  const e=v=>String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+  let boatCacheV5=[];
+
+  function ensureBoatDetailModal(){
+    let m=document.querySelector('#boatDetailModalV5');
+    if(m)return m;
+    m=document.createElement('div');m.id='boatDetailModalV5';m.className='v3-modal';document.body.appendChild(m);
+    m.addEventListener('click',ev=>{if(ev.target===m)m.classList.remove('open')});
+    return m;
+  }
+
+  window.openBoatDetailsV5=async function(id){
+    let b=boatCacheV5.find(x=>String(x.id)===String(id));
+    if(!b){const {data,error}=await db.from('boats').select('*').eq('id',id).maybeSingle();if(error||!data)return alert('Impossible de charger ce bateau.');b=data}
+    const m=ensureBoatDetailModal();
+    const price=b.price_per_day||b.daily_price||b.price||null;
+    m.innerHTML=`<div class="v3-modal-card"><div class="dialog-top"><div><small>ANNONCE DU BATEAU</small><h2>${e(b.name||'Bateau à louer')}</h2></div><button class="close" type="button" onclick="document.querySelector('#boatDetailModalV5').classList.remove('open')">×</button></div>
+      ${b.photo_url?`<img class="boat-detail-photo" src="${e(b.photo_url)}" alt="${e(b.name||'Bateau')}">`:`<div class="boat-detail-photo" style="display:grid;place-items:center;font-size:70px">🚤</div>`}
+      <div class="v3-detail-grid" style="margin-top:16px">
+        <div class="v3-detail"><b>Modèle</b><br>${e(b.model||'Non renseigné')}</div>
+        <div class="v3-detail"><b>Port d’attache</b><br>${e(b.home_port||'Non renseigné')}</div>
+        <div class="v3-detail"><b>Longueur</b><br>${b.length_m?e(b.length_m)+' m':'Non renseignée'}</div>
+        <div class="v3-detail"><b>Note</b><br>★ ${Number(b.rating||0).toFixed(1).replace('.',',')}</div>
+        <div class="v3-detail"><b>Capacité</b><br>${e(b.capacity||b.guests||'Non renseignée')}</div>
+        <div class="v3-detail"><b>Tarif</b><br>${price?e(price)+' €':'Sur demande'}</div>
+      </div>
+      <div class="v3-card" style="margin-top:14px"><b>Description</b><p class="v3-meta">${e(b.description||'Aucune description renseignée.')}</p></div>
+      <div class="boat-detail-actions"><button class="primary" type="button" onclick="openBoatContact('${e((b.name||'Bateau').replace(/'/g,"\\'"))}','${e((b.home_port||'').replace(/'/g,"\\'"))}')">Demander une réservation</button><button class="small-btn" type="button" onclick="document.querySelector('#boatDetailModalV5').classList.remove('open')">Fermer</button></div>
+    </div>`;
+    m.classList.add('open');
+  };
+
+  window.refreshHomeBoatsV5=async function(){
+    const box=document.querySelector('#homeBoatStrip');if(!box)return;
+    const [br,pr]=await Promise.all([db.from('boats').select('*').order('created_at',{ascending:false}),db.from('profiles').select('id,verified,suspended')]);
+    if(br.error){box.innerHTML='<div class="empty-note">Impossible de charger les bateaux.</div>';return}
+    const owners=new Map((pr.data||[]).map(p=>[p.id,p]));
+    boatCacheV5=(br.data||[]).filter(b=>{const o=owners.get(b.client_id);return !o||(!o.suspended&&o.verified!==false)}).sort((a,b)=>(Number(b.rating)||0)-(Number(a.rating)||0));
+    box.innerHTML=boatCacheV5.length?boatCacheV5.map(b=>`<article class="mini-boat-card" role="button" tabindex="0" onclick="openBoatDetailsV5('${b.id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openBoatDetailsV5('${b.id}')}" aria-label="Voir le bateau ${e(b.name||'Bateau')}">${b.photo_url?`<img src="${e(b.photo_url)}" alt="${e(b.name||'Bateau')}">`:'<div style="height:135px;background:var(--mist);display:grid;place-items:center;font-size:36px">🚤</div>'}<div class="info"><strong>${e(b.name||'Bateau à louer')}</strong><small>${e(b.home_port||'Port non renseigné')} · ★ ${Number(b.rating||0).toFixed(1).replace('.',',')}</small><button class="small-btn" type="button" style="margin-top:10px" onclick="event.stopPropagation();openBoatDetailsV5('${b.id}')">Voir le bateau</button></div></article>`).join(''):'<div class="empty-note">Aucun bateau en location pour le moment.</div>';
+  };
+
+  const oldOpenBoatFinder=window.openBoatFinder;
+  // Replace result buttons after the finder content has loaded.
+  const finderObserver=new MutationObserver(()=>{
+    document.querySelectorAll('#boatFinderResults .provider-result-card').forEach((card,i)=>{
+      const b=boatCacheV5[i];const btn=card.querySelector('button');
+      if(btn&&b){btn.textContent='Voir le bateau';btn.onclick=()=>openBoatDetailsV5(b.id)}
+    });
+  });
+  const finder=document.querySelector('#boatFinderResults');if(finder)finderObserver.observe(finder,{childList:true,subtree:true});
+
+  window.deleteProfileV4=async function(id){
+    if(!currentUser||currentProfile?.role!=='admin')return alert('Action réservée à l’administrateur.');
+    if(id===currentUser.id)return alert('Votre compte administrateur ne peut pas être supprimé ici.');
+    const p=(typeof v3Profiles!=='undefined'?v3Profiles:[]).find?.(x=>x.id===id);
+    const label=p?.full_name||'ce profil';
+    if(!confirm(`Supprimer ${label} de SkipperNow ?\n\nLe profil et ses bateaux ne seront plus visibles.`))return;
+    const typed=prompt('Écris SUPPRIMER pour confirmer :');if(typed!=='SUPPRIMER')return;
+    // Suppression des annonces quand les règles Supabase l’autorisent.
+    await db.from('boats').delete().eq('client_id',id);
+    // Suppression du profil. Si Supabase refuse le DELETE, on applique une suppression logique fiable.
+    const del=await db.from('profiles').delete().eq('id',id);
+    if(del.error){
+      const soft=await db.from('profiles').update({verified:false,available:false,suspended:true,full_name:'Profil supprimé',phone:null,contact_email:null,profile_photo_url:null,bio:null}).eq('id',id);
+      if(soft.error)return alert('Suppression impossible : '+soft.error.message);
+    }
+    alert('Le profil a été retiré de SkipperNow et n’est plus visible.');
+    await refreshHomeBoatsV5();
+    if(typeof renderAdminV3==='function')await renderAdminV3();else openDashboard();
+  };
+
+  window.addEventListener('load',()=>setTimeout(refreshHomeBoatsV5,500));
+  setTimeout(refreshHomeBoatsV5,800);
+})();
+</script>
+
 </body>
 </html>
