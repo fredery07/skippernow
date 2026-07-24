@@ -1333,5 +1333,130 @@ body:not(.skippernow-admin) .admin-only{display:none!important}
   });
 })();
 </script>
+
+
+<style id="v10RentalRequestsAndSessionStyles">
+#boatRentalRequestV10{z-index:16050}.v10-request-card{border:1px solid var(--line);border-radius:15px;padding:14px;margin:10px 0;background:#fff}.v10-request-head{display:flex;justify-content:space-between;gap:12px}.v10-request-status{font-size:12px;font-weight:900;padding:6px 9px;border-radius:999px;background:#fff0cf;color:#8a5a00}.v10-request-status.ok{background:#dcf8ef;color:#057554}.v10-request-status.no{background:#ffe6e6;color:#a22e2e}.v10-notification-badge{display:inline-grid;place-items:center;min-width:22px;height:22px;border-radius:999px;background:#d93b3b;color:white;font-size:12px;margin-left:6px}.v10-session-note{position:fixed;right:18px;bottom:18px;z-index:17000;background:var(--navy);color:#fff;padding:12px 15px;border-radius:13px;box-shadow:var(--shadow);display:none}
+</style>
+<script id="v10RentalRequestsAndSessionFix">
+(function(){
+  const esc10=v=>String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+  let selectedBoatV10=null, realtimeChannelV10=null, restoringSessionV10=false;
+
+  async function restoreSessionV10(){
+    if(restoringSessionV10)return;
+    restoringSessionV10=true;
+    try{
+      const {data,error}=await db.auth.getSession();
+      if(error)throw error;
+      const session=data?.session||null;
+      if(!session?.user){currentUser=null;currentProfile=null;refreshAccount?.();return}
+      currentUser=session.user;
+      const {data:profile}=await db.from('profiles').select('*').eq('id',currentUser.id).maybeSingle();
+      currentProfile=profile||null;
+      refreshAccount?.();
+      subscribeRentalRequestsV10();
+    }catch(e){console.error('Session restore',e)}finally{restoringSessionV10=false}
+  }
+
+  window.addEventListener('pageshow',restoreSessionV10);
+  document.addEventListener('DOMContentLoaded',restoreSessionV10);
+  setTimeout(restoreSessionV10,100);
+
+  const oldRefreshAccountV10=window.refreshAccount||refreshAccount;
+  window.refreshAccount=function(){oldRefreshAccountV10?.();if(currentUser){const login=document.querySelector('#login');if(login)login.textContent='Mon espace'}};
+
+  function ensureRequestModalV10(){
+    let m=document.querySelector('#boatRentalRequestV10');
+    if(m)return m;
+    m=document.createElement('div');m.id='boatRentalRequestV10';m.className='v3-modal';document.body.appendChild(m);
+    m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open')});
+    return m;
+  }
+
+  window.openBoatRentalRequestV10=async function(id){
+    await restoreSessionV10();
+    if(!currentUser){document.querySelector('#boatDetailModalV5')?.classList.remove('open');accountModal?.classList.add('open');return}
+    const {data:b,error}=await db.from('boats').select('*').eq('id',id).maybeSingle();
+    if(error||!b)return alert('Impossible de charger ce bateau.');
+    selectedBoatV10=b;
+    document.querySelector('#boatDetailModalV5')?.classList.remove('open');
+    document.querySelector('#boatFinderModal')?.classList.remove('open');
+    const m=ensureRequestModalV10();
+    const half=Number(b.price_half_day||0),day=Number(b.price_per_day||b.daily_price||b.price||0);
+    m.innerHTML=`<div class="v3-modal-card" style="max-width:620px"><div class="dialog-top"><div><small>DEMANDE DE LOCATION</small><h2>${esc10(b.name||'Bateau')}</h2></div><button class="close" onclick="document.querySelector('#boatRentalRequestV10').classList.remove('open')">×</button></div><div class="v3-edit-grid" style="margin-top:18px"><label>Date souhaitée<input id="v10RentalDate" type="date" min="${new Date().toISOString().slice(0,10)}"></label><label>Durée<select id="v10RentalDuration"><option value="half">Demi-journée${half?' · '+half.toLocaleString('fr-FR')+' €':''}</option><option value="day">Journée${day?' · '+day.toLocaleString('fr-FR')+' €':''}</option></select></label></div><label class="v3-edit-full">Message au propriétaire<textarea id="v10RentalMessage" placeholder="Nombre de personnes, programme souhaité, horaires…"></textarea></label><p class="muted" id="v10RentalFeedback"></p><button class="primary wide" onclick="sendBoatRentalRequestV10()">Envoyer la demande au propriétaire</button></div>`;
+    m.classList.add('open');
+  };
+
+  window.sendBoatRentalRequestV10=async function(){
+    const feedback=document.querySelector('#v10RentalFeedback');
+    const date=document.querySelector('#v10RentalDate')?.value,duration=document.querySelector('#v10RentalDuration')?.value,message=document.querySelector('#v10RentalMessage')?.value?.trim()||'';
+    if(!date){feedback.textContent='Choisis une date.';return}
+    if(!selectedBoatV10?.client_id){feedback.textContent='Propriétaire introuvable.';return}
+    feedback.textContent='Envoi en cours…';
+    const amount=duration==='half'?Number(selectedBoatV10.price_half_day||0):Number(selectedBoatV10.price_per_day||selectedBoatV10.daily_price||selectedBoatV10.price||0);
+    const {error}=await db.from('boat_rental_requests').insert({boat_id:selectedBoatV10.id,requester_id:currentUser.id,owner_id:selectedBoatV10.client_id,rental_date:date,duration,status:'pending',message,amount_cents:Math.round(amount*100)});
+    if(error){feedback.textContent=error.message.includes('boat_rental_requests')?'La table des demandes doit être créée dans Supabase avec le fichier SQL V10.':'Erreur : '+error.message;return}
+    document.querySelector('#boatRentalRequestV10').classList.remove('open');
+    alert('Demande envoyée. Le propriétaire peut maintenant accepter ou refuser depuis son espace.');
+  };
+
+  const previousBoatDetailsV10=window.openBoatDetailsV5;
+  if(typeof previousBoatDetailsV10==='function')window.openBoatDetailsV5=async function(id){
+    await previousBoatDetailsV10(id);
+    const m=document.querySelector('#boatDetailModalV5');if(!m)return;
+    const actions=m.querySelector('.boat-detail-actions');if(!actions)return;
+    const old=[...actions.querySelectorAll('button')].find(b=>/Demander une réservation/i.test(b.textContent));
+    if(old){old.onclick=()=>openBoatRentalRequestV10(id);old.setAttribute('onclick',`openBoatRentalRequestV10('${id}')`)}
+  };
+
+  window.setRentalRequestStatusV10=async function(id,status){
+    const {data:r}=await db.from('boat_rental_requests').select('owner_id').eq('id',id).maybeSingle();
+    if(!r||String(r.owner_id)!==String(currentUser?.id))return alert('Action réservée au propriétaire du bateau.');
+    const {error}=await db.from('boat_rental_requests').update({status,responded_at:new Date().toISOString()}).eq('id',id).eq('owner_id',currentUser.id);
+    if(error)return alert(error.message);
+    await appendRentalRequestsV10(true);
+  };
+
+  async function appendRentalRequestsV10(force=false){
+    if(!currentUser)return;
+    const body=document.querySelector('#dashboardBody');if(!body)return;
+    if(force)body.querySelector('#rentalRequestsV10')?.remove();
+    if(body.querySelector('#rentalRequestsV10'))return;
+    const [{data:ownedBoats},{data:incoming},{data:outgoing}]=await Promise.all([
+      db.from('boats').select('id,name').eq('client_id',currentUser.id),
+      db.from('boat_rental_requests').select('*,boats(name,home_port)').eq('owner_id',currentUser.id).order('created_at',{ascending:false}),
+      db.from('boat_rental_requests').select('*,boats(name,home_port)').eq('requester_id',currentUser.id).order('created_at',{ascending:false})
+    ]);
+    const mine=ownedBoats||[],inc=incoming||[],out=outgoing||[];
+    if(!mine.length&&!inc.length&&!out.length)return;
+    const pending=inc.filter(r=>r.status==='pending').length;
+    const section=document.createElement('section');section.id='rentalRequestsV10';section.style.marginTop='18px';
+    const card=r=>`<div class="v10-request-card"><div class="v10-request-head"><div><b>${esc10(r.boats?.name||'Bateau')}</b><div class="v3-meta">${new Date(r.rental_date+'T12:00:00').toLocaleDateString('fr-FR')} · ${r.duration==='half'?'Demi-journée':'Journée'}${r.amount_cents?' · '+(r.amount_cents/100).toLocaleString('fr-FR')+' €':''}</div></div><span class="v10-request-status ${r.status==='accepted'?'ok':r.status==='refused'?'no':''}">${r.status==='accepted'?'Acceptée':r.status==='refused'?'Refusée':'En attente'}</span></div>${r.message?`<p class="v3-meta">${esc10(r.message)}</p>`:''}${r.status==='pending'&&String(r.owner_id)===String(currentUser.id)?`<div class="v3-actions"><button class="fill" onclick="setRentalRequestStatusV10('${r.id}','accepted')">Accepter</button><button class="danger" onclick="setRentalRequestStatusV10('${r.id}','refused')">Refuser</button></div>`:''}</div>`;
+    section.innerHTML=`<h3>Demandes de location${pending?` <span class="v10-notification-badge">${pending}</span>`:''}</h3>${mine.length?`<div class="payment-v6-note">Tu reçois ici les demandes concernant tes bateaux. Toi seul peux les accepter ou les refuser.</div>`:''}${inc.length?`<h4>Demandes reçues</h4>${inc.map(card).join('')}`:''}${out.length?`<h4>Mes demandes envoyées</h4>${out.map(card).join('')}`:''}`;
+    body.appendChild(section);
+  }
+
+  const dashObserverV10=new MutationObserver(()=>{clearTimeout(window.__rentV10Timer);window.__rentV10Timer=setTimeout(()=>appendRentalRequestsV10(),150)});
+  const dashboardBodyV10=document.querySelector('#dashboardBody');if(dashboardBodyV10)dashObserverV10.observe(dashboardBodyV10,{childList:true,subtree:true});
+
+  function subscribeRentalRequestsV10(){
+    if(!currentUser||realtimeChannelV10)return;
+    realtimeChannelV10=db.channel('rental-requests-'+currentUser.id).on('postgres_changes',{event:'INSERT',schema:'public',table:'boat_rental_requests',filter:'owner_id=eq.'+currentUser.id},payload=>{
+      appendRentalRequestsV10(true);
+      if('Notification'in window&&Notification.permission==='granted')new Notification('Nouvelle demande de location',{body:'Un client souhaite louer votre bateau.'});
+      else alert('Nouvelle demande de location reçue dans votre espace SkipperNow.');
+    }).subscribe();
+  }
+
+  window.activateRentalNotificationsV10=async function(){if(!('Notification'in window))return alert('Notifications non disponibles sur ce navigateur.');const p=await Notification.requestPermission();alert(p==='granted'?'Notifications activées.':'Notifications refusées dans le navigateur.')};
+
+  const oldOpenDashboardV10=window.openDashboard;
+  window.openDashboard=async function(){await restoreSessionV10();await oldOpenDashboardV10();setTimeout(()=>{appendRentalRequestsV10(true);const body=document.querySelector('#dashboardBody');if(body&&currentUser&&!body.querySelector('#enableRentalNotificationsV10')){const b=document.createElement('button');b.id='enableRentalNotificationsV10';b.className='small-btn';b.textContent='Activer les notifications';b.onclick=activateRentalNotificationsV10;body.prepend(b)}},180)};
+
+  db.auth.onAuthStateChange((event,session)=>{if(event==='SIGNED_IN'||event==='TOKEN_REFRESHED'){currentUser=session?.user||currentUser;restoreSessionV10()}if(event==='SIGNED_OUT'&&realtimeChannelV10){db.removeChannel(realtimeChannelV10);realtimeChannelV10=null}});
+})();
+</script>
+
 </body>
 </html>
