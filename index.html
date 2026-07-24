@@ -803,6 +803,8 @@
 <style id="dashboardV3Styles">
 .dashboard-v3{display:grid;gap:18px}.v3-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.v3-kpi{background:#fff;border:1px solid var(--line);border-radius:17px;padding:17px}.v3-kpi span{display:block;color:var(--muted);font-size:12px;font-weight:800;text-transform:uppercase}.v3-kpi strong{display:block;font-size:27px;margin-top:5px}.v3-tabs{display:flex;gap:8px;overflow:auto;padding-bottom:4px}.v3-tab{border:1px solid var(--line);background:#fff;border-radius:12px;padding:10px 14px;font-weight:850;cursor:pointer;white-space:nowrap}.v3-tab.active{background:var(--navy);color:#fff;border-color:var(--navy)}.v3-panel{display:none}.v3-panel.active{display:block}.v3-toolbar{display:flex;gap:10px;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap}.v3-search{min-width:240px;flex:1;border:1px solid var(--line);border-radius:12px;padding:11px 13px}.v3-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.v3-card{border:1px solid var(--line);background:#fff;border-radius:16px;padding:15px}.v3-card-head{display:flex;justify-content:space-between;gap:12px}.v3-person{display:flex;gap:11px;align-items:center}.v3-avatar{width:54px;height:54px;border-radius:14px;background:var(--mist);display:grid;place-items:center;overflow:hidden;font-size:25px}.v3-avatar img{width:100%;height:100%;object-fit:cover}.v3-card h3{margin:0 0 4px}.v3-meta{color:var(--muted);font-size:13px;line-height:1.5}.v3-badge{display:inline-flex;padding:6px 9px;border-radius:999px;font-size:11px;font-weight:900;background:#eef4f5;color:#52636e}.v3-badge.ok{background:#dcf8ef;color:#057554}.v3-badge.wait{background:#fff0cf;color:#8a5a00}.v3-badge.stop{background:#ffe6e6;color:#a22e2e}.v3-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}.v3-actions button{border:1px solid var(--navy);background:#fff;color:var(--navy);border-radius:10px;padding:8px 11px;font-weight:800;cursor:pointer}.v3-actions .fill{background:var(--navy);color:#fff}.v3-actions .danger{border-color:#b43b3b;color:#b43b3b}.v3-wallet{background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;border-radius:20px;padding:20px}.v3-wallet-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.v3-wallet small{color:#c9dddd}.v3-wallet strong{font-size:25px;display:block;margin-top:4px}.v3-empty{background:#fff;border:1px dashed var(--line);border-radius:15px;padding:28px;text-align:center;color:var(--muted)}.v3-modal{position:fixed;inset:0;background:rgba(3,18,31,.75);z-index:12000;display:none;align-items:center;justify-content:center;padding:20px}.v3-modal.open{display:flex}.v3-modal-card{background:#fff;border-radius:22px;width:min(760px,100%);max-height:90vh;overflow:auto;padding:24px}.v3-detail-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.v3-detail{background:var(--mist);border-radius:12px;padding:12px}.v3-list{display:grid;gap:10px}.v3-row{border:1px solid var(--line);border-radius:14px;padding:13px;display:flex;justify-content:space-between;gap:12px;align-items:center}.v3-client-quick{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.v3-quick{border:1px solid var(--line);background:#fff;border-radius:15px;padding:15px;text-align:left;cursor:pointer}.v3-quick b{display:block;margin-bottom:5px}.dashboardModal .dialog.large{max-width:1100px}
 @media(max-width:800px){.v3-kpis,.v3-wallet-grid{grid-template-columns:repeat(2,1fr)}.v3-grid,.v3-detail-grid{grid-template-columns:1fr}.v3-client-quick{grid-template-columns:1fr}}
+
+.v3-edit-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.v3-edit-grid label,.v3-edit-full{display:grid;gap:6px;font-size:12px;font-weight:850;color:var(--muted)}.v3-edit-grid input,.v3-edit-grid select,.v3-edit-full textarea{width:100%;border:1px solid var(--line);border-radius:11px;padding:11px 12px;background:#fff;color:var(--ink);font:inherit}.v3-edit-full{margin-top:12px}.v3-edit-full textarea{resize:vertical;min-height:110px}@media(max-width:700px){.v3-edit-grid{grid-template-columns:1fr}}
 </style>
 
 <script id="dashboardV3Script">
@@ -841,13 +843,45 @@
   };
 
   window.v3EditProfile=async function(id){
-    const p=v3Profiles.find(x=>x.id===id);if(!p)return;
-    const name=prompt('Nom complet :',p.full_name||'');if(name===null)return;
-    const port=prompt('Port principal :',p.home_port||'');if(port===null)return;
-    const phone=prompt('Téléphone :',p.phone||'');if(phone===null)return;
-    const rating=prompt('Note du profil (0 à 5) :',p.rating??0);if(rating===null)return;
-    const patch={full_name:name.trim(),home_port:port.trim(),phone:phone.trim(),rating:Math.max(0,Math.min(5,Number(rating)||0))};
-    const {error}=await db.from('profiles').update(patch).eq('id',id);if(error)return alert('Modification impossible : '+error.message);await renderAdminV3();
+    let p=v3Profiles.find(x=>x.id===id);
+    if(!p){const {data}=await db.from('profiles').select('*').eq('id',id).maybeSingle();p=data}
+    if(!p)return alert('Profil introuvable.');
+    const isAdmin=currentProfile?.role==='admin';
+    let modal=document.querySelector('#v3EditProfileModal');
+    if(!modal){modal=document.createElement('div');modal.id='v3EditProfileModal';modal.className='v3-modal';document.body.appendChild(modal)}
+    const val=x=>esc(x??'');
+    modal.innerHTML=`<div class="v3-modal-card"><div class="dialog-top"><div><small>MODIFICATION DU PROFIL</small><h2>${val(p.full_name||'Profil')}</h2></div><button class="close" type="button" onclick="document.querySelector('#v3EditProfileModal').classList.remove('open')">×</button></div>
+      <div class="v3-edit-grid" style="margin-top:18px">
+        <label>Nom et prénom<input id="v3pfName" value="${val(p.full_name)}"></label>
+        <label>Téléphone<input id="v3pfPhone" value="${val(p.phone)}"></label>
+        <label>Email de contact<input id="v3pfEmail" type="email" value="${val(p.contact_email||'')}"></label>
+        <label>Ville<input id="v3pfCity" value="${val(p.city)}"></label>
+        <label>Port principal<input id="v3pfPort" value="${val(p.home_port)}"></label>
+        <label>Photo du profil (lien)<input id="v3pfPhoto" value="${val(p.profile_photo_url)}"></label>
+        <label>Langues<input id="v3pfLanguages" value="${val(p.languages)}" placeholder="Français, anglais, espagnol"></label>
+        <label>Années d’expérience<input id="v3pfExperience" type="number" min="0" value="${Number(p.experience_years||0)}"></label>
+        ${isAdmin?`<label>Note du profil<input id="v3pfRating" type="number" min="0" max="5" step="0.1" value="${Number(p.rating||0)}"></label><label>Disponibilité<select id="v3pfAvailable"><option value="true" ${p.available!==false?'selected':''}>Disponible</option><option value="false" ${p.available===false?'selected':''}>Indisponible</option></select></label>`:''}
+      </div>
+      <label class="v3-edit-full">Présentation<textarea id="v3pfBio" rows="5">${val(p.bio)}</textarea></label>
+      <p class="muted" id="v3pfMessage"></p>
+      <div class="v3-actions"><button class="fill" type="button" onclick="v3SaveProfile('${p.id}')">Enregistrer les modifications</button><button type="button" onclick="document.querySelector('#v3EditProfileModal').classList.remove('open')">Annuler</button></div>
+    </div>`;
+    document.querySelector('#v3ProfileModal')?.classList.remove('open');
+    modal.classList.add('open');
+  };
+
+  window.v3SaveProfile=async function(id){
+    const isAdmin=currentProfile?.role==='admin',msg=document.querySelector('#v3pfMessage');
+    const get=id=>document.querySelector(id)?.value?.trim()||'';
+    const patch={full_name:get('#v3pfName'),phone:get('#v3pfPhone'),contact_email:get('#v3pfEmail'),city:get('#v3pfCity'),home_port:get('#v3pfPort'),profile_photo_url:get('#v3pfPhoto'),languages:get('#v3pfLanguages'),experience_years:Math.max(0,Number(get('#v3pfExperience'))||0),bio:get('#v3pfBio')};
+    if(isAdmin){patch.rating=Math.max(0,Math.min(5,Number(get('#v3pfRating'))||0));patch.available=get('#v3pfAvailable')==='true'}
+    if(!patch.full_name){msg.textContent='Le nom est obligatoire.';return}
+    msg.textContent='Enregistrement en cours…';
+    const {error}=await db.from('profiles').update(patch).eq('id',id);
+    if(error){msg.textContent='Modification impossible : '+error.message;return}
+    if(currentProfile?.id===id){await loadProfile()}
+    document.querySelector('#v3EditProfileModal').classList.remove('open');
+    if(currentProfile?.role==='admin')await renderAdminV3();else await renderClientV3();
   };
 
   window.v3SetProfile=async function(id,action){
