@@ -1242,5 +1242,96 @@
 })();
 </script>
 
+
+
+<style id="v8StrictAdminSecurityStyles">
+body:not(.skippernow-admin) .admin-only{display:none!important}
+</style>
+<script id="v8StrictAdminSecurityFix">
+(function(){
+  const ADMIN_EMAIL='frederytherond@hotmail.com';
+  const previousOpenDashboardV8=window.openDashboard;
+  let openingV8=false;
+
+  function isTrustedAdminV8(user,profile){
+    return !!user && !!profile &&
+      String(user.email||'').trim().toLowerCase()===ADMIN_EMAIL &&
+      String(profile.role||'').trim().toLowerCase()==='admin';
+  }
+
+  async function reloadIdentityV8(){
+    const {data:userData,error:userError}=await db.auth.getUser();
+    if(userError||!userData?.user){currentUser=null;currentProfile=null;return false}
+    currentUser=userData.user;
+    const {data:profile,error:profileError}=await db.from('profiles').select('*').eq('id',currentUser.id).maybeSingle();
+    if(profileError)throw profileError;
+    currentProfile=profile||null;
+    return !!currentProfile;
+  }
+
+  window.openDashboard=async function(){
+    if(openingV8)return;
+    openingV8=true;
+    try{
+      const ok=await reloadIdentityV8();
+      if(!ok){
+        dashboardModal?.classList.remove('open','admin-mode');
+        accountModal?.classList.add('open');
+        return;
+      }
+      const trusted=isTrustedAdminV8(currentUser,currentProfile);
+      document.body.classList.toggle('skippernow-admin',trusted);
+      dashboardModal?.classList.toggle('admin-mode',trusted);
+
+      // Même si un profil client a reçu par erreur le rôle « admin » dans la base,
+      // seul le compte propriétaire officiel peut ouvrir l'administration.
+      if(!trusted && String(currentProfile.role||'').toLowerCase()==='admin'){
+        currentProfile={...currentProfile,role:'client'};
+      }
+
+      await previousOpenDashboardV8();
+
+      if(!trusted){
+        document.body.classList.remove('skippernow-admin');
+        dashboardModal?.classList.remove('admin-mode');
+        const title=((document.querySelector('#dashRole')?.textContent||'')+' '+(document.querySelector('#dashTitle')?.textContent||''));
+        if(/ADMINISTRATEUR|Pilotage complet/i.test(title)){
+          dashboardModal?.classList.remove('open');
+          currentProfile={...currentProfile,role:'client'};
+          if(typeof renderClientV3==='function')await renderClientV3();
+          dashboardModal?.classList.add('open');
+        }
+      }
+    }catch(err){
+      console.error(err);
+      dashboardModal?.classList.remove('open','admin-mode');
+      alert('Impossible de vérifier les droits de ce compte. Reconnectez-vous.');
+    }finally{openingV8=false}
+  };
+
+  const adminActions=['v3SetProfile','v3BoatOwnerStatus','deleteProfileV4','saveAdminSelfProfile','saveSettings','toggleSkipper','toggleUser','setMissionStatus','cancelJob'];
+  adminActions.forEach(name=>{
+    const fn=window[name];
+    if(typeof fn!=='function')return;
+    window[name]=async function(...args){
+      await reloadIdentityV8();
+      if(!isTrustedAdminV8(currentUser,currentProfile)){
+        document.body.classList.remove('skippernow-admin');
+        dashboardModal?.classList.remove('admin-mode');
+        return alert('Accès refusé : action réservée au compte administrateur SkipperNow.');
+      }
+      return fn.apply(this,args);
+    };
+  });
+
+  db.auth.onAuthStateChange((event)=>{
+    if(event==='SIGNED_OUT'){
+      document.body.classList.remove('skippernow-admin');
+      dashboardModal?.classList.remove('open','admin-mode');
+      currentUser=null;currentProfile=null;
+    }
+  });
+})();
+</script>
 </body>
 </html>
