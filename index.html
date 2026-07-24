@@ -938,5 +938,52 @@
   if(oldSkipperFinder) window.openSkipperFinder=async function(){await oldSkipperFinder();setTimeout(()=>{const list=document.querySelector('.provider-results-list');if(!list)return;[...list.children].sort((a,b)=>{const ra=parseFloat((a.innerText.match(/★\s*([\d,.]+)/)||[])[1]?.replace(',','.')||0),rb=parseFloat((b.innerText.match(/★\s*([\d,.]+)/)||[])[1]?.replace(',','.')||0);return rb-ra}).forEach(x=>list.appendChild(x))},0)};
 })();
 </script>
+
+<style id="adminAccountAndRecoveryStyles">
+.recovery-choice{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}.recovery-choice button{border:1px solid var(--line);background:#fff;border-radius:13px;padding:14px;font-weight:850;cursor:pointer}.recovery-choice button.active{background:var(--navy);color:#fff;border-color:var(--navy)}.admin-self-card{background:linear-gradient(135deg,#071d32,#0d6672);color:#fff;border-radius:18px;padding:18px}.admin-self-card .v3-meta{color:#d3e7e7}.danger-zone{border:1px solid #f1c9c9;background:#fff7f7;border-radius:14px;padding:14px;margin-top:14px}
+</style>
+<script id="adminAccountAndRecoveryScript">
+(function(){
+ const esc4=v=>String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+ let recoveryMode='email', recoveryPhone='';
+ function ensureRecoveryModal(){
+   let m=document.querySelector('#recoveryModalV4');
+   if(m)return m;
+   m=document.createElement('div');m.id='recoveryModalV4';m.className='v3-modal';
+   m.innerHTML=`<div class="v3-modal-card" style="max-width:520px"><div class="dialog-top"><div><small>RÉCUPÉRATION DU COMPTE</small><h2>Mot de passe oublié</h2></div><button class="close" onclick="document.querySelector('#recoveryModalV4').classList.remove('open')">×</button></div><div class="recovery-choice"><button id="recoverEmailBtn" class="active" type="button">✉️ Par email</button><button id="recoverSmsBtn" type="button">📱 Par téléphone</button></div><div id="recoverEmailPanel"><div class="field"><label>ADRESSE EMAIL</label><input id="recoverEmail" type="email" placeholder="nom@email.com"></div><button class="primary wide" id="sendRecoveryEmail">Envoyer le lien</button></div><div id="recoverSmsPanel" style="display:none"><div class="field"><label>NUMÉRO AVEC INDICATIF</label><input id="recoverPhone" type="tel" placeholder="+33612345678"></div><button class="primary wide" id="sendRecoverySms">Envoyer le code SMS</button><div id="smsCodeBox" style="display:none"><div class="field"><label>CODE REÇU</label><input id="recoverCode" inputmode="numeric" placeholder="123456"></div><div class="field"><label>NOUVEAU MOT DE PASSE</label><input id="recoverNewPassword" type="password" placeholder="8 caractères minimum"></div><button class="primary wide" id="verifyRecoverySms">Valider et changer le mot de passe</button></div></div><p class="muted" id="recoveryMessage"></p><div class="admin-note">La récupération par SMS fonctionne seulement lorsque l’authentification téléphone est activée dans Supabase et qu’un fournisseur SMS est configuré.</div></div>`;
+   document.body.appendChild(m);
+   const ep=m.querySelector('#recoverEmailPanel'),sp=m.querySelector('#recoverSmsPanel'),eb=m.querySelector('#recoverEmailBtn'),sb=m.querySelector('#recoverSmsBtn'),msg=m.querySelector('#recoveryMessage');
+   const setMode=mode=>{recoveryMode=mode;eb.classList.toggle('active',mode==='email');sb.classList.toggle('active',mode==='sms');ep.style.display=mode==='email'?'block':'none';sp.style.display=mode==='sms'?'block':'none';msg.textContent=''};
+   eb.onclick=()=>setMode('email');sb.onclick=()=>setMode('sms');
+   m.querySelector('#sendRecoveryEmail').onclick=async()=>{const email=m.querySelector('#recoverEmail').value.trim().toLowerCase();if(!email){msg.textContent='Entre ton adresse email.';return}msg.textContent='Envoi en cours…';const {error}=await db.auth.resetPasswordForEmail(email,{redirectTo:location.href.split('#')[0]});msg.textContent=error?'Erreur : '+error.message:'Lien envoyé. Vérifie aussi les courriers indésirables.'};
+   m.querySelector('#sendRecoverySms').onclick=async()=>{const phone=m.querySelector('#recoverPhone').value.replace(/\s/g,'');if(!/^\+[1-9]\d{7,14}$/.test(phone)){msg.textContent='Entre le numéro avec son indicatif, par exemple +33612345678.';return}recoveryPhone=phone;msg.textContent='Envoi du code…';const {error}=await db.auth.signInWithOtp({phone});if(error){msg.textContent='SMS indisponible : '+error.message;return}m.querySelector('#smsCodeBox').style.display='block';msg.textContent='Code envoyé par SMS.'};
+   m.querySelector('#verifyRecoverySms').onclick=async()=>{const token=m.querySelector('#recoverCode').value.trim(),password=m.querySelector('#recoverNewPassword').value;if(token.length<4||password.length<8){msg.textContent='Entre le code reçu et un mot de passe de 8 caractères minimum.';return}msg.textContent='Vérification…';const {error}=await db.auth.verifyOtp({phone:recoveryPhone,token,type:'sms'});if(error){msg.textContent='Code incorrect ou expiré : '+error.message;return}const {error:updateError}=await db.auth.updateUser({password});msg.textContent=updateError?'Erreur : '+updateError.message:'Mot de passe changé. Tu peux maintenant te connecter.'};
+   return m;
+ }
+ function openRecovery(){const m=ensureRecoveryModal();const email=document.querySelector('#accountEmail')?.value||'';m.querySelector('#recoverEmail').value=email;m.classList.add('open')}
+ const forgot=document.querySelector('#forgotPassword');if(forgot)forgot.addEventListener('click',e=>{e.preventDefault();e.stopImmediatePropagation();openRecovery()},true);
+
+ const oldRenderAdmin=window.renderAdminV3;
+ // renderAdminV3 is scoped in the previous script, so enhance after each dashboard render instead.
+ const oldOpen=window.openDashboard;
+ window.openDashboard=async function(){await oldOpen();if(currentProfile?.role==='admin')setTimeout(enhanceAdminV4,50)};
+ function enhanceAdminV4(){
+   const root=document.querySelector('#dashboardBody .dashboard-v3');if(!root||root.dataset.v4==='1')return;root.dataset.v4='1';
+   // Hide administrator account from regular profile cards.
+   document.querySelectorAll('.v3-profile-card').forEach(card=>{const text=card.innerText.toLowerCase();if(text.includes('administrateur'))card.remove()});
+   const tabs=root.querySelector('.v3-tabs');if(!tabs)return;
+   const btn=document.createElement('button');btn.className='v3-tab';btn.dataset.v3='adminprofile';btn.textContent='Mon profil admin';btn.onclick=()=>v3Tab('adminprofile');tabs.appendChild(btn);
+   const panel=document.createElement('section');panel.className='v3-panel';panel.id='v3-adminprofile';
+   panel.innerHTML=`<div class="admin-self-card"><small>COMPTE PROPRIÉTAIRE</small><h2 style="margin:6px 0">${esc4(currentProfile.full_name||'Administrateur SkipperNow')}</h2><div class="v3-meta">Ce compte n’apparaît plus dans les listes publiques ou dans la gestion des utilisateurs.</div></div><div class="v3-card" style="margin-top:14px"><h3>Modifier mon profil administrateur</h3><div class="v3-edit-grid"><label>Nom complet<input id="adminSelfName" value="${esc4(currentProfile.full_name||'')}"></label><label>Téléphone<input id="adminSelfPhone" value="${esc4(currentProfile.phone||'')}"></label><label>Email de contact<input id="adminSelfEmail" type="email" value="${esc4(currentProfile.contact_email||currentUser.email||'')}"></label><label>Photo (URL)<input id="adminSelfPhoto" value="${esc4(currentProfile.profile_photo_url||'')}"></label></div><button class="primary wide" onclick="saveAdminSelfProfile()">Enregistrer mon profil</button><button class="small-btn wide" onclick="openAdminPasswordChange()">Changer mon mot de passe</button><p class="muted" id="adminSelfMessage"></p></div>`;
+   root.appendChild(panel);
+   // Add delete buttons only to non-admin profile cards.
+   document.querySelectorAll('.v3-profile-card').forEach(card=>{const edit=[...card.querySelectorAll('button')].find(b=>b.textContent.trim()==='Modifier');if(!edit)return;const m=edit.getAttribute('onclick')||'';const id=(m.match(/'([^']+)'/)||[])[1];if(!id)return;const actions=card.querySelector('.v3-actions');if(actions&&!actions.querySelector('[data-delete-profile]')){const d=document.createElement('button');d.className='danger';d.dataset.deleteProfile=id;d.textContent='Supprimer';d.onclick=()=>deleteProfileV4(id);actions.appendChild(d)}});
+ }
+ window.saveAdminSelfProfile=async function(){const msg=document.querySelector('#adminSelfMessage');msg.textContent='Enregistrement…';const patch={full_name:document.querySelector('#adminSelfName').value.trim(),phone:document.querySelector('#adminSelfPhone').value.trim(),contact_email:document.querySelector('#adminSelfEmail').value.trim(),profile_photo_url:document.querySelector('#adminSelfPhoto').value.trim()||null};const {error}=await db.from('profiles').update(patch).eq('id',currentUser.id);if(error){msg.textContent='Erreur : '+error.message;return}await loadProfile();msg.textContent='Profil administrateur enregistré.'};
+ window.openAdminPasswordChange=function(){const password=prompt('Nouveau mot de passe (8 caractères minimum) :');if(!password)return;if(password.length<8){alert('Le mot de passe doit contenir au moins 8 caractères.');return}db.auth.updateUser({password}).then(({error})=>alert(error?'Erreur : '+error.message:'Mot de passe modifié.'))};
+ window.deleteProfileV4=async function(id){const p=(typeof v3Profiles!=='undefined'?v3Profiles:[]).find?.(x=>x.id===id);const label=p?.full_name||'ce profil';if(!confirm(`Supprimer définitivement ${label} de SkipperNow ?\n\nSes annonces de bateau seront également supprimées. Cette action est irréversible.`))return;const typed=prompt('Écris SUPPRIMER pour confirmer :');if(typed!=='SUPPRIMER')return;const boatRes=await db.from('boats').delete().eq('client_id',id);if(boatRes.error&&!String(boatRes.error.message).toLowerCase().includes('permission')){alert('Erreur bateaux : '+boatRes.error.message);return}const {error}=await db.from('profiles').delete().eq('id',id);if(error){alert('Suppression impossible : '+error.message+'\n\nLe compte peut être suspendu à la place.');return}alert('Profil supprimé de la plateforme. Pour supprimer aussi son identifiant de connexion Supabase Auth, une fonction serveur sécurisée sera nécessaire.');openDashboard()};
+})();
+</script>
+
 </body>
 </html>
