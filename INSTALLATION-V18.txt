@@ -1,0 +1,20 @@
+SKIPPERNOW V18 - SUPPRESSION DÉFINITIVE DES PROFILS
+
+1. Remplacer les fichiers du site sur GitHub avec ceux de ce dossier.
+
+2. Dans Supabase : Edge Functions > Create a new function.
+Nom exact : delete-user-admin
+
+3. Copier tout le contenu du fichier :
+supabase/functions/delete-user-admin/index.ts
+
+4. Déployer la fonction.
+Laisser la vérification JWT activée.
+
+Aucune clé secrète à copier : Supabase fournit automatiquement SUPABASE_URL, SUPABASE_ANON_KEY et SUPABASE_SERVICE_ROLE_KEY à la fonction.
+
+Après cela, le bouton Supprimer efface :
+- le profil dans la base ;
+- les bateaux et demandes associés ;
+- le compte de connexion Supabase Auth.
+Le profil ne pourra donc plus réapparaître.

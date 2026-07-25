@@ -2037,5 +2037,65 @@ body.v12-modal-open{overflow:hidden}
 })();
 </script>
 
+
+<style id="v18PermanentProfileDeleteStyles">
+.v18-deleting{opacity:.55;pointer-events:none}
+</style>
+<script id="v18PermanentProfileDeleteFix">
+(function(){
+  const ADMIN_EMAIL='frederytherond@hotmail.com';
+  let deletingV18=false;
+
+  async function getIdentityV18(){
+    const {data,error}=await db.auth.getUser();
+    if(error||!data?.user)throw new Error('Session administrateur introuvable.');
+    const user=data.user;
+    const {data:profile}=await db.from('profiles').select('*').eq('id',user.id).maybeSingle();
+    if(String(user.email||'').toLowerCase()!==ADMIN_EMAIL||String(profile?.role||'').toLowerCase()!=='admin')throw new Error('Accès réservé à l’administrateur.');
+    currentUser=user;currentProfile=profile;
+    return user;
+  }
+
+  async function permanentDeleteV18(id){
+    if(deletingV18)return;
+    deletingV18=true;
+    const card=document.querySelector(`.v3-profile-card[data-profile-id="${CSS.escape(String(id))}"]`);
+    card?.classList.add('v18-deleting');
+    try{
+      const user=await getIdentityV18();
+      if(String(id)===String(user.id))throw new Error('Votre compte administrateur ne peut pas être supprimé.');
+      const {data:target}=await db.from('profiles').select('full_name,role').eq('id',id).maybeSingle();
+      const name=target?.full_name||'ce profil';
+      const typed=prompt(`Supprimer définitivement ${name} ?\n\nÉcris exactement SUPPRIMER pour confirmer.`);
+      if(typed===null)return;
+      if(typed.trim().toUpperCase()!=='SUPPRIMER')throw new Error('Le mot SUPPRIMER n’a pas été correctement écrit.');
+
+      const {data,error}=await db.functions.invoke('delete-user-admin',{body:{userId:id}});
+      if(error)throw error;
+      if(!data?.ok)throw new Error(data?.error||'Suppression refusée par le serveur.');
+
+      document.querySelectorAll(`.v3-profile-card[data-profile-id="${CSS.escape(String(id))}"]`).forEach(x=>x.remove());
+      alert('Profil et compte de connexion supprimés définitivement.');
+      if(typeof renderAdminV3==='function')await renderAdminV3();else await window.openDashboard?.();
+    }catch(e){
+      alert('Suppression impossible : '+(e?.message||e)+'\n\nLa fonction Supabase delete-user-admin doit être déployée.');
+    }finally{card?.classList.remove('v18-deleting');deletingV18=false}
+  }
+
+  window.deleteProfilePermanentV18=permanentDeleteV18;
+  window.deleteProfileV4=permanentDeleteV18;
+
+  document.addEventListener('click',function(e){
+    const btn=e.target.closest?.('.v17-profile-action.delete,[data-delete-profile]');
+    if(!btn)return;
+    const card=btn.closest('.v3-profile-card');
+    const id=card?.dataset.profileId||btn.dataset.deleteProfile;
+    if(!id)return;
+    e.preventDefault();e.stopPropagation();e.stopImmediatePropagation?.();
+    permanentDeleteV18(id);
+  },true);
+})();
+</script>
+
 </body>
 </html>
