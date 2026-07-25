@@ -1841,5 +1841,82 @@ body.v12-modal-open{overflow:hidden}
 })();
 </script>
 
+
+
+<style id="v16SingleWorkingBackStyles">
+.v12-back-button,.v14-universal-back{display:none!important}
+.v16-home-back{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:11px;padding:9px 13px;font-weight:850;cursor:pointer;white-space:nowrap;margin-left:auto;margin-right:8px;position:relative;z-index:25000;pointer-events:auto!important}
+.v16-home-back:hover{background:var(--mist)}
+</style>
+<script id="v16SingleWorkingBackFix">
+(function(){
+  const DASH_KEY='skippernow_dashboard_open';
+
+  function unlockPageV16(){
+    document.body.classList.remove('v12-modal-open');
+    document.body.style.overflow='';
+    document.documentElement.style.overflow='';
+  }
+
+  function repaintConnectedNameV16(){
+    const b=document.querySelector('#login');
+    if(!b)return;
+    const u=(typeof currentUser!=='undefined'?currentUser:null);
+    const p=(typeof currentProfile!=='undefined'?currentProfile:null);
+    if(u){
+      b.textContent=String(p?.full_name||u?.user_metadata?.full_name||u?.email||'Mon espace').trim();
+      b.classList.add('account-logged');
+      b.title='Ouvrir mon espace';
+    }
+  }
+
+  window.returnToHomeV16=function(ev){
+    if(ev){ev.preventDefault();ev.stopPropagation();ev.stopImmediatePropagation?.()}
+    document.querySelectorAll('.modal.open,.v3-modal.open').forEach(m=>m.classList.remove('open'));
+    unlockPageV16();
+    // La session reste connectée. Seul le bouton « Se déconnecter » ferme la session.
+    const u=(typeof currentUser!=='undefined'?currentUser:null);
+    if(u){localStorage.setItem(DASH_KEY,'1');repaintConnectedNameV16()}
+    window.scrollTo({top:0,behavior:'smooth'});
+    return false;
+  };
+
+  function installOneButtonV16(modal){
+    if(!modal)return;
+    modal.querySelectorAll('.v12-back-button,.v14-universal-back,.v16-home-back').forEach(x=>x.remove());
+    const top=modal.querySelector('.dialog-top');
+    if(!top)return;
+    const close=top.querySelector('.close');
+    const btn=document.createElement('button');
+    btn.type='button';
+    btn.className='v16-home-back';
+    btn.textContent='← Retour à l’accueil';
+    btn.onclick=window.returnToHomeV16;
+    btn.addEventListener('click',window.returnToHomeV16,{capture:true});
+    if(close)top.insertBefore(btn,close);else top.appendChild(btn);
+  }
+
+  function scanV16(){
+    document.querySelectorAll('.modal,.v3-modal').forEach(installOneButtonV16);
+  }
+
+  // La croix ferme également la fenêtre sans déconnecter.
+  document.addEventListener('click',function(e){
+    const close=e.target.closest?.('.close');
+    if(!close)return;
+    const modal=close.closest('.modal,.v3-modal');
+    if(!modal)return;
+    e.preventDefault();e.stopPropagation();e.stopImmediatePropagation?.();
+    modal.classList.remove('open');
+    unlockPageV16();
+    repaintConnectedNameV16();
+  },true);
+
+  scanV16();
+  new MutationObserver(()=>setTimeout(scanV16,0)).observe(document.body,{childList:true,subtree:true});
+  setTimeout(scanV16,100);
+  setTimeout(scanV16,700);
+})();
+</script>
 </body>
 </html>
