@@ -1,7 +1,0 @@
-SKIPPERNOW V23
-
-1. Envoyez le nouveau index.html sur GitHub.
-2. Cliquez sur Commit changes.
-3. Rechargez le site avec Cmd + Shift + R.
-
-Corrections : Stripe facultatif à l’inscription, aucun calendrier pour les prestataires, contact direct par messagerie.
