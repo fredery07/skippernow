@@ -1,0 +1,7 @@
+SKIPPERNOW V21
+
+1. Envoyer index.html sur GitHub.
+2. Cliquer sur Commit changes.
+3. Recharger le site avec Cmd + Shift + R.
+
+Corrections : session stable, retour accueil administrateur, gestion complète des missions.

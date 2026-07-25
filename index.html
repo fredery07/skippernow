@@ -2097,5 +2097,253 @@ body.v12-modal-open{overflow:hidden}
 })();
 </script>
 
+
+<script id="v19HomeFirstFix">
+(function(){
+  const DASH_KEY='skippernow_dashboard_open';
+  let userAskedToOpen=false;
+  let bootFinished=false;
+
+  // L'accueil doit toujours être la première page affichée, même si l'admin est déjà connecté.
+  localStorage.removeItem(DASH_KEY);
+
+  function closeDashboardOnArrival(){
+    if(userAskedToOpen)return;
+    const dash=document.querySelector('#dashboardModal');
+    dash?.classList.remove('open','admin-mode');
+    document.body.classList.remove('v12-modal-open');
+    document.body.style.overflow='';
+    document.documentElement.style.overflow='';
+    localStorage.removeItem(DASH_KEY);
+  }
+
+  // Seul un clic volontaire sur le nom / bouton de compte ouvre l'espace administrateur.
+  document.addEventListener('pointerdown',function(e){
+    if(e.target.closest?.('#login')) userAskedToOpen=true;
+  },true);
+  document.addEventListener('click',function(e){
+    if(e.target.closest?.('#login')) userAskedToOpen=true;
+  },true);
+
+  const oldReturn=window.returnToHomeV16;
+  window.returnToHomeV16=function(ev){
+    userAskedToOpen=false;
+    localStorage.removeItem(DASH_KEY);
+    const result=oldReturn?oldReturn(ev):false;
+    localStorage.removeItem(DASH_KEY);
+    return result;
+  };
+
+  const closeDash=document.querySelector('#closeDashboard');
+  closeDash?.addEventListener('click',()=>{
+    userAskedToOpen=false;
+    localStorage.removeItem(DASH_KEY);
+  },true);
+
+  function bootHome(){
+    userAskedToOpen=false;
+    localStorage.removeItem(DASH_KEY);
+    closeDashboardOnArrival();
+    setTimeout(closeDashboardOnArrival,80);
+    setTimeout(closeDashboardOnArrival,300);
+    setTimeout(()=>{closeDashboardOnArrival();bootFinished=true},900);
+  }
+
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bootHome,{once:true});
+  else bootHome();
+  window.addEventListener('pageshow',bootHome);
+})();
+</script>
+
+<script id="v20AccountButtonSessionFix">
+(function(){
+  let opening=false;
+
+  async function getRealSessionV20(){
+    for(const delay of [0,180,450,900]){
+      if(delay) await new Promise(r=>setTimeout(r,delay));
+      try{
+        const {data,error}=await db.auth.getSession();
+        if(error) console.error('Session V20',error);
+        if(data?.session?.user) return data.session;
+      }catch(e){console.error('Session V20',e)}
+    }
+    return null;
+  }
+
+  async function openMySpaceV20(e){
+    e?.preventDefault?.();
+    e?.stopPropagation?.();
+    if(opening)return;
+    opening=true;
+    const button=document.querySelector('#login');
+    try{
+      button?.classList.add('v12-loading');
+      const session=await getRealSessionV20();
+      if(!session?.user){
+        currentUser=null;currentProfile=null;
+        if(button){button.textContent='Se connecter';button.classList.remove('account-logged')}
+        document.querySelector('#dashboardModal')?.classList.remove('open','admin-mode');
+        setAuthMode?.('login');
+        accountModal?.classList.add('open');
+        return;
+      }
+
+      currentUser=session.user;
+      const {data:profile,error}=await db.from('profiles').select('*').eq('id',currentUser.id).maybeSingle();
+      if(error)console.error('Profil V20',error);
+      currentProfile=profile||{id:currentUser.id,role:'client',full_name:currentUser.user_metadata?.full_name||currentUser.email};
+      if(button){
+        button.textContent=String(currentProfile?.full_name||currentUser.user_metadata?.full_name||currentUser.email||'Mon espace').trim();
+        button.classList.add('account-logged');
+      }
+      accountModal?.classList.remove('open');
+      localStorage.setItem('skippernow_dashboard_open','1');
+      await window.openDashboard?.();
+      document.querySelector('#dashboardModal')?.classList.add('open');
+    }catch(err){
+      console.error('Ouverture espace V20',err);
+      alert('Impossible d’ouvrir votre espace pour le moment. Rechargez la page puis réessayez.');
+    }finally{
+      button?.classList.remove('v12-loading');
+      opening=false;
+    }
+  }
+
+  function installV20(){
+    const old=document.querySelector('#login');
+    if(!old||old.dataset.v20Installed==='1')return;
+    const fresh=old.cloneNode(true);
+    fresh.dataset.v20Installed='1';
+    old.replaceWith(fresh);
+    fresh.addEventListener('click',openMySpaceV20);
+  }
+
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',installV20,{once:true});
+  else installV20();
+  setTimeout(installV20,400);
+  setTimeout(installV20,1200);
+})();
+</script>
+
+
+<style id="v21StableAdminStyles">
+.v21-home-btn{border:1px solid var(--line);background:#fff;color:var(--navy);border-radius:11px;padding:9px 13px;font-weight:900;cursor:pointer;margin-right:8px}
+.v21-mission-card{border:1px solid var(--line);border-radius:16px;padding:15px;background:#fff;margin:10px 0}
+.v21-mission-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.v21-mission-head h3{margin:0 0 5px}.v21-mission-meta{color:var(--muted);font-size:13px;line-height:1.55}
+.v21-mission-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}.v21-mission-actions button{border:1px solid var(--navy);background:#fff;color:var(--navy);border-radius:10px;padding:8px 11px;font-weight:850;cursor:pointer}.v21-mission-actions .fill{background:var(--navy);color:#fff}.v21-mission-actions .danger{border-color:#b43b3b;color:#b43b3b}
+.v21-status{display:inline-block;padding:5px 9px;border-radius:999px;background:#eef4f5;font-size:11px;font-weight:900}.v21-status.ok{background:#dcf8ef;color:#057554}.v21-status.warn{background:#fff0cf;color:#8a5a00}.v21-status.stop{background:#ffe6e6;color:#a22e2e}
+</style>
+<script id="v21StableAdminFix">
+(function(){
+  const DASH_KEY='skippernow_dashboard_open';
+  let opening=false;
+
+  function closeToHomeV21(e){
+    e?.preventDefault?.();e?.stopPropagation?.();
+    localStorage.removeItem(DASH_KEY);
+    document.querySelectorAll('.modal.open,.v3-modal.open').forEach(m=>m.classList.remove('open','admin-mode'));
+    document.body.classList.remove('v12-modal-open');
+    document.body.style.overflow='';document.documentElement.style.overflow='';
+    window.scrollTo({top:0,behavior:'smooth'});
+    return false;
+  }
+  window.returnToHomeV21=closeToHomeV21;
+  window.returnToHomeV16=closeToHomeV21;
+
+  function installHomeButton(){
+    const top=document.querySelector('#dashboardModal .dialog-top');
+    if(!top||top.querySelector('.v21-home-btn'))return;
+    const close=top.querySelector('#closeDashboard,.close');
+    const b=document.createElement('button');b.type='button';b.className='v21-home-btn';b.textContent='← Retour à l’accueil';b.onclick=closeToHomeV21;
+    top.insertBefore(b,close||null);
+    close?.addEventListener('click',closeToHomeV21,true);
+  }
+
+  async function realSession(){
+    try{
+      let {data}=await db.auth.getSession();
+      if(data?.session?.user)return data.session;
+      const refreshed=await db.auth.refreshSession();
+      return refreshed?.data?.session||null;
+    }catch(e){console.error('Session V21',e);return null}
+  }
+
+  async function openSpaceV21(e){
+    e?.preventDefault?.();e?.stopPropagation?.();e?.stopImmediatePropagation?.();
+    if(opening)return;opening=true;
+    const btn=document.querySelector('#login');
+    try{
+      btn?.classList.add('v12-loading');
+      let user=(typeof currentUser!=='undefined'&&currentUser?.id)?currentUser:null;
+      if(!user){const session=await realSession();user=session?.user||null;if(user)currentUser=user}
+      if(!user){setAuthMode?.('login');accountModal?.classList.add('open');return}
+      if(typeof currentProfile==='undefined'||!currentProfile||currentProfile.id!==user.id){
+        const {data,error}=await db.from('profiles').select('*').eq('id',user.id).maybeSingle();
+        if(error)console.error(error);
+        currentProfile=data||{id:user.id,role:'client',full_name:user.user_metadata?.full_name||user.email};
+      }
+      if(btn){btn.textContent=String(currentProfile?.full_name||user.user_metadata?.full_name||user.email||'Mon espace').trim();btn.classList.add('account-logged')}
+      accountModal?.classList.remove('open');localStorage.setItem(DASH_KEY,'1');
+      await window.openDashboard?.();
+      const dash=document.querySelector('#dashboardModal');dash?.classList.add('open');dash?.classList.toggle('admin-mode',currentProfile?.role==='admin');
+      installHomeButton();setTimeout(renderMissionManagerV21,250);
+    }catch(err){console.error(err);alert('Impossible d’ouvrir votre espace. Rechargez la page puis réessayez.')}finally{btn?.classList.remove('v12-loading');opening=false}
+  }
+
+  function installAccountButton(){
+    const old=document.querySelector('#login');if(!old||old.dataset.v21==='1')return;
+    const fresh=old.cloneNode(true);fresh.dataset.v21='1';old.replaceWith(fresh);
+    fresh.addEventListener('click',openSpaceV21,true);
+  }
+
+  const esc=s=>String(s??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+  const money=c=>((Number(c)||0)/100).toLocaleString('fr-FR',{style:'currency',currency:'EUR'});
+  const statusLabel=s=>({pending:'En attente',accepted:'Acceptée',confirmed:'Confirmée',in_progress:'En cours',completed:'Terminée',cancelled:'Annulée',rejected:'Refusée',paid:'Payée',transferred:'Versée'}[s]||s||'En attente');
+  const statusClass=s=>['completed','paid','transferred','accepted','confirmed'].includes(s)?'ok':['cancelled','rejected'].includes(s)?'stop':'warn';
+
+  window.v21MissionStatus=async function(id,status){
+    const {error}=await db.from('missions').update({status}).eq('id',id);if(error)return alert('Erreur : '+error.message);await renderMissionManagerV21();
+  };
+  window.v21MissionDelete=async function(id){
+    const word=prompt('Pour supprimer définitivement cette mission, écrivez SUPPRIMER');if(word!=='SUPPRIMER')return;
+    const {error}=await db.from('missions').delete().eq('id',id);if(error)return alert('Erreur : '+error.message);await renderMissionManagerV21();
+  };
+  window.v21MissionEdit=async function(id){
+    const {data:m,error}=await db.from('missions').select('*').eq('id',id).maybeSingle();if(error||!m)return alert('Mission introuvable.');
+    const port=prompt('Nom ou port de la mission :',m.port||m.title||'');if(port===null)return;
+    const amount=prompt('Montant total en euros :',((Number(m.amount_cents||0)+Number(m.urgent_fee_cents||0))/100).toString().replace('.',','));if(amount===null)return;
+    const euros=Number(String(amount).replace(',','.').replace(/[^0-9.]/g,''));if(!Number.isFinite(euros)||euros<0)return alert('Montant incorrect.');
+    const status=prompt('Statut : pending, accepted, in_progress, completed, cancelled',m.status||'pending');if(status===null)return;
+    const patch={port:port.trim(),amount_cents:Math.round(euros*100),urgent_fee_cents:0,status:status.trim()||'pending'};
+    const res=await db.from('missions').update(patch).eq('id',id);if(res.error)return alert('Erreur : '+res.error.message);await renderMissionManagerV21();
+  };
+
+  async function renderMissionManagerV21(){
+    if(typeof currentProfile==='undefined'||currentProfile?.role!=='admin')return;
+    const panel=document.querySelector('#v3-missions');if(!panel)return;
+    const {data,error}=await db.from('missions').select('*').order('created_at',{ascending:false});
+    if(error){panel.innerHTML='<div class="v3-empty">Impossible de charger les missions : '+esc(error.message)+'</div>';return}
+    const rows=data||[];
+    panel.innerHTML='<div class="admin-note"><strong>Gestion des missions</strong><br>Le montant affiché correspond au prix enregistré pour la mission. Tu peux le modifier, changer le statut ou supprimer une mission créée par erreur.</div>'+(rows.length?rows.map(m=>{
+      const total=Number(m.amount_cents||0)+Number(m.urgent_fee_cents||0);
+      const date=m.starts_at?new Date(m.starts_at).toLocaleDateString('fr-FR'):'Date non renseignée';
+      return `<article class="v21-mission-card"><div class="v21-mission-head"><div><h3>${esc(m.title||m.port||'Mission')}</h3><div class="v21-mission-meta">${date}<br>Statut paiement : ${esc(statusLabel(m.payment_status||'non_payee'))}${m.description?'<br>'+esc(m.description):''}</div></div><div style="text-align:right"><strong style="font-size:22px">${money(total)}</strong><br><span class="v21-status ${statusClass(m.status)}">${esc(statusLabel(m.status))}</span></div></div><div class="v21-mission-actions"><button class="fill" onclick="v21MissionEdit('${m.id}')">Gérer / modifier</button><button onclick="v21MissionStatus('${m.id}','accepted')">Accepter</button><button onclick="v21MissionStatus('${m.id}','in_progress')">En cours</button><button onclick="v21MissionStatus('${m.id}','completed')">Terminer</button><button onclick="v21MissionStatus('${m.id}','cancelled')">Annuler</button><button class="danger" onclick="v21MissionDelete('${m.id}')">Supprimer</button></div></article>`
+    }).join(''):'<div class="v3-empty">Aucune mission enregistrée.</div>');
+  }
+  window.renderMissionManagerV21=renderMissionManagerV21;
+
+  document.addEventListener('click',function(e){
+    const tab=e.target.closest?.('[data-v3="missions"]');if(tab)setTimeout(renderMissionManagerV21,120);
+  },true);
+
+  const obs=new MutationObserver(()=>{installHomeButton();installAccountButton();if(document.querySelector('#v3-missions.active'))renderMissionManagerV21()});
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>{installAccountButton();installHomeButton();obs.observe(document.body,{childList:true,subtree:true})},{once:true});
+  else{installAccountButton();installHomeButton();obs.observe(document.body,{childList:true,subtree:true})}
+  setTimeout(()=>{installAccountButton();installHomeButton()},500);setTimeout(()=>{installAccountButton();installHomeButton()},1500);
+})();
+</script>
+
 </body>
 </html>
