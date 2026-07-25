@@ -1,0 +1,2 @@
+V24 restaure la page d’accueil complète telle qu’avant le V23.
+Remplacer uniquement index.html sur GitHub.
