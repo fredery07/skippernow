@@ -1918,5 +1918,124 @@ body.v12-modal-open{overflow:hidden}
   setTimeout(scanV16,700);
 })();
 </script>
+
+
+<style id="v17ProfileManagementStyles">
+.v17-profile-action{font-weight:850!important}
+.v17-profile-action.delete{background:#a61f2b!important;color:#fff!important;border-color:#a61f2b!important}
+.v17-profile-action.refuse{border-color:#cf6a00!important;color:#9a4e00!important;background:#fff8ef!important}
+.v17-profile-action.suspend{border-color:#b43b3b!important;color:#b43b3b!important}
+.v17-admin-message{position:fixed;right:18px;bottom:18px;z-index:30000;background:#071d32;color:white;padding:13px 16px;border-radius:13px;box-shadow:0 18px 55px rgba(7,29,50,.25);max-width:420px}
+</style>
+<script id="v17ProfileManagementFix">
+(function(){
+  const ADMIN_EMAIL='frederytherond@hotmail.com';
+  let busyV17=false;
+
+  function toastV17(message){
+    document.querySelector('#v17AdminToast')?.remove();
+    const t=document.createElement('div');t.id='v17AdminToast';t.className='v17-admin-message';t.textContent=message;document.body.appendChild(t);setTimeout(()=>t.remove(),3200);
+  }
+
+  async function identityV17(){
+    const {data,error}=await db.auth.getUser();
+    if(error||!data?.user)return null;
+    const user=data.user;
+    const {data:profile}=await db.from('profiles').select('*').eq('id',user.id).maybeSingle();
+    currentUser=user;currentProfile=profile||currentProfile;
+    return {user,profile};
+  }
+
+  function adminV17(identity){
+    return !!identity?.user && String(identity.user.email||'').toLowerCase()===ADMIN_EMAIL && String(identity.profile?.role||'').toLowerCase()==='admin';
+  }
+
+  async function refreshAdminV17(){
+    try{
+      if(typeof renderAdminV3==='function'){await renderAdminV3();return}
+      if(typeof window.openDashboard==='function')await window.openDashboard();
+    }catch(e){console.error(e)}
+  }
+
+  window.manageProfileV17=async function(id,action){
+    if(busyV17)return;
+    busyV17=true;
+    try{
+      const identity=await identityV17();
+      if(!adminV17(identity))return alert('Accès refusé : seul le compte administrateur peut gérer les profils.');
+      if(String(id)===String(identity.user.id))return alert('Votre propre compte administrateur ne peut pas être modifié ici.');
+      const {data:target,error:targetError}=await db.from('profiles').select('*').eq('id',id).maybeSingle();
+      if(targetError||!target)return alert('Profil introuvable.');
+      const name=target.full_name||'ce profil';
+
+      if(action==='delete'){
+        const typed=prompt(`Supprimer ${name} de SkipperNow ?\n\nÉcris exactement SUPPRIMER pour confirmer.`);
+        if(typed===null)return;
+        if(typed.trim().toUpperCase()!=='SUPPRIMER')return alert('Suppression annulée : le mot SUPPRIMER n’a pas été correctement écrit.');
+
+        // Nettoyage des annonces et demandes liées quand les tables existent.
+        try{await db.from('boat_rental_requests').delete().or(`owner_id.eq.${id},requester_id.eq.${id}`)}catch(_e){}
+        try{await db.from('boats').delete().eq('client_id',id)}catch(_e){}
+
+        const del=await db.from('profiles').delete().eq('id',id);
+        if(del.error){
+          // Retrait immédiat de la plateforme lorsque la suppression physique est bloquée par une relation ou une règle RLS.
+          const soft=await db.from('profiles').update({verified:false,available:false,suspended:true,full_name:'Profil supprimé',phone:null,contact_email:null,profile_photo_url:null,bio:null}).eq('id',id);
+          if(soft.error)return alert('Suppression impossible : '+soft.error.message+'\n\nExécute le fichier supabase-v17.sql dans Supabase.');
+        }
+        document.querySelectorAll(`.v3-profile-card[data-profile-id="${CSS.escape(String(id))}"]`).forEach(x=>x.remove());
+        toastV17('Profil supprimé de la plateforme.');
+        await refreshAdminV17();
+        return;
+      }
+
+      const labels={suspend:'Suspendre',reject:'Refuser',approve:'Accepter'};
+      if(!confirm(`${labels[action]||'Modifier'} le profil de ${name} ?`))return;
+      const patch=action==='approve'
+        ? {verified:true,available:true,suspended:false}
+        : {verified:false,available:false,suspended:true};
+      const {error}=await db.from('profiles').update(patch).eq('id',id);
+      if(error)return alert('Action impossible : '+error.message+'\n\nExécute le fichier supabase-v17.sql dans Supabase.');
+      toastV17(action==='approve'?'Profil accepté.':action==='suspend'?'Profil suspendu.':'Profil refusé.');
+      await refreshAdminV17();
+    }finally{busyV17=false}
+  };
+
+  // Remplace les anciennes fonctions défaillantes.
+  window.deleteProfileV4=id=>window.manageProfileV17(id,'delete');
+  window.v3SetProfile=(id,action)=>window.manageProfileV17(id,action);
+  window.v3BoatOwnerStatus=(id,action)=>window.manageProfileV17(id,action);
+
+  function profileIdFromCardV17(card){
+    const buttons=[...card.querySelectorAll('button[onclick]')];
+    for(const b of buttons){const m=(b.getAttribute('onclick')||'').match(/'([^']+)'/);if(m)return m[1]}
+    return null;
+  }
+
+  function installProfileActionsV17(){
+    document.querySelectorAll('.v3-profile-card').forEach(card=>{
+      const text=card.innerText.toLowerCase();
+      if(text.includes('administrateur'))return;
+      const id=profileIdFromCardV17(card);if(!id)return;
+      card.dataset.profileId=id;
+      const actions=card.querySelector('.v3-actions');if(!actions)return;
+      actions.querySelectorAll('[data-v17-profile-action]').forEach(x=>x.remove());
+      // Retire les anciens boutons de gestion pour éviter les doublons et les anciennes commandes.
+      [...actions.querySelectorAll('button')].forEach(b=>{if(/^(Suspendre|Refuser|Supprimer)$/i.test(b.textContent.trim()))b.remove()});
+      const suspend=document.createElement('button');suspend.type='button';suspend.className='danger v17-profile-action suspend';suspend.dataset.v17ProfileAction='1';suspend.textContent='Suspendre';suspend.onclick=()=>window.manageProfileV17(id,'suspend');
+      const refuse=document.createElement('button');refuse.type='button';refuse.className='v17-profile-action refuse';refuse.dataset.v17ProfileAction='1';refuse.textContent='Refuser';refuse.onclick=()=>window.manageProfileV17(id,'reject');
+      const del=document.createElement('button');del.type='button';del.className='danger v17-profile-action delete';del.dataset.v17ProfileAction='1';del.textContent='Supprimer';del.onclick=()=>window.manageProfileV17(id,'delete');
+      actions.append(suspend,refuse,del);
+    });
+  }
+
+  installProfileActionsV17();
+  const observer=new MutationObserver(()=>{clearTimeout(window.__v17ProfileTimer);window.__v17ProfileTimer=setTimeout(installProfileActionsV17,40)});
+  const dashboard=document.querySelector('#dashboardBody');if(dashboard)observer.observe(dashboard,{childList:true,subtree:true});
+  setTimeout(installProfileActionsV17,300);
+  setTimeout(installProfileActionsV17,1000);
+})();
+</script>
+
 </body>
 </html>
