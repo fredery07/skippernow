@@ -1714,5 +1714,55 @@ body.v12-modal-open{overflow:hidden}
 })();
 </script>
 
+
+
+<style id="v13FinderCloseEmergencyStyles">
+#boatFinderModal,#skipperFinderModal{z-index:20000!important;pointer-events:auto!important}
+#boatFinderModal .dialog,#skipperFinderModal .dialog{pointer-events:auto!important}
+#boatFinderModal .close,#skipperFinderModal .close,.v13-home-button{pointer-events:auto!important;position:relative;z-index:20002}
+.v13-home-button{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:10px;padding:9px 13px;font-weight:850;cursor:pointer;margin-left:auto;margin-right:8px}
+</style>
+<script id="v13FinderCloseEmergencyFix">
+(function(){
+  function forceHomeV13(){
+    const ids=['boatFinderModal','skipperFinderModal','boatDetailModalV5','boatRentalRequestV10','providerFinderModal'];
+    ids.forEach(id=>{const m=document.getElementById(id);if(m){m.classList.remove('open');m.style.display='none'}});
+    document.querySelectorAll('.modal.open,.v3-modal.open').forEach(m=>{m.classList.remove('open');m.style.display='none'});
+    document.body.classList.remove('v12-modal-open');
+    document.body.style.overflow='';
+    window.scrollTo({top:0,behavior:'smooth'});
+    setTimeout(()=>ids.forEach(id=>document.getElementById(id)?.style.removeProperty('display')),80);
+  }
+  window.forceHomeV13=forceHomeV13;
+
+  function wireFinderV13(id,closeId){
+    const modal=document.getElementById(id);if(!modal)return;
+    modal.style.zIndex='20000';
+    const close=document.getElementById(closeId)||modal.querySelector('.close');
+    if(close){close.type='button';close.onclick=function(e){e?.preventDefault();e?.stopPropagation();forceHomeV13()}}
+    const top=modal.querySelector('.dialog-top');
+    if(top){
+      let back=top.querySelector('.v12-back-button,.v13-home-button');
+      if(!back){back=document.createElement('button');top.insertBefore(back,close||null)}
+      back.type='button';back.className='v13-home-button';back.textContent='← Retour à l’accueil';
+      back.onclick=function(e){e?.preventDefault();e?.stopPropagation();forceHomeV13()};
+    }
+    modal.addEventListener('click',e=>{if(e.target===modal)forceHomeV13()},true);
+  }
+  wireFinderV13('boatFinderModal','closeBoatFinder');
+  wireFinderV13('skipperFinderModal','closeSkipperFinder');
+
+  document.addEventListener('click',function(e){
+    const t=e.target.closest?.('#closeBoatFinder,#closeSkipperFinder,.v13-home-button');
+    if(t){e.preventDefault();e.stopImmediatePropagation();forceHomeV13()}
+  },true);
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')forceHomeV13()},true);
+
+  // Quand une recherche est rouverte, retire toute ancienne propriété display:none.
+  ['heroListBoat','heroFind'].forEach(id=>document.getElementById(id)?.addEventListener('click',()=>{
+    document.getElementById(id==='heroListBoat'?'boatFinderModal':'skipperFinderModal')?.style.removeProperty('display');
+  },true));
+})();
+</script>
 </body>
 </html>
