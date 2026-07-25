@@ -49,7 +49,7 @@
     <section class="compact-how"><h2>Comment ça marche ?</h2><div class="compact-steps"><div class="compact-step"><b>1</b><strong>Je cherche</strong><p>Choisissez un skipper, un prestataire ou un bateau.</p></div><div class="compact-step"><b>2</b><strong>Je réserve</strong><p>Consultez le profil, les disponibilités et envoyez votre demande.</p></div><div class="compact-step"><b>3</b><strong>Je paie en sécurité</strong><p>Le paiement est sécurisé et libéré après validation de la mission.</p></div></div></section>
     <section class="join-block"><h2>Rejoindre SkipperNow</h2><div class="join-grid"><div class="join-card"><h3>Propriétaire</h3><p>Ajoutez votre bateau et proposez-le à la location.</p><button class="secondary-light" onclick="openBoatListingFlow()">Ajouter mon bateau</button></div><div class="join-card"><h3>Skipper</h3><p>Créez votre profil, vos disponibilités et recevez des missions.</p><button class="secondary-light" onclick="document.querySelector('#openSkipper').click()">Devenir skipper</button></div><div class="join-card"><h3>Prestataire</h3><p>Proposez vos services de nettoyage, quai, chantier ou marin.</p><button class="secondary-light" onclick="document.querySelector('#openSkipper').click()">Devenir prestataire</button></div></div></section>
   </main>
-  <div class="modal" id="modal"><div class="dialog"><div id="booking"><div class="dialog-top"><div><small id="requestType">DEMANDE DE RÉSERVATION</small><h2 id="skipperName">Thomas R.</h2></div><button class="close" id="close">×</button></div><div class="summary"><div class="mission-line"><span>Départ</span><strong id="summaryPort">Cannes</strong></div><div class="mission-line"><span>Mission</span><strong id="summaryPrice">300 €</strong></div><div class="mission-line" id="urgentLine" style="display:none"><span>Priorité urgente</span><strong>19 €</strong></div></div><div class="field"><label>VOTRE NOM</label><input id="bookingName" placeholder="Prénom et nom"></div><div class="field"><label>TÉLÉPHONE</label><input id="bookingPhone" placeholder="06 00 00 00 00"></div><div class="field"><label>TYPE DE BATEAU</label><input id="bookingBoat" placeholder="Ex. Cap Camarat 9.0"></div><div class="payment-note"><span>🔒</span><span>Le paiement est sécurisé. Il sera versé au skipper après le rinçage, le rangement et votre validation de fin de mission.</span></div><p class="muted" id="bookingMessage"></p><button class="primary wide" id="send">Créer la demande</button></div><div class="success" id="success"><div class="check">✓</div><h2>Demande enregistrée</h2><p>Les skippers disponibles peuvent maintenant accepter la mission. Le paiement sécurisé sera ajouté à l’étape Stripe.</p><button class="primary wide" id="done">Voir ma réservation</button></div></div></div>
+  <div class="modal" id="modal"><div class="dialog"><div id="booking"><div class="dialog-top"><div><small id="requestType">DEMANDE DE RÉSERVATION</small><h2 id="skipperName">Professionnel sélectionné</h2></div><button class="close" id="close">×</button></div><div class="summary"><div class="mission-line"><span>Départ</span><strong id="summaryPort">Cannes</strong></div><div class="mission-line"><span>Mission</span><strong id="summaryPrice">Tarif à définir</strong></div><div class="mission-line" id="urgentLine" style="display:none"><span>Priorité urgente</span><strong>Traitement prioritaire</strong></div></div><div class="field"><label>VOTRE NOM</label><input id="bookingName" placeholder="Prénom et nom"></div><div class="field"><label>TÉLÉPHONE</label><input id="bookingPhone" placeholder="06 00 00 00 00"></div><div class="field"><label>TYPE DE BATEAU</label><input id="bookingBoat" placeholder="Ex. Cap Camarat 9.0"></div><div class="payment-note"><span>🔒</span><span>Le professionnel proposera son prix. Vous paierez uniquement après avoir accepté son devis.</span></div><p class="muted" id="bookingMessage"></p><button class="primary wide" id="send">Créer la demande</button></div><div class="success" id="success"><div class="check">✓</div><h2>Demande enregistrée</h2><p>Le professionnel peut maintenant consulter votre demande et proposer son prix. Vous pourrez accepter ou refuser le devis.</p><button class="primary wide" id="done">Voir ma réservation</button></div></div></div>
   <div class="modal" id="skipperModal"><div class="dialog"><div class="dialog-top"><div><small>ESPACE PROFESSIONNEL</small><h2>Rejoindre SkipperNow</h2></div><button class="close" id="closeSkipper">×</button></div><p>Recevez des missions proches de votre port lorsque vous êtes disponible.</p><div class="toggle"><button class="active">Créer mon profil</button><button>J’ai déjà un compte</button></div><div class="field"><label>NOM COMPLET</label><input placeholder="Votre nom"></div><div class="field"><label>PORT PRINCIPAL</label><select><option>Cannes</option><option>Antibes</option><option>Golfe-Juan</option><option>Nice</option><option>Monaco</option></select></div><div class="field"><label>EXPÉRIENCE</label><input placeholder="Ex. 8 ans"></div><div class="payment-note"><span>✓</span><span>Identité, brevet et assurance vérifiés avant l’activation du profil.</span></div><button class="primary wide" id="applySkipper">Commencer mon inscription</button></div></div>
   <div class="modal" id="providerModal"><div class="dialog large"><div class="dialog-top"><div><small>SERVICES NAUTIQUES</small><h2>Trouver un prestataire</h2></div><button class="close" id="closeProvider">×</button></div><p class="muted">Choisissez le service dont vous avez besoin près de votre port.</p><div class="provider-grid"><button class="provider-service" data-provider="cleaning"><span class="provider-icon">🧽</span><b>Nettoyage du bateau</b><span>Lavage, rinçage, intérieur, préparation avant ou après sortie.</span></button><button class="provider-service" data-provider="dock_service"><span class="provider-icon">⚓</span><b>Services à quai</b><span>Amarrage, aide au départ, avitaillement, surveillance et assistance.</span></button><button class="provider-service" data-provider="shipyard"><span class="provider-icon">🛠️</span><b>Chantier et entretien</b><span>Antifouling, peinture, petites réparations, préparation et mise à l’eau.</span></button><button class="provider-service" data-provider="day_sailor"><span class="provider-icon">👷</span><b>Marin à la journée</b><span>Aide à bord, manutention, convoyage court et assistance au propriétaire.</span></button><button class="provider-service" data-provider="skipper"><span class="provider-icon">🧭</span><b>Skipper professionnel</b><span>Sortie, location, convoyage et prise en main du bateau.</span></button></div></div></div>
   <div class="modal" id="skipperFinderModal"><div class="dialog large"><div class="dialog-top"><div><small>SKIPPERS DISPONIBLES</small><h2>Trouver un skipper</h2></div><button class="close" id="closeSkipperFinder">×</button></div><p class="muted">Voici les skippers disponibles selon votre recherche actuelle.</p><div id="skipperFinderResults" class="provider-results" style="display:block"></div></div></div>
@@ -76,7 +76,7 @@
     const urgentBtn=document.querySelector('#urgent');if(urgentBtn)urgentBtn.onclick=()=>openBooking('Premier skipper disponible','Tarif confirmé à l’acceptation',true);
     const close=()=>modal.classList.remove('open');document.querySelector('#close').onclick=close;document.querySelector('#done').onclick=()=>{close();openDashboard()};modal.addEventListener('click',e=>{if(e.target===modal)close()});
     const oldOpen=openBooking;openBooking=(name,price,isUrgent=false,selectedPort='')=>{currentRequest={name,price,isUrgent,port:selectedPort||(port.value==='all'?'Cannes':port.value)};oldOpen(name,price,isUrgent,selectedPort)};
-    document.querySelector('#send').onclick=async()=>{const msg=document.querySelector('#bookingMessage');if(!currentUser){close();accountModal.classList.add('open');msg.textContent='Connectez-vous avant de réserver.';return}if(currentProfile?.role!=='client'&&currentProfile?.role!=='admin'){msg.textContent='Un compte client est nécessaire pour créer une mission.';return}const boat=document.querySelector('#bookingBoat').value.trim();if(!boat){msg.textContent='Indiquez le type de bateau.';return}msg.textContent='Enregistrement en cours…';const {data:settings}=await db.from('platform_settings').select('*').eq('id',1).maybeSingle(),base=parseInt((currentRequest.price||'300').replace(/\D/g,''))||300,percent=settings?.first_commission_percent||15,urgent=currentRequest.isUrgent?(settings?.urgent_fee_cents||1900):0,start=new Date(dateInput.value+'T09:00:00'),end=new Date(start.getTime()+(document.querySelector('#duration').value==='Demi-journée'?4:8)*3600000);const {error}=await db.from('missions').insert({client_id:currentUser.id,port:currentRequest.port,boat_type:boat,starts_at:start.toISOString(),ends_at:end.toISOString(),amount_cents:base*100,urgent_fee_cents:urgent,platform_fee_cents:Math.round(base*percent),status:'searching'});if(error){msg.textContent='Erreur : '+error.message;return}booking.style.display='none';success.style.display='block'};
+    document.querySelector('#send').onclick=async()=>{const msg=document.querySelector('#bookingMessage');if(!currentUser){close();accountModal.classList.add('open');msg.textContent='Connectez-vous avant de réserver.';return}if(currentProfile?.role!=='client'&&currentProfile?.role!=='admin'){msg.textContent='Un compte client est nécessaire pour créer une mission.';return}const boat=document.querySelector('#bookingBoat').value.trim();if(!boat){msg.textContent='Indiquez le type de bateau.';return}msg.textContent='Enregistrement en cours…';const start=new Date(dateInput.value+'T09:00:00'),end=new Date(start.getTime()+(document.querySelector('#duration').value==='Demi-journée'?4:8)*3600000);const {error}=await db.from('missions').insert({client_id:currentUser.id,port:currentRequest.port,boat_type:boat,starts_at:start.toISOString(),ends_at:end.toISOString(),amount_cents:0,urgent_fee_cents:0,platform_fee_cents:0,payment_status:'unpaid',status:'searching'});if(error){msg.textContent='Erreur : '+error.message;return}booking.style.display='none';success.style.display='block'};
     const skipperModal=document.querySelector('#skipperModal');document.querySelector('#openSkipper').onclick=()=>{setRole('skipper');accountModal.classList.add('open')};document.querySelector('#closeSkipper').onclick=()=>skipperModal.classList.remove('open');document.querySelector('#applySkipper').onclick=()=>{document.querySelector('#closeSkipper').click();setRole('skipper');accountModal.classList.add('open')};skipperModal.addEventListener('click',e=>{if(e.target===skipperModal)skipperModal.classList.remove('open')});
     const accountModal=document.querySelector('#accountModal'),dashboardModal=document.querySelector('#dashboardModal');
     function setRole(role){selectedRole=role;document.querySelector('#roleClient').classList.toggle('active',role==='client');document.querySelector('#roleSkipper').classList.toggle('active',role==='skipper');document.querySelector('#accountPortWrap').style.display=role==='skipper'?'block':'none'}
@@ -228,7 +228,7 @@
     skipperFinderModal.addEventListener('click',e=>{if(e.target===skipperFinderModal)skipperFinderModal.classList.remove('open')});
     boatFinderModal.addEventListener('click',e=>{if(e.target===boatFinderModal)boatFinderModal.classList.remove('open')});
     function finderEsc(value){return String(value??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
-    window.openSkipperContact=(name,homePort)=>{skipperFinderModal.classList.remove('open');if(!currentUser){setRole('client');setAuthMode('login');accountModal.classList.add('open');document.querySelector('#authMessage').textContent='Connectez-vous uniquement pour contacter '+name+'.';return}openBooking(name,'300 €',false,homePort||port.value)};
+    window.openSkipperContact=(name,homePort)=>{skipperFinderModal.classList.remove('open');if(!currentUser){setRole('client');setAuthMode('login');accountModal.classList.add('open');document.querySelector('#authMessage').textContent='Connectez-vous uniquement pour contacter '+name+'.';return}openBooking(name,'Tarif à définir',false,homePort||port.value)};
     window.openBoatContact=(boatName,homePort)=>{boatFinderModal.classList.remove('open');if(!currentUser){setRole('client');setAuthMode('login');accountModal.classList.add('open');document.querySelector('#authMessage').textContent='Connectez-vous uniquement pour voir le détail de '+boatName+'.';return}openBooking('Location bateau · '+boatName,'Sur demande',false,homePort||port.value)};
     async function openSkipperFinder(){skipperFinderModal.classList.add('open');skipperFinderResults.innerHTML='<div class="provider-empty">Recherche des skippers disponibles…</div>';const chosen=dateInput.value;const [profilesRes,blocksRes]=await Promise.all([db.from('profiles').select('id,full_name,home_port,rating,profile_photo_url,bio,experience_years,languages,provider_activity').eq('role','skipper').eq('verified',true).eq('available',true),db.from('skipper_unavailability').select('skipper_id').eq('unavailable_date',chosen)]);const blocked=new Set((blocksRes.data||[]).map(x=>x.skipper_id));let list=(profilesRes.data||[]).filter(s=>(!s.provider_activity||s.provider_activity==='skipper')&&(port.value==='all'||s.home_port===port.value)&&!blocked.has(s.id));skipperFinderResults.innerHTML=`<div class="provider-results-head"><strong>${list.length} skipper${list.length>1?'s':''} disponible${list.length>1?'s':''}</strong></div>${list.length?`<div class="provider-results-list">${list.map(s=>`<article class="provider-result-card">${s.profile_photo_url?`<img class="provider-result-photo" src="${finderEsc(s.profile_photo_url)}" alt="${finderEsc(s.full_name)}">`:`<div class="provider-result-photo">⚓</div>`}<div><h3>${finderEsc(s.full_name||'Skipper')}</h3><p><strong>${finderEsc(s.home_port||'Port non renseigné')}</strong> · ★ ${Number(s.rating||5).toFixed(1).replace('.',',')}</p><p>${finderEsc(s.bio||'Skipper professionnel vérifié.')}</p><button class="small-btn fill" type="button" onclick="openSkipperContact('${finderEsc((s.full_name||'Skipper').replace(/'/g,"\'"))}','${finderEsc((s.home_port||'').replace(/'/g,"\'"))}')">Voir le profil</button></div></article>`).join('')}</div>`:`<div class="provider-empty"><strong>Aucun skipper disponible pour le moment.</strong><br>Les skippers vérifiés apparaîtront ici automatiquement.</div>`}`;}
     async function openBoatFinder(){boatFinderModal.classList.add('open');boatFinderResults.innerHTML='<div class="provider-empty">Recherche des bateaux disponibles…</div>';const {data,error}=await db.from('boats').select('*').order('created_at',{ascending:false});if(error){boatFinderResults.innerHTML='<div class="provider-empty">Impossible de charger les bateaux pour le moment.</div>';return}let list=(data||[]);if(port.value!=='all')list=list.filter(b=>String(b.home_port||'').toLowerCase().includes(String(port.value).toLowerCase()));boatFinderResults.innerHTML=`<div class="provider-results-head"><strong>${list.length} bateau${list.length>1?'x':''} en location</strong></div>${list.length?`<div class="provider-results-list">${list.map(b=>`<article class="provider-result-card">${b.photo_url?`<img class="provider-result-photo" src="${finderEsc(b.photo_url)}" alt="${finderEsc(b.name||'Bateau')}">`:`<div class="provider-result-photo">🚤</div>`}<div><h3>${finderEsc(b.name||'Bateau à louer')}</h3><p><strong>${finderEsc(b.home_port||'Port non renseigné')}</strong>${b.length_m?` · ${finderEsc(b.length_m)} m`:''}</p><p>${finderEsc(b.description||b.model||'Annonce de location disponible.')}</p><button class="small-btn fill" type="button" onclick="openBoatContact('${finderEsc((b.name||'Bateau').replace(/'/g,"\'"))}','${finderEsc((b.home_port||'').replace(/'/g,"\'"))}')">Voir l'annonce</button></div></article>`).join('')}</div>`:`<div class="provider-empty"><strong>Aucun bateau en location pour le moment.</strong><br>Les annonces de bateaux apparaîtront ici dès qu’un propriétaire ajoutera son bateau.</div>`}`;}
@@ -2520,6 +2520,1049 @@ body.v12-modal-open{overflow:hidden}
     })();
     return pendingOpenV23;
   };
+})();
+</script>
+
+<style id="missionRequestsAndLanguagesV24Styles">
+  .v24-price-pending{color:var(--muted);font-size:13px;font-weight:800}
+  .v24-request-note{margin-bottom:14px}
+  .v21-mission-actions .v24-accept{background:#08794e;border-color:#08794e;color:#fff}
+  .v21-mission-actions .v24-refuse{border-color:#b43b3b;color:#b43b3b}
+</style>
+<script id="missionRequestsAndLanguagesV24">
+(function(){
+  const textByLanguage={
+    en:{
+      "Se connecter":"Log in","Créer un compte":"Create an account","Mon espace":"My account",
+      "Disponible dans tous les ports du monde":"Available in ports worldwide",
+      "Votre skipper,":"Your skipper,","au bon port, au bon moment.":"at the right port, at the right time.",
+      "Trouvez un skipper, un marin ou un prestataire nautique dans n’importe quel port du monde, même à la dernière minute.":"Find a skipper, crew member or marine service provider in any port worldwide, even at the last minute.",
+      "Profils vérifiés":"Verified profiles","Réponse rapide":"Fast response","Paiement sécurisé":"Secure payment",
+      "Trouver un skipper":"Find a skipper","Trouver un prestataire":"Find a service provider",
+      "Trouver un bateau en location":"Find a boat to rent","PORT DE DÉPART — MONDE ENTIER":"DEPARTURE PORT — WORLDWIDE",
+      "Ex. Cannes, Miami, Ibiza, Las Terrenas…":"E.g. Cannes, Miami, Ibiza, Las Terrenas…",
+      "DATE":"DATE","DURÉE":"DURATION","Demi-journée":"Half day","Journée":"Full day","Plusieurs jours":"Several days",
+      "Skippers disponibles":"Available skippers","Professionnels vérifiés près de votre port de départ":"Verified professionals near your departure port",
+      "Les premiers skippers vérifiés apparaîtront ici dès leur activation.":"Verified skippers will appear here once approved.",
+      "Bateaux disponibles":"Available boats","Les annonces apparaîtront ici automatiquement dès qu’un propriétaire publiera son bateau.":"Listings will appear here automatically when an owner publishes a boat.",
+      "Aucun bateau en location pour le moment.":"No boats are available to rent yet.","Skippers & prestataires":"Skippers & service providers",
+      "Profils vérifiés disponibles dans les ports recherchés.":"Verified profiles available in the selected ports.",
+      "Aucun professionnel disponible pour le moment.":"No professionals are available yet.","Comment ça marche ?":"How does it work?",
+      "Je cherche":"I search","Choisissez un skipper, un prestataire ou un bateau.":"Choose a skipper, service provider or boat.",
+      "Je réserve":"I book","Consultez le profil, les disponibilités et envoyez votre demande.":"View the profile and availability, then send your request.",
+      "Je paie en sécurité":"I pay securely","Le paiement est sécurisé et libéré après validation de la mission.":"Payment is secured and released once the job is approved.",
+      "Rejoindre SkipperNow":"Join SkipperNow","Propriétaire":"Owner","Ajoutez votre bateau et proposez-le à la location.":"Add your boat and offer it for rent.",
+      "Ajouter mon bateau":"Add my boat","Skipper":"Skipper","Créez votre profil, vos disponibilités et recevez des missions.":"Create your profile and availability, and receive job requests.",
+      "Devenir skipper":"Become a skipper","Prestataire":"Service provider","Proposez vos services de nettoyage, quai, chantier ou marin.":"Offer cleaning, dock, shipyard or crew services.",
+      "Devenir prestataire":"Become a service provider","DEMANDE DE RÉSERVATION":"BOOKING REQUEST","DEMANDE URGENTE":"URGENT REQUEST",
+      "Départ":"Departure","Mission":"Job","Tarif à définir":"Price to be agreed","Priorité urgente":"Urgent priority",
+      "VOTRE NOM":"YOUR NAME","Prénom et nom":"Full name","TÉLÉPHONE":"PHONE","TYPE DE BATEAU":"BOAT TYPE",
+      "Le paiement est sécurisé. Il sera versé au skipper après le rinçage, le rangement et votre validation de fin de mission.":"Payment is secured. It will be paid to the skipper after the boat is rinsed and tidied, and you approve completion.",
+      "Créer la demande":"Send request","Demande enregistrée":"Request recorded",
+      "Les skippers disponibles peuvent maintenant accepter la mission. Le paiement sécurisé sera ajouté à l’étape Stripe.":"Available skippers can now accept the job. Secure payment will be added at the Stripe step.",
+      "Voir ma réservation":"View my booking","MON COMPTE":"MY ACCOUNT","Créer votre activité sur SkipperNow":"Create your activity on SkipperNow",
+      "Devenir skipper SkipperNow":"Become a SkipperNow skipper","Recevoir des demandes de sortie et de convoyage":"Receive trip and delivery requests",
+      "Devenir prestataire d’un service":"Become a service provider","Nettoyage, services à quai, chantier ou marin à la journée":"Cleaning, dock services, shipyard work or day crew",
+      "Mettre mon bateau en location":"List my boat for rent","Créer une annonce avec photos, port et disponibilités":"Create a listing with photos, port and availability",
+      "PRÉNOM ET NOM":"FULL NAME","Votre nom":"Your name","EMAIL":"EMAIL","MOT DE PASSE":"PASSWORD","8 caractères minimum":"At least 8 characters",
+      "Mot de passe oublié ?":"Forgot password?","Mes réservations":"My bookings","Changer de compte":"Switch account",
+      "Gestion des demandes de mission":"Job request management","Demandes reçues":"Requests received",
+      "Tu peux vérifier chaque demande, l’accepter, la refuser ou définir son tarif.":"You can review each request, accept or reject it, and set its price.",
+      "Accepter":"Accept","Refuser":"Reject","Gérer / modifier":"Manage / edit","En cours":"In progress","Terminer":"Complete",
+      "Annuler":"Cancel","Supprimer":"Delete","En attente":"Pending","Acceptée":"Accepted","Refusée":"Rejected",
+      "Terminée":"Completed","Annulée":"Cancelled","Date non renseignée":"Date not provided","Statut paiement :":"Payment status:",
+      "Aucune demande de mission enregistrée.":"No job requests recorded.","Tarif confirmé à l’acceptation":"Price confirmed upon acceptance",
+      "Retour à l’accueil":"Back to home","Tableau de bord":"Dashboard","Vue d’ensemble":"Overview","Validations":"Approvals",
+      "Missions":"Jobs","Utilisateurs":"Users","Bateaux":"Boats","Finances":"Finances","Réglages":"Settings",
+      "Paiements":"Payments","Mon profil":"My profile","Se déconnecter":"Log out","Enregistrer":"Save","Modifier":"Edit",
+      "Disponible":"Available","Indisponible":"Unavailable","Voir le profil":"View profile","Sur demande":"On request",
+      "Préparation et services à quai":"Boat preparation and dock services",
+      "Nettoyage, rinçage, intérieur, préparation avant ou après sortie, avitaillement, amarrage et assistance au départ.":"Cleaning, rinsing, interior care, pre- or post-trip preparation, provisioning, mooring and departure assistance.",
+      "Nettoyage, préparation et services à quai":"Cleaning, preparation and dock services",
+      "Nettoyage, préparation à quai, avitaillement, amarrage et assistance":"Cleaning, dockside preparation, provisioning, mooring and assistance"
+    },
+    es:{
+      "Se connecter":"Iniciar sesión","Créer un compte":"Crear una cuenta","Mon espace":"Mi cuenta",
+      "Disponible dans tous les ports du monde":"Disponible en puertos de todo el mundo",
+      "Votre skipper,":"Tu skipper,","au bon port, au bon moment.":"en el puerto adecuado, en el momento adecuado.",
+      "Trouvez un skipper, un marin ou un prestataire nautique dans n’importe quel port du monde, même à la dernière minute.":"Encuentra un skipper, marinero o prestador náutico en cualquier puerto del mundo, incluso en el último momento.",
+      "Profils vérifiés":"Perfiles verificados","Réponse rapide":"Respuesta rápida","Paiement sécurisé":"Pago seguro",
+      "Trouver un skipper":"Buscar un skipper","Trouver un prestataire":"Buscar un prestador",
+      "Trouver un bateau en location":"Buscar un barco de alquiler","PORT DE DÉPART — MONDE ENTIER":"PUERTO DE SALIDA — TODO EL MUNDO",
+      "Ex. Cannes, Miami, Ibiza, Las Terrenas…":"Ej. Cannes, Miami, Ibiza, Las Terrenas…",
+      "DATE":"FECHA","DURÉE":"DURACIÓN","Demi-journée":"Medio día","Journée":"Día completo","Plusieurs jours":"Varios días",
+      "Skippers disponibles":"Skippers disponibles","Professionnels vérifiés près de votre port de départ":"Profesionales verificados cerca de tu puerto de salida",
+      "Les premiers skippers vérifiés apparaîtront ici dès leur activation.":"Los skippers verificados aparecerán aquí después de su aprobación.",
+      "Bateaux disponibles":"Barcos disponibles","Les annonces apparaîtront ici automatiquement dès qu’un propriétaire publiera son bateau.":"Los anuncios aparecerán aquí automáticamente cuando un propietario publique su barco.",
+      "Aucun bateau en location pour le moment.":"Todavía no hay barcos disponibles para alquilar.","Skippers & prestataires":"Skippers y prestadores",
+      "Profils vérifiés disponibles dans les ports recherchés.":"Perfiles verificados disponibles en los puertos seleccionados.",
+      "Aucun professionnel disponible pour le moment.":"Todavía no hay profesionales disponibles.","Comment ça marche ?":"¿Cómo funciona?",
+      "Je cherche":"Busco","Choisissez un skipper, un prestataire ou un bateau.":"Elige un skipper, un prestador o un barco.",
+      "Je réserve":"Reservo","Consultez le profil, les disponibilités et envoyez votre demande.":"Consulta el perfil y la disponibilidad, y envía tu solicitud.",
+      "Je paie en sécurité":"Pago de forma segura","Le paiement est sécurisé et libéré après validation de la mission.":"El pago está protegido y se libera después de validar el servicio.",
+      "Rejoindre SkipperNow":"Únete a SkipperNow","Propriétaire":"Propietario","Ajoutez votre bateau et proposez-le à la location.":"Añade tu barco y ofrécelo en alquiler.",
+      "Ajouter mon bateau":"Añadir mi barco","Skipper":"Skipper","Créez votre profil, vos disponibilités et recevez des missions.":"Crea tu perfil y disponibilidad, y recibe solicitudes.",
+      "Devenir skipper":"Ser skipper","Prestataire":"Prestador","Proposez vos services de nettoyage, quai, chantier ou marin.":"Ofrece servicios de limpieza, puerto, astillero o marinero.",
+      "Devenir prestataire":"Ser prestador","DEMANDE DE RÉSERVATION":"SOLICITUD DE RESERVA","DEMANDE URGENTE":"SOLICITUD URGENTE",
+      "Départ":"Salida","Mission":"Servicio","Tarif à définir":"Precio por definir","Priorité urgente":"Prioridad urgente",
+      "VOTRE NOM":"TU NOMBRE","Prénom et nom":"Nombre completo","TÉLÉPHONE":"TELÉFONO","TYPE DE BATEAU":"TIPO DE BARCO",
+      "Le paiement est sécurisé. Il sera versé au skipper après le rinçage, le rangement et votre validation de fin de mission.":"El pago está protegido. Se abonará al skipper después de limpiar y ordenar el barco, y de que valides el final del servicio.",
+      "Créer la demande":"Enviar solicitud","Demande enregistrée":"Solicitud registrada",
+      "Les skippers disponibles peuvent maintenant accepter la mission. Le paiement sécurisé sera ajouté à l’étape Stripe.":"Los skippers disponibles ya pueden aceptar el servicio. El pago seguro se añadirá en el paso de Stripe.",
+      "Voir ma réservation":"Ver mi reserva","MON COMPTE":"MI CUENTA","Créer votre activité sur SkipperNow":"Crea tu actividad en SkipperNow",
+      "Devenir skipper SkipperNow":"Ser skipper de SkipperNow","Recevoir des demandes de sortie et de convoyage":"Recibir solicitudes de salidas y traslados",
+      "Devenir prestataire d’un service":"Ser prestador de servicios","Nettoyage, services à quai, chantier ou marin à la journée":"Limpieza, servicios de puerto, astillero o marinero por día",
+      "Mettre mon bateau en location":"Poner mi barco en alquiler","Créer une annonce avec photos, port et disponibilités":"Crear un anuncio con fotos, puerto y disponibilidad",
+      "PRÉNOM ET NOM":"NOMBRE COMPLETO","Votre nom":"Tu nombre","EMAIL":"EMAIL","MOT DE PASSE":"CONTRASEÑA","8 caractères minimum":"Mínimo 8 caracteres",
+      "Mot de passe oublié ?":"¿Olvidaste tu contraseña?","Mes réservations":"Mis reservas","Changer de compte":"Cambiar de cuenta",
+      "Gestion des demandes de mission":"Gestión de solicitudes de servicio","Demandes reçues":"Solicitudes recibidas",
+      "Tu peux vérifier chaque demande, l’accepter, la refuser ou définir son tarif.":"Puedes revisar cada solicitud, aceptarla, rechazarla o definir su precio.",
+      "Accepter":"Aceptar","Refuser":"Rechazar","Gérer / modifier":"Gestionar / modificar","En cours":"En curso","Terminer":"Terminar",
+      "Annuler":"Cancelar","Supprimer":"Eliminar","En attente":"Pendiente","Acceptée":"Aceptada","Refusée":"Rechazada",
+      "Terminée":"Terminada","Annulée":"Cancelada","Date non renseignée":"Fecha no indicada","Statut paiement :":"Estado del pago:",
+      "Aucune demande de mission enregistrée.":"No hay solicitudes de servicio registradas.","Tarif confirmé à l’acceptation":"Precio confirmado al aceptar",
+      "Retour à l’accueil":"Volver al inicio","Tableau de bord":"Panel de control","Vue d’ensemble":"Resumen","Validations":"Validaciones",
+      "Missions":"Servicios","Utilisateurs":"Usuarios","Bateaux":"Barcos","Finances":"Finanzas","Réglages":"Ajustes",
+      "Paiements":"Pagos","Mon profil":"Mi perfil","Se déconnecter":"Cerrar sesión","Enregistrer":"Guardar","Modifier":"Modificar",
+      "Disponible":"Disponible","Indisponible":"No disponible","Voir le profil":"Ver perfil","Sur demande":"A consultar",
+      "Préparation et services à quai":"Preparación y servicios en el muelle",
+      "Nettoyage, rinçage, intérieur, préparation avant ou après sortie, avitaillement, amarrage et assistance au départ.":"Limpieza, enjuague, interior, preparación antes o después de la salida, aprovisionamiento, amarre y asistencia en la salida.",
+      "Nettoyage, préparation et services à quai":"Limpieza, preparación y servicios en el muelle",
+      "Nettoyage, préparation à quai, avitaillement, amarrage et assistance":"Limpieza, preparación en el muelle, aprovisionamiento, amarre y asistencia"
+    }
+  };
+
+  const canonicalText=new WeakMap();
+  const canonicalPlaceholder=new WeakMap();
+  const reverse={};
+  Object.values(textByLanguage).forEach(dict=>Object.entries(dict).forEach(([fr,value])=>{reverse[value]=fr}));
+  const normalise=value=>reverse[String(value||'').trim()]||String(value||'').trim();
+
+  function dynamicTranslation(fr,lang){
+    if(lang==='fr')return fr;
+    const dict=textByLanguage[lang]||{};
+    if(dict[fr])return dict[fr];
+    const patterns=lang==='en'?[
+      [/^(\d+) skipper(s?)$/,(_,n)=>`${n} skipper${n==='1'?'':'s'}`],
+      [/^Missions \((\d+)\)$/,(_,n)=>`Jobs (${n})`],
+      [/^Validations \((\d+)\)$/,(_,n)=>`Approvals (${n})`],
+      [/^Bateaux \((\d+)\)$/,(_,n)=>`Boats (${n})`],
+      [/^(\d+) demande(s?) en attente$/,(_,n)=>`${n} pending request${n==='1'?'':'s'}`]
+    ]:[
+      [/^(\d+) skipper(s?)$/,(_,n)=>`${n} skipper${n==='1'?'':'s'}`],
+      [/^Missions \((\d+)\)$/,(_,n)=>`Servicios (${n})`],
+      [/^Validations \((\d+)\)$/,(_,n)=>`Validaciones (${n})`],
+      [/^Bateaux \((\d+)\)$/,(_,n)=>`Barcos (${n})`],
+      [/^(\d+) demande(s?) en attente$/,(_,n)=>`${n} solicitud${n==='1'?'':'es'} pendiente${n==='1'?'':'s'}`]
+    ];
+    for(const [pattern,replace] of patterns)if(pattern.test(fr))return fr.replace(pattern,replace);
+    return fr;
+  }
+
+  function translateCompletePageV24(lang){
+    lang=['fr','en','es'].includes(lang)?lang:'fr';
+    document.documentElement.lang=lang;
+    localStorage.setItem('skippernow-language',lang);
+    const root=document.body;
+    if(!root)return;
+    const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
+    let node;
+    window.__translating=true;
+    try{
+      while((node=walker.nextNode())){
+        if(node.parentElement?.closest('script,style'))continue;
+        const trimmed=node.textContent.trim();if(!trimmed)continue;
+        if(!canonicalText.has(node))canonicalText.set(node,normalise(trimmed));
+        const fr=canonicalText.get(node);
+        const translated=dynamicTranslation(fr,lang);
+        node.textContent=node.textContent.replace(trimmed,translated);
+      }
+      root.querySelectorAll('input[placeholder],textarea[placeholder]').forEach(el=>{
+        if(!canonicalPlaceholder.has(el))canonicalPlaceholder.set(el,normalise(el.placeholder));
+        el.placeholder=dynamicTranslation(canonicalPlaceholder.get(el),lang);
+      });
+      const select=document.querySelector('#languageSelect');if(select)select.value=lang;
+    }finally{window.__translating=false}
+  }
+
+  try{translatePage=translateCompletePageV24}catch(_e){}
+  window.translatePage=translateCompletePageV24;
+
+  const statusNames={
+    pending:'En attente',searching:'En attente',accepted:'Acceptée',confirmed:'Acceptée',
+    in_progress:'En cours',completed:'Terminée',cancelled:'Annulée',rejected:'Refusée',
+    paid:'Terminée',transferred:'Terminée'
+  };
+  const escapeHtml=value=>String(value??'').replace(/[&<>"']/g,char=>({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  }[char]));
+  const isLegacyDefault=m=>{
+    const total=Number(m.amount_cents||0)+Number(m.urgent_fee_cents||0);
+    return total===30000&&['pending','searching'].includes(m.status);
+  };
+  const priceLabel=m=>{
+    const total=Number(m.amount_cents||0)+Number(m.urgent_fee_cents||0);
+    if(!total||isLegacyDefault(m))return '<span class="v24-price-pending">Tarif à définir</span>';
+    return `<strong style="font-size:22px">${(total/100).toLocaleString('fr-FR',{style:'currency',currency:'EUR'})}</strong>`;
+  };
+  const statusClass=status=>['completed','paid','transferred','accepted','confirmed'].includes(status)?'ok':['cancelled','rejected'].includes(status)?'stop':'warn';
+
+  async function renderMissionRequestsV24(){
+    if(typeof currentProfile==='undefined'||currentProfile?.role!=='admin')return;
+    const panel=document.querySelector('#v3-missions');if(!panel)return;
+    const {data,error}=await db.from('missions').select('*').order('created_at',{ascending:false});
+    if(error){panel.innerHTML=`<div class="v3-empty">Impossible de charger les demandes : ${escapeHtml(error.message)}</div>`;return}
+    const rows=data||[];
+    const pending=rows.filter(m=>['pending','searching'].includes(m.status)).length;
+    panel.innerHTML=`<div class="admin-note v24-request-note"><strong>Gestion des demandes de mission</strong><br>Tu peux vérifier chaque demande, l’accepter, la refuser ou définir son tarif.</div>
+      <h3>Demandes reçues${pending?` · ${pending} demande${pending>1?'s':''} en attente`:''}</h3>
+      ${rows.length?rows.map(m=>{
+        const date=m.starts_at?new Date(m.starts_at).toLocaleDateString('fr-FR'):'Date non renseignée';
+        const waiting=['pending','searching'].includes(m.status);
+        return `<article class="v21-mission-card"><div class="v21-mission-head"><div><h3>${escapeHtml(m.title||m.port||'Mission')}</h3><div class="v21-mission-meta">${date}${m.boat_type?` · ${escapeHtml(m.boat_type)}`:''}${m.description?`<br>${escapeHtml(m.description)}`:''}<br>Statut paiement : ${escapeHtml(m.payment_status||'non payée')}</div></div><div style="text-align:right">${priceLabel(m)}<br><span class="v21-status ${statusClass(m.status)}">${escapeHtml(statusNames[m.status]||m.status||'En attente')}</span></div></div><div class="v21-mission-actions"><button class="fill" onclick="v21MissionEdit('${m.id}')">Gérer / modifier</button>${waiting?`<button class="v24-accept" onclick="v24MissionDecision('${m.id}','accepted')">Accepter</button><button class="v24-refuse" onclick="v24MissionDecision('${m.id}','rejected')">Refuser</button>`:''}${m.status==='accepted'?`<button onclick="v24MissionDecision('${m.id}','in_progress')">En cours</button>`:''}${m.status==='in_progress'?`<button onclick="v24MissionDecision('${m.id}','completed')">Terminer</button>`:''}<button class="danger" onclick="v21MissionDelete('${m.id}')">Supprimer</button></div></article>`;
+      }).join(''):'<div class="v3-empty">Aucune demande de mission enregistrée.</div>'}`;
+    translateCompletePageV24(localStorage.getItem('skippernow-language')||'fr');
+  }
+
+  window.v24MissionDecision=async function(id,status){
+    if(typeof currentProfile==='undefined'||currentProfile?.role!=='admin')return alert('Action réservée à l’administrateur.');
+    const {error}=await db.from('missions').update({status}).eq('id',id);
+    if(error)return alert('Erreur : '+error.message);
+    await renderMissionRequestsV24();
+  };
+  window.renderMissionManagerV21=renderMissionRequestsV24;
+
+  const oldMissionEdit=window.v21MissionEdit;
+  window.v21MissionEdit=async function(id){
+    if(typeof currentProfile==='undefined'||currentProfile?.role!=='admin')return;
+    const {data:m,error}=await db.from('missions').select('*').eq('id',id).maybeSingle();
+    if(error||!m)return alert('Mission introuvable.');
+    const portName=prompt('Nom ou port de la mission :',m.port||m.title||'');if(portName===null)return;
+    const currentTotal=isLegacyDefault(m)?'':((Number(m.amount_cents||0)+Number(m.urgent_fee_cents||0))/100).toString().replace('.',',');
+    const amount=prompt('Montant total en euros (laissez vide si le tarif reste à définir) :',currentTotal);if(amount===null)return;
+    const cleaned=String(amount).trim().replace(',','.').replace(/[^0-9.]/g,'');
+    const euros=cleaned===''?0:Number(cleaned);
+    if(!Number.isFinite(euros)||euros<0)return alert('Montant incorrect.');
+    const {error:updateError}=await db.from('missions').update({port:portName.trim(),amount_cents:Math.round(euros*100),urgent_fee_cents:0}).eq('id',id);
+    if(updateError)return alert('Erreur : '+updateError.message);
+    await renderMissionRequestsV24();
+  };
+
+  const previousOpenBookingV24=typeof openBooking==='function'?openBooking:null;
+  if(previousOpenBookingV24){
+    openBooking=function(name,price,isUrgent=false,selectedPort=''){
+      const cleanPrice=/^300\s*€?$/i.test(String(price||'').trim())?'Tarif à définir':(price||'Tarif à définir');
+      previousOpenBookingV24(name,cleanPrice,isUrgent,selectedPort);
+      const priceNode=document.querySelector('#summaryPrice');if(priceNode)priceNode.textContent=cleanPrice;
+      translateCompletePageV24(localStorage.getItem('skippernow-language')||'fr');
+    };
+  }
+
+  if(typeof window.openSkipperContact==='function'){
+    window.openSkipperContact=function(name,homePort){
+      document.querySelector('#skipperFinderModal')?.classList.remove('open');
+      if(!currentUser){
+        setRole('client');setAuthMode('login');accountModal.classList.add('open');
+        document.querySelector('#authMessage').textContent='Connectez-vous uniquement pour contacter '+name+'.';return;
+      }
+      openBooking(name,'Tarif à définir',false,homePort||port.value);
+    };
+  }
+
+  const sendButton=document.querySelector('#send');
+  if(sendButton)sendButton.onclick=async function(){
+    const msg=document.querySelector('#bookingMessage');
+    if(!currentUser){document.querySelector('#modal')?.classList.remove('open');accountModal.classList.add('open');msg.textContent='Connectez-vous avant de réserver.';return}
+    if(currentProfile?.role!=='client'&&currentProfile?.role!=='admin'){msg.textContent='Un compte client est nécessaire pour créer une mission.';return}
+    const boat=document.querySelector('#bookingBoat').value.trim();if(!boat){msg.textContent='Indiquez le type de bateau.';return}
+    msg.textContent='Enregistrement en cours…';
+    const rawPrice=String(currentRequest?.price||'');
+    const parsed=/^300\s*€?$/i.test(rawPrice.trim())?0:Number((rawPrice.match(/[\d.,]+/)||['0'])[0].replace(',','.'));
+    const base=Number.isFinite(parsed)?parsed:0;
+    const {data:settings}=await db.from('platform_settings').select('*').eq('id',1).maybeSingle();
+    const percent=Number(settings?.first_commission_percent||15);
+    const urgent=currentRequest?.isUrgent?Number(settings?.urgent_fee_cents||1900):0;
+    const start=new Date(dateInput.value+'T09:00:00');
+    const selectedDuration=document.querySelector('#duration').value;
+    const end=new Date(start.getTime()+(selectedDuration==='Demi-journée'?4:8)*3600000);
+    const {error}=await db.from('missions').insert({
+      client_id:currentUser.id,port:currentRequest?.port||port.value||'',
+      boat_type:boat,starts_at:start.toISOString(),ends_at:end.toISOString(),
+      amount_cents:Math.round(base*100),urgent_fee_cents:urgent,
+      platform_fee_cents:Math.round(base*percent),status:'pending'
+    });
+    if(error){msg.textContent='Erreur : '+error.message;return}
+    booking.style.display='none';success.style.display='block';
+    translateCompletePageV24(localStorage.getItem('skippernow-language')||'fr');
+  };
+
+  const previousOpenDashboardV24=window.openDashboard;
+  if(typeof previousOpenDashboardV24==='function'){
+    window.openDashboard=async function(){
+      await previousOpenDashboardV24.apply(this,arguments);
+      if(currentProfile?.role==='admin')setTimeout(renderMissionRequestsV24,480);
+      setTimeout(()=>translateCompletePageV24(localStorage.getItem('skippernow-language')||'fr'),520);
+    };
+  }
+
+  document.addEventListener('click',event=>{
+    if(event.target.closest?.('[data-v3="missions"]'))setTimeout(renderMissionRequestsV24,280);
+  },true);
+  const select=document.querySelector('#languageSelect');
+  if(select)select.onchange=event=>translateCompletePageV24(event.target.value);
+  const initialPrice=document.querySelector('#summaryPrice');
+  if(initialPrice&&/^300\s*€?$/i.test(initialPrice.textContent.trim()))initialPrice.textContent='Tarif à définir';
+  translateCompletePageV24(localStorage.getItem('skippernow-language')||'fr');
+})();
+</script>
+
+<script id="unifiedDockServicesV25">
+(function(){
+  const unifiedLabel='Préparation et services à quai';
+  const unifiedDescription='Nettoyage, rinçage, intérieur, préparation avant ou après sortie, avitaillement, amarrage et assistance au départ.';
+  const escapeValue=value=>String(value??'').replace(/[&<>"']/g,char=>({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  }[char]));
+
+  try{
+    PROVIDER_ACTIVITY_LABELS.cleaning=unifiedLabel;
+    PROVIDER_ACTIVITY_LABELS.dock_service=unifiedLabel;
+  }catch(_e){}
+
+  function showCategoriesV25(){
+    const grid=document.querySelector('#providerModal .provider-grid');
+    const intro=document.querySelector('#providerModal .dialog > .muted');
+    const results=document.querySelector('#providerModal .provider-results');
+    if(grid)grid.style.display='grid';if(intro)intro.style.display='block';if(results)results.style.display='none';
+    window.translatePage?.(localStorage.getItem('skippernow-language')||'fr');
+  }
+
+  async function showUnifiedProvidersV25(){
+    const grid=document.querySelector('#providerModal .provider-grid');
+    const intro=document.querySelector('#providerModal .dialog > .muted');
+    const results=document.querySelector('#providerModal .provider-results');
+    if(!results)return;
+    if(grid)grid.style.display='none';if(intro)intro.style.display='none';results.style.display='block';
+    results.innerHTML=`<div class="provider-results-head"><button class="provider-back" type="button">← Retour aux services</button><strong>${unifiedLabel}</strong></div><div class="provider-empty">Recherche des prestataires disponibles…</div>`;
+    results.querySelector('.provider-back').onclick=showCategoriesV25;
+    const {data,error}=await db.from('profiles')
+      .select('id,full_name,home_port,rating,profile_photo_url,bio,experience_years,languages,provider_activity,role')
+      .eq('verified',true).eq('available',true)
+      .in('provider_activity',['cleaning','dock_service'])
+      .in('role',['provider','skipper']);
+    if(error){
+      results.innerHTML=`<div class="provider-results-head"><button class="provider-back" type="button">← Retour aux services</button><strong>${unifiedLabel}</strong></div><div class="provider-empty">Impossible de charger les prestataires pour le moment.</div>`;
+      results.querySelector('.provider-back').onclick=showCategoriesV25;return;
+    }
+    const list=data||[];
+    results.innerHTML=`<div class="provider-results-head"><button class="provider-back" type="button">← Retour aux services</button><strong>${list.length} résultat${list.length>1?'s':''}</strong></div>${list.length?`<div class="provider-results-list">${list.map(p=>`<article class="provider-result-card">${p.profile_photo_url?`<img class="provider-result-photo" src="${escapeValue(p.profile_photo_url)}" alt="${escapeValue(p.full_name)}">`:'<div class="provider-result-photo">⚓</div>'}<div><h3>${escapeValue(p.full_name||'Prestataire')}</h3><p><strong>${escapeValue(p.home_port||'Port non renseigné')}</strong> · ${p.experience_years||0} an(s) d’expérience</p><p>${escapeValue(p.bio||'Profil professionnel vérifié.')}</p><button class="small-btn fill" type="button" onclick="openProviderContact('${escapeValue(p.id)}','${escapeValue(String(p.full_name||'Prestataire').replace(/'/g,"\\'"))}','${escapeValue(String(p.home_port||'').replace(/'/g,"\\'"))}','cleaning')">Voir le profil</button></div></article>`).join('')}</div>`:'<div class="provider-empty"><strong>Aucun prestataire disponible pour ce service.</strong><br>Les profils apparaîtront ici dès leur inscription et leur validation.</div>'}`;
+    results.querySelector('.provider-back').onclick=showCategoriesV25;
+    window.translatePage?.(localStorage.getItem('skippernow-language')||'fr');
+  }
+  window.showUnifiedProvidersV25=showUnifiedProvidersV25;
+
+  function unifyServiceCardV25(){
+    const grid=document.querySelector('#providerModal .provider-grid');if(!grid)return;
+    grid.querySelector('[data-provider="dock_service"]')?.remove();
+    const old=grid.querySelector('[data-provider="cleaning"]');if(!old||old.dataset.v25==='1')return;
+    const card=old.cloneNode(true);card.dataset.v25='1';card.dataset.provider='cleaning';
+    const icon=card.querySelector('.provider-icon');if(icon)icon.textContent='🧽';
+    const title=card.querySelector('b');if(title)title.textContent=unifiedLabel;
+    const description=[...card.querySelectorAll('span')].find(x=>!x.classList.contains('provider-icon'));
+    if(description)description.textContent=unifiedDescription;
+    card.onclick=event=>{event.preventDefault();event.stopImmediatePropagation();showUnifiedProvidersV25()};
+    old.replaceWith(card);
+  }
+
+  function unifyRegistrationOptionsV25(){
+    ['providerActivity','profileProviderActivity'].forEach(id=>{
+      const select=document.getElementById(id);if(!select)return;
+      const wasDock=select.value==='dock_service';
+      const cleaning=select.querySelector('option[value="cleaning"]');
+      if(cleaning)cleaning.textContent=unifiedLabel;
+      select.querySelector('option[value="dock_service"]')?.remove();
+      if(wasDock||!select.value)select.value='cleaning';
+    });
+    const signupText=document.querySelector('#roleProvider small');
+    if(signupText)signupText.textContent='Nettoyage, préparation à quai, avitaillement, amarrage et assistance';
+    document.querySelectorAll('.provider-badge').forEach(badge=>{
+      if(/Nettoyage|Services à quai/i.test(badge.textContent||''))badge.textContent=unifiedLabel;
+    });
+  }
+
+  let refreshTimer=0;
+  const observer=new MutationObserver(()=>{
+    clearTimeout(refreshTimer);
+    refreshTimer=setTimeout(()=>{unifyServiceCardV25();unifyRegistrationOptionsV25()},80);
+  });
+  function installV25(){
+    unifyServiceCardV25();unifyRegistrationOptionsV25();
+    observer.observe(document.body,{childList:true,subtree:true});
+    window.translatePage?.(localStorage.getItem('skippernow-language')||'fr');
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',installV25,{once:true});
+  else installV25();
+})();
+</script>
+
+<style id="adminBusinessCenterV26Styles">
+  .v26-settings-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+  .v26-setting-card{background:#fff;border:1px solid var(--line);border-radius:17px;padding:17px}
+  .v26-setting-card h3{margin:0 0 5px}.v26-setting-card p{margin:0 0 14px;color:var(--muted);font-size:13px;line-height:1.5}
+  .v26-field{display:grid;gap:6px;margin-top:11px}.v26-field label{font-size:12px;font-weight:850;color:var(--muted)}
+  .v26-field input,.v26-field select{width:100%;border:1px solid var(--line);border-radius:11px;padding:11px 12px;background:#fff;color:var(--ink);font:inherit}
+  .v26-simulator{background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;border-radius:18px;padding:18px;margin-top:14px}
+  .v26-sim-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.v26-sim-grid small{display:block;color:#c9dddd}.v26-sim-grid strong{font-size:22px}
+  .v26-save{margin-top:14px}.v26-help{padding:12px 14px;border-radius:12px;background:#edf7ff;color:#31556e;font-size:13px;margin-top:12px}
+  .v26-refund-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:15px;margin-bottom:11px}
+  .v26-refund-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.v26-refund-head h3{margin:0 0 4px}
+  .v26-refund-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.v26-refund-actions button{border:1px solid var(--navy);background:#fff;color:var(--navy);border-radius:10px;padding:9px 12px;font-weight:850;cursor:pointer}
+  .v26-refund-actions .approve{background:var(--navy);color:#fff}.v26-refund-actions .reject{border-color:#b43b3b;color:#b43b3b}
+  .v26-finance-table{width:100%;border-collapse:collapse;background:#fff;border-radius:15px;overflow:hidden}
+  .v26-finance-table th,.v26-finance-table td{padding:11px 9px;border-bottom:1px solid var(--line);text-align:left;font-size:13px}
+  .v26-finance-table th{color:var(--muted);font-size:11px;text-transform:uppercase}
+  @media(max-width:760px){.v26-settings-grid{grid-template-columns:1fr}.v26-sim-grid{grid-template-columns:1fr}.v26-finance-table{display:block;overflow:auto}}
+</style>
+
+<script id="adminBusinessCenterV26">
+(function(){
+  let installTimer=0;
+  const esc=value=>String(value??'').replace(/[&<>"']/g,char=>({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  }[char]));
+  const money=cents=>(Number(cents||0)/100).toLocaleString('fr-FR',{style:'currency',currency:'EUR'});
+  const isAdmin=()=>typeof currentProfile!=='undefined'&&String(currentProfile?.role||'').toLowerCase()==='admin';
+  const refundLabel=value=>({
+    refund_requested:'Remboursement demandé',refunded:'Remboursée',refund_rejected:'Remboursement refusé',
+    paid:'Payée',transferred:'Versée',pending:'En attente',unpaid:'Non payée'
+  }[value]||value||'Non payée');
+
+  function commissionSimulatorV26(){
+    const amount=Math.max(0,Number(document.querySelector('#v26SimAmount')?.value)||0);
+    const percent=Math.max(0,Math.min(50,Number(document.querySelector('#v26FirstCommission')?.value)||0));
+    const urgent=Math.max(0,Number(document.querySelector('#v26UrgentFee')?.value)||0);
+    const commission=amount*percent/100;
+    const client=amount+urgent;
+    const pro=Math.max(0,amount-commission);
+    const set=(id,value)=>{const node=document.querySelector(id);if(node)node.textContent=value.toLocaleString('fr-FR',{style:'currency',currency:'EUR'})};
+    set('#v26ClientTotal',client);set('#v26PlatformTotal',commission+urgent);set('#v26ProviderTotal',pro);
+  }
+  window.commissionSimulatorV26=commissionSimulatorV26;
+
+  async function saveCommissionSettingsV26(){
+    if(!isAdmin())return alert('Action réservée à l’administrateur.');
+    const first=Math.max(0,Math.min(50,Number(document.querySelector('#v26FirstCommission')?.value)||0));
+    const repeat=Math.max(0,Math.min(50,Number(document.querySelector('#v26RepeatCommission')?.value)||0));
+    const urgent=Math.max(0,Number(document.querySelector('#v26UrgentFee')?.value)||0);
+    const support=(document.querySelector('#v26SupportEmail')?.value||'').trim();
+    const message=document.querySelector('#v26SettingsMessage');
+    if(message)message.textContent='Enregistrement en cours…';
+    const payload={id:1,first_commission_percent:first,repeat_commission_percent:repeat,urgent_fee_cents:Math.round(urgent*100),support_email:support,updated_at:new Date().toISOString()};
+    const {error}=await db.from('platform_settings').upsert(payload);
+    if(error){if(message)message.textContent='Enregistrement impossible : '+error.message;return}
+    if(message)message.textContent='Réglages enregistrés. La nouvelle commission sera appliquée aux prochaines missions.';
+    commissionSimulatorV26();
+  }
+  window.saveCommissionSettingsV26=saveCommissionSettingsV26;
+
+  async function setRefundStatusV26(id,status){
+    if(!isAdmin())return alert('Action réservée à l’administrateur.');
+    const question=status==='refunded'
+      ?'Accepter cette demande et marquer la mission comme remboursée ?'
+      :'Refuser cette demande de remboursement ?';
+    if(!confirm(question))return;
+    const {error}=await db.from('missions').update({payment_status:status}).eq('id',id);
+    if(error)return alert('Modification impossible : '+error.message);
+    await renderRefundsV26();
+  }
+  window.setRefundStatusV26=setRefundStatusV26;
+
+  async function requestRefundV26(id){
+    if(!confirm('Créer une demande de remboursement pour cette mission ?'))return;
+    const {error}=await db.from('missions').update({payment_status:'refund_requested'}).eq('id',id);
+    if(error)return alert('Demande impossible : '+error.message);
+    await renderRefundsV26();
+  }
+  window.requestRefundV26=requestRefundV26;
+
+  async function renderRefundsV26(){
+    const panel=document.querySelector('#v3-refunds');if(!panel||!isAdmin())return;
+    const {data,error}=await db.from('missions').select('*').order('created_at',{ascending:false});
+    if(error){panel.innerHTML=`<div class="v3-empty">Impossible de charger les remboursements : ${esc(error.message)}</div>`;return}
+    const all=data||[];
+    const requests=all.filter(m=>m.payment_status==='refund_requested');
+    const history=all.filter(m=>['refunded','refund_rejected'].includes(m.payment_status));
+    const card=m=>`<article class="v26-refund-card"><div class="v26-refund-head"><div><h3>${esc(m.port||m.title||'Mission')}</h3><div class="v3-meta">${m.starts_at?new Date(m.starts_at).toLocaleDateString('fr-FR'):'Date non renseignée'} · ${esc(m.boat_type||'Prestation nautique')}<br>Référence : ${esc(String(m.id).slice(0,8))}</div></div><div style="text-align:right"><strong>${money((m.amount_cents||0)+(m.urgent_fee_cents||0))}</strong><br><span class="v3-badge ${m.payment_status==='refunded'?'ok':m.payment_status==='refund_rejected'?'stop':'wait'}">${esc(refundLabel(m.payment_status))}</span></div></div>${m.payment_status==='refund_requested'?`<div class="v26-refund-actions"><button class="approve" onclick="setRefundStatusV26('${m.id}','refunded')">Accepter le remboursement</button><button class="reject" onclick="setRefundStatusV26('${m.id}','refund_rejected')">Refuser</button></div>`:''}</article>`;
+    panel.innerHTML=`<div class="v26-help"><strong>Centre des litiges et remboursements</strong><br>Vérifie la mission avant de prendre une décision. Le statut est enregistré ici ; le retour bancaire effectif sera exécuté par Stripe lorsque les paiements automatiques seront connectés.</div><h3>Demandes à traiter (${requests.length})</h3>${requests.map(card).join('')||'<div class="v3-empty">Aucune demande de remboursement en attente.</div>'}<h3 style="margin-top:20px">Historique</h3>${history.map(card).join('')||'<div class="v3-empty">Aucun remboursement traité.</div>'}`;
+  }
+
+  async function renderBusinessCenterV26(){
+    const panel=document.querySelector('#v3-business');if(!panel||!isAdmin())return;
+    const [settingsResult,missionsResult]=await Promise.all([
+      db.from('platform_settings').select('*').eq('id',1).maybeSingle(),
+      db.from('missions').select('*').order('created_at',{ascending:false})
+    ]);
+    const settings={first_commission_percent:15,repeat_commission_percent:8,urgent_fee_cents:1900,support_email:'',...(settingsResult.data||{})};
+    const rows=missionsResult.data||[];
+    const paid=rows.filter(m=>['paid','transferred','completed','refunded'].includes(m.payment_status||m.status));
+    const volume=paid.reduce((sum,m)=>sum+Number(m.amount_cents||0)+Number(m.urgent_fee_cents||0),0);
+    const fees=paid.reduce((sum,m)=>sum+Number(m.platform_fee_cents||0)+Number(m.urgent_fee_cents||0),0);
+    const providerNet=Math.max(0,volume-fees);
+    panel.innerHTML=`
+      <div class="v3-wallet"><div class="v3-wallet-grid"><div><small>Volume clients</small><strong>${money(volume)}</strong></div><div><small>Revenus SkipperNow</small><strong>${money(fees)}</strong></div><div><small>Revenus professionnels</small><strong>${money(providerNet)}</strong></div><div><small>Taux actuel</small><strong>${Number(settings.first_commission_percent||0)} %</strong></div></div></div>
+      <div class="v26-settings-grid" style="margin-top:14px">
+        <section class="v26-setting-card"><h3>Commissions SkipperNow</h3><p>Ces pourcentages sont utilisés pour calculer automatiquement ce que garde la plateforme.</p>
+          <div class="v26-field"><label>Première mission (%)</label><input id="v26FirstCommission" type="number" min="0" max="50" step="0.5" value="${Number(settings.first_commission_percent||0)}" oninput="commissionSimulatorV26()"></div>
+          <div class="v26-field"><label>Client régulier avec le même professionnel (%)</label><input id="v26RepeatCommission" type="number" min="0" max="50" step="0.5" value="${Number(settings.repeat_commission_percent||0)}"></div>
+        </section>
+        <section class="v26-setting-card"><h3>Frais et assistance</h3><p>Gère le supplément des demandes urgentes et l’adresse de contact de la plateforme.</p>
+          <div class="v26-field"><label>Supplément demande urgente (€)</label><input id="v26UrgentFee" type="number" min="0" step="1" value="${Number(settings.urgent_fee_cents||0)/100}" oninput="commissionSimulatorV26()"></div>
+          <div class="v26-field"><label>Email d’assistance</label><input id="v26SupportEmail" type="email" value="${esc(settings.support_email||'')}" placeholder="contact@skippernow.fr"></div>
+        </section>
+      </div>
+      <div class="v26-simulator"><h3 style="margin-top:0">Simulateur de commission</h3><div class="v26-field"><label style="color:#c9dddd">Prix de la prestation (€)</label><input id="v26SimAmount" type="number" min="0" value="500" oninput="commissionSimulatorV26()"></div><div class="v26-sim-grid" style="margin-top:14px"><div><small>Total payé par le client</small><strong id="v26ClientTotal">—</strong></div><div><small>Revenu SkipperNow</small><strong id="v26PlatformTotal">—</strong></div><div><small>Net professionnel</small><strong id="v26ProviderTotal">—</strong></div></div></div>
+      <button class="primary wide v26-save" onclick="saveCommissionSettingsV26()">Enregistrer les commissions</button><p class="muted" id="v26SettingsMessage"></p>
+      <h3 style="margin-top:22px">Détail des dernières opérations</h3>
+      <table class="v26-finance-table"><thead><tr><th>Mission</th><th>Client</th><th>SkipperNow</th><th>Professionnel</th><th>État</th></tr></thead><tbody>${rows.slice(0,30).map(m=>{const total=Number(m.amount_cents||0)+Number(m.urgent_fee_cents||0),fee=Number(m.platform_fee_cents||0)+Number(m.urgent_fee_cents||0);return `<tr><td>${esc(m.port||m.title||'Mission')}</td><td>${money(total)}</td><td>${money(fee)}</td><td>${money(Math.max(0,total-fee))}</td><td>${esc(refundLabel(m.payment_status||m.status))}${!['refunded','refund_requested'].includes(m.payment_status)?`<br><button class="small-btn" style="margin-top:5px" onclick="requestRefundV26('${m.id}')">Demander remboursement</button>`:''}</td></tr>`}).join('')||'<tr><td colspan="5">Aucune opération enregistrée.</td></tr>'}</tbody></table>`;
+    commissionSimulatorV26();
+  }
+
+  async function installBusinessCenterV26(){
+    if(!isAdmin())return;
+    const root=document.querySelector('#dashboardBody .dashboard-v3');
+    if(!root)return;
+    const tabs=root.querySelector('.v3-tabs');if(!tabs)return;
+    if(!tabs.querySelector('[data-v3="business"]')){
+      const businessButton=document.createElement('button');businessButton.className='v3-tab';businessButton.dataset.v3='business';businessButton.textContent='Commissions et règles';businessButton.onclick=()=>{window.v3Tab('business');renderBusinessCenterV26()};
+      tabs.appendChild(businessButton);
+      const businessPanel=document.createElement('section');businessPanel.className='v3-panel';businessPanel.id='v3-business';businessPanel.innerHTML='<div class="v3-empty">Chargement des réglages financiers…</div>';root.appendChild(businessPanel);
+    }
+    if(!tabs.querySelector('[data-v3="refunds"]')){
+      const refundButton=document.createElement('button');refundButton.className='v3-tab';refundButton.dataset.v3='refunds';refundButton.textContent='Litiges et remboursements';refundButton.onclick=()=>{window.v3Tab('refunds');renderRefundsV26()};
+      tabs.appendChild(refundButton);
+      const refundPanel=document.createElement('section');refundPanel.className='v3-panel';refundPanel.id='v3-refunds';refundPanel.innerHTML='<div class="v3-empty">Chargement des demandes…</div>';root.appendChild(refundPanel);
+    }
+  }
+
+  const observer=new MutationObserver(()=>{
+    clearTimeout(installTimer);
+    installTimer=setTimeout(installBusinessCenterV26,180);
+  });
+  function startV26(){
+    const body=document.querySelector('#dashboardBody');if(body)observer.observe(body,{childList:true});
+    installBusinessCenterV26();
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',startV26,{once:true});else startV26();
+})();
+</script>
+
+<style id="marketplaceWorkflowV27Styles">
+  .v27-flow{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0 18px}
+  .v27-step{display:flex;align-items:center;gap:7px;padding:7px 10px;border-radius:999px;background:#eef4f5;color:var(--muted);font-size:11px;font-weight:850}
+  .v27-step.done{background:#dcf8ef;color:#057554}.v27-step.current{background:#dff7f6;color:var(--blue)}
+  .v27-card{background:#fff;border:1px solid var(--line);border-radius:17px;padding:17px;margin-bottom:12px}
+  .v27-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
+  .v27-card h3{margin:0 0 5px}.v27-meta{color:var(--muted);font-size:13px;line-height:1.55}
+  .v27-price{font-size:23px;font-weight:900;white-space:nowrap}.v27-pending{color:var(--muted);font-size:13px;font-weight:850}
+  .v27-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}
+  .v27-actions button{border:1px solid var(--navy);background:#fff;color:var(--navy);border-radius:10px;padding:9px 12px;font-weight:850;cursor:pointer}
+  .v27-actions .fill{background:var(--navy);color:#fff}.v27-actions .approve{background:#08794e;border-color:#08794e;color:#fff}
+  .v27-actions .danger{border-color:#b43b3b;color:#b43b3b}.v27-actions button:disabled{opacity:.5;cursor:not-allowed}
+  .v27-photos{display:flex;gap:8px;overflow:auto;margin-top:12px}.v27-photos img{width:116px;height:88px;object-fit:cover;border-radius:11px;border:1px solid var(--line)}
+  .v27-note{background:#edf7ff;border:1px solid #cfe7f8;color:#31556e;border-radius:13px;padding:13px;margin:12px 0;font-size:13px;line-height:1.5}
+  .v27-warning{background:#fff8e8;border-color:#f0d898;color:#76550d}.v27-success{background:#edfff8;border-color:#b8dfd2;color:#076b4e}
+  .v27-form{display:grid;gap:10px;margin-top:12px}.v27-form input,.v27-form textarea,.v27-form select{width:100%;border:1px solid var(--line);border-radius:11px;padding:11px;font:inherit}
+  .v27-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.v27-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:16px}
+  .v27-kpi{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px}.v27-kpi span{display:block;color:var(--muted);font-size:11px;font-weight:850;text-transform:uppercase}.v27-kpi strong{display:block;font-size:27px;margin-top:7px}
+  .v27-admin-nav{display:flex;gap:7px;overflow:auto;margin-bottom:15px}.v27-admin-nav button{border:1px solid var(--line);background:#fff;border-radius:11px;padding:10px 12px;white-space:nowrap;font-weight:850;cursor:pointer}.v27-admin-nav button.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .v27-panel{display:none}.v27-panel.active{display:block}.v27-table{width:100%;border-collapse:collapse;background:#fff}.v27-table th,.v27-table td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left;font-size:12px}.v27-table th{color:var(--muted);text-transform:uppercase}
+  .v27-contact{background:var(--mist);padding:9px;border-radius:10px;margin-top:8px;font-size:12px}.v27-hide-contact{color:var(--muted);font-style:italic}
+  #requestDetailsV27{min-height:90px}.v27-booking-extra label{display:block;font-weight:800;font-size:12px;margin-bottom:6px}.v27-booking-extra{margin-top:10px}
+  @media(max-width:760px){.v27-grid,.v27-kpis{grid-template-columns:1fr 1fr}.v27-card-head{flex-direction:column}.v27-table{display:block;overflow:auto}}
+  @media(max-width:480px){.v27-grid,.v27-kpis{grid-template-columns:1fr}}
+</style>
+
+<script id="marketplaceWorkflowV27">
+(function(){
+  const META_MARK='\n[[SN27:';
+  const lang=()=>localStorage.getItem('skippernow-language')||'fr';
+  const copy={
+    fr:{
+      dashboard:'Tableau de bord',requests:'Demandes',payments:'Encaissements',payouts:'Virements',refunds:'Remboursements',commissions:'Commissions',users:'Utilisateurs',boats:'Bateaux',
+      overview:'Vue générale',activeJobs:'Missions actives',heldFunds:'Fonds sécurisés',readyPayout:'À verser',platformRevenue:'Revenus plateforme',
+      workflow:'Cycle de la mission',request:'Demande',quote:'Devis',clientPayment:'Paiement',work:'Prestation',proof:'Preuves',release:'Virement',
+      waitingQuote:'En attente du prix du professionnel',priceToDefine:'Tarif à définir',quoteProposed:'Prix proposé',quoteAccepted:'Devis accepté',quoteRefused:'Devis refusé',
+      payNow:'Payer maintenant',acceptQuote:'Accepter le devis',refuseQuote:'Refuser le devis',startWork:'Commencer la prestation',finishWork:'Ajouter les photos et terminer',
+      validateWork:'Valider la prestation',requestRefund:'Demander un remboursement',delete:'Supprimer',releasePayment:'Débloquer le virement',
+      paymentHeld:'Paiement encaissé et sécurisé par SkipperNow',paymentPending:'Paiement non effectué',payoutReady:'Prestation validée — virement à autoriser',paidOut:'Virement effectué',
+      noRequest:'Aucune demande pour le moment.',noMission:'Aucune mission enregistrée.',details:'Description de la prestation',requestPhotos:'Photos de la prestation à faire',
+      photosHelp:'Ajoutez 1 à 4 photos pour permettre au professionnel de préparer son devis.',proRequests:'Demandes disponibles',myJobs:'Mes prestations',
+      proposePrice:'Proposer mon prix',priceEuros:'Prix total proposé (€)',quoteNote:'Message avec le devis',sendQuote:'Envoyer le devis',
+      completionPhotos:'Photos de fin de prestation',completionNote:'Compte rendu de fin',sendProof:'Envoyer les preuves',
+      secureNote:'Le client ne paie rien lors de sa demande. Le paiement apparaît seulement après acceptation du devis.',
+      adminNote:'Les coordonnées du client restent masquées aux prestataires. Toutes les décisions et tous les paiements restent dans SkipperNow.',
+      providerContacts:'Coordonnées professionnelles',clientProtected:'Coordonnées protégées — visibles uniquement par l’administration',
+      globalRate:'Commission générale (%)',repeatRate:'Commission client régulier (%)',urgentFee:'Frais demande urgente (€)',save:'Enregistrer',
+      providerRate:'Commission personnalisée par prestataire',chooseProvider:'Choisir un prestataire',customRate:'Taux personnalisé (%)',saveRate:'Enregistrer ce taux',
+      realPayment:'Le débit, le remboursement et le virement réels sont exécutés par les fonctions sécurisées Stripe de SkipperNow.',
+      allMissions:'Toutes les missions',status:'Statut',client:'Client',professional:'Professionnel',amount:'Montant',platform:'SkipperNow',netPro:'Net prestataire',
+      accepted:'Accepté',refused:'Refusé',saved:'Enregistré',error:'Erreur',loading:'Chargement…',confirmDelete:'Supprimer définitivement cette mission ?',
+      describeNeed:'Décrivez précisément le nettoyage, la préparation, l’avitaillement ou la mission demandée.',
+      providerChosen:'Professionnel sélectionné',openRequest:'Demande ouverte aux professionnels disponibles',paymentStatus:'Paiement',requestSent:'Demande envoyée. Le professionnel peut maintenant proposer son prix.',
+      proofRequired:'Ajoutez au moins une photo de fin.',amountInvalid:'Indiquez un prix correct.',stripeMissing:'Le module Stripe sécurisé doit être activé pour effectuer cette opération réelle.',
+      clientAccepted:'Le client a accepté le devis. En attente du paiement.',quoteWaitingClient:'Devis envoyé — en attente de la réponse du client.',
+      selectedProfessional:'Professionnel sélectionné',priorityHandling:'Traitement prioritaire',
+      paymentPromise:'Le professionnel proposera son prix. Vous paierez uniquement après avoir accepté son devis.',
+      successQuote:'Le professionnel peut maintenant consulter votre demande et proposer son prix. Vous pourrez accepter ou refuser le devis.'
+    },
+    en:{
+      dashboard:'Dashboard',requests:'Requests',payments:'Payments received',payouts:'Payouts',refunds:'Refunds',commissions:'Commissions',users:'Users',boats:'Boats',
+      overview:'Overview',activeJobs:'Active jobs',heldFunds:'Secured funds',readyPayout:'Ready to pay',platformRevenue:'Platform revenue',
+      workflow:'Job workflow',request:'Request',quote:'Quote',clientPayment:'Payment',work:'Work',proof:'Proof',release:'Payout',
+      waitingQuote:'Waiting for the professional’s price',priceToDefine:'Price to be agreed',quoteProposed:'Price proposed',quoteAccepted:'Quote accepted',quoteRefused:'Quote declined',
+      payNow:'Pay now',acceptQuote:'Accept quote',refuseQuote:'Decline quote',startWork:'Start job',finishWork:'Add photos and complete',validateWork:'Approve completed work',
+      requestRefund:'Request a refund',delete:'Delete',releasePayment:'Release payout',paymentHeld:'Payment received and secured by SkipperNow',paymentPending:'Not paid',
+      payoutReady:'Work approved — payout authorization required',paidOut:'Payout completed',noRequest:'No requests yet.',noMission:'No jobs recorded.',
+      details:'Job description',requestPhotos:'Photos of the work required',photosHelp:'Add 1 to 4 photos so the professional can prepare a quote.',proRequests:'Available requests',myJobs:'My jobs',
+      proposePrice:'Propose my price',priceEuros:'Total proposed price (€)',quoteNote:'Message with quote',sendQuote:'Send quote',completionPhotos:'Completion photos',
+      completionNote:'Completion report',sendProof:'Send proof',secureNote:'The client pays nothing when sending a request. Payment is shown only after the quote is accepted.',
+      adminNote:'Client contact details remain hidden from professionals. Every decision and payment stays within SkipperNow.',providerContacts:'Professional contact details',
+      clientProtected:'Protected contact details — visible only to administration',globalRate:'Default commission (%)',repeatRate:'Repeat-client commission (%)',urgentFee:'Urgent request fee (€)',
+      save:'Save',providerRate:'Custom commission by professional',chooseProvider:'Choose a professional',customRate:'Custom rate (%)',saveRate:'Save this rate',
+      realPayment:'Real charges, refunds and payouts are executed by SkipperNow secure Stripe functions.',allMissions:'All jobs',status:'Status',client:'Client',
+      professional:'Professional',amount:'Amount',platform:'SkipperNow',netPro:'Professional net',accepted:'Accepted',refused:'Declined',saved:'Saved',error:'Error',loading:'Loading…',
+      confirmDelete:'Permanently delete this job?',describeNeed:'Describe the cleaning, preparation, provisioning or job required.',providerChosen:'Selected professional',
+      openRequest:'Request open to available professionals',paymentStatus:'Payment',requestSent:'Request sent. The professional can now propose a price.',
+      proofRequired:'Add at least one completion photo.',amountInvalid:'Enter a valid price.',stripeMissing:'The secure Stripe module must be enabled to perform this real operation.',
+      clientAccepted:'The client accepted the quote. Waiting for payment.',quoteWaitingClient:'Quote sent — waiting for the client’s response.',
+      selectedProfessional:'Selected professional',priorityHandling:'Priority processing',
+      paymentPromise:'The professional will propose a price. You will pay only after accepting the quote.',
+      successQuote:'The professional can now review your request and propose a price. You can accept or decline the quote.'
+    },
+    es:{
+      dashboard:'Panel de control',requests:'Solicitudes',payments:'Cobros',payouts:'Transferencias',refunds:'Reembolsos',commissions:'Comisiones',users:'Usuarios',boats:'Barcos',
+      overview:'Resumen',activeJobs:'Servicios activos',heldFunds:'Fondos protegidos',readyPayout:'Por transferir',platformRevenue:'Ingresos de la plataforma',
+      workflow:'Proceso del servicio',request:'Solicitud',quote:'Presupuesto',clientPayment:'Pago',work:'Servicio',proof:'Pruebas',release:'Transferencia',
+      waitingQuote:'Esperando el precio del profesional',priceToDefine:'Precio por definir',quoteProposed:'Precio propuesto',quoteAccepted:'Presupuesto aceptado',quoteRefused:'Presupuesto rechazado',
+      payNow:'Pagar ahora',acceptQuote:'Aceptar presupuesto',refuseQuote:'Rechazar presupuesto',startWork:'Comenzar el servicio',finishWork:'Añadir fotos y terminar',
+      validateWork:'Validar el servicio',requestRefund:'Solicitar reembolso',delete:'Eliminar',releasePayment:'Liberar transferencia',
+      paymentHeld:'Pago cobrado y protegido por SkipperNow',paymentPending:'Pago no realizado',payoutReady:'Servicio validado — transferencia por autorizar',paidOut:'Transferencia realizada',
+      noRequest:'Todavía no hay solicitudes.',noMission:'No hay servicios registrados.',details:'Descripción del servicio',requestPhotos:'Fotos del trabajo a realizar',
+      photosHelp:'Añade de 1 a 4 fotos para que el profesional prepare su presupuesto.',proRequests:'Solicitudes disponibles',myJobs:'Mis servicios',
+      proposePrice:'Proponer mi precio',priceEuros:'Precio total propuesto (€)',quoteNote:'Mensaje con el presupuesto',sendQuote:'Enviar presupuesto',
+      completionPhotos:'Fotos al finalizar',completionNote:'Informe final',sendProof:'Enviar pruebas',
+      secureNote:'El cliente no paga nada al enviar la solicitud. El pago aparece únicamente después de aceptar el presupuesto.',
+      adminNote:'Los datos de contacto del cliente permanecen ocultos para los profesionales. Todas las decisiones y pagos pasan por SkipperNow.',
+      providerContacts:'Datos profesionales',clientProtected:'Datos protegidos — visibles únicamente para la administración',
+      globalRate:'Comisión general (%)',repeatRate:'Comisión cliente habitual (%)',urgentFee:'Cargo solicitud urgente (€)',save:'Guardar',
+      providerRate:'Comisión personalizada por prestador',chooseProvider:'Elegir un prestador',customRate:'Tasa personalizada (%)',saveRate:'Guardar esta tasa',
+      realPayment:'Los cobros, reembolsos y transferencias reales se ejecutan mediante las funciones seguras de Stripe de SkipperNow.',
+      allMissions:'Todos los servicios',status:'Estado',client:'Cliente',professional:'Profesional',amount:'Importe',platform:'SkipperNow',netPro:'Neto prestador',
+      accepted:'Aceptado',refused:'Rechazado',saved:'Guardado',error:'Error',loading:'Cargando…',confirmDelete:'¿Eliminar definitivamente este servicio?',
+      describeNeed:'Describe con precisión la limpieza, preparación, aprovisionamiento o servicio solicitado.',providerChosen:'Profesional seleccionado',
+      openRequest:'Solicitud abierta a los profesionales disponibles',paymentStatus:'Pago',requestSent:'Solicitud enviada. El profesional ya puede proponer su precio.',
+      proofRequired:'Añade al menos una foto al finalizar.',amountInvalid:'Indica un precio correcto.',stripeMissing:'El módulo seguro de Stripe debe estar activado para realizar esta operación real.',
+      clientAccepted:'El cliente aceptó el presupuesto. Esperando el pago.',quoteWaitingClient:'Presupuesto enviado — esperando la respuesta del cliente.',
+      selectedProfessional:'Profesional seleccionado',priorityHandling:'Tramitación prioritaria',
+      paymentPromise:'El profesional propondrá su precio. Solo pagarás después de aceptar el presupuesto.',
+      successQuote:'El profesional ya puede consultar tu solicitud y proponer su precio. Podrás aceptar o rechazar el presupuesto.'
+    }
+  };
+  const t=key=>(copy[lang()]||copy.fr)[key]||copy.fr[key]||key;
+  const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const money=cents=>(Number(cents||0)/100).toLocaleString(lang()==='en'?'en-GB':lang()==='es'?'es-ES':'fr-FR',{style:'currency',currency:'EUR'});
+  const locale=()=>lang()==='en'?'en-GB':lang()==='es'?'es-ES':'fr-FR';
+  const isPro=()=>['skipper','provider'].includes(String(currentProfile?.role||'').toLowerCase());
+  const isAdmin=()=>String(currentProfile?.role||'').toLowerCase()==='admin';
+
+  function encodeMeta(meta){
+    try{return btoa(unescape(encodeURIComponent(JSON.stringify(meta))))}catch(_e){return ''}
+  }
+  function decodeMeta(description){
+    const text=String(description||''),start=text.lastIndexOf(META_MARK);
+    if(start<0)return {meta:{},text};
+    const end=text.indexOf(']]',start);
+    if(end<0)return {meta:{},text};
+    try{return {meta:JSON.parse(decodeURIComponent(escape(atob(text.slice(start+META_MARK.length,end))))),text:text.slice(0,start).trim()}}catch(_e){return {meta:{},text}}
+  }
+  function packDescription(text,meta){return String(text||'').trim()+META_MARK+encodeMeta(meta)+']]'}
+  function phase(m){
+    if(m.payment_status==='transferred')return 6;
+    if(['payout_ready','completed'].includes(m.payment_status)||m.status==='payout_ready')return 5;
+    if(m.status==='awaiting_validation')return 4;
+    if(['paid','held'].includes(m.payment_status))return 3;
+    if(['quote_accepted','accepted'].includes(m.status))return 2;
+    if(['quoted'].includes(m.status))return 1;
+    return 0;
+  }
+  function flow(m){
+    const p=phase(m),keys=['request','quote','clientPayment','work','proof','release'];
+    return `<div class="v27-flow">${keys.map((key,i)=>`<span class="v27-step ${i<p?'done':i===p?'current':''}">${i<p?'✓':i+1} ${t(key)}</span>`).join('')}</div>`;
+  }
+  function statusLabel(m){
+    const map={
+      pending:t('waitingQuote'),searching:t('waitingQuote'),quoted:t('quoteProposed'),quote_accepted:t('quoteAccepted'),
+      quote_rejected:t('quoteRefused'),rejected:t('quoteRefused'),in_progress:t('work'),awaiting_validation:t('proof'),
+      payout_ready:t('payoutReady'),completed:t('payoutReady'),cancelled:'Annulée'
+    };
+    if(m.payment_status==='transferred')return t('paidOut');
+    return map[m.status]||m.status||t('waitingQuote');
+  }
+  function photoStrip(urls){
+    const valid=(Array.isArray(urls)?urls:[]).filter(Boolean);
+    return valid.length?`<div class="v27-photos">${valid.map(url=>`<a href="${esc(url)}" target="_blank" rel="noopener"><img src="${esc(url)}" alt="Photo"></a>`).join('')}</div>`:'';
+  }
+  async function uploadPhotos(files,label){
+    const urls=[];
+    for(const file of Array.from(files||[]).slice(0,4)){
+      const ext=(file.name.split('.').pop()||'jpg').toLowerCase();
+      const path=`${currentUser.id}/${label}-${Date.now()}-${Math.random().toString(36).slice(2,7)}.${ext}`;
+      const {error}=await db.storage.from('profile-media').upload(path,file,{upsert:false});
+      if(error)throw error;
+      urls.push(db.storage.from('profile-media').getPublicUrl(path).data.publicUrl);
+    }
+    return urls;
+  }
+  async function profilesMap(ids){
+    const unique=[...new Set(ids.filter(Boolean))];if(!unique.length)return {};
+    const {data}=await db.from('profiles').select('*').in('id',unique);
+    return Object.fromEntries((data||[]).map(p=>[String(p.id),p]));
+  }
+  async function commissionFor(providerId){
+    const [{data:settings},{data:provider}]=await Promise.all([
+      db.from('platform_settings').select('*').eq('id',1).maybeSingle(),
+      providerId?db.from('profiles').select('*').eq('id',providerId).maybeSingle():Promise.resolve({data:null})
+    ]);
+    const fallback=Number(settings?.first_commission_percent||15);
+    const local=JSON.parse(localStorage.getItem('skippernow-provider-rates')||'{}');
+    return Number(provider?.commission_percent??local[String(providerId)]??fallback);
+  }
+
+  function installBookingFields(){
+    const boat=document.querySelector('#bookingBoat')?.closest('.field');if(!boat||document.querySelector('#requestDetailsV27'))return;
+    const extra=document.createElement('div');extra.className='v27-booking-extra';
+    extra.innerHTML=`<div class="field"><label>${t('details')}</label><textarea id="requestDetailsV27" placeholder="${t('describeNeed')}"></textarea></div><div class="field"><label>${t('requestPhotos')}</label><input id="requestPhotosV27" type="file" accept="image/*" multiple><small class="muted">${t('photosHelp')}</small></div><div class="v27-note">${t('secureNote')}</div>`;
+    boat.after(extra);
+  }
+  function localizeBookingStatic(){
+    const name=document.querySelector('#skipperName');
+    if(name&&/Professionnel sélectionné|Selected professional|Profesional seleccionado/i.test(name.textContent||''))name.textContent=t('selectedProfessional');
+    const price=document.querySelector('#summaryPrice');if(price&&!Number((price.textContent||'').replace(/\D/g,'')))price.textContent=t('priceToDefine');
+    const priority=document.querySelector('#urgentLine strong');if(priority)priority.textContent=t('priorityHandling');
+    const payment=document.querySelector('#booking .payment-note span:last-child');if(payment)payment.textContent=t('paymentPromise');
+    const successText=document.querySelector('#success p');if(successText)successText.textContent=t('successQuote');
+  }
+  const extraStatic={
+    en:{
+      '🚤 LOCATION DE BATEAUX':'🚤 BOAT RENTALS','Mettre mon bateau en location':'List my boat for rent',
+      'Créez votre compte propriétaire, ajoutez les photos, les caractéristiques, le port d’attache et les disponibilités de votre bateau. Vous pourrez ensuite proposer la location avec ou sans skipper.':'Create an owner account, add photos, specifications, home port and availability, then offer your boat with or without a skipper.',
+      'Voir où l’ajouter':'See where to add it','Chemin simple :':'Quick path:','Mon espace → Mes bateaux → Ajouter mon bateau':'My account → My boats → Add my boat',
+      '🌊 EXEMPLES DE BATEAUX':'🌊 BOAT EXAMPLES','Des annonces visibles dès l’accueil':'Listings visible from the home page',
+      'Location avec skipper · Eau turquoise des îles de Lérins':'Skippered rental · Turquoise water around the Lérins Islands',
+      'Sortie journée · Avec ou sans skipper':'Full-day trip · With or without a skipper','Recevez des missions proches de votre port lorsque vous êtes disponible.':'Receive nearby job requests when you are available.',
+      'ESPACE PROFESSIONNEL':'PROFESSIONAL AREA','Créer mon profil':'Create my profile','J’ai déjà un compte':'I already have an account','NOM COMPLET':'FULL NAME',
+      'PORT PRINCIPAL':'HOME PORT','EXPÉRIENCE':'EXPERIENCE','Identité, brevet et assurance vérifiés avant l’activation du profil.':'Identity, licence and insurance are verified before profile activation.',
+      'Commencer mon inscription':'Start registration','SERVICES NAUTIQUES':'MARINE SERVICES','Choisissez le service dont vous avez besoin près de votre port.':'Choose the service you need near your port.',
+      'Nettoyage du bateau':'Boat cleaning','Lavage, rinçage, intérieur, préparation avant ou après sortie.':'Washing, rinsing, interior care and preparation before or after a trip.',
+      'Services à quai':'Dock services','Amarrage, aide au départ, avitaillement, surveillance et assistance.':'Mooring, departure help, provisioning, supervision and assistance.',
+      'Chantier et entretien':'Shipyard and maintenance','Antifouling, peinture, petites réparations, préparation et mise à l’eau.':'Antifouling, painting, minor repairs, preparation and launching.',
+      'Marin à la journée':'Day crew','Aide à bord, manutention, convoyage court et assistance au propriétaire.':'Help aboard, handling, short delivery and owner assistance.',
+      'Skipper professionnel':'Professional skipper','Sortie, location, convoyage et prise en main du bateau.':'Trips, rentals, deliveries and boat familiarisation.',
+      'SKIPPERS DISPONIBLES':'AVAILABLE SKIPPERS','Voici les skippers disponibles selon votre recherche actuelle.':'Available skippers matching your current search.',
+      'LOCATION DE BATEAUX':'BOAT RENTALS','Voici les bateaux en location disponibles selon votre recherche actuelle.':'Available rental boats matching your current search.',
+      'PORT PRINCIPAL — VILLE, PORT, PAYS':'HOME PORT — CITY, PORT, COUNTRY','Créer mon compte':'Create my account','ESPACE CLIENT':'CLIENT AREA'
+    },
+    es:{
+      '🚤 LOCATION DE BATEAUX':'🚤 ALQUILER DE BARCOS','Mettre mon bateau en location':'Poner mi barco en alquiler',
+      'Créez votre compte propriétaire, ajoutez les photos, les caractéristiques, le port d’attache et les disponibilités de votre bateau. Vous pourrez ensuite proposer la location avec ou sans skipper.':'Crea una cuenta de propietario, añade fotos, características, puerto base y disponibilidad, y ofrece tu barco con o sin skipper.',
+      'Voir où l’ajouter':'Ver dónde añadirlo','Chemin simple :':'Ruta rápida:','Mon espace → Mes bateaux → Ajouter mon bateau':'Mi cuenta → Mis barcos → Añadir mi barco',
+      '🌊 EXEMPLES DE BATEAUX':'🌊 EJEMPLOS DE BARCOS','Des annonces visibles dès l’accueil':'Anuncios visibles desde la página de inicio',
+      'Location avec skipper · Eau turquoise des îles de Lérins':'Alquiler con skipper · Aguas turquesas de las islas de Lérins',
+      'Sortie journée · Avec ou sans skipper':'Salida de día completo · Con o sin skipper','Recevez des missions proches de votre port lorsque vous êtes disponible.':'Recibe solicitudes cerca de tu puerto cuando estés disponible.',
+      'ESPACE PROFESSIONNEL':'ESPACIO PROFESIONAL','Créer mon profil':'Crear mi perfil','J’ai déjà un compte':'Ya tengo una cuenta','NOM COMPLET':'NOMBRE COMPLETO',
+      'PORT PRINCIPAL':'PUERTO BASE','EXPÉRIENCE':'EXPERIENCIA','Identité, brevet et assurance vérifiés avant l’activation du profil.':'La identidad, titulación y seguro se verifican antes de activar el perfil.',
+      'Commencer mon inscription':'Comenzar mi registro','SERVICES NAUTIQUES':'SERVICIOS NÁUTICOS','Choisissez le service dont vous avez besoin près de votre port.':'Elige el servicio que necesitas cerca de tu puerto.',
+      'Nettoyage du bateau':'Limpieza del barco','Lavage, rinçage, intérieur, préparation avant ou après sortie.':'Lavado, enjuague, interior y preparación antes o después de la salida.',
+      'Services à quai':'Servicios en el muelle','Amarrage, aide au départ, avitaillement, surveillance et assistance.':'Amarre, ayuda a la salida, aprovisionamiento, vigilancia y asistencia.',
+      'Chantier et entretien':'Astillero y mantenimiento','Antifouling, peinture, petites réparations, préparation et mise à l’eau.':'Antifouling, pintura, pequeñas reparaciones, preparación y botadura.',
+      'Marin à la journée':'Marinero por día','Aide à bord, manutention, convoyage court et assistance au propriétaire.':'Ayuda a bordo, manipulación, traslado corto y asistencia al propietario.',
+      'Skipper professionnel':'Skipper profesional','Sortie, location, convoyage et prise en main du bateau.':'Salidas, alquiler, traslados y familiarización con el barco.',
+      'SKIPPERS DISPONIBLES':'SKIPPERS DISPONIBLES','Voici les skippers disponibles selon votre recherche actuelle.':'Skippers disponibles según tu búsqueda actual.',
+      'LOCATION DE BATEAUX':'ALQUILER DE BARCOS','Voici les bateaux en location disponibles selon votre recherche actuelle.':'Barcos de alquiler disponibles según tu búsqueda actual.',
+      'PORT PRINCIPAL — VILLE, PORT, PAYS':'PUERTO BASE — CIUDAD, PUERTO, PAÍS','Créer mon compte':'Crear mi cuenta','ESPACE CLIENT':'ESPACIO CLIENTE'
+    }
+  };
+  function translateRemainingStatic(){
+    const selected=lang(),dict=extraStatic[selected]||{};if(selected==='fr')return;
+    const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);let node;
+    while((node=walker.nextNode())){
+      if(node.parentElement?.closest('script,style'))continue;
+      const value=node.textContent.trim();if(dict[value])node.textContent=node.textContent.replace(value,dict[value]);
+    }
+  }
+  const baseOpenProvider=window.openProviderContact;
+  window.openProviderContact=function(id,name,homePort,activity){
+    currentRequest={...(currentRequest||{}),targetId:id,targetRole:'provider',activity:activity||'cleaning',providerName:name,port:homePort||port.value,price:'Tarif à définir'};
+    if(!currentUser){if(baseOpenProvider)return baseOpenProvider.apply(this,arguments);return}
+    document.querySelector('#providerModal')?.classList.remove('open');
+    openBooking(name,'Tarif à définir',false,homePort||port.value);
+    Object.assign(currentRequest,{targetId:id,targetRole:'provider',activity:activity||'cleaning',providerName:name});
+    installBookingFields();
+  };
+  const baseOpenSkipper=window.openSkipperContact;
+  window.openSkipperContact=function(name,homePort,id){
+    if(!currentUser){if(baseOpenSkipper)return baseOpenSkipper.apply(this,arguments);return}
+    document.querySelector('#skipperFinderModal')?.classList.remove('open');
+    openBooking(name,'Tarif à définir',false,homePort||port.value);
+    Object.assign(currentRequest,{targetId:id||null,targetRole:'skipper',activity:'skipper',providerName:name});
+    installBookingFields();
+  };
+
+  function installSend(){
+    installBookingFields();
+    const button=document.querySelector('#send');if(!button||button.dataset.v27==='1')return;
+    button.dataset.v27='1';
+    button.onclick=async function(){
+      const msg=document.querySelector('#bookingMessage');
+      if(!currentUser){document.querySelector('#modal')?.classList.remove('open');accountModal.classList.add('open');return}
+      if(!['client','owner','admin'].includes(currentProfile?.role)){msg.textContent=t('error')+' : compte client requis.';return}
+      const boatType=document.querySelector('#bookingBoat').value.trim();
+      const details=document.querySelector('#requestDetailsV27')?.value.trim()||'';
+      if(!boatType||!details){msg.textContent=t('describeNeed');return}
+      button.disabled=true;msg.textContent=t('loading');
+      try{
+        const photos=await uploadPhotos(document.querySelector('#requestPhotosV27')?.files,'demande');
+        let targetId=currentRequest?.targetId||null;
+        const chosenName=currentRequest?.providerName||currentRequest?.name||'';
+        if(!targetId&&chosenName&&!/Premier skipper|Professionnel sélectionné/i.test(chosenName)){
+          const {data:matches}=await db.from('profiles').select('id').eq('full_name',chosenName).limit(1);
+          targetId=matches?.[0]?.id||null;
+        }
+        const start=new Date(dateInput.value+'T09:00:00');
+        const duration=document.querySelector('#duration').value;
+        const end=new Date(start.getTime()+(duration==='Demi-journée'?4:duration==='Plusieurs jours'?24:8)*3600000);
+        const meta={v:27,requestPhotos:photos,targetId,targetRole:currentRequest?.targetRole||null,activity:currentRequest?.activity||'skipper',providerName:chosenName||null,createdAt:new Date().toISOString()};
+        const payload={client_id:currentUser.id,skipper_id:targetId,port:currentRequest?.port||port.value||'',boat_type:boatType,starts_at:start.toISOString(),ends_at:end.toISOString(),description:packDescription(details,meta),amount_cents:0,urgent_fee_cents:0,platform_fee_cents:0,status:'pending',payment_status:'unpaid'};
+        const {error}=await db.from('missions').insert(payload);
+        if(error)throw error;
+        booking.style.display='none';success.style.display='block';
+        success.querySelector('p').textContent=t('requestSent');
+      }catch(error){msg.textContent=t('error')+' : '+error.message}
+      finally{button.disabled=false}
+    };
+  }
+
+  function missionCardClient(m,pros){
+    const {meta,text}=decodeMeta(m.description),pro=pros[String(m.skipper_id)]||null,total=Number(m.amount_cents||0)+Number(m.urgent_fee_cents||0);
+    const canPay=['quote_accepted','accepted'].includes(m.status)&&!['paid','held','transferred'].includes(m.payment_status);
+    return `<article class="v27-card">${flow(m)}<div class="v27-card-head"><div><h3>${esc(m.port||'Mission')}</h3><div class="v27-meta">${m.starts_at?new Date(m.starts_at).toLocaleDateString(locale()):''} · ${esc(m.boat_type||'')}<br>${esc(text||'')}</div></div><div>${total?`<div class="v27-price">${money(total)}</div>`:`<span class="v27-pending">${t('priceToDefine')}</span>`}<div class="v27-meta">${esc(statusLabel(m))}</div></div></div>
+      ${pro?`<div class="v27-note"><strong>${t('professional')} :</strong> ${esc(pro.full_name||meta.providerName||'Professionnel')}<br><span class="v27-hide-contact">${t('clientProtected')}</span></div>`:''}
+      ${meta.quoteNote?`<div class="v27-note"><strong>${t('quote')} :</strong> ${esc(meta.quoteNote)}</div>`:''}
+      ${photoStrip(meta.requestPhotos)}${meta.completionNote?`<div class="v27-note v27-success"><strong>${t('completionNote')} :</strong> ${esc(meta.completionNote)}</div>`:''}${photoStrip(meta.completionPhotos)}
+      <div class="v27-actions">
+        ${m.status==='quoted'?`<button class="approve" onclick="acceptQuoteV27('${m.id}')">${t('acceptQuote')}</button><button class="danger" onclick="refuseQuoteV27('${m.id}')">${t('refuseQuote')}</button>`:''}
+        ${canPay?`<button class="fill" onclick="payMissionV27('${m.id}',${total},this)">${t('payNow')}</button>`:''}
+        ${m.status==='awaiting_validation'?`<button class="approve" onclick="validateMissionV27('${m.id}')">${t('validateWork')}</button>`:''}
+        ${['paid','held','in_progress','awaiting_validation','payout_ready','completed','transferred'].includes(m.payment_status)||['in_progress','awaiting_validation','payout_ready'].includes(m.status)?`<button onclick="refundMissionV27('${m.id}')">${t('requestRefund')}</button>`:''}
+      </div></article>`;
+  }
+  async function renderClientWorkflow(){
+    const panel=document.querySelector('#v3-clientmissions');if(!panel)return;
+    const {data,error}=await db.from('missions').select('*').eq('client_id',currentUser.id).order('created_at',{ascending:false});
+    if(error){panel.innerHTML=`<div class="v27-note">${esc(error.message)}</div>`;return}
+    const rows=data||[],pros=await profilesMap(rows.map(m=>m.skipper_id));
+    panel.innerHTML=`<div class="v27-note">${t('secureNote')}</div>${rows.map(m=>missionCardClient(m,pros)).join('')||`<div class="v3-empty">${t('noRequest')}</div>`}`;
+  }
+
+  window.acceptQuoteV27=async id=>{
+    const {error}=await db.from('missions').update({status:'quote_accepted',payment_status:'unpaid'}).eq('id',id).eq('client_id',currentUser.id);
+    if(error)return alert(error.message);await enhanceDashboard();
+  };
+  window.refuseQuoteV27=async id=>{
+    if(!confirm(t('refuseQuote')+' ?'))return;
+    const {error}=await db.from('missions').update({status:'quote_rejected',payment_status:'unpaid'}).eq('id',id).eq('client_id',currentUser.id);
+    if(error)return alert(error.message);await enhanceDashboard();
+  };
+  window.payMissionV27=async(id,total,button)=>{
+    if(!total)return alert(t('amountInvalid'));
+    if(typeof window.startStripePaymentV6!=='function')return alert(t('stripeMissing'));
+    await window.startStripePaymentV6(total,'Mission SkipperNow',id,button);
+  };
+  window.validateMissionV27=async id=>{
+    if(!confirm(t('validateWork')+' ?'))return;
+    const {error}=await db.from('missions').update({status:'payout_ready',payment_status:'payout_ready'}).eq('id',id).eq('client_id',currentUser.id);
+    if(error)return alert(error.message);await enhanceDashboard();
+  };
+  window.refundMissionV27=async id=>{
+    const reason=prompt(t('requestRefund')+' :','');if(reason===null||reason.trim().length<5)return;
+    const {data:m}=await db.from('missions').select('*').eq('id',id).maybeSingle();if(!m)return;
+    const parsed=decodeMeta(m.description);parsed.meta.refundReason=reason.trim();parsed.meta.refundRequestedAt=new Date().toISOString();
+    const {error}=await db.from('missions').update({description:packDescription(parsed.text,parsed.meta),payment_status:'refund_requested'}).eq('id',id);
+    if(error)return alert(error.message);await enhanceDashboard();
+  };
+
+  function missionCardPro(m,clients){
+    const {meta,text}=decodeMeta(m.description),total=Number(m.amount_cents||0)+Number(m.urgent_fee_cents||0),client=clients[String(m.client_id)];
+    const targeted=meta.targetId&&String(meta.targetId)!==String(currentUser.id);
+    if(targeted)return '';
+    const mine=String(m.skipper_id||'')===String(currentUser.id);
+    return `<article class="v27-card">${flow(m)}<div class="v27-card-head"><div><h3>${esc(m.port||'Mission')}</h3><div class="v27-meta">${m.starts_at?new Date(m.starts_at).toLocaleDateString(locale()):''} · ${esc(m.boat_type||'')}<br>${esc(text||'')}<br>${t('client')} : ${esc(client?.full_name||'Client SkipperNow')}</div></div><div>${total?`<div class="v27-price">${money(total)}</div>`:`<span class="v27-pending">${t('priceToDefine')}</span>`}<div class="v27-meta">${esc(statusLabel(m))}</div></div></div>
+      <div class="v27-note"><span class="v27-hide-contact">${t('clientProtected')}</span></div>${photoStrip(meta.requestPhotos)}
+      ${meta.quoteNote?`<div class="v27-note">${esc(meta.quoteNote)}</div>`:''}${photoStrip(meta.completionPhotos)}
+      <div class="v27-actions">
+        ${['pending','searching','quote_rejected'].includes(m.status)&&(!m.skipper_id||mine)?`<button class="fill" onclick="openQuoteV27('${m.id}')">${t('proposePrice')}</button>`:''}
+        ${mine&&['paid','held'].includes(m.payment_status)&&['quote_accepted','accepted','paid'].includes(m.status)?`<button class="approve" onclick="startMissionV27('${m.id}')">${t('startWork')}</button>`:''}
+        ${mine&&m.status==='in_progress'?`<button class="approve" onclick="openCompletionV27('${m.id}')">${t('finishWork')}</button>`:''}
+      </div></article>`;
+  }
+  async function renderProviderWorkflow(){
+    document.querySelector('#dashRole').textContent='ESPACE PROFESSIONNEL';
+    document.querySelector('#dashTitle').textContent=t('dashboard');
+    const {data,error}=await db.from('missions').select('*').order('created_at',{ascending:false});
+    const rows=(data||[]).filter(m=>{
+      const meta=decodeMeta(m.description).meta;
+      return String(m.skipper_id||'')===String(currentUser.id)||(!m.skipper_id&&!meta.targetId&&['pending','searching'].includes(m.status))||String(meta.targetId||'')===String(currentUser.id);
+    });
+    const clients=await profilesMap(rows.map(m=>m.client_id));
+    const earned=rows.filter(m=>m.payment_status==='transferred').reduce((n,m)=>n+Math.max(0,Number(m.amount_cents||0)-Number(m.platform_fee_cents||0)),0);
+    const pending=rows.filter(m=>m.payment_status==='payout_ready').reduce((n,m)=>n+Math.max(0,Number(m.amount_cents||0)-Number(m.platform_fee_cents||0)),0);
+    document.querySelector('#dashboardBody').innerHTML=`<div class="dashboard-v3"><div class="v27-kpis"><div class="v27-kpi"><span>${t('proRequests')}</span><strong>${rows.filter(m=>['pending','searching'].includes(m.status)).length}</strong></div><div class="v27-kpi"><span>${t('myJobs')}</span><strong>${rows.filter(m=>String(m.skipper_id||'')===String(currentUser.id)).length}</strong></div><div class="v27-kpi"><span>${t('readyPayout')}</span><strong>${money(pending)}</strong></div><div class="v27-kpi"><span>${t('paidOut')}</span><strong>${money(earned)}</strong></div></div><div class="v27-note">${t('adminNote')}</div>${error?`<div class="v27-note">${esc(error.message)}</div>`:rows.map(m=>missionCardPro(m,clients)).join('')||`<div class="v3-empty">${t('noRequest')}</div>`}</div>`;
+  }
+  window.openQuoteV27=async id=>{
+    const amount=prompt(t('priceEuros')+':','');if(amount===null)return;
+    const euros=Number(String(amount).replace(',','.'));if(!Number.isFinite(euros)||euros<=0)return alert(t('amountInvalid'));
+    const note=prompt(t('quoteNote')+':','')??'';
+    const {data:m,error}=await db.from('missions').select('*').eq('id',id).maybeSingle();if(error||!m)return alert(error?.message||t('error'));
+    const parsed=decodeMeta(m.description);parsed.meta.quoteNote=note.trim();parsed.meta.quotedAt=new Date().toISOString();parsed.meta.providerName=currentProfile?.full_name||'';
+    const rate=await commissionFor(currentUser.id);
+    const {error:updateError}=await db.from('missions').update({skipper_id:currentUser.id,amount_cents:Math.round(euros*100),platform_fee_cents:Math.round(euros*rate),urgent_fee_cents:0,status:'quoted',payment_status:'unpaid',description:packDescription(parsed.text,parsed.meta)}).eq('id',id);
+    if(updateError)return alert(updateError.message);await enhanceDashboard();
+  };
+  window.startMissionV27=async id=>{
+    const {error}=await db.from('missions').update({status:'in_progress'}).eq('id',id).eq('skipper_id',currentUser.id);
+    if(error)return alert(error.message);await enhanceDashboard();
+  };
+  window.openCompletionV27=id=>{
+    let modal=document.querySelector('#completionModalV27');
+    if(!modal){modal=document.createElement('div');modal.id='completionModalV27';modal.className='modal';document.body.appendChild(modal)}
+    modal.innerHTML=`<div class="dialog"><div class="dialog-top"><div><small>${t('proof')}</small><h2>${t('finishWork')}</h2></div><button class="close" onclick="document.querySelector('#completionModalV27').classList.remove('open')">×</button></div><div class="v27-form"><label>${t('completionPhotos')}<input id="completionPhotosV27" type="file" accept="image/*" multiple></label><label>${t('completionNote')}<textarea id="completionNoteV27"></textarea></label><button class="primary" onclick="sendCompletionV27('${id}',this)">${t('sendProof')}</button><p id="completionMessageV27" class="muted"></p></div></div>`;
+    modal.classList.add('open');
+  };
+  window.sendCompletionV27=async(id,button)=>{
+    const files=document.querySelector('#completionPhotosV27')?.files,msg=document.querySelector('#completionMessageV27');
+    if(!files?.length)return msg.textContent=t('proofRequired');
+    button.disabled=true;msg.textContent=t('loading');
+    try{
+      const photos=await uploadPhotos(files,'preuve');
+      const {data:m,error}=await db.from('missions').select('*').eq('id',id).maybeSingle();if(error||!m)throw(error||new Error(t('error')));
+      const parsed=decodeMeta(m.description);parsed.meta.completionPhotos=photos;parsed.meta.completionNote=document.querySelector('#completionNoteV27').value.trim();parsed.meta.completedAt=new Date().toISOString();
+      const res=await db.from('missions').update({status:'awaiting_validation',description:packDescription(parsed.text,parsed.meta)}).eq('id',id).eq('skipper_id',currentUser.id);
+      if(res.error)throw res.error;document.querySelector('#completionModalV27').classList.remove('open');await enhanceDashboard();
+    }catch(error){msg.textContent=t('error')+' : '+error.message}finally{button.disabled=false}
+  };
+
+  let adminCache={missions:[],profiles:[],boats:[],settings:{}};
+  function adminTab(id){
+    document.querySelectorAll('.v27-panel').forEach(p=>p.classList.toggle('active',p.id==='v27a-'+id));
+    document.querySelectorAll('.v27-admin-nav button').forEach(b=>b.classList.toggle('active',b.dataset.panel===id));
+  }
+  window.adminTabV27=adminTab;
+  function adminMissionCard(m,profiles){
+    const {meta,text}=decodeMeta(m.description),client=profiles[String(m.client_id)],pro=profiles[String(m.skipper_id)],total=Number(m.amount_cents||0)+Number(m.urgent_fee_cents||0),fee=Number(m.platform_fee_cents||0);
+    return `<article class="v27-card">${flow(m)}<div class="v27-card-head"><div><h3>${esc(m.port||'Mission')}</h3><div class="v27-meta">${m.starts_at?new Date(m.starts_at).toLocaleDateString(locale()):''} · ${esc(m.boat_type||'')}<br>${esc(text||'')}<br>${t('client')} : ${esc(client?.full_name||String(m.client_id||'').slice(0,8))}<br>${t('professional')} : ${esc(pro?.full_name||meta.providerName||'—')}</div></div><div><div class="v27-price">${total?money(total):t('priceToDefine')}</div><div class="v27-meta">${esc(statusLabel(m))}</div></div></div>${photoStrip(meta.requestPhotos)}${photoStrip(meta.completionPhotos)}
+      <div class="v27-actions">${m.payment_status==='payout_ready'||m.status==='payout_ready'?`<button class="approve" onclick="releasePaymentV27('${m.id}')">${t('releasePayment')}</button>`:''}${m.payment_status==='refund_requested'?`<button class="fill" onclick="processRefundV27('${m.id}',true)">${t('accepted')}</button><button class="danger" onclick="processRefundV27('${m.id}',false)">${t('refused')}</button>`:''}<button class="danger" onclick="deleteMissionV27('${m.id}')">${t('delete')}</button></div>
+      ${total?`<div class="v27-note">${t('amount')} ${money(total)} · ${t('platform')} ${money(fee)} · ${t('netPro')} ${money(Math.max(0,total-fee))}</div>`:''}</article>`;
+  }
+  async function renderAdminWorkflow(){
+    const [mr,pr,br,sr]=await Promise.all([
+      db.from('missions').select('*').order('created_at',{ascending:false}),
+      db.from('profiles').select('*').order('created_at',{ascending:false}),
+      db.from('boats').select('*').order('created_at',{ascending:false}),
+      db.from('platform_settings').select('*').eq('id',1).maybeSingle()
+    ]);
+    const missions=mr.data||[],profiles=pr.data||[],boats=br.data||[],settings={first_commission_percent:15,repeat_commission_percent:8,urgent_fee_cents:0,...(sr.data||{})};
+    const pmap=Object.fromEntries(profiles.map(p=>[String(p.id),p]));adminCache={missions,profiles,boats,settings};
+    const paid=missions.filter(m=>['paid','held','payout_ready','transferred'].includes(m.payment_status));
+    const held=paid.filter(m=>m.payment_status!=='transferred').reduce((n,m)=>n+Number(m.amount_cents||0),0);
+    const ready=missions.filter(m=>m.payment_status==='payout_ready'||m.status==='payout_ready');
+    const fees=paid.reduce((n,m)=>n+Number(m.platform_fee_cents||0),0);
+    const providers=profiles.filter(p=>['skipper','provider'].includes(p.role)),clients=profiles.filter(p=>['client','owner'].includes(p.role));
+    document.querySelector('#dashRole').textContent='ADMINISTRATION SKIPPERNOW';document.querySelector('#dashTitle').textContent=t('dashboard');
+    document.querySelector('#dashboardBody').innerHTML=`<div class="dashboard-v3"><div class="v27-kpis"><div class="v27-kpi"><span>${t('activeJobs')}</span><strong>${missions.filter(m=>!['cancelled','transferred'].includes(m.status)&&m.payment_status!=='transferred').length}</strong></div><div class="v27-kpi"><span>${t('heldFunds')}</span><strong>${money(held)}</strong></div><div class="v27-kpi"><span>${t('readyPayout')}</span><strong>${ready.length}</strong></div><div class="v27-kpi"><span>${t('platformRevenue')}</span><strong>${money(fees)}</strong></div></div>
+      <div class="v27-note">${t('adminNote')}<br>${t('realPayment')}</div>
+      <nav class="v27-admin-nav"><button class="active" data-panel="overview" onclick="adminTabV27('overview')">${t('overview')}</button><button data-panel="missions" onclick="adminTabV27('missions')">${t('requests')} (${missions.length})</button><button data-panel="payments" onclick="adminTabV27('payments')">${t('payments')}</button><button data-panel="payouts" onclick="adminTabV27('payouts')">${t('payouts')} (${ready.length})</button><button data-panel="refunds" onclick="adminTabV27('refunds')">${t('refunds')}</button><button data-panel="commissions" onclick="adminTabV27('commissions')">${t('commissions')}</button><button data-panel="users" onclick="adminTabV27('users')">${t('users')}</button><button data-panel="boats" onclick="adminTabV27('boats')">${t('boats')}</button></nav>
+      <section class="v27-panel active" id="v27a-overview"><div class="v27-grid"><div class="v27-card"><h3>${t('workflow')}</h3>${flow({status:'payout_ready',payment_status:'payout_ready'})}<p class="v27-meta">${t('secureNote')}</p></div><div class="v27-card"><h3>${t('activeJobs')}</h3><p class="v27-price">${missions.length}</p><p class="v27-meta">${providers.length} ${t('professional').toLowerCase()} · ${clients.length} ${t('client').toLowerCase()}</p></div></div>${missions.slice(0,5).map(m=>adminMissionCard(m,pmap)).join('')||`<div class="v3-empty">${t('noMission')}</div>`}</section>
+      <section class="v27-panel" id="v27a-missions">${missions.map(m=>adminMissionCard(m,pmap)).join('')||`<div class="v3-empty">${t('noMission')}</div>`}</section>
+      <section class="v27-panel" id="v27a-payments">${financeTable(missions,pmap,m=>['paid','held','payout_ready','transferred'].includes(m.payment_status))}</section>
+      <section class="v27-panel" id="v27a-payouts">${ready.map(m=>adminMissionCard(m,pmap)).join('')||`<div class="v3-empty">${t('noMission')}</div>`}</section>
+      <section class="v27-panel" id="v27a-refunds">${missions.filter(m=>['refund_requested','refunded','refund_rejected'].includes(m.payment_status)).map(m=>adminMissionCard(m,pmap)).join('')||`<div class="v3-empty">${t('noRequest')}</div>`}</section>
+      <section class="v27-panel" id="v27a-commissions">${commissionPanel(settings,providers)}</section>
+      <section class="v27-panel" id="v27a-users"><h3>${t('professional')}</h3><div class="v27-grid">${providers.map(p=>`<div class="v27-card"><h3>${esc(p.full_name||'Professionnel')}</h3><div class="v27-meta">${esc(p.provider_activity||p.role)} · ${esc(p.home_port||'')}</div><div class="v27-contact"><strong>${t('providerContacts')}</strong><br>${esc(p.contact_email||p.email||'Email non renseigné')}<br>${esc(p.phone||'Téléphone non renseigné')}</div></div>`).join('')}</div><h3>${t('client')}</h3><div class="v27-grid">${clients.map(p=>`<div class="v27-card"><h3>${esc(p.full_name||'Client')}</h3><div class="v27-meta">${missions.filter(m=>String(m.client_id)===String(p.id)).length} mission(s)</div><div class="v27-contact v27-hide-contact">${t('clientProtected')}</div></div>`).join('')}</div></section>
+      <section class="v27-panel" id="v27a-boats"><div class="v27-grid">${boats.map(b=>`<div class="v27-card"><h3>${esc(b.name||'Bateau')}</h3><div class="v27-meta">${esc(b.model||'')} · ${esc(b.home_port||'')}</div>${b.photo_url?`<div class="v27-photos"><img src="${esc(b.photo_url)}" alt="Bateau"></div>`:''}</div>`).join('')||`<div class="v3-empty">${t('noRequest')}</div>`}</div></section></div>`;
+  }
+  function financeTable(missions,pmap,filter){
+    const rows=missions.filter(filter);
+    return `<table class="v27-table"><thead><tr><th>${t('allMissions')}</th><th>${t('client')}</th><th>${t('professional')}</th><th>${t('amount')}</th><th>${t('platform')}</th><th>${t('netPro')}</th><th>${t('status')}</th></tr></thead><tbody>${rows.map(m=>{const total=Number(m.amount_cents||0),fee=Number(m.platform_fee_cents||0);return `<tr><td>${esc(m.port||'Mission')}</td><td>${esc(pmap[String(m.client_id)]?.full_name||'Client')}</td><td>${esc(pmap[String(m.skipper_id)]?.full_name||'—')}</td><td>${money(total)}</td><td>${money(fee)}</td><td>${money(Math.max(0,total-fee))}</td><td>${esc(statusLabel(m))}</td></tr>`}).join('')||`<tr><td colspan="7">${t('noMission')}</td></tr>`}</tbody></table>`;
+  }
+  function commissionPanel(settings,providers){
+    const local=JSON.parse(localStorage.getItem('skippernow-provider-rates')||'{}');
+    return `<div class="v27-grid"><div class="v27-card"><h3>${t('commissions')}</h3><div class="v27-form"><label>${t('globalRate')}<input id="v27GlobalRate" type="number" min="0" max="50" step=".5" value="${Number(settings.first_commission_percent||15)}"></label><label>${t('repeatRate')}<input id="v27RepeatRate" type="number" min="0" max="50" step=".5" value="${Number(settings.repeat_commission_percent||8)}"></label><label>${t('urgentFee')}<input id="v27UrgentFee" type="number" min="0" value="${Number(settings.urgent_fee_cents||0)/100}"></label><button class="primary" onclick="saveGlobalCommissionV27()">${t('save')}</button><p id="v27CommissionMsg" class="muted"></p></div></div><div class="v27-card"><h3>${t('providerRate')}</h3><div class="v27-form"><label>${t('chooseProvider')}<select id="v27ProviderRate">${providers.map(p=>`<option value="${esc(p.id)}">${esc(p.full_name||'Professionnel')} — ${Number(p.commission_percent??local[String(p.id)]??settings.first_commission_percent??15)} %</option>`).join('')}</select></label><label>${t('customRate')}<input id="v27CustomRate" type="number" min="0" max="50" step=".5"></label><button class="primary" onclick="saveProviderRateV27()">${t('saveRate')}</button><p id="v27ProviderRateMsg" class="muted"></p></div></div></div>`;
+  }
+  window.saveGlobalCommissionV27=async()=>{
+    const payload={id:1,first_commission_percent:Number(document.querySelector('#v27GlobalRate').value),repeat_commission_percent:Number(document.querySelector('#v27RepeatRate').value),urgent_fee_cents:Math.round(Number(document.querySelector('#v27UrgentFee').value||0)*100),support_email:adminCache.settings.support_email||'',updated_at:new Date().toISOString()};
+    const {error}=await db.from('platform_settings').upsert(payload),msg=document.querySelector('#v27CommissionMsg');msg.textContent=error?error.message:t('saved');
+  };
+  window.saveProviderRateV27=async()=>{
+    const id=document.querySelector('#v27ProviderRate').value,rate=Math.max(0,Math.min(50,Number(document.querySelector('#v27CustomRate').value))),msg=document.querySelector('#v27ProviderRateMsg');
+    const {error}=await db.from('profiles').update({commission_percent:rate}).eq('id',id);
+    if(error){const local=JSON.parse(localStorage.getItem('skippernow-provider-rates')||'{}');local[id]=rate;localStorage.setItem('skippernow-provider-rates',JSON.stringify(local));msg.textContent=t('saved')+' (cet appareil)';return}
+    msg.textContent=t('saved');
+  };
+  window.deleteMissionV27=async id=>{
+    if(!confirm(t('confirmDelete')))return;
+    const {error}=await db.from('missions').delete().eq('id',id);if(error)return alert(t('error')+' : '+error.message);await enhanceDashboard();
+  };
+  window.releasePaymentV27=async id=>{
+    if(!confirm(t('releasePayment')+' ?'))return;
+    const {data,error}=await db.functions.invoke('release-provider-payment',{body:{missionId:id}});
+    if(error)return alert(t('stripeMissing')+'\n'+error.message);
+    const update=await db.from('missions').update({status:'completed',payment_status:'transferred'}).eq('id',id);
+    if(update.error)return alert(update.error.message);await enhanceDashboard();
+  };
+  window.processRefundV27=async(id,accept)=>{
+    if(!accept){const {error}=await db.from('missions').update({payment_status:'refund_rejected'}).eq('id',id);if(error)return alert(error.message);return enhanceDashboard()}
+    const {error}=await db.functions.invoke('process-mission-refund',{body:{missionId:id}});
+    if(error)return alert(t('stripeMissing')+'\n'+error.message);
+    const update=await db.from('missions').update({payment_status:'refunded',status:'cancelled'}).eq('id',id);
+    if(update.error)return alert(update.error.message);await enhanceDashboard();
+  };
+
+  let enhancing=false;
+  async function enhanceDashboard(){
+    if(enhancing||!currentUser||!currentProfile)return;
+    enhancing=true;
+    try{
+      if(isAdmin())await renderAdminWorkflow();
+      else if(isPro())await renderProviderWorkflow();
+      else await renderClientWorkflow();
+      dashboardModal.classList.add('open');
+    }finally{enhancing=false}
+  }
+  const previousOpen=window.openDashboard;
+  window.openDashboard=async function(){
+    if(typeof previousOpen==='function')await previousOpen.apply(this,arguments);
+    await enhanceDashboard();
+  };
+
+  function start(){
+    installBookingFields();installSend();
+    const initial=document.querySelector('#summaryPrice');if(initial)initial.textContent=t('priceToDefine');
+    localizeBookingStatic();translateRemainingStatic();
+    document.querySelector('#languageSelect')?.addEventListener('change',()=>setTimeout(()=>{document.querySelector('.v27-booking-extra')?.remove();installBookingFields();localizeBookingStatic();translateRemainingStatic();if(document.querySelector('#dashboardModal.open'))enhanceDashboard()},80));
+    const observer=new MutationObserver(()=>{installBookingFields();installSend()});
+    observer.observe(document.body,{childList:true,subtree:true});
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
 })();
 </script>
 
