@@ -71,12 +71,12 @@
     const form=document.querySelector('#searchForm'),port=document.querySelector('#port'),count=document.querySelector('#resultCount'),empty=document.querySelector('#empty');
     form.addEventListener('submit',async e=>{e.preventDefault();await loadSkippers();document.querySelector('main').scrollIntoView({behavior:'smooth'})});
     const modal=document.querySelector('#modal'),booking=document.querySelector('#booking'),success=document.querySelector('#success');
-    let openBooking=(name,price,isUrgent=false,selectedPort='')=>{currentRequest.isQuoteRequest=false;document.querySelector('#send').textContent='Créer la demande';document.querySelector('#skipperName').textContent=name;document.querySelector('#requestType').textContent=isUrgent?'DEMANDE URGENTE':'DEMANDE DE RÉSERVATION';document.querySelector('#summaryPrice').textContent=price;document.querySelector('#summaryPort').textContent=selectedPort||(port.value==='all'?'Cannes':port.value);document.querySelector('#urgentLine').style.display=isUrgent?'flex':'none';booking.style.display='block';success.style.display='none';modal.classList.add('open')};
+    let openBooking=(name,price,isUrgent=false,selectedPort='')=>{document.querySelector('#skipperName').textContent=name;document.querySelector('#requestType').textContent=isUrgent?'DEMANDE URGENTE':'DEMANDE DE RÉSERVATION';document.querySelector('#summaryPrice').textContent=price;document.querySelector('#summaryPort').textContent=selectedPort||(port.value==='all'?'Cannes':port.value);document.querySelector('#urgentLine').style.display=isUrgent?'flex':'none';booking.style.display='block';success.style.display='none';modal.classList.add('open')};
     document.querySelectorAll('.reserve').forEach(b=>b.addEventListener('click',()=>openBooking(b.dataset.name,b.dataset.price,false,b.closest('.card').dataset.port)));
     const urgentBtn=document.querySelector('#urgent');if(urgentBtn)urgentBtn.onclick=()=>openBooking('Premier skipper disponible','Tarif confirmé à l’acceptation',true);
     const close=()=>modal.classList.remove('open');document.querySelector('#close').onclick=close;document.querySelector('#done').onclick=()=>{close();openDashboard()};modal.addEventListener('click',e=>{if(e.target===modal)close()});
     const oldOpen=openBooking;openBooking=(name,price,isUrgent=false,selectedPort='')=>{currentRequest={name,price,isUrgent,port:selectedPort||(port.value==='all'?'Cannes':port.value)};oldOpen(name,price,isUrgent,selectedPort)};
-    document.querySelector('#send').onclick=async()=>{const msg=document.querySelector('#bookingMessage');if(!currentUser){close();accountModal.classList.add('open');msg.textContent='Connectez-vous avant de réserver.';return}if(currentProfile?.role!=='client'&&currentProfile?.role!=='admin'){msg.textContent='Un compte client est nécessaire pour créer une mission.';return}const boat=document.querySelector('#bookingBoat').value.trim();if(!boat){msg.textContent='Indiquez le type de bateau.';return}msg.textContent='Enregistrement en cours…';const {data:settings}=await db.from('platform_settings').select('*').eq('id',1).maybeSingle(),base=currentRequest.isQuoteRequest?0:(parseInt((currentRequest.price||'300').replace(/\D/g,''))||300),percent=settings?.first_commission_percent||15,urgent=currentRequest.isUrgent?(settings?.urgent_fee_cents||1900):0,start=new Date(dateInput.value+'T09:00:00'),end=new Date(start.getTime()+(document.querySelector('#duration').value==='Demi-journée'?4:8)*3600000);const {error}=await db.from('missions').insert({client_id:currentUser.id,port:currentRequest.port,boat_type:boat,starts_at:start.toISOString(),ends_at:end.toISOString(),amount_cents:base*100,urgent_fee_cents:urgent,platform_fee_cents:Math.round(base*percent),status:'searching'});if(error){msg.textContent='Erreur : '+error.message;return}booking.style.display='none';success.style.display='block'};
+    document.querySelector('#send').onclick=async()=>{const msg=document.querySelector('#bookingMessage');if(!currentUser){close();accountModal.classList.add('open');msg.textContent='Connectez-vous avant de réserver.';return}if(currentProfile?.role!=='client'&&currentProfile?.role!=='admin'){msg.textContent='Un compte client est nécessaire pour créer une mission.';return}const boat=document.querySelector('#bookingBoat').value.trim();if(!boat){msg.textContent='Indiquez le type de bateau.';return}msg.textContent='Enregistrement en cours…';const {data:settings}=await db.from('platform_settings').select('*').eq('id',1).maybeSingle(),base=parseInt((currentRequest.price||'300').replace(/\D/g,''))||300,percent=settings?.first_commission_percent||15,urgent=currentRequest.isUrgent?(settings?.urgent_fee_cents||1900):0,start=new Date(dateInput.value+'T09:00:00'),end=new Date(start.getTime()+(document.querySelector('#duration').value==='Demi-journée'?4:8)*3600000);const {error}=await db.from('missions').insert({client_id:currentUser.id,port:currentRequest.port,boat_type:boat,starts_at:start.toISOString(),ends_at:end.toISOString(),amount_cents:base*100,urgent_fee_cents:urgent,platform_fee_cents:Math.round(base*percent),status:'searching'});if(error){msg.textContent='Erreur : '+error.message;return}booking.style.display='none';success.style.display='block'};
     const skipperModal=document.querySelector('#skipperModal');document.querySelector('#openSkipper').onclick=()=>{setRole('skipper');accountModal.classList.add('open')};document.querySelector('#closeSkipper').onclick=()=>skipperModal.classList.remove('open');document.querySelector('#applySkipper').onclick=()=>{document.querySelector('#closeSkipper').click();setRole('skipper');accountModal.classList.add('open')};skipperModal.addEventListener('click',e=>{if(e.target===skipperModal)skipperModal.classList.remove('open')});
     const accountModal=document.querySelector('#accountModal'),dashboardModal=document.querySelector('#dashboardModal');
     function setRole(role){selectedRole=role;document.querySelector('#roleClient').classList.toggle('active',role==='client');document.querySelector('#roleSkipper').classList.toggle('active',role==='skipper');document.querySelector('#accountPortWrap').style.display=role==='skipper'?'block':'none'}
@@ -87,7 +87,7 @@
     async function loadProfile(){if(!currentUser){currentProfile=null;return}const {data}=await db.from('profiles').select('*').eq('id',currentUser.id).maybeSingle();currentProfile=data}
     function refreshAccount(){document.querySelector('#login').textContent=currentUser?'Mon espace':'Se connecter'}
     const labels={searching:'Recherche en cours',accepted:'Skipper confirmé',in_progress:'En cours',awaiting_validation:'À valider',paid:'Terminée et payée',disputed:'Litige',cancelled:'Annulée'};
-    function renderJob(j){const role=currentProfile?.role,statusClass=j.status==='paid'?'status ok':'status',amount=((j.amount_cents+j.urgent_fee_cents)/100).toFixed(0),amountLabel=(j.amount_cents||0)===0?'Prix à définir':amount+' €';let action='';if(role==='skipper'&&j.status==='searching')action=`<button class="small-btn fill" onclick="acceptJob('${j.id}')">Accepter la mission</button>`;if(role==='skipper'&&['accepted','in_progress'].includes(j.status))action=`<button class="small-btn fill" onclick="finishJob('${j.id}')">Bateau rincé et rangé</button>`;if((role==='client'||role==='admin')&&j.status==='awaiting_validation')action+=`<button class="small-btn fill" onclick="validateJob('${j.id}')">Valider la mission</button>`;if(role==='admin'&&!['paid','cancelled'].includes(j.status))action+=`<button class="small-btn danger" onclick="cancelJob('${j.id}')">Annuler</button>`;return `<div class="job"><div class="job-top"><div><h3>${j.port} · ${amountLabel}</h3><div class="job-meta">${new Date(j.starts_at).toLocaleDateString('fr-FR')} · ${j.boat_type}<br>${j.skipper_id?'Skipper confirmé':'Recherche du premier skipper disponible'}</div></div><span class="${statusClass}">${labels[j.status]||j.status}</span></div><div class="job-actions">${action}</div></div>`}
+    function renderJob(j){const role=currentProfile?.role,statusClass=j.status==='paid'?'status ok':'status',amount=((j.amount_cents+j.urgent_fee_cents)/100).toFixed(0);let action='';if(role==='skipper'&&j.status==='searching')action=`<button class="small-btn fill" onclick="acceptJob('${j.id}')">Accepter la mission</button>`;if(role==='skipper'&&['accepted','in_progress'].includes(j.status))action=`<button class="small-btn fill" onclick="finishJob('${j.id}')">Bateau rincé et rangé</button>`;if((role==='client'||role==='admin')&&j.status==='awaiting_validation')action+=`<button class="small-btn fill" onclick="validateJob('${j.id}')">Valider la mission</button>`;if(role==='admin'&&!['paid','cancelled'].includes(j.status))action+=`<button class="small-btn danger" onclick="cancelJob('${j.id}')">Annuler</button>`;return `<div class="job"><div class="job-top"><div><h3>${j.port} · ${amount} €</h3><div class="job-meta">${new Date(j.starts_at).toLocaleDateString('fr-FR')} · ${j.boat_type}<br>${j.skipper_id?'Skipper confirmé':'Recherche du premier skipper disponible'}</div></div><span class="${statusClass}">${labels[j.status]||j.status}</span></div><div class="job-actions">${action}</div></div>`}
     function adminProfileCard(p){return `<div class="job"><div class="job-top"><div class="profile-line"><div class="avatar-mini">⚓</div><div><h3>${p.full_name}</h3><div class="job-meta">${p.home_port||'Port non renseigné'} · ${p.phone||'Téléphone non renseigné'}</div></div></div><span class="${p.verified?'status ok':'status'}">${p.verified?'Vérifié':'À vérifier'}</span></div><div class="job-actions"><button class="small-btn" onclick="editSkipper('${p.id}','${(p.home_port||'').replace(/'/g,"\\'")}')">Modifier le port</button>${p.verified?`<button class="small-btn danger" onclick="toggleSkipper('${p.id}',false)">Suspendre</button>`:`<button class="small-btn fill" onclick="toggleSkipper('${p.id}',true)">Valider le skipper</button>`}</div></div>`}
     window.showAdminTab=id=>{document.querySelectorAll('.admin-panel').forEach(x=>x.classList.toggle('active',x.id==='panel-'+id));document.querySelectorAll('.admin-tabs button').forEach(x=>x.classList.toggle('active',x.dataset.tab===id))};
     async function renderAdminDashboard(jobs){
@@ -108,7 +108,7 @@
       const s=settings||{first_commission_percent:15,repeat_commission_percent:8,urgent_fee_cents:1900};
       const activityLabel=p=>PROVIDER_ACTIVITY_LABELS[p.provider_activity]||'Prestataire nautique';
       const profileRow=p=>`<div class="admin-list-row"><div class="left"><div class="thumb">${p.profile_photo_url?`<img src="${adminEsc(p.profile_photo_url)}" style="width:100%;height:100%;object-fit:cover;border-radius:12px">`:'⚓'}</div><div><strong>${adminEsc(p.full_name||'Profil sans nom')}</strong><small>${adminEsc(p.home_port||'Port non renseigné')} · ${adminEsc(activityLabel(p))}</small></div></div><div class="admin-actions"><span class="admin-badge ${p.verified?'ok':'warn'}">${p.verified?'Vérifié':'À valider'}</span><button class="small-btn" onclick="editSkipper('${p.id}','${(p.home_port||'').replace(/'/g,"\\'")}')">Modifier</button>${p.verified?`<button class="small-btn danger" onclick="toggleSkipper('${p.id}',false)">Suspendre</button>`:`<button class="small-btn fill" onclick="toggleSkipper('${p.id}',true)">Valider</button>`}</div></div>`;
-      const missionRow=j=>`<div class="admin-list-row"><div class="left"><div class="thumb">📍</div><div><strong>${adminEsc(j.port||'Port non renseigné')}</strong><small>${new Date(j.starts_at).toLocaleDateString('fr-FR')} · ${adminEsc(j.boat_type||'Bateau non renseigné')} · ${(j.amount_cents||0)===0?'Prix à définir':(((j.amount_cents||0)+(j.urgent_fee_cents||0))/100)+' €'}</small></div></div><div class="admin-actions"><span class="admin-badge ${j.status==='paid'?'ok':j.status==='cancelled'?'danger':'warn'}">${adminEsc(labels[j.status]||j.status)}</span>${!['paid','cancelled'].includes(j.status)?`<button class="small-btn danger" onclick="cancelJob('${j.id}')">Annuler</button>`:''}</div></div>`;
+      const missionRow=j=>`<div class="admin-list-row"><div class="left"><div class="thumb">📍</div><div><strong>${adminEsc(j.port||'Port non renseigné')}</strong><small>${new Date(j.starts_at).toLocaleDateString('fr-FR')} · ${adminEsc(j.boat_type||'Bateau non renseigné')} · ${((j.amount_cents||0)+(j.urgent_fee_cents||0))/100} €</small></div></div><div class="admin-actions"><span class="admin-badge ${j.status==='paid'?'ok':j.status==='cancelled'?'danger':'warn'}">${adminEsc(labels[j.status]||j.status)}</span>${!['paid','cancelled'].includes(j.status)?`<button class="small-btn danger" onclick="cancelJob('${j.id}')">Annuler</button>`:''}</div></div>`;
       document.querySelector('#dashboardBody').innerHTML=`
       <div class="admin-shell">
         <aside class="admin-side">
@@ -343,7 +343,7 @@
       providerResults.innerHTML=`<div class="provider-results-head"><button class="provider-back" type="button">← Retour aux services</button><strong>${list.length} résultat${list.length>1?'s':''}</strong></div>${list.length?`<div class="provider-results-list">${list.map(p=>`<article class="provider-result-card">${p.profile_photo_url?`<img class="provider-result-photo" src="${providerEsc(p.profile_photo_url)}" alt="${providerEsc(p.full_name)}">`:`<div class="provider-result-photo">⚓</div>`}<div><h3>${providerEsc(p.full_name||'Prestataire')}</h3><p><strong>${providerEsc(p.home_port||'Port non renseigné')}</strong> · ${p.experience_years||0} an(s) d’expérience</p><p>${providerEsc(p.bio||'Profil professionnel vérifié.')}</p><button class="small-btn fill" type="button" onclick="openProviderContact('${providerEsc(p.id)}','${providerEsc(p.full_name||'Prestataire')}','${providerEsc(p.home_port||'')}','${providerEsc(activity)}')">Voir le profil</button></div></article>`).join('')}</div>`:`<div class="provider-empty"><strong>Aucun prestataire disponible pour ce service.</strong><br>Les profils apparaîtront ici dès leur inscription et leur validation.</div>`}`;
       providerResults.querySelector('.provider-back').onclick=showProviderCategories;
     }
-    window.openProviderContact=(id,name,homePort,activity)=>{providerModal.classList.remove('open');if(!currentUser){setRole('client');setAuthMode('login');accountModal.classList.add('open');document.querySelector('#authMessage').textContent='Connectez-vous uniquement pour contacter '+name+'.';return}openBooking(name,'Prix à définir',false,homePort||port.value);currentRequest.isQuoteRequest=true;currentRequest.providerId=id;currentRequest.providerActivity=activity;document.querySelector('#requestType').textContent='DEMANDE DE PRESTATION';document.querySelector('#summaryPrice').textContent='Prix à définir avec le prestataire';document.querySelector('#send').textContent='Envoyer ma demande'};
+    window.openProviderContact=(id,name,homePort,activity)=>{providerModal.classList.remove('open');if(!currentUser){setRole('client');setAuthMode('login');accountModal.classList.add('open');document.querySelector('#authMessage').textContent='Connectez-vous uniquement pour contacter '+name+'.';return}openBooking(name,'Sur demande',false,homePort||port.value)};
     document.querySelectorAll('[data-provider]').forEach(btn=>btn.onclick=()=>showProviders(btn.dataset.provider));
 
 
@@ -1457,6 +1457,118 @@ body:not(.skippernow-admin) .admin-only{display:none!important}
   db.auth.onAuthStateChange((event,session)=>{if(event==='SIGNED_IN'||event==='TOKEN_REFRESHED'){currentUser=session?.user||currentUser;restoreSessionV10()}if(event==='SIGNED_OUT'&&realtimeChannelV10){db.removeChannel(realtimeChannelV10);realtimeChannelV10=null}});
 })();
 </script>
+
+
+<style id="v11PersistentSessionAndAccountNameStyles">
+#login.account-logged{display:inline-flex;align-items:center;gap:8px;max-width:260px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#login.account-logged::before{content:'👤';font-size:15px}
+</style>
+<script id="v11PersistentSessionAndAccountNameFix">
+(function(){
+  let bootingV11=false;
+
+  function accountNameV11(){
+    return String(currentProfile?.full_name||currentUser?.user_metadata?.full_name||currentUser?.email||'Mon espace').trim();
+  }
+
+  function paintAccountV11(){
+    const button=document.querySelector('#login');
+    if(!button)return;
+    if(currentUser){
+      button.textContent=accountNameV11();
+      button.title='Ouvrir mon espace';
+      button.classList.add('account-logged');
+    }else{
+      button.textContent='Se connecter';
+      button.title='';
+      button.classList.remove('account-logged');
+    }
+  }
+
+  async function restorePersistentSessionV11(){
+    if(bootingV11)return !!currentUser;
+    bootingV11=true;
+    try{
+      let result=await db.auth.getSession();
+      let session=result?.data?.session||null;
+      // Safari peut rendre le stockage quelques millisecondes après le chargement.
+      if(!session){
+        await new Promise(resolve=>setTimeout(resolve,250));
+        result=await db.auth.getSession();
+        session=result?.data?.session||null;
+      }
+      if(!session?.user){
+        currentUser=null;currentProfile=null;paintAccountV11();
+        return false;
+      }
+      currentUser=session.user;
+      const {data:profile,error}=await db.from('profiles').select('*').eq('id',currentUser.id).maybeSingle();
+      if(error)console.error('Profil session V11',error);
+      currentProfile=profile||{id:currentUser.id,role:'client',full_name:currentUser.user_metadata?.full_name||currentUser.email};
+      paintAccountV11();
+      return true;
+    }catch(error){
+      console.error('Restauration session V11',error);
+      paintAccountV11();
+      return false;
+    }finally{bootingV11=false}
+  }
+
+  // Remplace l'affichage ancien « Mon espace » par le nom réel du titulaire.
+  const previousRefreshV11=window.refreshAccount||((typeof refreshAccount==='function')?refreshAccount:null);
+  window.refreshAccount=function(){
+    try{previousRefreshV11?.()}catch(_e){}
+    paintAccountV11();
+  };
+
+  const previousOpenDashboardV11=window.openDashboard;
+  window.openDashboard=async function(){
+    const connected=await restorePersistentSessionV11();
+    if(!connected){
+      dashboardModal?.classList.remove('open');
+      setAuthMode?.('login');
+      accountModal?.classList.add('open');
+      return;
+    }
+    paintAccountV11();
+    return previousOpenDashboardV11?.();
+  };
+
+  // Le bouton relit toujours la session avant de décider d'afficher la connexion.
+  const loginButtonV11=document.querySelector('#login');
+  if(loginButtonV11){
+    loginButtonV11.addEventListener('click',async function(event){
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      const connected=await restorePersistentSessionV11();
+      if(connected)await window.openDashboard();
+      else{setAuthMode?.('login');accountModal?.classList.add('open')}
+    },true);
+  }
+
+  db.auth.onAuthStateChange(async(event,session)=>{
+    if(['INITIAL_SESSION','SIGNED_IN','TOKEN_REFRESHED','USER_UPDATED','PASSWORD_RECOVERY'].includes(event)){
+      currentUser=session?.user||null;
+      if(currentUser){
+        const {data}=await db.from('profiles').select('*').eq('id',currentUser.id).maybeSingle();
+        currentProfile=data||currentProfile||{role:'client',full_name:currentUser.user_metadata?.full_name||currentUser.email};
+      }
+      paintAccountV11();
+    }
+    if(event==='SIGNED_OUT'){
+      currentUser=null;currentProfile=null;paintAccountV11();
+    }
+  });
+
+  document.addEventListener('DOMContentLoaded',restorePersistentSessionV11,{once:true});
+  window.addEventListener('pageshow',restorePersistentSessionV11);
+  setTimeout(restorePersistentSessionV11,50);
+  setTimeout(restorePersistentSessionV11,600);
+})();
+</script>
+
+
+
 <style id="v12SessionModalNavigationStyles">
 body.v12-modal-open{overflow:hidden}
 #login.v12-loading{opacity:.65;pointer-events:none}
@@ -1595,12 +1707,219 @@ body.v12-modal-open{overflow:hidden}
   async function bootV12(){
     const ok=await restoreV12();
     paintV12(false);
-    // La session reste connectée, mais l'accueil reste la page d'ouverture.
+    if(ok&&localStorage.getItem(DASH_KEY)==='1')setTimeout(()=>window.openDashboard(),120);
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bootV12,{once:true});else bootV12();
   window.addEventListener('pageshow',bootV12);
 })();
 </script>
+
+
+
+<style id="v14UniversalBackStyles">
+.v14-universal-back{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:11px;padding:9px 13px;font-weight:850;cursor:pointer;white-space:nowrap;margin-left:auto;margin-right:8px}
+.v14-universal-back:hover{background:var(--mist)}
+.v14-floating-back{position:absolute;top:14px;right:58px;z-index:3}
+</style>
+<script id="v14UniversalBackFix">
+(function(){
+  function openedPanels(){return [...document.querySelectorAll('.modal.open,.v3-modal.open')]}
+  function unlockPage(){
+    document.body.classList.remove('v12-modal-open');
+    document.body.style.overflow='';
+    document.documentElement.style.overflow='';
+  }
+  function goHomeV14(event){
+    if(event){event.preventDefault();event.stopPropagation();event.stopImmediatePropagation?.()}
+    document.querySelectorAll('.modal.open,.v3-modal.open').forEach(m=>m.classList.remove('open'));
+    unlockPage();
+    window.scrollTo({top:0,behavior:'smooth'});
+    history.replaceState({},'',location.pathname);
+    return false;
+  }
+  window.goHomeSkipperNow=goHomeV14;
+
+  function installBackV14(modal){
+    if(!modal||modal.dataset.v14Back==='1')return;
+    modal.dataset.v14Back='1';
+    let top=modal.querySelector('.dialog-top');
+    let btn=document.createElement('button');
+    btn.type='button';btn.className='v14-universal-back';btn.textContent='← Retour à l’accueil';
+    btn.addEventListener('click',goHomeV14,true);
+    if(top){
+      const close=top.querySelector('.close');
+      if(close)top.insertBefore(btn,close);else top.appendChild(btn);
+    }else{
+      const card=modal.querySelector('.dialog,.v3-modal-card')||modal.firstElementChild;
+      if(card){card.style.position=card.style.position||'relative';btn.classList.add('v14-floating-back');card.prepend(btn)}
+    }
+  }
+
+  function scanV14(){document.querySelectorAll('.modal,.v3-modal').forEach(installBackV14)}
+  scanV14();
+  new MutationObserver(scanV14).observe(document.body,{childList:true,subtree:true});
+
+  document.addEventListener('click',function(e){
+    const back=e.target.closest?.('.v14-universal-back,.v12-back-button');
+    if(back){goHomeV14(e);return}
+    const close=e.target.closest?.('.close');
+    if(close){
+      const modal=close.closest('.modal,.v3-modal');
+      if(modal){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation?.();modal.classList.remove('open');unlockPage();window.scrollTo({top:0,behavior:'smooth'})}
+    }
+  },true);
+})();
+</script>
+
+
+
+<style id="v15HomeKeepsSessionStyles">
+#login.account-logged{cursor:pointer}
+</style>
+<script id="v15HomeKeepsSessionFix">
+(function(){
+  const DASH_KEY='skippernow_dashboard_open';
+
+  function isConnectedV15(){return !!(window.currentUser||currentUser)}
+  function unlockV15(){
+    document.body.classList.remove('v12-modal-open');
+    document.body.style.overflow='';
+    document.documentElement.style.overflow='';
+  }
+  function repaintNameV15(){
+    try{window.refreshAccount?.()}catch(_e){}
+    const b=document.querySelector('#login');
+    if(!b)return;
+    if(isConnectedV15()){
+      const u=window.currentUser||currentUser;
+      const p=window.currentProfile||currentProfile;
+      b.textContent=String(p?.full_name||u?.user_metadata?.full_name||u?.email||'Mon espace').trim();
+      b.classList.add('account-logged');
+      b.title='Ouvrir mon espace';
+    }
+  }
+
+  window.returnHomeKeepSessionV15=function(event){
+    if(event){event.preventDefault();event.stopPropagation();event.stopImmediatePropagation?.()}
+    const connected=isConnectedV15();
+    document.querySelectorAll('.modal.open,.v3-modal.open').forEach(m=>m.classList.remove('open'));
+    unlockV15();
+    // Retourner à l'accueil ne déconnecte jamais le compte.
+    if(connected){
+      localStorage.setItem(DASH_KEY,'1');
+      repaintNameV15();
+    }
+    window.scrollTo({top:0,behavior:'smooth'});
+    history.replaceState({},'',location.pathname);
+    return false;
+  };
+
+  // Remplace le comportement des anciens boutons Retour.
+  document.addEventListener('click',function(e){
+    const back=e.target.closest?.('.v14-universal-back,.v12-back-button');
+    if(back){window.returnHomeKeepSessionV15(e);return}
+    const close=e.target.closest?.('.close');
+    const modal=close?.closest?.('.modal,.v3-modal');
+    if(modal&&modal.id==='dashboardModal'){
+      e.preventDefault();e.stopPropagation();e.stopImmediatePropagation?.();
+      window.returnHomeKeepSessionV15(e);
+    }
+  },true);
+
+  // Le nom du titulaire ouvre toujours son espace sans demander de se reconnecter.
+  const nameButton=document.querySelector('#login');
+  if(nameButton)nameButton.addEventListener('click',async function(e){
+    if(!isConnectedV15())return;
+    e.preventDefault();e.stopPropagation();e.stopImmediatePropagation?.();
+    localStorage.setItem(DASH_KEY,'1');
+    await window.openDashboard?.();
+  },true);
+
+  // Après retour à l'accueil, la session et le nom restent affichés.
+  window.addEventListener('pageshow',()=>setTimeout(repaintNameV15,150));
+  setTimeout(repaintNameV15,200);
+})();
+</script>
+
+
+
+<style id="v16SingleWorkingBackStyles">
+.v12-back-button,.v14-universal-back{display:none!important}
+.v16-home-back{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:11px;padding:9px 13px;font-weight:850;cursor:pointer;white-space:nowrap;margin-left:auto;margin-right:8px;position:relative;z-index:25000;pointer-events:auto!important}
+.v16-home-back:hover{background:var(--mist)}
+</style>
+<script id="v16SingleWorkingBackFix">
+(function(){
+  const DASH_KEY='skippernow_dashboard_open';
+
+  function unlockPageV16(){
+    document.body.classList.remove('v12-modal-open');
+    document.body.style.overflow='';
+    document.documentElement.style.overflow='';
+  }
+
+  function repaintConnectedNameV16(){
+    const b=document.querySelector('#login');
+    if(!b)return;
+    const u=(typeof currentUser!=='undefined'?currentUser:null);
+    const p=(typeof currentProfile!=='undefined'?currentProfile:null);
+    if(u){
+      b.textContent=String(p?.full_name||u?.user_metadata?.full_name||u?.email||'Mon espace').trim();
+      b.classList.add('account-logged');
+      b.title='Ouvrir mon espace';
+    }
+  }
+
+  window.returnToHomeV16=function(ev){
+    if(ev){ev.preventDefault();ev.stopPropagation();ev.stopImmediatePropagation?.()}
+    document.querySelectorAll('.modal.open,.v3-modal.open').forEach(m=>m.classList.remove('open'));
+    unlockPageV16();
+    // La session reste connectée. Seul le bouton « Se déconnecter » ferme la session.
+    const u=(typeof currentUser!=='undefined'?currentUser:null);
+    if(u){localStorage.setItem(DASH_KEY,'1');repaintConnectedNameV16()}
+    window.scrollTo({top:0,behavior:'smooth'});
+    return false;
+  };
+
+  function installOneButtonV16(modal){
+    if(!modal)return;
+    modal.querySelectorAll('.v12-back-button,.v14-universal-back,.v16-home-back').forEach(x=>x.remove());
+    const top=modal.querySelector('.dialog-top');
+    if(!top)return;
+    const close=top.querySelector('.close');
+    const btn=document.createElement('button');
+    btn.type='button';
+    btn.className='v16-home-back';
+    btn.textContent='← Retour à l’accueil';
+    btn.onclick=window.returnToHomeV16;
+    btn.addEventListener('click',window.returnToHomeV16,{capture:true});
+    if(close)top.insertBefore(btn,close);else top.appendChild(btn);
+  }
+
+  function scanV16(){
+    document.querySelectorAll('.modal,.v3-modal').forEach(installOneButtonV16);
+  }
+
+  // La croix ferme également la fenêtre sans déconnecter.
+  document.addEventListener('click',function(e){
+    const close=e.target.closest?.('.close');
+    if(!close)return;
+    const modal=close.closest('.modal,.v3-modal');
+    if(!modal)return;
+    e.preventDefault();e.stopPropagation();e.stopImmediatePropagation?.();
+    modal.classList.remove('open');
+    unlockPageV16();
+    repaintConnectedNameV16();
+  },true);
+
+  scanV16();
+  new MutationObserver(()=>setTimeout(scanV16,0)).observe(document.body,{childList:true,subtree:true});
+  setTimeout(scanV16,100);
+  setTimeout(scanV16,700);
+})();
+</script>
+
+
 <style id="v17ProfileManagementStyles">
 .v17-profile-action{font-weight:850!important}
 .v17-profile-action.delete{background:#a61f2b!important;color:#fff!important;border-color:#a61f2b!important}
@@ -1777,6 +2096,137 @@ body.v12-modal-open{overflow:hidden}
   },true);
 })();
 </script>
+
+
+<script id="v19HomeFirstFix">
+(function(){
+  const DASH_KEY='skippernow_dashboard_open';
+  let userAskedToOpen=false;
+  let bootFinished=false;
+
+  // L'accueil doit toujours être la première page affichée, même si l'admin est déjà connecté.
+  localStorage.removeItem(DASH_KEY);
+
+  function closeDashboardOnArrival(){
+    if(userAskedToOpen)return;
+    const dash=document.querySelector('#dashboardModal');
+    dash?.classList.remove('open','admin-mode');
+    document.body.classList.remove('v12-modal-open');
+    document.body.style.overflow='';
+    document.documentElement.style.overflow='';
+    localStorage.removeItem(DASH_KEY);
+  }
+
+  // Seul un clic volontaire sur le nom / bouton de compte ouvre l'espace administrateur.
+  document.addEventListener('pointerdown',function(e){
+    if(e.target.closest?.('#login')) userAskedToOpen=true;
+  },true);
+  document.addEventListener('click',function(e){
+    if(e.target.closest?.('#login')) userAskedToOpen=true;
+  },true);
+
+  const oldReturn=window.returnToHomeV16;
+  window.returnToHomeV16=function(ev){
+    userAskedToOpen=false;
+    localStorage.removeItem(DASH_KEY);
+    const result=oldReturn?oldReturn(ev):false;
+    localStorage.removeItem(DASH_KEY);
+    return result;
+  };
+
+  const closeDash=document.querySelector('#closeDashboard');
+  closeDash?.addEventListener('click',()=>{
+    userAskedToOpen=false;
+    localStorage.removeItem(DASH_KEY);
+  },true);
+
+  function bootHome(){
+    userAskedToOpen=false;
+    localStorage.removeItem(DASH_KEY);
+    closeDashboardOnArrival();
+    setTimeout(closeDashboardOnArrival,80);
+    setTimeout(closeDashboardOnArrival,300);
+    setTimeout(()=>{closeDashboardOnArrival();bootFinished=true},900);
+  }
+
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bootHome,{once:true});
+  else bootHome();
+  window.addEventListener('pageshow',bootHome);
+})();
+</script>
+
+<script id="v20AccountButtonSessionFix">
+(function(){
+  let opening=false;
+
+  async function getRealSessionV20(){
+    for(const delay of [0,180,450,900]){
+      if(delay) await new Promise(r=>setTimeout(r,delay));
+      try{
+        const {data,error}=await db.auth.getSession();
+        if(error) console.error('Session V20',error);
+        if(data?.session?.user) return data.session;
+      }catch(e){console.error('Session V20',e)}
+    }
+    return null;
+  }
+
+  async function openMySpaceV20(e){
+    e?.preventDefault?.();
+    e?.stopPropagation?.();
+    if(opening)return;
+    opening=true;
+    const button=document.querySelector('#login');
+    try{
+      button?.classList.add('v12-loading');
+      const session=await getRealSessionV20();
+      if(!session?.user){
+        currentUser=null;currentProfile=null;
+        if(button){button.textContent='Se connecter';button.classList.remove('account-logged')}
+        document.querySelector('#dashboardModal')?.classList.remove('open','admin-mode');
+        setAuthMode?.('login');
+        accountModal?.classList.add('open');
+        return;
+      }
+
+      currentUser=session.user;
+      const {data:profile,error}=await db.from('profiles').select('*').eq('id',currentUser.id).maybeSingle();
+      if(error)console.error('Profil V20',error);
+      currentProfile=profile||{id:currentUser.id,role:'client',full_name:currentUser.user_metadata?.full_name||currentUser.email};
+      if(button){
+        button.textContent=String(currentProfile?.full_name||currentUser.user_metadata?.full_name||currentUser.email||'Mon espace').trim();
+        button.classList.add('account-logged');
+      }
+      accountModal?.classList.remove('open');
+      localStorage.setItem('skippernow_dashboard_open','1');
+      await window.openDashboard?.();
+      document.querySelector('#dashboardModal')?.classList.add('open');
+    }catch(err){
+      console.error('Ouverture espace V20',err);
+      alert('Impossible d’ouvrir votre espace pour le moment. Rechargez la page puis réessayez.');
+    }finally{
+      button?.classList.remove('v12-loading');
+      opening=false;
+    }
+  }
+
+  function installV20(){
+    const old=document.querySelector('#login');
+    if(!old||old.dataset.v20Installed==='1')return;
+    const fresh=old.cloneNode(true);
+    fresh.dataset.v20Installed='1';
+    old.replaceWith(fresh);
+    fresh.addEventListener('click',openMySpaceV20);
+  }
+
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',installV20,{once:true});
+  else installV20();
+  setTimeout(installV20,400);
+  setTimeout(installV20,1200);
+})();
+</script>
+
+
 <style id="v21StableAdminStyles">
 .v21-home-btn{border:1px solid var(--line);background:#fff;color:var(--navy);border-radius:11px;padding:9px 13px;font-weight:900;cursor:pointer;margin-right:8px}
 .v21-mission-card{border:1px solid var(--line);border-radius:16px;padding:15px;background:#fff;margin:10px 0}
@@ -1870,17 +2320,31 @@ body.v12-modal-open{overflow:hidden}
     const res=await db.from('missions').update(patch).eq('id',id);if(res.error)return alert('Erreur : '+res.error.message);await renderMissionManagerV21();
   };
 
+  let missionRenderBusyV21=false;
+  let missionRenderQueuedV21=false;
   async function renderMissionManagerV21(){
     if(typeof currentProfile==='undefined'||currentProfile?.role!=='admin')return;
     const panel=document.querySelector('#v3-missions');if(!panel)return;
+    if(missionRenderBusyV21){missionRenderQueuedV21=true;return}
+    missionRenderBusyV21=true;
+    missionRenderQueuedV21=false;
+    try{
     const {data,error}=await db.from('missions').select('*').order('created_at',{ascending:false});
     if(error){panel.innerHTML='<div class="v3-empty">Impossible de charger les missions : '+esc(error.message)+'</div>';return}
     const rows=data||[];
-    panel.innerHTML='<div class="admin-note"><strong>Gestion des missions</strong><br>Le montant affiché correspond au prix enregistré pour la mission. Tu peux le modifier, changer le statut ou supprimer une mission créée par erreur.</div>'+(rows.length?rows.map(m=>{
+    const nextHtml='<div class="admin-note"><strong>Gestion des missions</strong><br>Le montant affiché correspond au prix enregistré pour la mission. Tu peux le modifier, changer le statut ou supprimer une mission créée par erreur.</div>'+(rows.length?rows.map(m=>{
       const total=Number(m.amount_cents||0)+Number(m.urgent_fee_cents||0);
       const date=m.starts_at?new Date(m.starts_at).toLocaleDateString('fr-FR'):'Date non renseignée';
       return `<article class="v21-mission-card"><div class="v21-mission-head"><div><h3>${esc(m.title||m.port||'Mission')}</h3><div class="v21-mission-meta">${date}<br>Statut paiement : ${esc(statusLabel(m.payment_status||'non_payee'))}${m.description?'<br>'+esc(m.description):''}</div></div><div style="text-align:right"><strong style="font-size:22px">${money(total)}</strong><br><span class="v21-status ${statusClass(m.status)}">${esc(statusLabel(m.status))}</span></div></div><div class="v21-mission-actions"><button class="fill" onclick="v21MissionEdit('${m.id}')">Gérer / modifier</button><button onclick="v21MissionStatus('${m.id}','accepted')">Accepter</button><button onclick="v21MissionStatus('${m.id}','in_progress')">En cours</button><button onclick="v21MissionStatus('${m.id}','completed')">Terminer</button><button onclick="v21MissionStatus('${m.id}','cancelled')">Annuler</button><button class="danger" onclick="v21MissionDelete('${m.id}')">Supprimer</button></div></article>`
     }).join(''):'<div class="v3-empty">Aucune mission enregistrée.</div>');
+    if(panel.innerHTML!==nextHtml)panel.innerHTML=nextHtml;
+    }finally{
+      missionRenderBusyV21=false;
+      if(missionRenderQueuedV21&&document.querySelector('#v3-missions.active')){
+        missionRenderQueuedV21=false;
+        setTimeout(renderMissionManagerV21,80);
+      }
+    }
   }
   window.renderMissionManagerV21=renderMissionManagerV21;
 
@@ -1888,7 +2352,18 @@ body.v12-modal-open{overflow:hidden}
     const tab=e.target.closest?.('[data-v3="missions"]');if(tab)setTimeout(renderMissionManagerV21,120);
   },true);
 
-  const obs=new MutationObserver(()=>{installHomeButton();installAccountButton();if(document.querySelector('#v3-missions.active'))renderMissionManagerV21()});
+  let missionObserverTimerV21=0;
+  const obs=new MutationObserver(records=>{
+    installHomeButton();
+    installAccountButton();
+    if(!document.querySelector('#v3-missions.active'))return;
+    // Les changements produits par le rendu de la liste ne doivent pas
+    // relancer ce même rendu en boucle.
+    const externalChange=records.some(record=>!record.target.closest?.('#v3-missions'));
+    if(!externalChange)return;
+    clearTimeout(missionObserverTimerV21);
+    missionObserverTimerV21=setTimeout(renderMissionManagerV21,120);
+  });
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>{installAccountButton();installHomeButton();obs.observe(document.body,{childList:true,subtree:true})},{once:true});
   else{installAccountButton();installHomeButton();obs.observe(document.body,{childList:true,subtree:true})}
   setTimeout(()=>{installAccountButton();installHomeButton()},500);setTimeout(()=>{installAccountButton();installHomeButton()},1500);
@@ -1995,226 +2470,56 @@ body.v12-modal-open{overflow:hidden}
 })();
 </script>
 
-
-<!-- SERVICE QUOTE FLOW -->
-<div class="modal" id="serviceRequestModal">
-  <div class="dialog large">
-    <div class="dialog-top">
-      <div><small>DEMANDE DE PRESTATION</small><h2>Décrire les travaux à réaliser</h2></div>
-      <button class="close" id="closeServiceRequest">×</button>
-    </div>
-    <div class="admin-note">Le prestataire ne voit ni votre téléphone ni votre email avant l’acceptation et le paiement.</div>
-    <div class="field"><label>PORT DU BATEAU</label><input id="srPort" placeholder="Ex. Port Gallice, Juan-les-Pins"></div>
-    <div class="field"><label>NOM OU MODÈLE DU BATEAU</label><input id="srBoat" placeholder="Ex. Cap Camarat 9.0"></div>
-    <div class="field"><label>LONGUEUR APPROXIMATIVE</label><input id="srLength" placeholder="Ex. 9 mètres"></div>
-    <div class="field"><label>TRAVAUX SOUHAITÉS</label><textarea id="srTasks" rows="6" style="width:100%;border:0;outline:0;resize:vertical" placeholder="Décrivez précisément le nettoyage ou les travaux à effectuer…"></textarea></div>
-    <div class="field"><label>DATE SOUHAITÉE (FACULTATIF)</label><input id="srDate" type="date"></div>
-    <div class="field"><label>PHOTOS DU BATEAU (5 MAXIMUM)</label><input id="srPhotos" type="file" accept="image/*" multiple></div>
-    <p class="muted" id="srMessage"></p>
-    <button class="primary wide" id="submitServiceRequest">Envoyer la demande de devis</button>
-  </div>
-</div>
-
-
-<script id="serviceQuoteFlowV1">
-(() => {
-  const modal = document.getElementById('serviceRequestModal');
-  let selectedProvider = null;
-  const escQ = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const moneyQ = cents => new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR'}).format((Number(cents)||0)/100);
-  const activityLabels = {
-    cleaning:'Nettoyage du bateau',
-    boat_cleaning:'Nettoyage du bateau',
-    dock_service:'Services à quai',
-    shipyard:'Chantier et entretien',
-    day_sailor:'Marin à la journée',
-    mechanic:'Mécanique',
-    electrical:'Électricité marine'
-  };
-
-  function closeRequestModal(){ modal.classList.remove('open'); }
-  document.getElementById('closeServiceRequest').onclick = closeRequestModal;
-  modal.addEventListener('click', e => { if(e.target === modal) closeRequestModal(); });
-
-  window.openProviderContact = (id,name,homePort,activity) => {
-    const providerModal = document.getElementById('providerModal');
-    if(providerModal) providerModal.classList.remove('open');
-    if(!currentUser){
-      setRole('client'); setAuthMode('login');
-      accountModal.classList.add('open');
-      document.getElementById('authMessage').textContent='Connectez-vous pour envoyer une demande de devis.';
-      return;
-    }
-    if(currentProfile?.role !== 'client' && currentProfile?.role !== 'admin'){
-      alert('Un compte client est nécessaire pour demander un devis.');
-      return;
-    }
-    selectedProvider = {id,name,homePort,activity};
-    document.getElementById('srPort').value = homePort || document.getElementById('port')?.value || '';
-    document.getElementById('srBoat').value = '';
-    document.getElementById('srLength').value = '';
-    document.getElementById('srTasks').value = '';
-    document.getElementById('srDate').value = '';
-    document.getElementById('srPhotos').value = '';
-    document.getElementById('srMessage').textContent = 'Demande envoyée à '+name+'. Le prestataire proposera son prix sur SkipperNow.';
-    modal.classList.add('open');
-  };
-
-  async function uploadRequestPhotos(requestId, files){
-    const urls = [];
-    for(const file of Array.from(files).slice(0,5)){
-      const ext = (file.name.split('.').pop() || 'jpg').toLowerCase();
-      const path = `${currentUser.id}/${requestId}/${crypto.randomUUID()}.${ext}`;
-      const {error} = await db.storage.from('service-request-photos').upload(path,file,{upsert:false});
-      if(error) throw error;
-      const {data} = db.storage.from('service-request-photos').getPublicUrl(path);
-      urls.push(data.publicUrl);
-    }
-    return urls;
+<style id="adminDashboardStabilityV23Styles">
+  #dashboardModal.admin-opening-v23{
+    background:#edf2f4;
   }
+  #dashboardModal.admin-opening-v23 .dialog.large{
+    visibility:hidden;
+  }
+  #dashboardModal.admin-opening-v23::after{
+    content:"Ouverture de l’espace administrateur…";
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%);
+    color:var(--navy);
+    font-weight:850;
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:18px 22px;
+    box-shadow:var(--shadow);
+  }
+</style>
+<script id="adminDashboardStabilityV23">
+(function(){
+  const previousOpenDashboardV23=window.openDashboard;
+  if(typeof previousOpenDashboardV23!=='function')return;
 
-  document.getElementById('submitServiceRequest').onclick = async () => {
-    const msg = document.getElementById('srMessage');
-    const port = document.getElementById('srPort').value.trim();
-    const boat = document.getElementById('srBoat').value.trim();
-    const boatLength = document.getElementById('srLength').value.trim();
-    const tasks = document.getElementById('srTasks').value.trim();
-    const desiredDate = document.getElementById('srDate').value || null;
-    const files = document.getElementById('srPhotos').files;
-    if(!selectedProvider || !port || !boat || !tasks){
-      msg.textContent='Indiquez au minimum le port, le bateau et les travaux souhaités.';
-      return;
-    }
-    msg.textContent='Création de la demande…';
-    const {data:reqData,error:reqError} = await db.from('provider_requests').insert({
-      client_id:currentUser.id,
-      provider_id:selectedProvider.id,
-      activity:selectedProvider.activity || 'cleaning',
-      port,
-      boat_name:boat,
-      boat_length:boatLength || null,
-      task_description:tasks,
-      desired_date:desiredDate,
-      status:'open'
-    }).select().single();
-    if(reqError){ msg.textContent='Erreur : '+reqError.message; return; }
-    try{
-      const photoUrls = files?.length ? await uploadRequestPhotos(reqData.id,files) : [];
-      if(photoUrls.length){
-        const {error:updateError}=await db.from('provider_requests').update({photo_urls:photoUrls}).eq('id',reqData.id);
-        if(updateError) throw updateError;
+  let pendingOpenV23=null;
+  window.openDashboard=function(){
+    if(pendingOpenV23)return pendingOpenV23;
+    const dashboard=document.querySelector('#dashboardModal');
+    const isAdmin=String(
+      (typeof currentProfile!=='undefined'&&currentProfile?.role)||''
+    ).toLowerCase()==='admin';
+
+    if(isAdmin)dashboard?.classList.add('admin-opening-v23');
+
+    pendingOpenV23=(async()=>{
+      try{
+        await previousOpenDashboardV23.apply(this,arguments);
+        // Plusieurs modules complètent encore le tableau de bord juste après
+        // son rendu principal. On attend leur passage avant de l'afficher.
+        if(isAdmin)await new Promise(resolve=>setTimeout(resolve,340));
+      }finally{
+        dashboard?.classList.remove('admin-opening-v23');
+        pendingOpenV23=null;
       }
-      msg.textContent='Demande envoyée. Le prestataire peut maintenant proposer son prix.';
-      setTimeout(()=>{closeRequestModal(); openDashboard();},900);
-    }catch(error){
-      msg.textContent='Demande créée, mais certaines photos n’ont pas été envoyées : '+error.message;
-    }
+    })();
+    return pendingOpenV23;
   };
-
-  async function proposeQuote(requestId){
-    const amount = prompt('Prix total proposé en euros :');
-    if(amount === null) return;
-    const euros = Number(String(amount).replace(',','.'));
-    if(!Number.isFinite(euros) || euros <= 0) return alert('Indiquez un prix valide.');
-    const duration = prompt('Durée estimée (ex. 4 heures) :','');
-    const details = prompt('Détail de ce qui est inclus dans le prix :','');
-    const {error}=await db.from('provider_quotes').insert({
-      request_id:requestId,
-      provider_id:currentUser.id,
-      amount_cents:Math.round(euros*100),
-      estimated_duration:duration || null,
-      details:details || null,
-      status:'proposed'
-    });
-    if(error) return alert('Erreur : '+error.message);
-    alert('Votre proposition a été envoyée au client.');
-    appendQuoteSections();
-  }
-  window.proposeQuote = proposeQuote;
-
-  async function acceptQuote(quoteId, requestId, amountCents, providerId){
-    if(!confirm('Accepter cette offre et créer le paiement sécurisé ?')) return;
-    const {data:settings}=await db.from('platform_settings').select('*').eq('id',1).maybeSingle();
-    const percent=Number(settings?.first_commission_percent||15);
-    const [{data:req,error:reqError},{error:qError}] = await Promise.all([
-      db.from('provider_requests').select('*').eq('id',requestId).single(),
-      db.from('provider_quotes').update({status:'accepted'}).eq('id',quoteId)
-    ]);
-    if(reqError || qError) return alert('Erreur lors de l’acceptation.');
-    await db.from('provider_quotes').update({status:'rejected'}).eq('request_id',requestId).neq('id',quoteId);
-    const starts = req.desired_date ? new Date(req.desired_date+'T09:00:00') : new Date(Date.now()+24*3600000);
-    const ends = new Date(starts.getTime()+4*3600000);
-    const {error:missionError}=await db.from('missions').insert({
-      client_id:currentUser.id,
-      provider_id:providerId,
-      port:req.port,
-      boat_type:'Prestation : '+(activityLabels[req.activity]||req.activity||'Service nautique'),
-      starts_at:starts.toISOString(),
-      ends_at:ends.toISOString(),
-      amount_cents:Number(amountCents),
-      urgent_fee_cents:0,
-      platform_fee_cents:Math.round(Number(amountCents)*percent/100),
-      status:'accepted',
-      payment_status:'unpaid'
-    });
-    if(missionError) return alert('Offre acceptée, mais la mission n’a pas pu être créée : '+missionError.message);
-    await db.from('provider_requests').update({status:'accepted',accepted_quote_id:quoteId}).eq('id',requestId);
-    alert('Offre acceptée. Le paiement sécurisé est maintenant disponible dans votre espace.');
-    openDashboard();
-  }
-  window.acceptQuote = acceptQuote;
-
-  function requestCard(r, quoteHtml='', providerMode=false){
-    const photos=(r.photo_urls||[]).map(u=>`<img src="${escQ(u)}" style="width:84px;height:66px;object-fit:cover;border-radius:10px;margin:4px">`).join('');
-    return `<div class="v3-card">
-      <div class="job-top"><div><h3>${escQ(activityLabels[r.activity]||r.activity||'Prestation')}</h3>
-      <div class="v3-meta">${escQ(r.port||'Port non renseigné')} · ${escQ(r.boat_name||'Bateau')} ${r.boat_length?'· '+escQ(r.boat_length):''}</div></div>
-      <span class="admin-badge ${r.status==='accepted'?'ok':'warn'}">${escQ(r.status||'open')}</span></div>
-      <p>${escQ(r.task_description||'')}</p>
-      <div>${photos}</div>
-      ${quoteHtml}
-      ${providerMode && r.status==='open' ? `<div class="v3-actions"><button class="fill" onclick="proposeQuote('${r.id}')">Proposer un prix</button></div>`:''}
-      <div class="admin-note">Téléphone et email masqués avant acceptation et paiement.</div>
-    </div>`;
-  }
-
-  async function appendQuoteSections(){
-    const dashboardBody=document.getElementById('dashboardBody');
-    if(!dashboardBody || !currentUser || !currentProfile) return;
-    document.querySelectorAll('.service-quotes-section').forEach(x=>x.remove());
-
-    if(currentProfile.role==='client' || currentProfile.role==='admin'){
-      const {data:requests}=await db.from('provider_requests').select('*').eq('client_id',currentUser.id).order('created_at',{ascending:false});
-      if(requests?.length){
-        const ids=requests.map(r=>r.id);
-        const {data:quotes}=await db.from('provider_quotes').select('*').in('request_id',ids).order('created_at',{ascending:false});
-        const html=requests.map(r=>{
-          const mine=(quotes||[]).filter(q=>q.request_id===r.id);
-          const quoteHtml=mine.length?`<div class="admin-box"><h3>Offres reçues</h3>${mine.map(q=>`<div class="v3-row"><div><b>${moneyQ(q.amount_cents)}</b><div class="v3-meta">${escQ(q.estimated_duration||'Durée à confirmer')}<br>${escQ(q.details||'')}</div></div>${q.status==='proposed'&&r.status==='open'?`<button class="small-btn fill" onclick="acceptQuote('${q.id}','${r.id}',${q.amount_cents},'${q.provider_id}')">Accepter et payer</button>`:`<span class="admin-badge ${q.status==='accepted'?'ok':''}">${escQ(q.status)}</span>`}</div>`).join('')}</div>`:'<div class="v3-empty">Aucune offre reçue pour le moment.</div>';
-          return requestCard(r,quoteHtml,false);
-        }).join('');
-        const section=document.createElement('section');
-        section.className='service-quotes-section admin-box';
-        section.innerHTML='<h2>Mes demandes de prestations</h2>'+html;
-        dashboardBody.prepend(section);
-      }
-    }
-
-    const isProvider=currentProfile.role==='skipper' && currentProfile.provider_activity && currentProfile.provider_activity!=='skipper';
-    if(isProvider){
-      const activity=currentProfile.provider_activity;
-      const {data:requests}=await db.from('provider_requests').select('*').eq('status','open').or(`provider_id.eq.${currentUser.id},provider_id.is.null`).order('created_at',{ascending:false});
-      const matching=(requests||[]).filter(r=>!r.activity||r.activity===activity||(activity==='boat_cleaning'&&r.activity==='cleaning'));
-      const section=document.createElement('section');
-      section.className='service-quotes-section admin-box';
-      section.innerHTML='<h2>Demandes de prestations disponibles</h2>'+(matching.length?matching.map(r=>requestCard(r,'',true)).join(''):'<div class="v3-empty">Aucune demande correspondant à votre activité.</div>');
-      dashboardBody.prepend(section);
-    }
-  }
-  window.appendQuoteSections=appendQuoteSections;
-
-  const observer=new MutationObserver(()=>{ if(document.getElementById('dashboardModal')?.classList.contains('open')) setTimeout(appendQuoteSections,100); });
-  observer.observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:['class']});
 })();
 </script>
 
