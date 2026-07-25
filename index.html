@@ -71,12 +71,12 @@
     const form=document.querySelector('#searchForm'),port=document.querySelector('#port'),count=document.querySelector('#resultCount'),empty=document.querySelector('#empty');
     form.addEventListener('submit',async e=>{e.preventDefault();await loadSkippers();document.querySelector('main').scrollIntoView({behavior:'smooth'})});
     const modal=document.querySelector('#modal'),booking=document.querySelector('#booking'),success=document.querySelector('#success');
-    let openBooking=(name,price,isUrgent=false,selectedPort='')=>{document.querySelector('#skipperName').textContent=name;document.querySelector('#requestType').textContent=isUrgent?'DEMANDE URGENTE':'DEMANDE DE RÉSERVATION';document.querySelector('#summaryPrice').textContent=price;document.querySelector('#summaryPort').textContent=selectedPort||(port.value==='all'?'Cannes':port.value);document.querySelector('#urgentLine').style.display=isUrgent?'flex':'none';booking.style.display='block';success.style.display='none';modal.classList.add('open')};
+    let openBooking=(name,price,isUrgent=false,selectedPort='')=>{currentRequest.isQuoteRequest=false;document.querySelector('#send').textContent='Créer la demande';document.querySelector('#skipperName').textContent=name;document.querySelector('#requestType').textContent=isUrgent?'DEMANDE URGENTE':'DEMANDE DE RÉSERVATION';document.querySelector('#summaryPrice').textContent=price;document.querySelector('#summaryPort').textContent=selectedPort||(port.value==='all'?'Cannes':port.value);document.querySelector('#urgentLine').style.display=isUrgent?'flex':'none';booking.style.display='block';success.style.display='none';modal.classList.add('open')};
     document.querySelectorAll('.reserve').forEach(b=>b.addEventListener('click',()=>openBooking(b.dataset.name,b.dataset.price,false,b.closest('.card').dataset.port)));
     const urgentBtn=document.querySelector('#urgent');if(urgentBtn)urgentBtn.onclick=()=>openBooking('Premier skipper disponible','Tarif confirmé à l’acceptation',true);
     const close=()=>modal.classList.remove('open');document.querySelector('#close').onclick=close;document.querySelector('#done').onclick=()=>{close();openDashboard()};modal.addEventListener('click',e=>{if(e.target===modal)close()});
     const oldOpen=openBooking;openBooking=(name,price,isUrgent=false,selectedPort='')=>{currentRequest={name,price,isUrgent,port:selectedPort||(port.value==='all'?'Cannes':port.value)};oldOpen(name,price,isUrgent,selectedPort)};
-    document.querySelector('#send').onclick=async()=>{const msg=document.querySelector('#bookingMessage');if(!currentUser){close();accountModal.classList.add('open');msg.textContent='Connectez-vous avant de réserver.';return}if(currentProfile?.role!=='client'&&currentProfile?.role!=='admin'){msg.textContent='Un compte client est nécessaire pour créer une mission.';return}const boat=document.querySelector('#bookingBoat').value.trim();if(!boat){msg.textContent='Indiquez le type de bateau.';return}msg.textContent='Enregistrement en cours…';const {data:settings}=await db.from('platform_settings').select('*').eq('id',1).maybeSingle(),base=parseInt((currentRequest.price||'300').replace(/\D/g,''))||300,percent=settings?.first_commission_percent||15,urgent=currentRequest.isUrgent?(settings?.urgent_fee_cents||1900):0,start=new Date(dateInput.value+'T09:00:00'),end=new Date(start.getTime()+(document.querySelector('#duration').value==='Demi-journée'?4:8)*3600000);const {error}=await db.from('missions').insert({client_id:currentUser.id,port:currentRequest.port,boat_type:boat,starts_at:start.toISOString(),ends_at:end.toISOString(),amount_cents:base*100,urgent_fee_cents:urgent,platform_fee_cents:Math.round(base*percent),status:'searching'});if(error){msg.textContent='Erreur : '+error.message;return}booking.style.display='none';success.style.display='block'};
+    document.querySelector('#send').onclick=async()=>{const msg=document.querySelector('#bookingMessage');if(!currentUser){close();accountModal.classList.add('open');msg.textContent='Connectez-vous avant de réserver.';return}if(currentProfile?.role!=='client'&&currentProfile?.role!=='admin'){msg.textContent='Un compte client est nécessaire pour créer une mission.';return}const boat=document.querySelector('#bookingBoat').value.trim();if(!boat){msg.textContent='Indiquez le type de bateau.';return}msg.textContent='Enregistrement en cours…';const {data:settings}=await db.from('platform_settings').select('*').eq('id',1).maybeSingle(),base=currentRequest.isQuoteRequest?0:(parseInt((currentRequest.price||'300').replace(/\D/g,''))||300),percent=settings?.first_commission_percent||15,urgent=currentRequest.isUrgent?(settings?.urgent_fee_cents||1900):0,start=new Date(dateInput.value+'T09:00:00'),end=new Date(start.getTime()+(document.querySelector('#duration').value==='Demi-journée'?4:8)*3600000);const {error}=await db.from('missions').insert({client_id:currentUser.id,port:currentRequest.port,boat_type:boat,starts_at:start.toISOString(),ends_at:end.toISOString(),amount_cents:base*100,urgent_fee_cents:urgent,platform_fee_cents:Math.round(base*percent),status:'searching'});if(error){msg.textContent='Erreur : '+error.message;return}booking.style.display='none';success.style.display='block'};
     const skipperModal=document.querySelector('#skipperModal');document.querySelector('#openSkipper').onclick=()=>{setRole('skipper');accountModal.classList.add('open')};document.querySelector('#closeSkipper').onclick=()=>skipperModal.classList.remove('open');document.querySelector('#applySkipper').onclick=()=>{document.querySelector('#closeSkipper').click();setRole('skipper');accountModal.classList.add('open')};skipperModal.addEventListener('click',e=>{if(e.target===skipperModal)skipperModal.classList.remove('open')});
     const accountModal=document.querySelector('#accountModal'),dashboardModal=document.querySelector('#dashboardModal');
     function setRole(role){selectedRole=role;document.querySelector('#roleClient').classList.toggle('active',role==='client');document.querySelector('#roleSkipper').classList.toggle('active',role==='skipper');document.querySelector('#accountPortWrap').style.display=role==='skipper'?'block':'none'}
@@ -87,7 +87,7 @@
     async function loadProfile(){if(!currentUser){currentProfile=null;return}const {data}=await db.from('profiles').select('*').eq('id',currentUser.id).maybeSingle();currentProfile=data}
     function refreshAccount(){document.querySelector('#login').textContent=currentUser?'Mon espace':'Se connecter'}
     const labels={searching:'Recherche en cours',accepted:'Skipper confirmé',in_progress:'En cours',awaiting_validation:'À valider',paid:'Terminée et payée',disputed:'Litige',cancelled:'Annulée'};
-    function renderJob(j){const role=currentProfile?.role,statusClass=j.status==='paid'?'status ok':'status',amount=((j.amount_cents+j.urgent_fee_cents)/100).toFixed(0);let action='';if(role==='skipper'&&j.status==='searching')action=`<button class="small-btn fill" onclick="acceptJob('${j.id}')">Accepter la mission</button>`;if(role==='skipper'&&['accepted','in_progress'].includes(j.status))action=`<button class="small-btn fill" onclick="finishJob('${j.id}')">Bateau rincé et rangé</button>`;if((role==='client'||role==='admin')&&j.status==='awaiting_validation')action+=`<button class="small-btn fill" onclick="validateJob('${j.id}')">Valider la mission</button>`;if(role==='admin'&&!['paid','cancelled'].includes(j.status))action+=`<button class="small-btn danger" onclick="cancelJob('${j.id}')">Annuler</button>`;return `<div class="job"><div class="job-top"><div><h3>${j.port} · ${amount} €</h3><div class="job-meta">${new Date(j.starts_at).toLocaleDateString('fr-FR')} · ${j.boat_type}<br>${j.skipper_id?'Skipper confirmé':'Recherche du premier skipper disponible'}</div></div><span class="${statusClass}">${labels[j.status]||j.status}</span></div><div class="job-actions">${action}</div></div>`}
+    function renderJob(j){const role=currentProfile?.role,statusClass=j.status==='paid'?'status ok':'status',amount=((j.amount_cents+j.urgent_fee_cents)/100).toFixed(0),amountLabel=(j.amount_cents||0)===0?'Prix à définir':amount+' €';let action='';if(role==='skipper'&&j.status==='searching')action=`<button class="small-btn fill" onclick="acceptJob('${j.id}')">Accepter la mission</button>`;if(role==='skipper'&&['accepted','in_progress'].includes(j.status))action=`<button class="small-btn fill" onclick="finishJob('${j.id}')">Bateau rincé et rangé</button>`;if((role==='client'||role==='admin')&&j.status==='awaiting_validation')action+=`<button class="small-btn fill" onclick="validateJob('${j.id}')">Valider la mission</button>`;if(role==='admin'&&!['paid','cancelled'].includes(j.status))action+=`<button class="small-btn danger" onclick="cancelJob('${j.id}')">Annuler</button>`;return `<div class="job"><div class="job-top"><div><h3>${j.port} · ${amountLabel}</h3><div class="job-meta">${new Date(j.starts_at).toLocaleDateString('fr-FR')} · ${j.boat_type}<br>${j.skipper_id?'Skipper confirmé':'Recherche du premier skipper disponible'}</div></div><span class="${statusClass}">${labels[j.status]||j.status}</span></div><div class="job-actions">${action}</div></div>`}
     function adminProfileCard(p){return `<div class="job"><div class="job-top"><div class="profile-line"><div class="avatar-mini">⚓</div><div><h3>${p.full_name}</h3><div class="job-meta">${p.home_port||'Port non renseigné'} · ${p.phone||'Téléphone non renseigné'}</div></div></div><span class="${p.verified?'status ok':'status'}">${p.verified?'Vérifié':'À vérifier'}</span></div><div class="job-actions"><button class="small-btn" onclick="editSkipper('${p.id}','${(p.home_port||'').replace(/'/g,"\\'")}')">Modifier le port</button>${p.verified?`<button class="small-btn danger" onclick="toggleSkipper('${p.id}',false)">Suspendre</button>`:`<button class="small-btn fill" onclick="toggleSkipper('${p.id}',true)">Valider le skipper</button>`}</div></div>`}
     window.showAdminTab=id=>{document.querySelectorAll('.admin-panel').forEach(x=>x.classList.toggle('active',x.id==='panel-'+id));document.querySelectorAll('.admin-tabs button').forEach(x=>x.classList.toggle('active',x.dataset.tab===id))};
     async function renderAdminDashboard(jobs){
@@ -108,7 +108,7 @@
       const s=settings||{first_commission_percent:15,repeat_commission_percent:8,urgent_fee_cents:1900};
       const activityLabel=p=>PROVIDER_ACTIVITY_LABELS[p.provider_activity]||'Prestataire nautique';
       const profileRow=p=>`<div class="admin-list-row"><div class="left"><div class="thumb">${p.profile_photo_url?`<img src="${adminEsc(p.profile_photo_url)}" style="width:100%;height:100%;object-fit:cover;border-radius:12px">`:'⚓'}</div><div><strong>${adminEsc(p.full_name||'Profil sans nom')}</strong><small>${adminEsc(p.home_port||'Port non renseigné')} · ${adminEsc(activityLabel(p))}</small></div></div><div class="admin-actions"><span class="admin-badge ${p.verified?'ok':'warn'}">${p.verified?'Vérifié':'À valider'}</span><button class="small-btn" onclick="editSkipper('${p.id}','${(p.home_port||'').replace(/'/g,"\\'")}')">Modifier</button>${p.verified?`<button class="small-btn danger" onclick="toggleSkipper('${p.id}',false)">Suspendre</button>`:`<button class="small-btn fill" onclick="toggleSkipper('${p.id}',true)">Valider</button>`}</div></div>`;
-      const missionRow=j=>`<div class="admin-list-row"><div class="left"><div class="thumb">📍</div><div><strong>${adminEsc(j.port||'Port non renseigné')}</strong><small>${new Date(j.starts_at).toLocaleDateString('fr-FR')} · ${adminEsc(j.boat_type||'Bateau non renseigné')} · ${((j.amount_cents||0)+(j.urgent_fee_cents||0))/100} €</small></div></div><div class="admin-actions"><span class="admin-badge ${j.status==='paid'?'ok':j.status==='cancelled'?'danger':'warn'}">${adminEsc(labels[j.status]||j.status)}</span>${!['paid','cancelled'].includes(j.status)?`<button class="small-btn danger" onclick="cancelJob('${j.id}')">Annuler</button>`:''}</div></div>`;
+      const missionRow=j=>`<div class="admin-list-row"><div class="left"><div class="thumb">📍</div><div><strong>${adminEsc(j.port||'Port non renseigné')}</strong><small>${new Date(j.starts_at).toLocaleDateString('fr-FR')} · ${adminEsc(j.boat_type||'Bateau non renseigné')} · ${(j.amount_cents||0)===0?'Prix à définir':(((j.amount_cents||0)+(j.urgent_fee_cents||0))/100)+' €'}</small></div></div><div class="admin-actions"><span class="admin-badge ${j.status==='paid'?'ok':j.status==='cancelled'?'danger':'warn'}">${adminEsc(labels[j.status]||j.status)}</span>${!['paid','cancelled'].includes(j.status)?`<button class="small-btn danger" onclick="cancelJob('${j.id}')">Annuler</button>`:''}</div></div>`;
       document.querySelector('#dashboardBody').innerHTML=`
       <div class="admin-shell">
         <aside class="admin-side">
@@ -343,7 +343,7 @@
       providerResults.innerHTML=`<div class="provider-results-head"><button class="provider-back" type="button">← Retour aux services</button><strong>${list.length} résultat${list.length>1?'s':''}</strong></div>${list.length?`<div class="provider-results-list">${list.map(p=>`<article class="provider-result-card">${p.profile_photo_url?`<img class="provider-result-photo" src="${providerEsc(p.profile_photo_url)}" alt="${providerEsc(p.full_name)}">`:`<div class="provider-result-photo">⚓</div>`}<div><h3>${providerEsc(p.full_name||'Prestataire')}</h3><p><strong>${providerEsc(p.home_port||'Port non renseigné')}</strong> · ${p.experience_years||0} an(s) d’expérience</p><p>${providerEsc(p.bio||'Profil professionnel vérifié.')}</p><button class="small-btn fill" type="button" onclick="openProviderContact('${providerEsc(p.id)}','${providerEsc(p.full_name||'Prestataire')}','${providerEsc(p.home_port||'')}','${providerEsc(activity)}')">Voir le profil</button></div></article>`).join('')}</div>`:`<div class="provider-empty"><strong>Aucun prestataire disponible pour ce service.</strong><br>Les profils apparaîtront ici dès leur inscription et leur validation.</div>`}`;
       providerResults.querySelector('.provider-back').onclick=showProviderCategories;
     }
-    window.openProviderContact=(id,name,homePort,activity)=>{providerModal.classList.remove('open');if(!currentUser){setRole('client');setAuthMode('login');accountModal.classList.add('open');document.querySelector('#authMessage').textContent='Connectez-vous uniquement pour contacter '+name+'.';return}openBooking(name,'Sur demande',false,homePort||port.value)};
+    window.openProviderContact=(id,name,homePort,activity)=>{providerModal.classList.remove('open');if(!currentUser){setRole('client');setAuthMode('login');accountModal.classList.add('open');document.querySelector('#authMessage').textContent='Connectez-vous uniquement pour contacter '+name+'.';return}openBooking(name,'Prix à définir',false,homePort||port.value);currentRequest.isQuoteRequest=true;currentRequest.providerId=id;currentRequest.providerActivity=activity;document.querySelector('#requestType').textContent='DEMANDE DE PRESTATION';document.querySelector('#summaryPrice').textContent='Prix à définir avec le prestataire';document.querySelector('#send').textContent='Envoyer ma demande'};
     document.querySelectorAll('[data-provider]').forEach(btn=>btn.onclick=()=>showProviders(btn.dataset.provider));
 
 
@@ -1992,6 +1992,229 @@ body.v12-modal-open{overflow:hidden}
       },120);
     };
   }
+})();
+</script>
+
+
+<!-- SERVICE QUOTE FLOW -->
+<div class="modal" id="serviceRequestModal">
+  <div class="dialog large">
+    <div class="dialog-top">
+      <div><small>DEMANDE DE PRESTATION</small><h2>Décrire les travaux à réaliser</h2></div>
+      <button class="close" id="closeServiceRequest">×</button>
+    </div>
+    <div class="admin-note">Le prestataire ne voit ni votre téléphone ni votre email avant l’acceptation et le paiement.</div>
+    <div class="field"><label>PORT DU BATEAU</label><input id="srPort" placeholder="Ex. Port Gallice, Juan-les-Pins"></div>
+    <div class="field"><label>NOM OU MODÈLE DU BATEAU</label><input id="srBoat" placeholder="Ex. Cap Camarat 9.0"></div>
+    <div class="field"><label>LONGUEUR APPROXIMATIVE</label><input id="srLength" placeholder="Ex. 9 mètres"></div>
+    <div class="field"><label>TRAVAUX SOUHAITÉS</label><textarea id="srTasks" rows="6" style="width:100%;border:0;outline:0;resize:vertical" placeholder="Décrivez précisément le nettoyage ou les travaux à effectuer…"></textarea></div>
+    <div class="field"><label>DATE SOUHAITÉE (FACULTATIF)</label><input id="srDate" type="date"></div>
+    <div class="field"><label>PHOTOS DU BATEAU (5 MAXIMUM)</label><input id="srPhotos" type="file" accept="image/*" multiple></div>
+    <p class="muted" id="srMessage"></p>
+    <button class="primary wide" id="submitServiceRequest">Envoyer la demande de devis</button>
+  </div>
+</div>
+
+
+<script id="serviceQuoteFlowV1">
+(() => {
+  const modal = document.getElementById('serviceRequestModal');
+  let selectedProvider = null;
+  const escQ = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const moneyQ = cents => new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR'}).format((Number(cents)||0)/100);
+  const activityLabels = {
+    cleaning:'Nettoyage du bateau',
+    boat_cleaning:'Nettoyage du bateau',
+    dock_service:'Services à quai',
+    shipyard:'Chantier et entretien',
+    day_sailor:'Marin à la journée',
+    mechanic:'Mécanique',
+    electrical:'Électricité marine'
+  };
+
+  function closeRequestModal(){ modal.classList.remove('open'); }
+  document.getElementById('closeServiceRequest').onclick = closeRequestModal;
+  modal.addEventListener('click', e => { if(e.target === modal) closeRequestModal(); });
+
+  window.openProviderContact = (id,name,homePort,activity) => {
+    const providerModal = document.getElementById('providerModal');
+    if(providerModal) providerModal.classList.remove('open');
+    if(!currentUser){
+      setRole('client'); setAuthMode('login');
+      accountModal.classList.add('open');
+      document.getElementById('authMessage').textContent='Connectez-vous pour envoyer une demande de devis.';
+      return;
+    }
+    if(currentProfile?.role !== 'client' && currentProfile?.role !== 'admin'){
+      alert('Un compte client est nécessaire pour demander un devis.');
+      return;
+    }
+    selectedProvider = {id,name,homePort,activity};
+    document.getElementById('srPort').value = homePort || document.getElementById('port')?.value || '';
+    document.getElementById('srBoat').value = '';
+    document.getElementById('srLength').value = '';
+    document.getElementById('srTasks').value = '';
+    document.getElementById('srDate').value = '';
+    document.getElementById('srPhotos').value = '';
+    document.getElementById('srMessage').textContent = 'Demande envoyée à '+name+'. Le prestataire proposera son prix sur SkipperNow.';
+    modal.classList.add('open');
+  };
+
+  async function uploadRequestPhotos(requestId, files){
+    const urls = [];
+    for(const file of Array.from(files).slice(0,5)){
+      const ext = (file.name.split('.').pop() || 'jpg').toLowerCase();
+      const path = `${currentUser.id}/${requestId}/${crypto.randomUUID()}.${ext}`;
+      const {error} = await db.storage.from('service-request-photos').upload(path,file,{upsert:false});
+      if(error) throw error;
+      const {data} = db.storage.from('service-request-photos').getPublicUrl(path);
+      urls.push(data.publicUrl);
+    }
+    return urls;
+  }
+
+  document.getElementById('submitServiceRequest').onclick = async () => {
+    const msg = document.getElementById('srMessage');
+    const port = document.getElementById('srPort').value.trim();
+    const boat = document.getElementById('srBoat').value.trim();
+    const boatLength = document.getElementById('srLength').value.trim();
+    const tasks = document.getElementById('srTasks').value.trim();
+    const desiredDate = document.getElementById('srDate').value || null;
+    const files = document.getElementById('srPhotos').files;
+    if(!selectedProvider || !port || !boat || !tasks){
+      msg.textContent='Indiquez au minimum le port, le bateau et les travaux souhaités.';
+      return;
+    }
+    msg.textContent='Création de la demande…';
+    const {data:reqData,error:reqError} = await db.from('provider_requests').insert({
+      client_id:currentUser.id,
+      provider_id:selectedProvider.id,
+      activity:selectedProvider.activity || 'cleaning',
+      port,
+      boat_name:boat,
+      boat_length:boatLength || null,
+      task_description:tasks,
+      desired_date:desiredDate,
+      status:'open'
+    }).select().single();
+    if(reqError){ msg.textContent='Erreur : '+reqError.message; return; }
+    try{
+      const photoUrls = files?.length ? await uploadRequestPhotos(reqData.id,files) : [];
+      if(photoUrls.length){
+        const {error:updateError}=await db.from('provider_requests').update({photo_urls:photoUrls}).eq('id',reqData.id);
+        if(updateError) throw updateError;
+      }
+      msg.textContent='Demande envoyée. Le prestataire peut maintenant proposer son prix.';
+      setTimeout(()=>{closeRequestModal(); openDashboard();},900);
+    }catch(error){
+      msg.textContent='Demande créée, mais certaines photos n’ont pas été envoyées : '+error.message;
+    }
+  };
+
+  async function proposeQuote(requestId){
+    const amount = prompt('Prix total proposé en euros :');
+    if(amount === null) return;
+    const euros = Number(String(amount).replace(',','.'));
+    if(!Number.isFinite(euros) || euros <= 0) return alert('Indiquez un prix valide.');
+    const duration = prompt('Durée estimée (ex. 4 heures) :','');
+    const details = prompt('Détail de ce qui est inclus dans le prix :','');
+    const {error}=await db.from('provider_quotes').insert({
+      request_id:requestId,
+      provider_id:currentUser.id,
+      amount_cents:Math.round(euros*100),
+      estimated_duration:duration || null,
+      details:details || null,
+      status:'proposed'
+    });
+    if(error) return alert('Erreur : '+error.message);
+    alert('Votre proposition a été envoyée au client.');
+    appendQuoteSections();
+  }
+  window.proposeQuote = proposeQuote;
+
+  async function acceptQuote(quoteId, requestId, amountCents, providerId){
+    if(!confirm('Accepter cette offre et créer le paiement sécurisé ?')) return;
+    const {data:settings}=await db.from('platform_settings').select('*').eq('id',1).maybeSingle();
+    const percent=Number(settings?.first_commission_percent||15);
+    const [{data:req,error:reqError},{error:qError}] = await Promise.all([
+      db.from('provider_requests').select('*').eq('id',requestId).single(),
+      db.from('provider_quotes').update({status:'accepted'}).eq('id',quoteId)
+    ]);
+    if(reqError || qError) return alert('Erreur lors de l’acceptation.');
+    await db.from('provider_quotes').update({status:'rejected'}).eq('request_id',requestId).neq('id',quoteId);
+    const starts = req.desired_date ? new Date(req.desired_date+'T09:00:00') : new Date(Date.now()+24*3600000);
+    const ends = new Date(starts.getTime()+4*3600000);
+    const {error:missionError}=await db.from('missions').insert({
+      client_id:currentUser.id,
+      provider_id:providerId,
+      port:req.port,
+      boat_type:'Prestation : '+(activityLabels[req.activity]||req.activity||'Service nautique'),
+      starts_at:starts.toISOString(),
+      ends_at:ends.toISOString(),
+      amount_cents:Number(amountCents),
+      urgent_fee_cents:0,
+      platform_fee_cents:Math.round(Number(amountCents)*percent/100),
+      status:'accepted',
+      payment_status:'unpaid'
+    });
+    if(missionError) return alert('Offre acceptée, mais la mission n’a pas pu être créée : '+missionError.message);
+    await db.from('provider_requests').update({status:'accepted',accepted_quote_id:quoteId}).eq('id',requestId);
+    alert('Offre acceptée. Le paiement sécurisé est maintenant disponible dans votre espace.');
+    openDashboard();
+  }
+  window.acceptQuote = acceptQuote;
+
+  function requestCard(r, quoteHtml='', providerMode=false){
+    const photos=(r.photo_urls||[]).map(u=>`<img src="${escQ(u)}" style="width:84px;height:66px;object-fit:cover;border-radius:10px;margin:4px">`).join('');
+    return `<div class="v3-card">
+      <div class="job-top"><div><h3>${escQ(activityLabels[r.activity]||r.activity||'Prestation')}</h3>
+      <div class="v3-meta">${escQ(r.port||'Port non renseigné')} · ${escQ(r.boat_name||'Bateau')} ${r.boat_length?'· '+escQ(r.boat_length):''}</div></div>
+      <span class="admin-badge ${r.status==='accepted'?'ok':'warn'}">${escQ(r.status||'open')}</span></div>
+      <p>${escQ(r.task_description||'')}</p>
+      <div>${photos}</div>
+      ${quoteHtml}
+      ${providerMode && r.status==='open' ? `<div class="v3-actions"><button class="fill" onclick="proposeQuote('${r.id}')">Proposer un prix</button></div>`:''}
+      <div class="admin-note">Téléphone et email masqués avant acceptation et paiement.</div>
+    </div>`;
+  }
+
+  async function appendQuoteSections(){
+    const dashboardBody=document.getElementById('dashboardBody');
+    if(!dashboardBody || !currentUser || !currentProfile) return;
+    document.querySelectorAll('.service-quotes-section').forEach(x=>x.remove());
+
+    if(currentProfile.role==='client' || currentProfile.role==='admin'){
+      const {data:requests}=await db.from('provider_requests').select('*').eq('client_id',currentUser.id).order('created_at',{ascending:false});
+      if(requests?.length){
+        const ids=requests.map(r=>r.id);
+        const {data:quotes}=await db.from('provider_quotes').select('*').in('request_id',ids).order('created_at',{ascending:false});
+        const html=requests.map(r=>{
+          const mine=(quotes||[]).filter(q=>q.request_id===r.id);
+          const quoteHtml=mine.length?`<div class="admin-box"><h3>Offres reçues</h3>${mine.map(q=>`<div class="v3-row"><div><b>${moneyQ(q.amount_cents)}</b><div class="v3-meta">${escQ(q.estimated_duration||'Durée à confirmer')}<br>${escQ(q.details||'')}</div></div>${q.status==='proposed'&&r.status==='open'?`<button class="small-btn fill" onclick="acceptQuote('${q.id}','${r.id}',${q.amount_cents},'${q.provider_id}')">Accepter et payer</button>`:`<span class="admin-badge ${q.status==='accepted'?'ok':''}">${escQ(q.status)}</span>`}</div>`).join('')}</div>`:'<div class="v3-empty">Aucune offre reçue pour le moment.</div>';
+          return requestCard(r,quoteHtml,false);
+        }).join('');
+        const section=document.createElement('section');
+        section.className='service-quotes-section admin-box';
+        section.innerHTML='<h2>Mes demandes de prestations</h2>'+html;
+        dashboardBody.prepend(section);
+      }
+    }
+
+    const isProvider=currentProfile.role==='skipper' && currentProfile.provider_activity && currentProfile.provider_activity!=='skipper';
+    if(isProvider){
+      const activity=currentProfile.provider_activity;
+      const {data:requests}=await db.from('provider_requests').select('*').eq('status','open').or(`provider_id.eq.${currentUser.id},provider_id.is.null`).order('created_at',{ascending:false});
+      const matching=(requests||[]).filter(r=>!r.activity||r.activity===activity||(activity==='boat_cleaning'&&r.activity==='cleaning'));
+      const section=document.createElement('section');
+      section.className='service-quotes-section admin-box';
+      section.innerHTML='<h2>Demandes de prestations disponibles</h2>'+(matching.length?matching.map(r=>requestCard(r,'',true)).join(''):'<div class="v3-empty">Aucune demande correspondant à votre activité.</div>');
+      dashboardBody.prepend(section);
+    }
+  }
+  window.appendQuoteSections=appendQuoteSections;
+
+  const observer=new MutationObserver(()=>{ if(document.getElementById('dashboardModal')?.classList.contains('open')) setTimeout(appendQuoteSections,100); });
+  observer.observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:['class']});
 })();
 </script>
 
