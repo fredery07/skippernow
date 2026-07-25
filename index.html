@@ -1716,53 +1716,60 @@ body.v12-modal-open{overflow:hidden}
 
 
 
-<style id="v13FinderCloseEmergencyStyles">
-#boatFinderModal,#skipperFinderModal{z-index:20000!important;pointer-events:auto!important}
-#boatFinderModal .dialog,#skipperFinderModal .dialog{pointer-events:auto!important}
-#boatFinderModal .close,#skipperFinderModal .close,.v13-home-button{pointer-events:auto!important;position:relative;z-index:20002}
-.v13-home-button{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:10px;padding:9px 13px;font-weight:850;cursor:pointer;margin-left:auto;margin-right:8px}
+<style id="v14UniversalBackStyles">
+.v14-universal-back{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:11px;padding:9px 13px;font-weight:850;cursor:pointer;white-space:nowrap;margin-left:auto;margin-right:8px}
+.v14-universal-back:hover{background:var(--mist)}
+.v14-floating-back{position:absolute;top:14px;right:58px;z-index:3}
 </style>
-<script id="v13FinderCloseEmergencyFix">
+<script id="v14UniversalBackFix">
 (function(){
-  function forceHomeV13(){
-    const ids=['boatFinderModal','skipperFinderModal','boatDetailModalV5','boatRentalRequestV10','providerFinderModal'];
-    ids.forEach(id=>{const m=document.getElementById(id);if(m){m.classList.remove('open');m.style.display='none'}});
-    document.querySelectorAll('.modal.open,.v3-modal.open').forEach(m=>{m.classList.remove('open');m.style.display='none'});
+  function openedPanels(){return [...document.querySelectorAll('.modal.open,.v3-modal.open')]}
+  function unlockPage(){
     document.body.classList.remove('v12-modal-open');
     document.body.style.overflow='';
+    document.documentElement.style.overflow='';
+  }
+  function goHomeV14(event){
+    if(event){event.preventDefault();event.stopPropagation();event.stopImmediatePropagation?.()}
+    document.querySelectorAll('.modal.open,.v3-modal.open').forEach(m=>m.classList.remove('open'));
+    unlockPage();
     window.scrollTo({top:0,behavior:'smooth'});
-    setTimeout(()=>ids.forEach(id=>document.getElementById(id)?.style.removeProperty('display')),80);
+    history.replaceState({},'',location.pathname);
+    return false;
   }
-  window.forceHomeV13=forceHomeV13;
+  window.goHomeSkipperNow=goHomeV14;
 
-  function wireFinderV13(id,closeId){
-    const modal=document.getElementById(id);if(!modal)return;
-    modal.style.zIndex='20000';
-    const close=document.getElementById(closeId)||modal.querySelector('.close');
-    if(close){close.type='button';close.onclick=function(e){e?.preventDefault();e?.stopPropagation();forceHomeV13()}}
-    const top=modal.querySelector('.dialog-top');
+  function installBackV14(modal){
+    if(!modal||modal.dataset.v14Back==='1')return;
+    modal.dataset.v14Back='1';
+    let top=modal.querySelector('.dialog-top');
+    let btn=document.createElement('button');
+    btn.type='button';btn.className='v14-universal-back';btn.textContent='← Retour à l’accueil';
+    btn.addEventListener('click',goHomeV14,true);
     if(top){
-      let back=top.querySelector('.v12-back-button,.v13-home-button');
-      if(!back){back=document.createElement('button');top.insertBefore(back,close||null)}
-      back.type='button';back.className='v13-home-button';back.textContent='← Retour à l’accueil';
-      back.onclick=function(e){e?.preventDefault();e?.stopPropagation();forceHomeV13()};
+      const close=top.querySelector('.close');
+      if(close)top.insertBefore(btn,close);else top.appendChild(btn);
+    }else{
+      const card=modal.querySelector('.dialog,.v3-modal-card')||modal.firstElementChild;
+      if(card){card.style.position=card.style.position||'relative';btn.classList.add('v14-floating-back');card.prepend(btn)}
     }
-    modal.addEventListener('click',e=>{if(e.target===modal)forceHomeV13()},true);
   }
-  wireFinderV13('boatFinderModal','closeBoatFinder');
-  wireFinderV13('skipperFinderModal','closeSkipperFinder');
+
+  function scanV14(){document.querySelectorAll('.modal,.v3-modal').forEach(installBackV14)}
+  scanV14();
+  new MutationObserver(scanV14).observe(document.body,{childList:true,subtree:true});
 
   document.addEventListener('click',function(e){
-    const t=e.target.closest?.('#closeBoatFinder,#closeSkipperFinder,.v13-home-button');
-    if(t){e.preventDefault();e.stopImmediatePropagation();forceHomeV13()}
+    const back=e.target.closest?.('.v14-universal-back,.v12-back-button');
+    if(back){goHomeV14(e);return}
+    const close=e.target.closest?.('.close');
+    if(close){
+      const modal=close.closest('.modal,.v3-modal');
+      if(modal){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation?.();modal.classList.remove('open');unlockPage();window.scrollTo({top:0,behavior:'smooth'})}
+    }
   },true);
-  document.addEventListener('keydown',e=>{if(e.key==='Escape')forceHomeV13()},true);
-
-  // Quand une recherche est rouverte, retire toute ancienne propriété display:none.
-  ['heroListBoat','heroFind'].forEach(id=>document.getElementById(id)?.addEventListener('click',()=>{
-    document.getElementById(id==='heroListBoat'?'boatFinderModal':'skipperFinderModal')?.style.removeProperty('display');
-  },true));
 })();
 </script>
+
 </body>
 </html>
