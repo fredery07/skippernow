@@ -1771,5 +1771,75 @@ body.v12-modal-open{overflow:hidden}
 })();
 </script>
 
+
+
+<style id="v15HomeKeepsSessionStyles">
+#login.account-logged{cursor:pointer}
+</style>
+<script id="v15HomeKeepsSessionFix">
+(function(){
+  const DASH_KEY='skippernow_dashboard_open';
+
+  function isConnectedV15(){return !!(window.currentUser||currentUser)}
+  function unlockV15(){
+    document.body.classList.remove('v12-modal-open');
+    document.body.style.overflow='';
+    document.documentElement.style.overflow='';
+  }
+  function repaintNameV15(){
+    try{window.refreshAccount?.()}catch(_e){}
+    const b=document.querySelector('#login');
+    if(!b)return;
+    if(isConnectedV15()){
+      const u=window.currentUser||currentUser;
+      const p=window.currentProfile||currentProfile;
+      b.textContent=String(p?.full_name||u?.user_metadata?.full_name||u?.email||'Mon espace').trim();
+      b.classList.add('account-logged');
+      b.title='Ouvrir mon espace';
+    }
+  }
+
+  window.returnHomeKeepSessionV15=function(event){
+    if(event){event.preventDefault();event.stopPropagation();event.stopImmediatePropagation?.()}
+    const connected=isConnectedV15();
+    document.querySelectorAll('.modal.open,.v3-modal.open').forEach(m=>m.classList.remove('open'));
+    unlockV15();
+    // Retourner à l'accueil ne déconnecte jamais le compte.
+    if(connected){
+      localStorage.setItem(DASH_KEY,'1');
+      repaintNameV15();
+    }
+    window.scrollTo({top:0,behavior:'smooth'});
+    history.replaceState({},'',location.pathname);
+    return false;
+  };
+
+  // Remplace le comportement des anciens boutons Retour.
+  document.addEventListener('click',function(e){
+    const back=e.target.closest?.('.v14-universal-back,.v12-back-button');
+    if(back){window.returnHomeKeepSessionV15(e);return}
+    const close=e.target.closest?.('.close');
+    const modal=close?.closest?.('.modal,.v3-modal');
+    if(modal&&modal.id==='dashboardModal'){
+      e.preventDefault();e.stopPropagation();e.stopImmediatePropagation?.();
+      window.returnHomeKeepSessionV15(e);
+    }
+  },true);
+
+  // Le nom du titulaire ouvre toujours son espace sans demander de se reconnecter.
+  const nameButton=document.querySelector('#login');
+  if(nameButton)nameButton.addEventListener('click',async function(e){
+    if(!isConnectedV15())return;
+    e.preventDefault();e.stopPropagation();e.stopImmediatePropagation?.();
+    localStorage.setItem(DASH_KEY,'1');
+    await window.openDashboard?.();
+  },true);
+
+  // Après retour à l'accueil, la session et le nom restent affichés.
+  window.addEventListener('pageshow',()=>setTimeout(repaintNameV15,150));
+  setTimeout(repaintNameV15,200);
+})();
+</script>
+
 </body>
 </html>
