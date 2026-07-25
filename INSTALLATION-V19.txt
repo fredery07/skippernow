@@ -1,7 +1,0 @@
-SKIPPERNOW V19
-
-Correction : le site ouvre toujours sur la page d accueil.
-La session reste connectee et le nom reste affiche en haut.
-L espace administrateur s ouvre uniquement lorsque vous cliquez sur votre nom.
-
-GitHub : remplacez index.html puis Commit changes.
