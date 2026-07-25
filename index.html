@@ -1567,5 +1567,152 @@ body:not(.skippernow-admin) .admin-only{display:none!important}
 })();
 </script>
 
+
+
+<style id="v12SessionModalNavigationStyles">
+body.v12-modal-open{overflow:hidden}
+#login.v12-loading{opacity:.65;pointer-events:none}
+.v12-back-button{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:10px;padding:8px 11px;font-weight:800;cursor:pointer;margin-right:8px}
+</style>
+<script id="v12SessionModalNavigationFix">
+(function(){
+  const DASH_KEY='skippernow_dashboard_open';
+  let authReadyV12=false;
+  let restoringV12=null;
+  let openingV12=false;
+
+  function loginButton(){return document.querySelector('#login')}
+  function displayName(){return String(currentProfile?.full_name||currentUser?.user_metadata?.full_name||currentUser?.email||'Mon espace').trim()}
+  function paintV12(loading=false){
+    const b=loginButton(); if(!b)return;
+    b.classList.toggle('v12-loading',!!loading);
+    if(currentUser){b.textContent=displayName();b.title='Ouvrir mon espace';b.classList.add('account-logged')}
+    else{b.textContent='Se connecter';b.title='';b.classList.remove('account-logged')}
+  }
+
+  async function loadProfileV12(user){
+    if(!user)return null;
+    const {data,error}=await db.from('profiles').select('*').eq('id',user.id).maybeSingle();
+    if(error)console.error('Profil V12',error);
+    return data||{id:user.id,role:'client',full_name:user.user_metadata?.full_name||user.email};
+  }
+
+  async function restoreV12(){
+    if(restoringV12)return restoringV12;
+    restoringV12=(async()=>{
+      paintV12(true);
+      try{
+        const {data,error}=await db.auth.getSession();
+        if(error)console.error('Session V12',error);
+        const session=data?.session||null;
+        if(session?.user){
+          currentUser=session.user;
+          currentProfile=await loadProfileV12(currentUser);
+          authReadyV12=true;
+          paintV12(false);
+          return true;
+        }
+        // Ne jamais effacer une session déjà connue pendant l'initialisation.
+        if(!authReadyV12){currentUser=null;currentProfile=null}
+        paintV12(false);
+        return false;
+      }catch(e){console.error(e);paintV12(false);return !!currentUser}
+      finally{restoringV12=null}
+    })();
+    return restoringV12;
+  }
+
+  function allModals(){return [...document.querySelectorAll('.modal.open,.v3-modal.open')]}
+  function syncBodyLock(){document.body.classList.toggle('v12-modal-open',allModals().length>0)}
+  function closeModalV12(modal){if(!modal)return;modal.classList.remove('open');syncBodyLock()}
+  function closeAllV12(except=null){allModals().forEach(m=>{if(m!==except)m.classList.remove('open')});syncBodyLock()}
+  window.closeAllSkipperNowModals=closeAllV12;
+
+  // Les croix, le clic sur le fond et la touche Échap ferment toujours la fenêtre visible.
+  document.addEventListener('click',e=>{
+    const close=e.target.closest?.('.close');
+    if(close){const modal=close.closest('.modal,.v3-modal');if(modal){e.preventDefault();e.stopPropagation();closeModalV12(modal)}}
+    else if((e.target.classList?.contains('modal')||e.target.classList?.contains('v3-modal'))&&e.target.classList.contains('open'))closeModalV12(e.target);
+  },true);
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'){const open=allModals().pop();if(open)closeModalV12(open)}});
+  new MutationObserver(syncBodyLock).observe(document.body,{subtree:true,attributes:true,attributeFilter:['class']});
+
+  function addBackButton(modal){
+    const top=modal?.querySelector('.dialog-top');if(!top||top.querySelector('.v12-back-button'))return;
+    const close=top.querySelector('.close');if(!close)return;
+    const back=document.createElement('button');back.type='button';back.className='v12-back-button';back.textContent='← Retour';back.onclick=()=>closeModalV12(modal);top.insertBefore(back,close);
+  }
+  ['skipperFinderModal','boatFinderModal'].forEach(id=>{const m=document.getElementById(id);if(m)addBackButton(m)});
+
+  // Ferme la liste avant d'ouvrir une fiche ou une demande pour éviter les fenêtres superposées.
+  const oldBoatDetails=window.openBoatDetailsV5;
+  if(typeof oldBoatDetails==='function')window.openBoatDetailsV5=async function(...args){
+    closeAllV12();
+    await oldBoatDetails.apply(this,args);
+    const m=document.querySelector('#boatDetailModalV5');if(m){m.style.zIndex='15000';addBackButton(m);syncBodyLock()}
+  };
+  const oldRental=window.openBoatRentalRequestV10;
+  if(typeof oldRental==='function')window.openBoatRentalRequestV10=async function(...args){
+    closeAllV12();
+    await oldRental.apply(this,args);
+    const m=document.querySelector('#boatRentalRequestV10');if(m){m.style.zIndex='16000';addBackButton(m);syncBodyLock()}
+  };
+
+  // Conserve l'état ouvert du tableau de bord jusqu'à la déconnexion ou fermeture volontaire.
+  const closeDash=document.querySelector('#closeDashboard');
+  if(closeDash)closeDash.addEventListener('click',()=>localStorage.removeItem(DASH_KEY),true);
+
+  const previousOpen=window.openDashboard;
+  window.openDashboard=async function(){
+    if(openingV12)return;
+    openingV12=true;
+    try{
+      const ok=await restoreV12();
+      if(!ok){localStorage.removeItem(DASH_KEY);closeAllV12();setAuthMode?.('login');accountModal?.classList.add('open');syncBodyLock();return}
+      localStorage.setItem(DASH_KEY,'1');
+      await previousOpen?.();
+      paintV12(false);
+      dashboardModal?.classList.add('open');
+      syncBodyLock();
+    }finally{openingV12=false}
+  };
+
+  // Le nom connecté ouvre toujours directement l'espace correspondant au compte.
+  const b=loginButton();
+  if(b)b.addEventListener('click',async e=>{
+    e.preventDefault();e.stopImmediatePropagation();
+    const ok=await restoreV12();
+    if(ok)await window.openDashboard();
+    else{closeAllV12();setAuthMode?.('login');accountModal?.classList.add('open');syncBodyLock()}
+  },true);
+
+  // Déconnexion fiable : efface immédiatement le nom, l'espace ouvert et toutes les anciennes fenêtres.
+  const logout=document.querySelector('#switchAccount');
+  if(logout)logout.addEventListener('click',async e=>{
+    e.preventDefault();e.stopImmediatePropagation();
+    localStorage.removeItem(DASH_KEY);
+    const oldUser=currentUser;
+    currentUser=null;currentProfile=null;authReadyV12=true;paintV12(false);closeAllV12();
+    try{await db.auth.signOut({scope:'local'})}catch(err){console.error(err)}
+    setAuthMode?.('login');accountModal?.classList.add('open');syncBodyLock();
+  },true);
+
+  db.auth.onAuthStateChange(async(event,session)=>{
+    if(event==='SIGNED_OUT'){
+      localStorage.removeItem(DASH_KEY);currentUser=null;currentProfile=null;authReadyV12=true;paintV12(false);closeAllV12();return;
+    }
+    if(session?.user){currentUser=session.user;currentProfile=await loadProfileV12(currentUser);authReadyV12=true;paintV12(false)}
+  });
+
+  async function bootV12(){
+    const ok=await restoreV12();
+    paintV12(false);
+    if(ok&&localStorage.getItem(DASH_KEY)==='1')setTimeout(()=>window.openDashboard(),120);
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bootV12,{once:true});else bootV12();
+  window.addEventListener('pageshow',bootV12);
+})();
+</script>
+
 </body>
 </html>
