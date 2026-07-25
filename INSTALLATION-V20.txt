@@ -1,7 +1,0 @@
-SKIPPERNOW V20
-
-Correction : le clic sur votre nom ouvre votre espace sans demander une nouvelle connexion.
-
-1. Envoyez index.html sur GitHub.
-2. Cliquez sur Commit changes.
-3. Rechargez SkipperNow avec Cmd + Shift + R.
