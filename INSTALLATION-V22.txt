@@ -1,0 +1,11 @@
+SKIPPERNOW V22 — INSCRIPTION PRESTATAIRE SANS STRIPE
+
+1. Remplacez le fichier index.html sur GitHub.
+2. Cliquez sur Commit changes.
+3. Rechargez SkipperNow avec Cmd + Shift + R.
+
+Correction :
+- un prestataire peut créer son compte sans Stripe ;
+- Stripe est demandé seulement avant le premier versement ;
+- le bouton indique clairement « Créer mon compte sans Stripe » ;
+- dans l'espace prestataire, il est possible de continuer sans Stripe.

@@ -2345,5 +2345,196 @@ body.v12-modal-open{overflow:hidden}
 })();
 </script>
 
+
+<style id="providerStripeOptionalV22Styles">
+.provider-stripe-optional-v22{
+  margin:12px 0;
+  padding:12px 14px;
+  border:1px solid #b8dfd2;
+  background:#effaf6;
+  border-radius:14px;
+  font-size:14px;
+  line-height:1.45;
+}
+.provider-stripe-optional-v22 strong{display:block;margin-bottom:4px}
+.provider-stripe-later-v22{
+  width:100%;
+  margin-top:8px;
+  border:1px solid var(--line);
+  background:#fff;
+  border-radius:12px;
+  padding:11px 14px;
+  font-weight:800;
+  cursor:pointer;
+}
+</style>
+<script id="providerStripeOptionalV22">
+(function(){
+  function isProviderSignup(){
+    return typeof authMode!=='undefined'
+      && authMode==='create'
+      && typeof selectedRole!=='undefined'
+      && selectedRole==='skipper';
+  }
+
+  function updateProviderSignupV22(){
+    const button=document.querySelector('#enterApp');
+    const message=document.querySelector('#authMessage');
+    const registration=document.querySelector('#providerRegistration');
+
+    if(isProviderSignup()){
+      if(button) button.textContent='Créer mon compte sans Stripe';
+      if(registration && !document.querySelector('#providerStripeOptionalV22')){
+        const note=document.createElement('div');
+        note.id='providerStripeOptionalV22';
+        note.className='provider-stripe-optional-v22';
+        note.innerHTML='<strong>Stripe n’est pas obligatoire pour créer votre compte.</strong>Vous pourrez ajouter votre compte bancaire plus tard, seulement avant de recevoir votre premier paiement.';
+        registration.appendChild(note);
+      }
+      if(message && /stripe|compte bancaire/i.test(message.textContent||'')){
+        message.textContent='';
+      }
+    }
+  }
+
+  const observer=new MutationObserver(()=>updateProviderSignupV22());
+  observer.observe(document.body,{childList:true,subtree:true,attributes:true});
+  document.addEventListener('click',()=>setTimeout(updateProviderSignupV22,0),true);
+  setTimeout(updateProviderSignupV22,200);
+
+  const oldOpenDashboardV22=window.openDashboard;
+  if(typeof oldOpenDashboardV22==='function'){
+    window.openDashboard=async function(){
+      await oldOpenDashboardV22.apply(this,arguments);
+      setTimeout(()=>{
+        if(!window.currentProfile && typeof currentProfile==='undefined') return;
+        const profile=(typeof currentProfile!=='undefined'?currentProfile:window.currentProfile);
+        if(!profile || !['provider','skipper'].includes(profile.role)) return;
+
+        const body=document.querySelector('#dashboardBody');
+        if(!body) return;
+
+        const sections=[...body.querySelectorAll('section')];
+        const paymentSection=sections.find(s=>/Paiements prestataire|Paiements skipper/i.test(s.textContent||''));
+        if(!paymentSection) return;
+
+        const strong=paymentSection.querySelector('strong');
+        const detail=paymentSection.querySelector('.detail');
+        const connect=paymentSection.querySelector('button[onclick*="connectStripe"]');
+
+        if(!profile.payouts_enabled){
+          if(strong) strong.textContent='Compte créé — Stripe facultatif pour le moment';
+          if(detail) detail.textContent='Vous pouvez compléter votre profil et recevoir des demandes. Vous connecterez Stripe uniquement avant votre premier versement.';
+          if(connect){
+            connect.textContent='Connecter Stripe plus tard';
+            connect.classList.remove('primary');
+            connect.classList.add('secondary-light');
+          }
+          if(!paymentSection.querySelector('.provider-stripe-later-v22')){
+            const later=document.createElement('button');
+            later.type='button';
+            later.className='provider-stripe-later-v22';
+            later.textContent='Continuer sans Stripe';
+            later.onclick=()=>paymentSection.style.display='none';
+            paymentSection.appendChild(later);
+          }
+        }
+      },120);
+    };
+  }
+})();
+</script>
+
+
+<style id="providerDirectContactV23Styles">
+.provider-direct-note-v23{margin:12px 0;padding:12px 14px;border:1px solid #b8dfd2;background:#effaf6;border-radius:14px;line-height:1.45}
+</style>
+<script id="providerDirectContactV23">
+(function(){
+  function removeServiceAvailability(){
+    const body=document.querySelector('#dashboardBody');
+    if(!body)return;
+    [...body.querySelectorAll('section')].forEach(section=>{
+      const title=section.querySelector('h3');
+      if(title && /Mes indisponibilités/i.test(title.textContent||'')) section.remove();
+    });
+  }
+
+  try{
+    appendAvailabilityCalendar=async function(){ return; };
+  }catch(e){}
+
+  const originalAppendUserMessagingV23=typeof appendUserMessaging==='function'?appendUserMessaging:null;
+  if(originalAppendUserMessagingV23){
+    appendUserMessaging=async function(){
+      await originalAppendUserMessagingV23.apply(this,arguments);
+      removeServiceAvailability();
+      const profile=(typeof currentProfile!=='undefined'?currentProfile:null);
+      if(profile && ['provider','skipper'].includes(profile.role)){
+        const body=document.querySelector('#dashboardBody');
+        if(body && !document.querySelector('#providerDirectNoteV23')){
+          const note=document.createElement('div');
+          note.id='providerDirectNoteV23';
+          note.className='provider-direct-note-v23';
+          note.innerHTML='<strong>Prestations à la demande</strong><br>Pour le nettoyage, le quai, le chantier et les autres services, vous n’avez pas de calendrier de disponibilité à remplir. Le client vous contacte directement dans la messagerie pour convenir ensemble du jour et de l’heure.';
+          body.prepend(note);
+        }
+      }
+    };
+  }
+
+  window.openProviderContact=async function(id,name,homePort,activity){
+    const providerModal=document.querySelector('#providerModal');
+    if(providerModal)providerModal.classList.remove('open');
+    if(typeof currentUser==='undefined' || !currentUser){
+      if(typeof setRole==='function')setRole('client');
+      if(typeof setAuthMode==='function')setAuthMode('login');
+      const accountModal=document.querySelector('#accountModal');
+      if(accountModal)accountModal.classList.add('open');
+      const msg=document.querySelector('#authMessage');
+      if(msg)msg.textContent='Connectez-vous pour contacter directement '+name+'.';
+      return;
+    }
+    try{
+      let result=await db.from('conversations').select('*').eq('client_id',currentUser.id).eq('skipper_id',id).maybeSingle();
+      let conversation=result.data;
+      if(result.error && !String(result.error.message||'').toLowerCase().includes('multiple')) throw result.error;
+      if(!conversation){
+        const created=await db.from('conversations').insert({client_id:currentUser.id,skipper_id:id}).select().single();
+        if(created.error)throw created.error;
+        conversation=created.data;
+      }
+      if(typeof openDashboard==='function')await openDashboard();
+      if(typeof loadChatData==='function')await loadChatData();
+      if(typeof openChat==='function')openChat(conversation.id);
+    }catch(error){
+      alert('Impossible d’ouvrir la messagerie : '+(error?.message||'erreur inconnue'));
+    }
+  };
+
+  function updateTextsV23(){
+    document.querySelectorAll('.join-card').forEach(card=>{
+      const h=card.querySelector('h3');
+      if(h && /Prestataire/i.test(h.textContent||'')){
+        const p=card.querySelector('p');
+        if(p)p.textContent='Proposez vos services à la demande. Les clients vous contactent directement pour fixer la date et l’heure.';
+      }
+    });
+    const how=[...document.querySelectorAll('.compact-step p')];
+    how.forEach(p=>{
+      if(/disponibilités/i.test(p.textContent||''))p.textContent='Consultez le profil et contactez directement le professionnel. Les dates de disponibilité sont réservées aux bateaux proposés à la location.';
+    });
+    document.querySelectorAll('.provider-result-card button').forEach(btn=>{
+      if(/Voir le profil/i.test(btn.textContent||''))btn.textContent='Contacter directement';
+    });
+    removeServiceAvailability();
+  }
+
+  const observer=new MutationObserver(updateTextsV23);
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>{observer.observe(document.body,{childList:true,subtree:true});updateTextsV23()},{once:true});
+  else{observer.observe(document.body,{childList:true,subtree:true});updateTextsV23()}
+})();
+</script>
+
 </body>
 </html>
