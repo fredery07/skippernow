@@ -183,6 +183,8 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
 .boat-card-port{display:flex;align-items:center;gap:5px;color:var(--muted);font-size:13px;margin-bottom:10px}
 .boat-card-specs{display:flex;gap:8px;flex-wrap:wrap}
 .boat-card-specs span{background:var(--mist);color:var(--blue);font-size:12px;font-weight:750;padding:5px 9px;border-radius:8px}
+.boat-card-specs-line{color:var(--muted);font-size:12.5px;line-height:1.4}
+.boat-card-fav{position:absolute;top:12px;left:12px;background:rgba(255,255,255,.92);border:0;width:32px;height:32px;border-radius:50%;font-size:16px;color:#c0392b;cursor:pointer;display:grid;place-items:center;box-shadow:0 4px 10px rgba(0,0,0,.15)}
 .result-card{display:flex;gap:12px;border:1px solid var(--line);border-radius:16px;padding:14px;background:#fff}
 .result-photo{width:70px;height:70px;border-radius:13px;object-fit:cover;background:var(--mist);display:grid;place-items:center;font-size:26px;flex:0 0 70px}
 .result-card h3{margin:0 0 4px;font-size:16px}
@@ -602,6 +604,9 @@ const I18N = {
     "results.noProvider":"Aucun prestataire disponible pour ce service pour le moment.",
     "boatFinder.eyebrow":"LOCATION DE BATEAUX","boatFinder.title":"Bateaux disponibles","boatFinder.empty":"Aucun bateau en location pour le moment.",
     "boatDetail.model":"Modèle","boatDetail.port":"Port d'attache","boatDetail.length":"Longueur","boatDetail.halfDay":"Demi-journée","boatDetail.fullDay":"Journée",
+    "boatDetail.type":"Type de bateau","boatDetail.typeSailboat":"Voilier","boatDetail.typeMotorboat":"Bateau à moteur",
+    "boatDetail.capacity":"Capacité (personnes)","boatDetail.pax":"pers.","boatDetail.cabinsField":"Nombre de cabines","boatDetail.cabins":"cabines","boatDetail.cabin":"cabine","boatDetail.year":"Année",
+    "boatDetail.skipperIncluded":"Skipper inclus","boatDetail.skipperIncludedTag":"Skipper inclus","boatDetail.skipperOptionalTag":"Skipper en option",
     "boatDetail.onRequest":"Sur demande","boatDetail.description":"Description","boatDetail.noDescription":"Aucune description renseignée.",
     "boatDetail.request":"Demander une réservation","boatDetail.close":"Fermer",
     "account.eyebrow":"MON COMPTE","account.createTitle":"Créer votre activité sur SkipperNow","account.loginTitle":"Se connecter à SkipperNow",
@@ -713,6 +718,9 @@ const I18N = {
     "results.noProvider":"No service provider available for this service yet.",
     "boatFinder.eyebrow":"BOAT RENTALS","boatFinder.title":"Available boats","boatFinder.empty":"No boats available to rent yet.",
     "boatDetail.model":"Model","boatDetail.port":"Home port","boatDetail.length":"Length","boatDetail.halfDay":"Half day","boatDetail.fullDay":"Full day",
+    "boatDetail.type":"Boat type","boatDetail.typeSailboat":"Sailboat","boatDetail.typeMotorboat":"Motorboat",
+    "boatDetail.capacity":"Capacity (people)","boatDetail.pax":"pax","boatDetail.cabinsField":"Number of cabins","boatDetail.cabins":"cabins","boatDetail.cabin":"cabin","boatDetail.year":"Year",
+    "boatDetail.skipperIncluded":"Skipper included","boatDetail.skipperIncludedTag":"Skipper included","boatDetail.skipperOptionalTag":"Skipper optional",
     "boatDetail.onRequest":"On request","boatDetail.description":"Description","boatDetail.noDescription":"No description provided.",
     "boatDetail.request":"Request a booking","boatDetail.close":"Close",
     "account.eyebrow":"MY ACCOUNT","account.createTitle":"Create your activity on SkipperNow","account.loginTitle":"Log in to SkipperNow",
@@ -823,6 +831,9 @@ const I18N = {
     "results.noProvider":"Todavía no hay prestadores disponibles para este servicio.",
     "boatFinder.eyebrow":"ALQUILER DE BARCOS","boatFinder.title":"Barcos disponibles","boatFinder.empty":"Todavía no hay barcos en alquiler.",
     "boatDetail.model":"Modelo","boatDetail.port":"Puerto base","boatDetail.length":"Eslora","boatDetail.halfDay":"Medio día","boatDetail.fullDay":"Día completo",
+    "boatDetail.type":"Tipo de barco","boatDetail.typeSailboat":"Velero","boatDetail.typeMotorboat":"Barco a motor",
+    "boatDetail.capacity":"Capacidad (personas)","boatDetail.pax":"pers.","boatDetail.cabinsField":"Número de cabinas","boatDetail.cabins":"cabinas","boatDetail.cabin":"cabina","boatDetail.year":"Año",
+    "boatDetail.skipperIncluded":"Skipper incluido","boatDetail.skipperIncludedTag":"Skipper incluido","boatDetail.skipperOptionalTag":"Skipper opcional",
     "boatDetail.onRequest":"A consultar","boatDetail.description":"Descripción","boatDetail.noDescription":"Sin descripción disponible.",
     "boatDetail.request":"Solicitar una reserva","boatDetail.close":"Cerrar",
     "account.eyebrow":"MI CUENTA","account.createTitle":"Crea tu actividad en SkipperNow","account.loginTitle":"Iniciar sesión en SkipperNow",
@@ -1146,22 +1157,44 @@ function renderBoatResults(){
   const list = portFilter ? boatCache.filter(b=>(b.home_port||"").toLowerCase().includes(portFilter)) : boatCache;
   box.innerHTML = list.length ? list.map(b=>boatCardHtml(b)).join("") : `<div class="empty-note">${esc(t("boatFinder.empty"))}</div>`;
 }
+function boatSpecsLine(b){
+  const parts = [];
+  if(b.boat_type) parts.push(t(b.boat_type === "motorboat" ? "boatDetail.typeMotorboat" : "boatDetail.typeSailboat"));
+  if(b.skipper_included !== null && b.skipper_included !== undefined) parts.push(t(b.skipper_included ? "boatDetail.skipperIncludedTag" : "boatDetail.skipperOptionalTag"));
+  if(b.capacity) parts.push(`${b.capacity} ${esc(t("boatDetail.pax"))}`);
+  if(b.cabins !== null && b.cabins !== undefined) parts.push(`${b.cabins} ${esc(t(b.cabins===1?"boatDetail.cabin":"boatDetail.cabins"))}`);
+  if(b.year_built) parts.push(String(b.year_built));
+  if(b.length_m) parts.push(`${esc(b.length_m)} m`);
+  return parts.join(" · ");
+}
+function isFavoriteBoat(id){
+  try{ return JSON.parse(localStorage.getItem("skippernow-boat-favorites")||"[]").includes(String(id)); }catch(_e){ return false; }
+}
+window.toggleBoatFavorite = function(id, ev){
+  ev.stopPropagation();
+  let favs = [];
+  try{ favs = JSON.parse(localStorage.getItem("skippernow-boat-favorites")||"[]"); }catch(_e){}
+  const key = String(id);
+  favs = favs.includes(key) ? favs.filter(x=>x!==key) : [...favs, key];
+  localStorage.setItem("skippernow-boat-favorites", JSON.stringify(favs));
+  const btn = document.querySelector(`[data-favorite-btn="${key}"]`);
+  if(btn) btn.textContent = favs.includes(key) ? "♥" : "♡";
+};
 function boatCardHtml(b){
   const day = Number(b.price_per_day||b.daily_price||b.price||0);
   const priceLabel = day ? `${esc(t("card.priceFrom"))} ${money(day*100)}` : esc(t("boatDetail.onRequest"));
   const photoStyle = b.photo_url ? `style="background-image:url('${esc(b.photo_url)}')"` : "";
+  const specsLine = boatSpecsLine(b);
   return `<article class="boat-card" onclick="openBoatDetail('${b.id}')">
     <div class="boat-card-photo" ${photoStyle}>
       ${b.photo_url ? "" : `<div class="no-photo">⛵</div>`}
+      <button type="button" class="boat-card-fav" data-favorite-btn="${b.id}" onclick="toggleBoatFavorite('${b.id}', event)">${isFavoriteBoat(b.id) ? "♥" : "♡"}</button>
       <span class="boat-card-price">${priceLabel}</span>
     </div>
     <div class="boat-card-body">
       <h3>${esc(b.name||"Bateau")}</h3>
       <div class="boat-card-port">📍 ${esc(b.home_port||"—")}</div>
-      <div class="boat-card-specs">
-        ${b.model ? `<span>${esc(b.model)}</span>` : ""}
-        ${b.length_m ? `<span>${esc(b.length_m)} m</span>` : ""}
-      </div>
+      ${specsLine ? `<div class="boat-card-specs-line">${specsLine}</div>` : ""}
     </div>
   </article>`;
 }
@@ -1191,10 +1224,7 @@ window.openBoatDetail = async function(id){
       <small style="color:var(--muted);font-weight:800;letter-spacing:.05em;text-transform:uppercase;font-size:11px">${esc(t("boatFinder.eyebrow"))}</small>
       <h2 style="margin:4px 0 6px">${esc(boat.name||"Bateau")}</h2>
       <div class="boat-card-port" style="margin-bottom:12px">📍 ${esc(boat.home_port||"—")}</div>
-      <div class="boat-card-specs" style="margin-bottom:18px">
-        ${boat.model ? `<span>${esc(boat.model)}</span>` : ""}
-        ${boat.length_m ? `<span>${esc(boat.length_m)} m</span>` : ""}
-      </div>
+      ${boatSpecsLine(boat) ? `<div class="boat-card-specs-line" style="margin-bottom:18px;font-size:14px">${boatSpecsLine(boat)}</div>` : ""}
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px">
         <div style="border:1px solid var(--line);border-radius:14px;padding:12px;text-align:center">
           <div style="color:var(--muted);font-size:11px;font-weight:800;text-transform:uppercase">${esc(t("boatDetail.halfDay"))}</div>
@@ -1466,8 +1496,18 @@ async function renderClientPanel(panel){
       <form id="addBoatForm" style="margin-top:16px">
         <div class="field"><label>${esc(t("account.nameLabel"))}</label><input id="boatNameInput" required></div>
         <div class="field"><label>${esc(t("boatDetail.model"))}</label><input id="boatModelInput"></div>
+        <div class="field"><label>${esc(t("boatDetail.type"))}</label>
+          <select id="boatTypeInput">
+            <option value="sailboat">${esc(t("boatDetail.typeSailboat"))}</option>
+            <option value="motorboat">${esc(t("boatDetail.typeMotorboat"))}</option>
+          </select>
+        </div>
         <div class="field"><label>${esc(t("boatDetail.port"))}</label><input id="boatPortInput"></div>
         <div class="field"><label>${esc(t("boatDetail.length"))} (m)</label><input id="boatLengthInput" type="number" step="0.1"></div>
+        <div class="field"><label>${esc(t("boatDetail.capacity"))}</label><input id="boatCapacityInput" type="number" min="1" step="1"></div>
+        <div class="field"><label>${esc(t("boatDetail.cabinsField"))}</label><input id="boatCabinsInput" type="number" min="0" step="1"></div>
+        <div class="field"><label>${esc(t("boatDetail.year"))}</label><input id="boatYearInput" type="number" min="1950" max="${new Date().getFullYear()}" step="1"></div>
+        <div class="field"><label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input id="boatSkipperInput" type="checkbox" style="width:auto"> ${esc(t("boatDetail.skipperIncluded"))}</label></div>
         <div class="field"><label>${esc(t("boatDetail.description"))}</label><textarea id="boatDescInput" rows="3"></textarea></div>
         <button class="primary wide" type="submit">${esc(t("join.ownerCta"))}</button>
       </form>`;
@@ -1477,8 +1517,13 @@ async function renderClientPanel(panel){
         client_id: currentUser.id,
         name: document.querySelector("#boatNameInput").value.trim(),
         model: document.querySelector("#boatModelInput").value.trim(),
+        boat_type: document.querySelector("#boatTypeInput").value,
         home_port: document.querySelector("#boatPortInput").value.trim(),
         length_m: Number(document.querySelector("#boatLengthInput").value) || null,
+        capacity: Number(document.querySelector("#boatCapacityInput").value) || null,
+        cabins: Number(document.querySelector("#boatCabinsInput").value) || null,
+        year_built: Number(document.querySelector("#boatYearInput").value) || null,
+        skipper_included: document.querySelector("#boatSkipperInput").checked,
         description: document.querySelector("#boatDescInput").value.trim()
       });
       if(error){ alert(error.message); return; }
@@ -1884,6 +1929,14 @@ async function openSupportThread(){
   await openConversationThread(currentUser.id, admin.id);
 }
 
+function roleLabel(p){
+  if(!p) return "";
+  if(p.role === "skipper") return t("account.roleSkipper");
+  if(p.role === "provider") return t("account.roleProvider") + (p.provider_activity ? " · " + activityLabel(p.provider_activity) : "");
+  if(p.role === "client") return t("account.roleClient");
+  if(p.role === "admin") return "Admin";
+  return "";
+}
 async function renderMessagesPanel(myRoleColumn){
   const main = document.querySelector("#dashMain");
   main.innerHTML = `<div class="empty-note">${esc(t("dash.loading"))}</div>`;
@@ -1892,11 +1945,12 @@ async function renderMessagesPanel(myRoleColumn){
   const rows = conversations || [];
   if(!rows.length){ main.innerHTML = `<div class="empty-note">${esc(t("dash.noMessages"))}</div>`; return; }
   const otherIds = rows.map(c => myRoleColumn === "client_id" ? c.skipper_id : c.client_id);
-  const {data: profiles} = await db.from("profiles").select("id,full_name").in("id", otherIds);
-  const names = Object.fromEntries((profiles||[]).map(p=>[String(p.id), p.full_name]));
+  const {data: profiles} = await db.from("profiles").select("id,full_name,role,provider_activity").in("id", otherIds);
+  const byId = Object.fromEntries((profiles||[]).map(p=>[String(p.id), p]));
   main.innerHTML = `<div id="conversationList">${rows.map(c=>{
     const otherId = myRoleColumn === "client_id" ? c.skipper_id : c.client_id;
-    return `<button type="button" class="request-card" style="width:100%;text-align:left;cursor:pointer" data-conversation="${c.client_id}|${c.skipper_id}"><strong>${esc(names[String(otherId)] || "—")}</strong></button>`;
+    const p = byId[String(otherId)];
+    return `<button type="button" class="request-card" style="width:100%;text-align:left;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px" data-conversation="${c.client_id}|${c.skipper_id}"><strong>${esc(p?.full_name || "—")}</strong><span class="tag">${esc(roleLabel(p))}</span></button>`;
   }).join("")}</div><div id="conversationThread"></div>`;
   main.querySelectorAll("[data-conversation]").forEach(btn=>btn.addEventListener("click", ()=>{
     const [clientId, skipperId] = btn.dataset.conversation.split("|");
@@ -1908,10 +1962,18 @@ async function openConversationThread(clientId, skipperId){
   thread.innerHTML = `<div class="empty-note">${esc(t("dash.loading"))}</div>`;
   try{
     const conversation = await getOrCreateConversation(clientId, skipperId);
-    const {data: messages, error} = await db.from("messages").select("*").eq("conversation_id", conversation.id).order("created_at",{ascending:true});
+    const otherId = String(clientId) === String(currentUser.id) ? skipperId : clientId;
+    const [{data: messages, error}, {data: otherProfile}] = await Promise.all([
+      db.from("messages").select("*").eq("conversation_id", conversation.id).order("created_at",{ascending:true}),
+      db.from("profiles").select("full_name,role,provider_activity").eq("id", otherId).maybeSingle()
+    ]);
     if(error) throw error;
     const rows = messages || [];
     thread.innerHTML = `
+      <div class="request-top" style="margin-bottom:10px">
+        <div><h3 style="margin:0">${esc(otherProfile?.full_name || "—")}</h3></div>
+        <span class="tag">${esc(roleLabel(otherProfile))}</span>
+      </div>
       <div class="note-box">${esc(t("booking.privacyNote"))}</div>
       <div id="messageThreadBody" style="max-height:320px;overflow:auto;display:flex;flex-direction:column;gap:8px;margin:12px 0">
         ${rows.length ? rows.map(m=>`<div style="align-self:${String(m.sender_id)===String(currentUser.id)?"flex-end":"flex-start"};max-width:80%;background:${String(m.sender_id)===String(currentUser.id)?"var(--navy)":"var(--mist)"};color:${String(m.sender_id)===String(currentUser.id)?"#fff":"var(--ink)"};padding:10px 13px;border-radius:14px">${esc(m.body)}</div>`).join("") : `<div class="empty-note">${esc(t("dash.noMessages"))}</div>`}
