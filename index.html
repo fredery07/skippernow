@@ -1,7 +1,8 @@
 <!doctype html>
-<html lang="fr">
+<html lang="fr" translate="no">
 <head>
 <meta charset="utf-8">
+<meta name="google" content="notranslate">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>SkipperNow — Votre skipper, au bon port, au bon moment</title>
 <meta name="description" content="Trouvez un skipper, un prestataire nautique ou un bateau à louer dans n'importe quel port du monde, même à la dernière minute.">
@@ -735,7 +736,7 @@ const I18N = {
     "hero.title":"Tu skipper,<br>en el puerto y momento adecuados.",
     "hero.subtitle":"Encuentra un skipper, un marinero o un prestador náutico en cualquier puerto del mundo, incluso en el último momento.",
     "hero.trust1":"Perfiles verificados","hero.trust2":"Respuesta rápida","hero.trust3":"Pago seguro",
-    "hero.ctaProviders":"Buscar un prestador","hero.ctaBoats":"Buscar un barco de alquiler","hero.ctaSkipper":"Buscar un skipper",
+    "hero.ctaProviders":"Encontrar un prestador de servicios","hero.ctaBoats":"Buscar un barco de alquiler","hero.ctaSkipper":"Buscar un skipper",
     "search.portLabel":"PUERTO DE SALIDA — TODO EL MUNDO","search.portPlaceholder":"Ej. Cannes, Miami, Ibiza…",
     "search.dateLabel":"FECHA","search.durationLabel":"DURACIÓN","search.submit":"Buscar",
     "duration.half":"Medio día","duration.day":"Día completo","duration.multi":"Varios días",
@@ -762,10 +763,10 @@ const I18N = {
     "join.skipperTitle":"Skipper","join.skipperText":"Crea tu perfil y recibe solicitudes de servicio.","join.skipperCta":"Ser skipper",
     "join.providerTitle":"Prestador","join.providerText":"Limpieza, servicios de puerto, astillero o marinero por día.","join.providerCta":"Ser prestador",
     "footer.tagline":"La plataforma mundial para encontrar un skipper, un prestador náutico o un barco de alquiler.",
-    "footer.platform":"Plataforma","footer.findSkipper":"Buscar un skipper","footer.findProvider":"Buscar un prestador","footer.findBoat":"Buscar un barco",
+    "footer.platform":"Plataforma","footer.findSkipper":"Buscar un skipper","footer.findProvider":"Encontrar un prestador de servicios","footer.findBoat":"Buscar un barco",
     "footer.pros":"Profesionales","footer.becomePro":"Ser prestador","footer.addBoat":"Poner un barco en alquiler",
     "footer.infoTitle":"Información","footer.about":"Acerca de","footer.contact":"Contacto","footer.terms":"Términos y condiciones","footer.privacy":"Privacidad","footer.rights":"Todos los derechos reservados.",
-    "providerModal.eyebrow":"SERVICIOS NÁUTICOS","providerModal.title":"Buscar un prestador","providerModal.intro":"Elige el servicio que necesitas cerca de tu puerto.",
+    "providerModal.eyebrow":"SERVICIOS NÁUTICOS","providerModal.title":"Encontrar un prestador de servicios","providerModal.intro":"Elige el servicio que necesitas cerca de tu puerto.",
     "activity.cleaning":"Preparación y servicios en el muelle","activity.cleaningDesc":"Limpieza, enjuague, aprovisionamiento, amarre y asistencia en la salida.",
     "activity.shipyard":"Astillero y mantenimiento","activity.shipyardDesc":"Antifouling, pintura, pequeñas reparaciones, botadura.",
     "activity.daySailor":"Marinero por día","activity.daySailorDesc":"Ayuda a bordo, manipulación, traslados cortos.",
@@ -952,16 +953,22 @@ document.querySelectorAll("#portChips button").forEach(chip=>{
 });
 
 async function loadTrustStats(){
-  const [{count:missionsCount}, {count:prosCount}, {data:ratedProfiles}] = await Promise.all([
-    db.from("missions").select("id", {count:"exact", head:true}).eq("status","completed"),
-    db.from("profiles").select("id", {count:"exact", head:true}).eq("verified", true).in("role", ["skipper","provider"]),
-    db.from("profiles").select("rating").not("rating", "is", null).gt("rating", 0)
-  ]);
-  document.querySelector("#statMissions").textContent = missionsCount ?? 0;
-  document.querySelector("#statPros").textContent = prosCount ?? 0;
-  const ratings = (ratedProfiles || []).map(p => Number(p.rating)).filter(n => Number.isFinite(n));
-  const avg = ratings.length ? (ratings.reduce((a,b)=>a+b,0) / ratings.length) : 0;
-  document.querySelector("#statRating").textContent = ratings.length ? "★ " + avg.toFixed(1) : "—";
+  try{
+    const [{count:missionsCount}, {count:prosCount}, {data:ratedProfiles}] = await Promise.all([
+      db.from("missions").select("id", {count:"exact", head:true}).eq("status","completed"),
+      db.from("profiles").select("id", {count:"exact", head:true}).eq("verified", true).in("role", ["skipper","provider"]),
+      db.from("profiles").select("rating").not("rating", "is", null).gt("rating", 0)
+    ]);
+    document.querySelector("#statMissions").textContent = missionsCount ?? 0;
+    document.querySelector("#statPros").textContent = prosCount ?? 0;
+    const ratings = (ratedProfiles || []).map(p => Number(p.rating)).filter(n => Number.isFinite(n));
+    const avg = ratings.length ? (ratings.reduce((a,b)=>a+b,0) / ratings.length) : 0;
+    document.querySelector("#statRating").textContent = ratings.length ? "★ " + avg.toFixed(1) : "—";
+  }catch(_e){
+    document.querySelector("#statMissions").textContent = "0";
+    document.querySelector("#statPros").textContent = "0";
+    document.querySelector("#statRating").textContent = "—";
+  }
 }
 
 async function loadListings(){
