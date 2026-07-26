@@ -388,7 +388,7 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
       <div>
         <h4 data-i18n="footer.infoTitle">Informations</h4>
         <a data-i18n="footer.about">À propos</a>
-        <a data-i18n="footer.contact">Contact</a>
+        <a id="footerContact" data-i18n="footer.contact">Contact</a>
         <a data-i18n="footer.terms">Conditions générales</a>
         <a data-i18n="footer.privacy">Confidentialité</a>
       </div>
@@ -520,6 +520,22 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
   </div>
 </div>
 
+<div id="faqBubble" style="position:fixed;right:20px;bottom:20px;z-index:1500">
+  <button id="faqToggle" type="button" style="width:58px;height:58px;border-radius:50%;background:var(--navy);color:#fff;border:0;font-size:24px;cursor:pointer;box-shadow:0 10px 26px rgba(7,29,50,.3)">💬</button>
+  <div id="faqPanel" style="display:none;position:absolute;right:0;bottom:70px;width:320px;max-height:420px;background:#fff;border-radius:18px;box-shadow:var(--shadow);overflow:hidden;flex-direction:column">
+    <div style="background:var(--navy);color:#fff;padding:14px 16px;display:flex;justify-content:space-between;align-items:center">
+      <strong id="faqTitle" data-i18n="faq.title">Assistant SkipperNow</strong>
+      <button id="faqClose" type="button" style="background:none;border:0;color:#fff;font-size:18px;cursor:pointer">×</button>
+    </div>
+    <div id="faqMessages" style="padding:14px;overflow:auto;flex:1;display:flex;flex-direction:column;gap:8px"></div>
+    <div id="faqChips" style="padding:0 14px 10px;display:flex;flex-wrap:wrap;gap:6px"></div>
+    <div style="display:flex;gap:6px;padding:10px 14px;border-top:1px solid var(--line)">
+      <input id="faqInput" style="flex:1;border:1px solid var(--line);border-radius:10px;padding:9px 10px" data-i18n-placeholder="faq.inputPlaceholder" placeholder="Écrivez votre question…">
+      <button id="faqSend" type="button" class="small-btn fill">→</button>
+    </div>
+  </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 "use strict";
@@ -583,7 +599,7 @@ const I18N = {
     "account.roleSkipper":"Skipper","account.roleSkipperDesc":"Recevoir des demandes de sortie et de convoyage",
     "account.roleProvider":"Prestataire","account.roleProviderDesc":"Nettoyage, quai, chantier ou marin à la journée",
     "account.roleOwner":"Propriétaire","account.roleOwnerDesc":"Mettre mon bateau en location",
-    "account.nameLabel":"PRÉNOM ET NOM","account.namePlaceholder":"Votre nom",
+    "account.nameLabel":"PRÉNOM ET NOM","account.namePlaceholder":"Votre nom","account.phoneLabel":"TÉLÉPHONE",
     "account.emailLabel":"EMAIL","account.passwordLabel":"MOT DE PASSE","account.passwordPlaceholder":"8 caractères minimum",
     "account.portLabel":"PORT PRINCIPAL — VILLE, PAYS","account.portPlaceholder":"Ex. Port Vauban, Antibes, France",
     "account.activityLabel":"ACTIVITÉ PROPOSÉE","account.createSubmit":"Créer mon compte","account.loginSubmit":"Se connecter","account.forgot":"Mot de passe oublié ?",
@@ -606,7 +622,7 @@ const I18N = {
     "dash.clientEyebrow":"ESPACE CLIENT","dash.clientTitle":"Mes réservations",
     "dash.proEyebrow":"ESPACE PROFESSIONNEL","dash.proTitle":"Mes missions",
     "dash.adminEyebrow":"ADMINISTRATION","dash.adminTitle":"Tableau de bord SkipperNow",
-    "dash.navRequests":"Mes demandes","dash.navBoats":"Mes bateaux","dash.navProfile":"Mon profil","dash.navAvailability":"Disponibilités","dash.logout":"Se déconnecter","dash.navMessages":"Messages","dash.noMessages":"Aucune conversation pour le moment.","dash.messagePlaceholder":"Écrivez votre message…","dash.send":"Envoyer","dash.loading":"Chargement…",
+    "dash.navRequests":"Mes demandes","dash.navBoats":"Mes bateaux","dash.navProfile":"Mon profil","dash.navAvailability":"Disponibilités","dash.logout":"Se déconnecter","dash.navMessages":"Messages","dash.noMessages":"Aucune conversation pour le moment.","dash.messagePlaceholder":"Écrivez votre message…","dash.send":"Envoyer","dash.loading":"Chargement…","dash.navSupport":"Contacter le support","dash.noSupport":"Le support n'est pas disponible pour le moment.","dash.supportIntro":"Une question, un souci ? Écrivez directement à l'équipe SkipperNow.",
     "booking.privacyNote":"Pour votre sécurité, les coordonnées personnelles (téléphone, email) ne sont jamais partagées directement entre client et professionnel.",
     "dash.navOverview":"Vue d'ensemble","dash.navValidations":"Validations","dash.navMissions":"Missions","dash.navUsers":"Utilisateurs","dash.navSettings":"Réglages",
     "dash.noRequests":"Aucune demande pour le moment.","dash.noBoats":"Aucun bateau ajouté pour le moment.","dash.noMissions":"Aucune mission pour le moment.",
@@ -629,7 +645,18 @@ const I18N = {
     "dash.settingsCommission":"Commission par défaut (%)","dash.settingsUrgent":"Supplément demande urgente (€)","dash.settingsSupport":"Email d'assistance",
     "status.pending":"En attente de prix","status.quoted":"Prix proposé","status.accepted":"Devis accepté","status.rejected":"Devis refusé",
     "status.paid":"Payée","status.in_progress":"En cours","status.awaiting_validation":"À valider","status.completed":"Terminée","status.cancelled":"Annulée",
-    "footer.disclaimer":""
+    "footer.disclaimer":"",
+    "faq.greeting":"Bonjour ! Je peux répondre aux questions courantes sur SkipperNow. Choisissez une question ci-dessous ou tapez la vôtre.",
+    "faq.title":"Assistant SkipperNow","faq.inputPlaceholder":"Écrivez votre question…",
+    "faq.priceChip":"Combien ça coûte ?","faq.bookingChip":"Comment réserver ?","faq.becomeChip":"Devenir skipper","faq.contactChip":"Parler à un humain",
+    "faq.price":"Le tarif est fixé librement par chaque professionnel après votre demande — vous ne payez qu'une fois le devis accepté, jamais avant.",
+    "faq.booking":"Choisissez un port et une date, sélectionnez un skipper ou un prestataire, puis envoyez votre demande. Le professionnel vous répond avec un prix.",
+    "faq.cancel":"Vous pouvez annuler une demande tant qu'elle n'est pas payée, directement depuis votre espace « Mes demandes ».",
+    "faq.refund":"Une fois une mission terminée, vous pouvez demander un remboursement depuis votre espace client si besoin — l'équipe SkipperNow l'examine.",
+    "faq.become":"Cliquez sur « Créer un compte », choisissez Skipper ou Prestataire, renseignez votre port principal, et votre profil sera examiné par notre équipe.",
+    "faq.payment":"Le paiement est sécurisé et n'est débité qu'après acceptation du devis par vous.",
+    "faq.contact":"Pas de souci, écrivez-nous directement depuis l'onglet « Contacter le support » de votre espace, ou par email via le lien Contact en bas de page.",
+    "faq.fallback":"Je n'ai pas de réponse toute faite pour ça — le plus simple est de contacter directement l'équipe SkipperNow depuis l'onglet « Contacter le support » de votre espace.",
   },
   en:{
     "nav.login":"Log in","nav.signup":"Create an account","nav.myAccount":"My account",
@@ -683,7 +710,7 @@ const I18N = {
     "account.roleSkipper":"Skipper","account.roleSkipperDesc":"Receive trip and delivery requests",
     "account.roleProvider":"Service provider","account.roleProviderDesc":"Cleaning, dock, shipyard or day crew",
     "account.roleOwner":"Owner","account.roleOwnerDesc":"List my boat for rent",
-    "account.nameLabel":"FULL NAME","account.namePlaceholder":"Your name",
+    "account.nameLabel":"FULL NAME","account.namePlaceholder":"Your name","account.phoneLabel":"PHONE",
     "account.emailLabel":"EMAIL","account.passwordLabel":"PASSWORD","account.passwordPlaceholder":"At least 8 characters",
     "account.portLabel":"HOME PORT — CITY, COUNTRY","account.portPlaceholder":"E.g. Port Vauban, Antibes, France",
     "account.activityLabel":"SERVICE OFFERED","account.createSubmit":"Create my account","account.loginSubmit":"Log in","account.forgot":"Forgot password?",
@@ -706,7 +733,7 @@ const I18N = {
     "dash.clientEyebrow":"CLIENT AREA","dash.clientTitle":"My bookings",
     "dash.proEyebrow":"PROFESSIONAL AREA","dash.proTitle":"My jobs",
     "dash.adminEyebrow":"ADMINISTRATION","dash.adminTitle":"SkipperNow dashboard",
-    "dash.navRequests":"My requests","dash.navBoats":"My boats","dash.navProfile":"My profile","dash.navAvailability":"Availability","dash.logout":"Log out","dash.navMessages":"Messages","dash.noMessages":"No conversations yet.","dash.messagePlaceholder":"Write your message…","dash.send":"Send","dash.loading":"Loading…",
+    "dash.navRequests":"My requests","dash.navBoats":"My boats","dash.navProfile":"My profile","dash.navAvailability":"Availability","dash.logout":"Log out","dash.navMessages":"Messages","dash.noMessages":"No conversations yet.","dash.messagePlaceholder":"Write your message…","dash.send":"Send","dash.loading":"Loading…","dash.navSupport":"Contact support","dash.noSupport":"Support is not available right now.","dash.supportIntro":"A question or an issue? Message the SkipperNow team directly.",
     "booking.privacyNote":"For your safety, personal contact details (phone, email) are never shared directly between client and professional.",
     "dash.navOverview":"Overview","dash.navValidations":"Approvals","dash.navMissions":"Jobs","dash.navUsers":"Users","dash.navSettings":"Settings",
     "dash.noRequests":"No requests yet.","dash.noBoats":"No boats added yet.","dash.noMissions":"No jobs yet.",
@@ -728,7 +755,18 @@ const I18N = {
     "dash.cancel":"Cancel","dash.approve":"Approve profile","dash.suspend":"Suspend","dash.saveSettings":"Save settings",
     "dash.settingsCommission":"Default commission (%)","dash.settingsUrgent":"Urgent request fee (€)","dash.settingsSupport":"Support email",
     "status.pending":"Waiting for price","status.quoted":"Price proposed","status.accepted":"Quote accepted","status.rejected":"Quote declined",
-    "status.paid":"Paid","status.in_progress":"In progress","status.awaiting_validation":"To approve","status.completed":"Completed","status.cancelled":"Cancelled"
+    "status.paid":"Paid","status.in_progress":"In progress","status.awaiting_validation":"To approve","status.completed":"Completed","status.cancelled":"Cancelled",
+    "faq.greeting":"Hi! I can answer common questions about SkipperNow. Pick a question below or type your own.",
+    "faq.title":"SkipperNow Assistant","faq.inputPlaceholder":"Write your question…",
+    "faq.priceChip":"How much does it cost?","faq.bookingChip":"How do I book?","faq.becomeChip":"Become a skipper","faq.contactChip":"Talk to a human",
+    "faq.price":"Each professional sets their own price after your request — you only pay once you accept the quote, never before.",
+    "faq.booking":"Pick a port and date, select a skipper or service provider, then send your request. The professional will reply with a price.",
+    "faq.cancel":"You can cancel a request as long as it hasn't been paid, directly from your \"My requests\" area.",
+    "faq.refund":"Once a job is completed, you can request a refund from your client area if needed — the SkipperNow team reviews it.",
+    "faq.become":"Click \"Create an account\", choose Skipper or Service provider, enter your home port, and our team will review your profile.",
+    "faq.payment":"Payment is secure and only charged once you accept the quote.",
+    "faq.contact":"No problem, message us directly from the \"Contact support\" tab in your account, or by email via the Contact link at the bottom of the page.",
+    "faq.fallback":"I don't have a ready-made answer for that — the simplest is to contact the SkipperNow team directly via the \"Contact support\" tab in your account.",
   },
   es:{
     "nav.login":"Iniciar sesión","nav.signup":"Crear una cuenta","nav.myAccount":"Mi cuenta",
@@ -782,7 +820,7 @@ const I18N = {
     "account.roleSkipper":"Skipper","account.roleSkipperDesc":"Recibir solicitudes de salidas y traslados",
     "account.roleProvider":"Prestador","account.roleProviderDesc":"Limpieza, puerto, astillero o marinero por día",
     "account.roleOwner":"Propietario","account.roleOwnerDesc":"Poner mi barco en alquiler",
-    "account.nameLabel":"NOMBRE COMPLETO","account.namePlaceholder":"Tu nombre",
+    "account.nameLabel":"NOMBRE COMPLETO","account.namePlaceholder":"Tu nombre","account.phoneLabel":"TELÉFONO",
     "account.emailLabel":"EMAIL","account.passwordLabel":"CONTRASEÑA","account.passwordPlaceholder":"Mínimo 8 caracteres",
     "account.portLabel":"PUERTO BASE — CIUDAD, PAÍS","account.portPlaceholder":"Ej. Port Vauban, Antibes, Francia",
     "account.activityLabel":"SERVICIO OFRECIDO","account.createSubmit":"Crear mi cuenta","account.loginSubmit":"Iniciar sesión","account.forgot":"¿Olvidaste tu contraseña?",
@@ -805,7 +843,7 @@ const I18N = {
     "dash.clientEyebrow":"ESPACIO CLIENTE","dash.clientTitle":"Mis reservas",
     "dash.proEyebrow":"ESPACIO PROFESIONAL","dash.proTitle":"Mis servicios",
     "dash.adminEyebrow":"ADMINISTRACIÓN","dash.adminTitle":"Panel de SkipperNow",
-    "dash.navRequests":"Mis solicitudes","dash.navBoats":"Mis barcos","dash.navProfile":"Mi perfil","dash.navAvailability":"Disponibilidad","dash.logout":"Cerrar sesión","dash.navMessages":"Mensajes","dash.noMessages":"Todavía no hay conversaciones.","dash.messagePlaceholder":"Escribe tu mensaje…","dash.send":"Enviar","dash.loading":"Cargando…",
+    "dash.navRequests":"Mis solicitudes","dash.navBoats":"Mis barcos","dash.navProfile":"Mi perfil","dash.navAvailability":"Disponibilidad","dash.logout":"Cerrar sesión","dash.navMessages":"Mensajes","dash.noMessages":"Todavía no hay conversaciones.","dash.messagePlaceholder":"Escribe tu mensaje…","dash.send":"Enviar","dash.loading":"Cargando…","dash.navSupport":"Contactar con soporte","dash.noSupport":"El soporte no está disponible en este momento.","dash.supportIntro":"¿Una pregunta o un problema? Escribe directamente al equipo de SkipperNow.",
     "booking.privacyNote":"Por tu seguridad, los datos personales (teléfono, email) nunca se comparten directamente entre cliente y profesional.",
     "dash.navOverview":"Resumen","dash.navValidations":"Validaciones","dash.navMissions":"Servicios","dash.navUsers":"Usuarios","dash.navSettings":"Ajustes",
     "dash.noRequests":"Todavía no hay solicitudes.","dash.noBoats":"Todavía no hay barcos añadidos.","dash.noMissions":"Todavía no hay servicios.",
@@ -827,7 +865,18 @@ const I18N = {
     "dash.cancel":"Cancelar","dash.approve":"Validar el perfil","dash.suspend":"Suspender","dash.saveSettings":"Guardar ajustes",
     "dash.settingsCommission":"Comisión por defecto (%)","dash.settingsUrgent":"Cargo por solicitud urgente (€)","dash.settingsSupport":"Email de asistencia",
     "status.pending":"Esperando precio","status.quoted":"Precio propuesto","status.accepted":"Presupuesto aceptado","status.rejected":"Presupuesto rechazado",
-    "status.paid":"Pagado","status.in_progress":"En curso","status.awaiting_validation":"Por validar","status.completed":"Terminado","status.cancelled":"Cancelado"
+    "status.paid":"Pagado","status.in_progress":"En curso","status.awaiting_validation":"Por validar","status.completed":"Terminado","status.cancelled":"Cancelado",
+    "faq.greeting":"¡Hola! Puedo responder preguntas frecuentes sobre SkipperNow. Elige una pregunta abajo o escribe la tuya.",
+    "faq.title":"Asistente SkipperNow","faq.inputPlaceholder":"Escribe tu pregunta…",
+    "faq.priceChip":"¿Cuánto cuesta?","faq.bookingChip":"¿Cómo reservo?","faq.becomeChip":"Ser skipper","faq.contactChip":"Hablar con alguien",
+    "faq.price":"Cada profesional fija su propio precio tras tu solicitud — solo pagas una vez aceptado el presupuesto, nunca antes.",
+    "faq.booking":"Elige un puerto y una fecha, selecciona un skipper o prestador, y envía tu solicitud. El profesional te responderá con un precio.",
+    "faq.cancel":"Puedes cancelar una solicitud mientras no esté pagada, directamente desde tu área «Mis solicitudes».",
+    "faq.refund":"Una vez terminado un servicio, puedes solicitar un reembolso desde tu área de cliente si lo necesitas — el equipo de SkipperNow lo revisa.",
+    "faq.become":"Haz clic en «Crear una cuenta», elige Skipper o Prestador, indica tu puerto principal, y nuestro equipo revisará tu perfil.",
+    "faq.payment":"El pago es seguro y solo se cobra una vez aceptas el presupuesto.",
+    "faq.contact":"Sin problema, escríbenos directamente desde la pestaña «Contactar con soporte» de tu cuenta, o por email con el enlace Contacto al final de la página.",
+    "faq.fallback":"No tengo una respuesta preparada para eso — lo más sencillo es contactar directamente con el equipo de SkipperNow desde la pestaña «Contactar con soporte» de tu cuenta.",
   }
 };
 
@@ -1185,6 +1234,10 @@ document.querySelector("#footerBecomePro").addEventListener("click", ()=>openAcc
 document.querySelector("#footerAddBoat").addEventListener("click", ()=>openAccountModal("create","owner"));
 document.querySelector("#footerFindSkipper").addEventListener("click", ()=>{switchActivityTab("skipper");document.querySelector("main").scrollIntoView({behavior:"smooth"})});
 document.querySelector("#footerFindProvider").addEventListener("click", ()=>{showProviderCategories();openModal("providerModal")});
+document.querySelector("#footerContact").addEventListener("click", async ()=>{
+  const {data} = await db.from("platform_settings").select("support_email").eq("id",1).maybeSingle();
+  window.location.href = "mailto:" + (data?.support_email || "contact@skippernow.com");
+});
 document.querySelector("#goHome").addEventListener("click", ()=>window.scrollTo({top:0,behavior:"smooth"}));
 
 document.querySelector("#authSubmit").addEventListener("click", async ()=>{
@@ -1344,6 +1397,7 @@ async function renderClientDashboard(){
   body.innerHTML = dashShell([
     {id:"requests", label:t("dash.navRequests")},
     {id:"messages", label:t("dash.navMessages")},
+    {id:"support", label:t("dash.navSupport")},
     {id:"boats", label:t("dash.navBoats")},
     {id:"profile", label:t("dash.navProfile")}
   ], "requests");
@@ -1359,6 +1413,8 @@ async function renderClientPanel(panel){
     bindRequestActions();
   }else if(panel === "messages"){
     await renderMessagesPanel("client_id");
+  }else if(panel === "support"){
+    await openSupportThread();
   }else if(panel === "boats"){
     const {data} = await db.from("boats").select("*").eq("client_id", currentUser.id).order("created_at",{ascending:false});
     const rows = data || [];
@@ -1397,6 +1453,7 @@ async function renderProDashboard(){
   body.innerHTML = dashShell([
     {id:"requests", label:t("dash.navRequests")},
     {id:"messages", label:t("dash.navMessages")},
+    {id:"support", label:t("dash.navSupport")},
     {id:"profile", label:t("dash.navProfile")},
     {id:"availability", label:t("dash.navAvailability")}
   ], "requests");
@@ -1412,6 +1469,8 @@ async function renderProPanel(panel){
     bindRequestActions();
   }else if(panel === "messages"){
     await renderMessagesPanel("skipper_id");
+  }else if(panel === "support"){
+    await openSupportThread();
   }else if(panel === "profile"){
     main.innerHTML = profileForm(currentProfile);
     bindProfileForm();
@@ -1441,6 +1500,7 @@ async function renderAdminDashboard(){
   body.innerHTML = dashShell([
     {id:"overview", label:t("dash.navOverview")},
     {id:"missions", label:t("dash.navMissions")},
+    {id:"messages", label:t("dash.navMessages")},
     {id:"payments", label:t("dash.navPayments")},
     {id:"payouts", label:t("dash.navPayouts")},
     {id:"refunds", label:t("dash.navRefunds")},
@@ -1491,6 +1551,8 @@ async function renderAdminPanel(panel){
   }else if(panel === "missions"){
     main.innerHTML = missions.length ? missions.map(m=>adminMissionCard(m, byId)).join("") : `<div class="empty-note">${esc(t("dash.noMissions"))}</div>`;
     bindAdminMissionActions("missions");
+  }else if(panel === "messages"){
+    await renderMessagesPanel("skipper_id");
   }else if(panel === "payments"){
     const rows = missions.filter(m => ["paid","transferred","payout_ready","refund_requested","refunded"].includes(m.payment_status));
     main.innerHTML = `<div class="note-box">${esc(t("dash.paymentsNote"))}</div>` + (rows.length ? rows.map(m=>adminMissionCard(m, byId, true)).join("") : `<div class="empty-note">${esc(t("dash.noMissions"))}</div>`);
@@ -1614,6 +1676,7 @@ function adminUserCard(p, missions){
     </div>
     <div class="request-actions">
       ${!p.verified ? `<button class="small-btn fill" data-approve="${p.id}">${esc(t("dash.approve"))}</button>` : `<button class="small-btn danger" data-suspend="${p.id}">${esc(t("dash.suspend"))}</button>`}
+      ${p.role !== "admin" ? `<button class="small-btn" data-message-user="${p.id}">${esc(t("dash.navMessages"))}</button>` : ""}
     </div>
   </article>`;
 }
@@ -1756,6 +1819,12 @@ function bindProfileActions(){
     const {error} = await db.from("profiles").update({verified:false, available:false, suspended:true}).eq("id", btn.dataset.suspend);
     if(error) alert(error.message); else openDashboard();
   }));
+  document.querySelectorAll("[data-message-user]").forEach(btn=>btn.addEventListener("click", async ()=>{
+    const targetId = btn.dataset.messageUser;
+    document.querySelectorAll(".dash-side button").forEach(b=>b.classList.toggle("active", b.dataset.panel==="messages"));
+    await renderAdminPanel("messages");
+    await openConversationThread(targetId, currentUser.id);
+  }));
 }
 async function getOrCreateConversation(clientId, skipperId){
   const {data} = await db.from("conversations").select("*").eq("client_id", clientId).eq("skipper_id", skipperId).maybeSingle();
@@ -1764,6 +1833,15 @@ async function getOrCreateConversation(clientId, skipperId){
   if(error) throw error;
   return created;
 }
+async function openSupportThread(){
+  const main = document.querySelector("#dashMain");
+  main.innerHTML = `<div class="empty-note">${esc(t("dash.loading"))}</div>`;
+  const {data: admin, error} = await db.from("profiles").select("id").eq("role","admin").limit(1).maybeSingle();
+  if(error || !admin){ main.innerHTML = `<div class="empty-note">${esc(t("dash.noSupport"))}</div>`; return; }
+  main.innerHTML = `<div class="note-box">${esc(t("dash.supportIntro"))}</div><div id="conversationThread"></div>`;
+  await openConversationThread(currentUser.id, admin.id);
+}
+
 async function renderMessagesPanel(myRoleColumn){
   const main = document.querySelector("#dashMain");
   main.innerHTML = `<div class="empty-note">${esc(t("dash.loading"))}</div>`;
@@ -1820,7 +1898,7 @@ function profileForm(profile){
   const isPro = ["skipper","provider"].includes(profile?.role);
   return `<div class="field"><label>${esc(t("account.nameLabel"))}</label><input id="profileName" value="${esc(profile?.full_name||"")}"></div>
     <div class="field"><label>${esc(t("account.portLabel"))}</label><input id="profilePort" value="${esc(profile?.home_port||"")}"></div>
-    <div class="field"><label>${esc(t("account.phoneLabel")||"Téléphone")}</label><input id="profilePhone" value="${esc(profile?.phone||"")}"></div>
+    <div class="field"><label>${esc(t("account.phoneLabel"))}</label><input id="profilePhone" value="${esc(profile?.phone||"")}"></div>
     ${isPro ? `<div class="field"><label>${esc(t("card.priceFrom"))} (€)</label><input id="profilePriceFrom" type="number" min="0" step="1" value="${profile?.price_from_cents ? Number(profile.price_from_cents)/100 : ""}" placeholder="Ex. 200"></div>` : ""}
     <div class="field"><label>${esc(t("boatDetail.description"))}</label><textarea id="profileBio" rows="4">${esc(profile?.bio||"")}</textarea></div>
     <button class="primary wide" id="saveProfileBtn">${esc(t("dash.saveSettings"))}</button>
@@ -1858,6 +1936,66 @@ function refreshDynamicTexts(){
   refreshAccountButton();
 }
 
+const FAQ_ENTRIES = [
+  {keywords:["prix","tarif","coût","cout","combien"], answerKey:"faq.price"},
+  {keywords:["réserv","reserv","booking","comment ça marche","comment ca marche"], answerKey:"faq.booking"},
+  {keywords:["annul","cancel"], answerKey:"faq.cancel"},
+  {keywords:["rembours","refund"], answerKey:"faq.refund"},
+  {keywords:["skipper","devenir","inscri","join","prestataire"], answerKey:"faq.become"},
+  {keywords:["paiement","payer","pay","sécuri","securi","stripe"], answerKey:"faq.payment"},
+  {keywords:["contact","support","aide","help","humain"], answerKey:"faq.contact"}
+];
+const FAQ_CHIPS = ["faq.price","faq.booking","faq.become","faq.contact"];
+
+function faqAppendMessage(text, who){
+  const box = document.querySelector("#faqMessages");
+  const bubble = document.createElement("div");
+  bubble.style.cssText = `align-self:${who==="user"?"flex-end":"flex-start"};max-width:85%;padding:9px 12px;border-radius:13px;font-size:14px;line-height:1.4;background:${who==="user"?"var(--navy)":"var(--mist)"};color:${who==="user"?"#fff":"var(--ink)"}`;
+  bubble.textContent = text;
+  box.appendChild(bubble);
+  box.scrollTop = box.scrollHeight;
+}
+function faqAnswerFor(message){
+  const lower = message.toLowerCase();
+  const hit = FAQ_ENTRIES.find(e => e.keywords.some(k => lower.includes(k)));
+  return t(hit ? hit.answerKey : "faq.fallback");
+}
+function faqRenderChips(){
+  const chipsBox = document.querySelector("#faqChips");
+  chipsBox.innerHTML = FAQ_CHIPS.map(k=>`<button type="button" class="tag" style="cursor:pointer;border:1px solid var(--line)" data-faq-chip="${k}">${esc(t(k+"Chip"))}</button>`).join("");
+  chipsBox.querySelectorAll("[data-faq-chip]").forEach(btn=>btn.addEventListener("click", ()=>{
+    const question = btn.textContent;
+    faqAppendMessage(question, "user");
+    faqAppendMessage(t(btn.dataset.faqChip), "bot");
+  }));
+}
+function initFaqBot(){
+  const toggle = document.querySelector("#faqToggle");
+  const panel = document.querySelector("#faqPanel");
+  const closeBtn = document.querySelector("#faqClose");
+  const sendBtn = document.querySelector("#faqSend");
+  const input = document.querySelector("#faqInput");
+  let opened = false;
+  toggle.addEventListener("click", ()=>{
+    opened = !opened;
+    panel.style.display = opened ? "flex" : "none";
+    if(opened && !document.querySelector("#faqMessages").childElementCount){
+      faqAppendMessage(t("faq.greeting"), "bot");
+      faqRenderChips();
+    }
+  });
+  closeBtn.addEventListener("click", ()=>{ opened = false; panel.style.display = "none"; });
+  function send(){
+    const value = input.value.trim();
+    if(!value) return;
+    faqAppendMessage(value, "user");
+    input.value = "";
+    setTimeout(()=>faqAppendMessage(faqAnswerFor(value), "bot"), 250);
+  }
+  sendBtn.addEventListener("click", send);
+  input.addEventListener("keydown", e=>{ if(e.key === "Enter") send(); });
+}
+
 function startHeroCarousel(){
   const slides = [...document.querySelectorAll(".hero-bg")];
   if(slides.length < 2) return;
@@ -1872,6 +2010,7 @@ function startHeroCarousel(){
 (async function init(){
   applyStaticTranslations();
   startHeroCarousel();
+  initFaqBot();
   const {data:{session}} = await db.auth.getSession();
   currentUser = session?.user || null;
   if(currentUser) await loadProfile();
