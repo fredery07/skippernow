@@ -523,6 +523,21 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
   </div>
 </div>
 
+<div class="modal" id="paymentModal">
+  <div class="dialog">
+    <div class="dialog-top">
+      <div><small data-i18n="payment.eyebrow">PAIEMENT SÉCURISÉ</small><h2 data-i18n="payment.title">Payer la mission</h2></div>
+      <button class="close" data-close="paymentModal" type="button">×</button>
+    </div>
+    <div class="summary">
+      <div class="summary-line"><span data-i18n="payment.amount">Montant</span><strong id="paymentAmount">—</strong></div>
+    </div>
+    <div id="paymentElementWrap" style="margin:16px 0"></div>
+    <button class="primary wide" id="paymentSubmit" style="display:none" data-i18n="payment.pay">Payer</button>
+    <p class="error-text" id="paymentMessage"></p>
+  </div>
+</div>
+
 <div class="modal" id="dashboardModal">
   <div class="dialog large">
     <div class="dialog-top">
@@ -549,6 +564,7 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
   </div>
 </div>
 
+<script src="https://js.stripe.com/v3/"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 "use strict";
@@ -558,6 +574,10 @@ const SUPABASE_KEY = "sb_publishable_OxikOn1mhDcxkAVAucN5Lg_za-bJMS5";
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
   auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,storage:window.localStorage,storageKey:"skippernow-auth"}
 });
+const STRIPE_PUBLISHABLE_KEY = "pk_live_51TwnxRJJhgwiG0WlcXaWITovqG9bkHSlXJeouhV983HkCRS7y16owMkph4Itjit3CB8sLEWJLrYkX4sUkOvjy0RE00eviyEiHS";
+const stripeClient = window.Stripe ? window.Stripe(STRIPE_PUBLISHABLE_KEY) : null;
+let paymentElementsInstance = null;
+let currentPaymentMissionId = null;
 
 const I18N = {
   fr:{
@@ -659,6 +679,7 @@ const I18N = {
     "dash.refuseQuote":"Refuser le devis","dash.pay":"Payer maintenant","dash.markDone":"Marquer comme terminée","dash.validate":"Valider la mission",
     "dash.cancel":"Annuler","dash.approve":"Valider le profil","dash.suspend":"Suspendre","dash.saveSettings":"Enregistrer les réglages",
     "dash.settingsCommission":"Commission par défaut (%)","dash.settingsUrgent":"Supplément demande urgente (€)","dash.settingsSupport":"Email d'assistance",
+    "dash.payoutDetailsNote":"Ces coordonnées bancaires ne sont visibles que par vous et par l'administrateur, jamais par les clients.","dash.holderLabel":"TITULAIRE DU COMPTE","dash.ibanLabel":"IBAN","dash.bicLabel":"BIC","dash.noIban":"Ce professionnel n'a pas encore renseigné son IBAN.",
     "status.pending":"En attente de prix","status.quoted":"Prix proposé","status.accepted":"Devis accepté","status.rejected":"Devis refusé",
     "status.paid":"Payée","status.in_progress":"En cours","status.awaiting_validation":"À valider","status.completed":"Terminée","status.cancelled":"Annulée",
     "footer.disclaimer":"",
@@ -673,6 +694,7 @@ const I18N = {
     "faq.payment":"Le paiement est sécurisé et n'est débité qu'après acceptation du devis par vous.",
     "faq.contact":"Pas de souci, écrivez-nous directement depuis l'onglet « Contacter le support » de votre espace, ou par email via le lien Contact en bas de page.",
     "faq.fallback":"Je n'ai pas de réponse toute faite pour ça — le plus simple est de contacter directement l'équipe SkipperNow depuis l'onglet « Contacter le support » de votre espace.",
+    "payment.eyebrow":"PAIEMENT SÉCURISÉ","payment.title":"Payer la mission","payment.amount":"Montant","payment.pay":"Payer",
   },
   en:{
     "nav.login":"Log in","nav.signup":"Create an account","nav.myAccount":"My account",
@@ -773,6 +795,7 @@ const I18N = {
     "dash.refuseQuote":"Decline quote","dash.pay":"Pay now","dash.markDone":"Mark as completed","dash.validate":"Approve job",
     "dash.cancel":"Cancel","dash.approve":"Approve profile","dash.suspend":"Suspend","dash.saveSettings":"Save settings",
     "dash.settingsCommission":"Default commission (%)","dash.settingsUrgent":"Urgent request fee (€)","dash.settingsSupport":"Support email",
+    "dash.payoutDetailsNote":"These bank details are only visible to you and the administrator, never to clients.","dash.holderLabel":"ACCOUNT HOLDER","dash.ibanLabel":"IBAN","dash.bicLabel":"BIC","dash.noIban":"This professional hasn't entered their IBAN yet.",
     "status.pending":"Waiting for price","status.quoted":"Price proposed","status.accepted":"Quote accepted","status.rejected":"Quote declined",
     "status.paid":"Paid","status.in_progress":"In progress","status.awaiting_validation":"To approve","status.completed":"Completed","status.cancelled":"Cancelled",
     "faq.greeting":"Hi! I can answer common questions about SkipperNow. Pick a question below or type your own.",
@@ -786,6 +809,7 @@ const I18N = {
     "faq.payment":"Payment is secure and only charged once you accept the quote.",
     "faq.contact":"No problem, message us directly from the \"Contact support\" tab in your account, or by email via the Contact link at the bottom of the page.",
     "faq.fallback":"I don't have a ready-made answer for that — the simplest is to contact the SkipperNow team directly via the \"Contact support\" tab in your account.",
+    "payment.eyebrow":"SECURE PAYMENT","payment.title":"Pay for the job","payment.amount":"Amount","payment.pay":"Pay",
   },
   es:{
     "nav.login":"Iniciar sesión","nav.signup":"Crear una cuenta","nav.myAccount":"Mi cuenta",
@@ -886,6 +910,7 @@ const I18N = {
     "dash.refuseQuote":"Rechazar presupuesto","dash.pay":"Pagar ahora","dash.markDone":"Marcar como terminado","dash.validate":"Validar el servicio",
     "dash.cancel":"Cancelar","dash.approve":"Validar el perfil","dash.suspend":"Suspender","dash.saveSettings":"Guardar ajustes",
     "dash.settingsCommission":"Comisión por defecto (%)","dash.settingsUrgent":"Cargo por solicitud urgente (€)","dash.settingsSupport":"Email de asistencia",
+    "dash.payoutDetailsNote":"Estos datos bancarios solo son visibles para ti y para el administrador, nunca para los clientes.","dash.holderLabel":"TITULAR DE LA CUENTA","dash.ibanLabel":"IBAN","dash.bicLabel":"BIC","dash.noIban":"Este profesional todavía no ha indicado su IBAN.",
     "status.pending":"Esperando precio","status.quoted":"Precio propuesto","status.accepted":"Presupuesto aceptado","status.rejected":"Presupuesto rechazado",
     "status.paid":"Pagado","status.in_progress":"En curso","status.awaiting_validation":"Por validar","status.completed":"Terminado","status.cancelled":"Cancelado",
     "faq.greeting":"¡Hola! Puedo responder preguntas frecuentes sobre SkipperNow. Elige una pregunta abajo o escribe la tuya.",
@@ -899,6 +924,7 @@ const I18N = {
     "faq.payment":"El pago es seguro y solo se cobra una vez aceptas el presupuesto.",
     "faq.contact":"Sin problema, escríbenos directamente desde la pestaña «Contactar con soporte» de tu cuenta, o por email con el enlace Contacto al final de la página.",
     "faq.fallback":"No tengo una respuesta preparada para eso — lo más sencillo es contactar directamente con el equipo de SkipperNow desde la pestaña «Contactar con soporte» de tu cuenta.",
+    "payment.eyebrow":"PAGO SEGURO","payment.title":"Pagar el servicio","payment.amount":"Importe","payment.pay":"Pagar",
   }
 };
 
@@ -1421,6 +1447,59 @@ document.querySelector("#bookingSubmit").addEventListener("click", async ()=>{
 });
 document.querySelector("#bookingSuccessDone").addEventListener("click", ()=>{ closeModal("bookingModal"); openDashboard(); });
 
+window.openPaymentFor = async function(missionId, amountCents){
+  currentPaymentMissionId = missionId;
+  document.querySelector("#paymentAmount").textContent = money(amountCents);
+  document.querySelector("#paymentMessage").textContent = "";
+  document.querySelector("#paymentElementWrap").innerHTML = `<div class="empty-note">${esc(t("dash.loading"))}</div>`;
+  document.querySelector("#paymentSubmit").style.display = "none";
+  openModal("paymentModal");
+  if(!stripeClient){
+    document.querySelector("#paymentElementWrap").innerHTML = `<div class="note-box">Stripe n'a pas pu se charger.</div>`;
+    return;
+  }
+  try{
+    const {data:{session}} = await db.auth.getSession();
+    const res = await fetch(SUPABASE_URL + "/functions/v1/create-payment-intent", {
+      method: "POST",
+      headers: {"Content-Type":"application/json", "Authorization":"Bearer "+session.access_token, "apikey": SUPABASE_KEY},
+      body: JSON.stringify({missionId})
+    });
+    const json = await res.json();
+    if(!res.ok) throw new Error(json.error || "Erreur serveur");
+    document.querySelector("#paymentElementWrap").innerHTML = "";
+    paymentElementsInstance = stripeClient.elements({clientSecret: json.client_secret});
+    const paymentElement = paymentElementsInstance.create("payment");
+    paymentElement.mount("#paymentElementWrap");
+    document.querySelector("#paymentSubmit").style.display = "block";
+  }catch(err){
+    document.querySelector("#paymentElementWrap").innerHTML = `<div class="note-box">${esc(err.message)}</div>`;
+  }
+};
+document.querySelector("#paymentSubmit").addEventListener("click", async ()=>{
+  const msg = document.querySelector("#paymentMessage");
+  const submitBtn = document.querySelector("#paymentSubmit");
+  msg.textContent = "";
+  submitBtn.disabled = true;
+  const {error, paymentIntent} = await stripeClient.confirmPayment({elements: paymentElementsInstance, redirect: "if_required"});
+  if(error){ msg.textContent = error.message; submitBtn.disabled = false; return; }
+  try{
+    const {data:{session}} = await db.auth.getSession();
+    const res = await fetch(SUPABASE_URL + "/functions/v1/confirm-payment", {
+      method: "POST",
+      headers: {"Content-Type":"application/json", "Authorization":"Bearer "+session.access_token, "apikey": SUPABASE_KEY},
+      body: JSON.stringify({missionId: currentPaymentMissionId, paymentIntentId: paymentIntent.id})
+    });
+    if(!res.ok){ const j = await res.json(); throw new Error(j.error || "Erreur de confirmation"); }
+    closeModal("paymentModal");
+    openDashboard();
+  }catch(err){
+    msg.textContent = err.message;
+  }finally{
+    submitBtn.disabled = false;
+  }
+});
+
 async function openDashboard(){
   if(!currentUser){ openAccountModal("login"); return; }
   if(!currentProfile) await loadProfile();
@@ -1559,7 +1638,8 @@ async function renderProPanel(panel){
   }else if(panel === "support"){
     await openSupportThread();
   }else if(panel === "profile"){
-    main.innerHTML = profileForm(currentProfile);
+    const {data: payout} = await db.from("payout_details").select("*").eq("profile_id", currentUser.id).maybeSingle();
+    main.innerHTML = profileForm(currentProfile, payout);
     bindProfileForm();
   }else if(panel === "availability"){
     const {data} = await db.from("skipper_unavailability").select("*").eq("skipper_id", currentUser.id).order("unavailable_date");
@@ -1599,24 +1679,26 @@ async function renderAdminDashboard(){
   await renderAdminPanel("overview");
 }
 async function loadAdminData(){
-  const [{data:profiles},{data:missions},{data:settings},{data:boats}] = await Promise.all([
+  const [{data:profiles},{data:missions},{data:settings},{data:boats},{data:payouts}] = await Promise.all([
     db.from("profiles").select("*").order("created_at",{ascending:false}),
     db.from("missions").select("*").order("created_at",{ascending:false}),
     db.from("platform_settings").select("*").eq("id",1).maybeSingle(),
-    db.from("boats").select("*").order("created_at",{ascending:false})
+    db.from("boats").select("*").order("created_at",{ascending:false}),
+    db.from("payout_details").select("*")
   ]);
   return {
     profiles: profiles || [],
     missions: missions || [],
     settings: settings || {first_commission_percent:15, urgent_fee_cents:1900, support_email:""},
-    boats: boats || []
+    boats: boats || [],
+    payoutsById: Object.fromEntries((payouts||[]).map(p=>[String(p.profile_id), p]))
   };
 }
 function profilesById(list){ return Object.fromEntries(list.map(p=>[String(p.id), p])); }
 
 async function renderAdminPanel(panel){
   const main = document.querySelector("#dashMain");
-  const {profiles, missions, settings, boats} = await loadAdminData();
+  const {profiles, missions, settings, boats, payoutsById} = await loadAdminData();
   const byId = profilesById(profiles);
   const pending = profiles.filter(p => ["skipper","provider"].includes(p.role) && !p.verified);
   const activeMissions = missions.filter(m => !["cancelled","completed"].includes(m.status));
@@ -1646,7 +1728,7 @@ async function renderAdminPanel(panel){
     bindAdminMissionActions("payments");
   }else if(panel === "payouts"){
     const rows = missions.filter(m => ["payout_ready","transferred"].includes(m.payment_status));
-    main.innerHTML = `<div class="note-box">${esc(t("dash.payoutsNote"))}</div>` + (rows.length ? rows.map(m=>adminMissionCard(m, byId, true)).join("") : `<div class="empty-note">${esc(t("dash.noMissions"))}</div>`);
+    main.innerHTML = `<div class="note-box">${esc(t("dash.payoutsNote"))}</div>` + (rows.length ? rows.map(m=>adminMissionCard(m, byId, true, payoutsById)).join("") : `<div class="empty-note">${esc(t("dash.noMissions"))}</div>`);
     bindAdminMissionActions("payouts");
   }else if(panel === "refunds"){
     const rows = missions.filter(m => ["refund_requested","refunded","refund_rejected"].includes(m.payment_status));
@@ -1697,12 +1779,13 @@ async function renderAdminPanel(panel){
     bindAdminBoatActions();
   }
 }
-function adminMissionCard(m, byId, showFinance){
+function adminMissionCard(m, byId, showFinance, payoutsById){
   const client = byId[String(m.client_id)];
   const pro = byId[String(m.skipper_id)];
   const total = Number(m.amount_cents||0) + Number(m.urgent_fee_cents||0);
   const fee = Number(m.platform_fee_cents||0);
   const net = Math.max(0, total - fee);
+  const payout = payoutsById ? payoutsById[String(m.skipper_id)] : null;
   return `<article class="request-card">
     <div class="request-top">
       <div>
@@ -1714,6 +1797,7 @@ function adminMissionCard(m, byId, showFinance){
     </div>
     ${showFinance ? `<div class="muted" style="margin-top:6px">${esc(t("dash.total"))}: <strong>${money(total)}</strong> · ${esc(t("dash.commission"))}: ${money(fee)} · ${esc(t("dash.netPro"))}: ${money(net)}</div>` : `<div class="muted" style="margin-top:6px">${total ? money(total) : t("booking.priceTbd")}</div>`}
     <div class="muted">${esc(t("dash.paymentStatus"))}: ${esc(t("paymentStatus."+(m.payment_status||"unpaid")))}</div>
+    ${payoutsById ? (payout?.iban ? `<div class="note-box">${esc(t("dash.ibanLabel"))}: <strong>${esc(payout.iban)}</strong>${payout.bic?` · ${esc(t("dash.bicLabel"))}: ${esc(payout.bic)}`:""}${payout.bank_holder_name?` · ${esc(payout.bank_holder_name)}`:""}</div>` : `<div class="note-box">${esc(t("dash.noIban"))}</div>`) : ""}
     <div class="request-actions">
       <select data-status-select="${m.id}">
         ${["pending","quoted","accepted","rejected","in_progress","awaiting_validation","completed","cancelled"].map(s=>`<option value="${s}" ${s===m.status?"selected":""}>${esc(t("status."+s))}</option>`).join("")}
@@ -1741,8 +1825,13 @@ function bindAdminMissionActions(panel){
   }));
   document.querySelectorAll("[data-approve-refund]").forEach(btn=>btn.addEventListener("click", async ()=>{
     if(!confirm(t("dash.approveRefund")+" ?")) return;
-    const {error} = await db.from("missions").update({payment_status:"refunded"}).eq("id", btn.dataset.approveRefund);
-    if(error) alert(error.message); else renderAdminPanel(panel);
+    const {data:{session}} = await db.auth.getSession();
+    const res = await fetch(SUPABASE_URL + "/functions/v1/refund-payment", {
+      method: "POST",
+      headers: {"Content-Type":"application/json", "Authorization":"Bearer "+session.access_token, "apikey": SUPABASE_KEY},
+      body: JSON.stringify({missionId: btn.dataset.approveRefund})
+    });
+    if(res.ok) renderAdminPanel(panel); else { const j = await res.json(); alert(j.error || "Erreur"); }
   }));
   document.querySelectorAll("[data-reject-refund]").forEach(btn=>btn.addEventListener("click", async ()=>{
     const {error} = await db.from("missions").update({payment_status:"refund_rejected"}).eq("id", btn.dataset.rejectRefund);
@@ -1805,7 +1894,7 @@ function requestCard(m, context){
     actions += `<button class="small-btn danger" data-reject-quote="${m.id}">${esc(t("dash.refuseQuote"))}</button>`;
   }
   if(context === "client" && m.status === "accepted" && m.payment_status !== "paid"){
-    actions += `<button class="small-btn fill" data-note="stripe">${esc(t("dash.pay"))}</button>`;
+    actions += `<button class="small-btn fill" data-pay-mission="${m.id}" data-pay-amount="${total}">${esc(t("dash.pay"))}</button>`;
   }
   if(context === "pro" && m.status === "in_progress"){
     actions += `<button class="small-btn fill" data-complete="${m.id}">${esc(t("dash.markDone"))}</button>`;
@@ -1868,8 +1957,8 @@ function bindRequestActions(){
     const {error} = await db.from("missions").update({status:"cancelled"}).eq("id", btn.dataset.cancel);
     if(error) alert(error.message); else openDashboard();
   }));
-  document.querySelectorAll("[data-note='stripe']").forEach(btn=>btn.addEventListener("click", ()=>{
-    alert("Le paiement Stripe réel nécessite la fonction Supabase Edge déployée côté serveur.");
+  document.querySelectorAll("[data-pay-mission]").forEach(btn=>btn.addEventListener("click", ()=>{
+    openPaymentFor(btn.dataset.payMission, Number(btn.dataset.payAmount));
   }));
   document.querySelectorAll("[data-request-refund]").forEach(btn=>btn.addEventListener("click", async ()=>{
     if(!confirm(t("dash.requestRefund")+" ?")) return;
@@ -1998,13 +2087,19 @@ async function openConversationThread(clientId, skipperId){
   }
 }
 
-function profileForm(profile){
+function profileForm(profile, payout){
   const isPro = ["skipper","provider"].includes(profile?.role);
   return `<div class="field"><label>${esc(t("account.nameLabel"))}</label><input id="profileName" value="${esc(profile?.full_name||"")}"></div>
     <div class="field"><label>${esc(t("account.portLabel"))}</label><input id="profilePort" value="${esc(profile?.home_port||"")}"></div>
     <div class="field"><label>${esc(t("account.phoneLabel"))}</label><input id="profilePhone" value="${esc(profile?.phone||"")}"></div>
     ${isPro ? `<div class="field"><label>${esc(t("card.priceFrom"))} (€)</label><input id="profilePriceFrom" type="number" min="0" step="1" value="${profile?.price_from_cents ? Number(profile.price_from_cents)/100 : ""}" placeholder="Ex. 200"></div>` : ""}
     <div class="field"><label>${esc(t("boatDetail.description"))}</label><textarea id="profileBio" rows="4">${esc(profile?.bio||"")}</textarea></div>
+    ${isPro ? `
+    <div class="note-box">${esc(t("dash.payoutDetailsNote"))}</div>
+    <div class="field"><label>${esc(t("dash.holderLabel"))}</label><input id="profileHolder" value="${esc(payout?.bank_holder_name||"")}"></div>
+    <div class="field"><label>${esc(t("dash.ibanLabel"))}</label><input id="profileIban" value="${esc(payout?.iban||"")}" placeholder="FR76 XXXX XXXX XXXX XXXX XXXX XXX"></div>
+    <div class="field"><label>${esc(t("dash.bicLabel"))}</label><input id="profileBic" value="${esc(payout?.bic||"")}" placeholder="XXXXXXXX"></div>
+    ` : ""}
     <button class="primary wide" id="saveProfileBtn">${esc(t("dash.saveSettings"))}</button>
     <p class="ok-text" id="profileMsg"></p>`;
 }
@@ -2024,6 +2119,17 @@ function bindProfileForm(){
     const {error} = await db.from("profiles").update(patch).eq("id", currentUser.id);
     const msg = document.querySelector("#profileMsg");
     if(error){ msg.style.color = "#b42318"; msg.textContent = error.message; return; }
+    const ibanInput = document.querySelector("#profileIban");
+    if(ibanInput){
+      const {error: payoutError} = await db.from("payout_details").upsert({
+        profile_id: currentUser.id,
+        bank_holder_name: document.querySelector("#profileHolder").value.trim(),
+        iban: ibanInput.value.trim(),
+        bic: document.querySelector("#profileBic").value.trim(),
+        updated_at: new Date().toISOString()
+      });
+      if(payoutError){ msg.style.color = "#b42318"; msg.textContent = payoutError.message; return; }
+    }
     await loadProfile();
     msg.style.color = "#08794e";
     msg.textContent = t("dash.saveSettings");
