@@ -172,6 +172,17 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
 .provider-service span.desc{font-size:13px;color:var(--muted);line-height:1.4}
 .provider-icon{font-size:24px}
 .result-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}
+.boat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:18px;margin-top:16px}
+.boat-card{background:#fff;border:1px solid var(--line);border-radius:20px;overflow:hidden;box-shadow:0 8px 24px rgba(16,43,63,.07);cursor:pointer;transition:.2s}
+.boat-card:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.boat-card-photo{height:170px;background:linear-gradient(135deg,#173b51,#3f9c9a);background-size:cover;background-position:center;position:relative}
+.boat-card-photo .no-photo{position:absolute;inset:0;display:grid;place-items:center;font-size:34px;color:rgba(255,255,255,.85)}
+.boat-card-price{position:absolute;top:12px;right:12px;background:#fff;color:var(--navy);font-weight:900;padding:6px 12px;border-radius:999px;font-size:13px;box-shadow:0 4px 12px rgba(0,0,0,.18)}
+.boat-card-body{padding:16px}
+.boat-card-body h3{margin:0 0 4px;font-size:17px;letter-spacing:-.01em}
+.boat-card-port{display:flex;align-items:center;gap:5px;color:var(--muted);font-size:13px;margin-bottom:10px}
+.boat-card-specs{display:flex;gap:8px;flex-wrap:wrap}
+.boat-card-specs span{background:var(--mist);color:var(--blue);font-size:12px;font-weight:750;padding:5px 9px;border-radius:8px}
 .result-card{display:flex;gap:12px;border:1px solid var(--line);border-radius:16px;padding:14px;background:#fff}
 .result-photo{width:70px;height:70px;border-radius:13px;object-fit:cover;background:var(--mist);display:grid;place-items:center;font-size:26px;flex:0 0 70px}
 .result-card h3{margin:0 0 4px;font-size:16px}
@@ -422,7 +433,7 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
       <div><small data-i18n="boatFinder.eyebrow">LOCATION DE BATEAUX</small><h2 data-i18n="boatFinder.title">Bateaux disponibles</h2></div>
       <button class="close" data-close="boatFinderModal" type="button">×</button>
     </div>
-    <div id="boatFinderResults" class="result-list"></div>
+    <div id="boatFinderResults" class="boat-grid"></div>
   </div>
 </div>
 
@@ -488,12 +499,12 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
         <div class="summary-line"><span data-i18n="booking.port">Port</span><strong id="bookingSummaryPort">—</strong></div>
         <div class="summary-line"><span data-i18n="booking.price">Tarif</span><strong id="bookingSummaryPrice" data-i18n="booking.priceTbd">À définir avec le professionnel</strong></div>
       </div>
-      <div class="field">
+      <div class="field" id="bookingBoatField">
         <label data-i18n="booking.boatLabel">TYPE DE BATEAU</label>
         <input id="bookingBoat" data-i18n-placeholder="booking.boatPlaceholder" placeholder="Ex. Cap Camarat 9.0">
       </div>
       <div class="field">
-        <label data-i18n="booking.detailsLabel">DÉCRIVEZ VOTRE BESOIN</label>
+        <label id="bookingDetailsLabel" data-i18n="booking.detailsLabel">DÉCRIVEZ VOTRE BESOIN</label>
         <textarea id="bookingDetails" rows="3" data-i18n-placeholder="booking.detailsPlaceholder" placeholder="Nettoyage, sortie, convoyage, nombre de personnes…"></textarea>
       </div>
       <p class="muted" data-i18n="booking.privacyNote">Pour votre sécurité, les coordonnées personnelles (téléphone, email) ne sont jamais partagées directement entre client et professionnel.</p>
@@ -613,7 +624,7 @@ const I18N = {
     "booking.eyebrowRequest":"DEMANDE DE RÉSERVATION","booking.defaultTarget":"Professionnel sélectionné",
     "booking.port":"Port","booking.price":"Tarif","booking.priceTbd":"À définir avec le professionnel",
     "booking.nameLabel":"VOTRE NOM","booking.phoneLabel":"TÉLÉPHONE","booking.boatLabel":"TYPE DE BATEAU","booking.boatPlaceholder":"Ex. Cap Camarat 9.0",
-    "booking.detailsLabel":"DÉCRIVEZ VOTRE BESOIN","booking.detailsPlaceholder":"Nettoyage, sortie, convoyage, nombre de personnes…",
+    "booking.detailsLabel":"DÉCRIVEZ VOTRE BESOIN","booking.detailsPlaceholder":"Nettoyage, sortie, convoyage, nombre de personnes…","booking.rentalDetailsLabel":"PRÉCISIONS (OPTIONNEL)","booking.rentalDetailsPlaceholder":"Nombre de passagers, horaire souhaité, demandes particulières…",
     "booking.paymentNote":"Le professionnel vous propose un prix. Vous ne payez qu'après avoir accepté son devis.",
     "booking.submit":"Envoyer la demande","booking.successTitle":"Demande envoyée",
     "booking.successText":"Le professionnel peut maintenant consulter votre demande et vous proposer un prix.","booking.successCta":"Voir ma demande",
@@ -724,7 +735,7 @@ const I18N = {
     "booking.eyebrowRequest":"BOOKING REQUEST","booking.defaultTarget":"Selected professional",
     "booking.port":"Port","booking.price":"Price","booking.priceTbd":"To be agreed with the professional",
     "booking.nameLabel":"YOUR NAME","booking.phoneLabel":"PHONE","booking.boatLabel":"BOAT TYPE","booking.boatPlaceholder":"E.g. Cap Camarat 9.0",
-    "booking.detailsLabel":"DESCRIBE YOUR NEED","booking.detailsPlaceholder":"Cleaning, trip, delivery, number of people…",
+    "booking.detailsLabel":"DESCRIBE YOUR NEED","booking.detailsPlaceholder":"Cleaning, trip, delivery, number of people…","booking.rentalDetailsLabel":"NOTES (OPTIONAL)","booking.rentalDetailsPlaceholder":"Number of passengers, preferred time, special requests…",
     "booking.paymentNote":"The professional will propose a price. You only pay after accepting the quote.",
     "booking.submit":"Send request","booking.successTitle":"Request sent",
     "booking.successText":"The professional can now review your request and propose a price.","booking.successCta":"View my request",
@@ -834,7 +845,7 @@ const I18N = {
     "booking.eyebrowRequest":"SOLICITUD DE RESERVA","booking.defaultTarget":"Profesional seleccionado",
     "booking.port":"Puerto","booking.price":"Precio","booking.priceTbd":"A definir con el profesional",
     "booking.nameLabel":"TU NOMBRE","booking.phoneLabel":"TELÉFONO","booking.boatLabel":"TIPO DE BARCO","booking.boatPlaceholder":"Ej. Cap Camarat 9.0",
-    "booking.detailsLabel":"DESCRIBE TU NECESIDAD","booking.detailsPlaceholder":"Limpieza, salida, traslado, número de personas…",
+    "booking.detailsLabel":"DESCRIBE TU NECESIDAD","booking.detailsPlaceholder":"Limpieza, salida, traslado, número de personas…","booking.rentalDetailsLabel":"NOTAS (OPCIONAL)","booking.rentalDetailsPlaceholder":"Número de pasajeros, horario preferido, peticiones especiales…",
     "booking.paymentNote":"El profesional te propondrá un precio. Solo pagas después de aceptar el presupuesto.",
     "booking.submit":"Enviar solicitud","booking.successTitle":"Solicitud enviada",
     "booking.successText":"El profesional ya puede consultar tu solicitud y proponer un precio.","booking.successCta":"Ver mi solicitud",
@@ -1133,24 +1144,31 @@ function renderBoatResults(){
   const box = document.querySelector("#boatFinderResults");
   const portFilter = portInput.value.trim().toLowerCase();
   const list = portFilter ? boatCache.filter(b=>(b.home_port||"").toLowerCase().includes(portFilter)) : boatCache;
-  box.innerHTML = list.length ? list.map(b=>`
-    <article class="result-card" style="cursor:pointer" onclick="openBoatDetail('${b.id}')">
-      ${b.photo_url ? `<img class="result-photo" src="${esc(b.photo_url)}" alt="${esc(b.name)}">` : `<div class="result-photo">🚤</div>`}
-      <div>
-        <h3>${esc(b.name||"—")}</h3>
-        <p><strong>${esc(b.home_port||"—")}</strong>${b.length_m?` · ${esc(b.length_m)} m`:""}</p>
-        <p>${esc(b.description||b.model||"")}</p>
+  box.innerHTML = list.length ? list.map(b=>boatCardHtml(b)).join("") : `<div class="empty-note">${esc(t("boatFinder.empty"))}</div>`;
+}
+function boatCardHtml(b){
+  const day = Number(b.price_per_day||b.daily_price||b.price||0);
+  const priceLabel = day ? `${esc(t("card.priceFrom"))} ${money(day*100)}` : esc(t("boatDetail.onRequest"));
+  const photoStyle = b.photo_url ? `style="background-image:url('${esc(b.photo_url)}')"` : "";
+  return `<article class="boat-card" onclick="openBoatDetail('${b.id}')">
+    <div class="boat-card-photo" ${photoStyle}>
+      ${b.photo_url ? "" : `<div class="no-photo">⛵</div>`}
+      <span class="boat-card-price">${priceLabel}</span>
+    </div>
+    <div class="boat-card-body">
+      <h3>${esc(b.name||"Bateau")}</h3>
+      <div class="boat-card-port">📍 ${esc(b.home_port||"—")}</div>
+      <div class="boat-card-specs">
+        ${b.model ? `<span>${esc(b.model)}</span>` : ""}
+        ${b.length_m ? `<span>${esc(b.length_m)} m</span>` : ""}
       </div>
-    </article>`).join("") : `<div class="empty-note">${esc(t("boatFinder.empty"))}</div>`;
+    </div>
+  </article>`;
 }
 function renderHomeBoatStrip(){
   const box = document.querySelector("#homeBoatStrip");
   const list = boatCache.slice(0,4);
-  box.innerHTML = list.length ? list.map(b=>`
-    <div class="mini-boat" onclick="openBoatDetail('${b.id}')">
-      <img src="${b.photo_url?esc(b.photo_url):""}" alt="${esc(b.name||"")}">
-      <div><strong>${esc(b.name||"Bateau")}</strong><small>${esc(b.home_port||"—")}</small></div>
-    </div>`).join("") : `<div class="empty-note">${esc(t("rental.empty"))}</div>`;
+  box.innerHTML = list.length ? `<div class="boat-grid">${list.map(b=>boatCardHtml(b)).join("")}</div>` : `<div class="empty-note">${esc(t("rental.empty"))}</div>`;
 }
 async function preloadHomeBoats(){
   const {data} = await db.from("boats").select("*").order("created_at",{ascending:false}).limit(6);
@@ -1163,18 +1181,33 @@ window.openBoatDetail = async function(id){
   closeModal("boatFinderModal");
   const content = document.querySelector("#boatDetailContent");
   const half = Number(boat.price_half_day||0), day = Number(boat.price_per_day||boat.daily_price||boat.price||0);
+  const photoStyle = boat.photo_url ? `background-image:url('${esc(boat.photo_url)}')` : "background:linear-gradient(135deg,#173b51,#3f9c9a)";
   content.innerHTML = `
-    <div class="dialog-top"><div><small>${esc(t("boatFinder.eyebrow"))}</small><h2>${esc(boat.name||"Bateau")}</h2></div><button class="close" type="button" onclick="closeModal('boatDetailModal')">×</button></div>
-    ${boat.photo_url?`<img src="${esc(boat.photo_url)}" alt="${esc(boat.name)}" style="width:100%;height:220px;object-fit:cover;border-radius:16px;margin-top:14px">`:""}
-    <div class="summary">
-      <div class="summary-line"><span>${esc(t("boatDetail.model"))}</span><strong>${esc(boat.model||"—")}</strong></div>
-      <div class="summary-line"><span>${esc(t("boatDetail.port"))}</span><strong>${esc(boat.home_port||"—")}</strong></div>
-      <div class="summary-line"><span>${esc(t("boatDetail.length"))}</span><strong>${boat.length_m?esc(boat.length_m)+" m":"—"}</strong></div>
-      <div class="summary-line"><span>${esc(t("boatDetail.halfDay"))}</span><strong>${half?money(half*100):esc(t("boatDetail.onRequest"))}</strong></div>
-      <div class="summary-line"><span>${esc(t("boatDetail.fullDay"))}</span><strong>${day?money(day*100):esc(t("boatDetail.onRequest"))}</strong></div>
+    <div style="margin:-26px -26px 0;height:230px;${photoStyle};background-size:cover;background-position:center;border-radius:22px 22px 0 0;position:relative">
+      ${boat.photo_url ? "" : `<div style="position:absolute;inset:0;display:grid;place-items:center;font-size:42px;color:rgba(255,255,255,.85)">⛵</div>`}
+      <button class="close" type="button" onclick="closeModal('boatDetailModal')" style="position:absolute;top:14px;right:14px;background:rgba(255,255,255,.92)">×</button>
     </div>
-    <p class="muted">${esc(boat.description||t("boatDetail.noDescription"))}</p>
-    <button class="primary wide" onclick="closeModal('boatDetailModal');openBookingFor(null,'${esc(String(boat.name||"Bateau").replace(/'/g,"\\'"))}','${esc(String(boat.home_port||"").replace(/'/g,"\\'"))}','boat_rental')">${esc(t("boatDetail.request"))}</button>`;
+    <div style="padding-top:18px">
+      <small style="color:var(--muted);font-weight:800;letter-spacing:.05em;text-transform:uppercase;font-size:11px">${esc(t("boatFinder.eyebrow"))}</small>
+      <h2 style="margin:4px 0 6px">${esc(boat.name||"Bateau")}</h2>
+      <div class="boat-card-port" style="margin-bottom:12px">📍 ${esc(boat.home_port||"—")}</div>
+      <div class="boat-card-specs" style="margin-bottom:18px">
+        ${boat.model ? `<span>${esc(boat.model)}</span>` : ""}
+        ${boat.length_m ? `<span>${esc(boat.length_m)} m</span>` : ""}
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px">
+        <div style="border:1px solid var(--line);border-radius:14px;padding:12px;text-align:center">
+          <div style="color:var(--muted);font-size:11px;font-weight:800;text-transform:uppercase">${esc(t("boatDetail.halfDay"))}</div>
+          <div style="font-size:18px;font-weight:900;margin-top:4px">${half?money(half*100):esc(t("boatDetail.onRequest"))}</div>
+        </div>
+        <div style="border:1px solid var(--line);border-radius:14px;padding:12px;text-align:center">
+          <div style="color:var(--muted);font-size:11px;font-weight:800;text-transform:uppercase">${esc(t("boatDetail.fullDay"))}</div>
+          <div style="font-size:18px;font-weight:900;margin-top:4px">${day?money(day*100):esc(t("boatDetail.onRequest"))}</div>
+        </div>
+      </div>
+      <p class="muted">${esc(boat.description||t("boatDetail.noDescription"))}</p>
+      <button class="primary wide" onclick="closeModal('boatDetailModal');openBookingFor(null,'${esc(String(boat.name||"Bateau").replace(/'/g,"\\'"))}','${esc(String(boat.home_port||"").replace(/'/g,"\\'"))}','boat_rental')">${esc(t("boatDetail.request"))}</button>
+    </div>`;
   openModal("boatDetailModal");
 };
 window.closeModal = closeModal;
@@ -1311,16 +1344,25 @@ window.openBookingFor = function(targetId, name, homePort, activity){
   document.querySelector("#bookingForm").style.display = "block";
   document.querySelector("#bookingSuccess").style.display = "none";
   document.querySelector("#bookingMessage").textContent = "";
+  const isBoatRental = activity === "boat_rental";
+  document.querySelector("#bookingBoatField").style.display = isBoatRental ? "none" : "block";
+  const detailsLabel = document.querySelector("#bookingDetailsLabel");
+  const detailsInput = document.querySelector("#bookingDetails");
+  detailsLabel.textContent = isBoatRental ? t("booking.rentalDetailsLabel") : t("booking.detailsLabel");
+  detailsInput.placeholder = isBoatRental ? t("booking.rentalDetailsPlaceholder") : t("booking.detailsPlaceholder");
+  detailsInput.value = "";
+  document.querySelector("#bookingBoat").value = "";
   openModal("bookingModal");
 };
 document.querySelector("#bookingSubmit").addEventListener("click", async ()=>{
   const msg = document.querySelector("#bookingMessage");
   if(!currentUser){ closeModal("bookingModal"); openAccountModal("login"); msg.textContent = t("booking.needLogin"); return; }
   if(!currentProfile || (currentProfile.role !== "client" && currentProfile.role !== "admin")){ msg.textContent = t("booking.needClient"); return; }
-  const boatType = document.querySelector("#bookingBoat").value.trim();
+  const isBoatRental = bookingContext.activity === "boat_rental";
+  const boatType = isBoatRental ? (bookingContext.name || "") : document.querySelector("#bookingBoat").value.trim();
   const details = sanitizeContactInfo(document.querySelector("#bookingDetails").value.trim());
-  if(!boatType){ msg.textContent = t("booking.needBoat"); return; }
-  if(!details){ msg.textContent = t("booking.needDetails"); return; }
+  if(!isBoatRental && !boatType){ msg.textContent = t("booking.needBoat"); return; }
+  if(!isBoatRental && !details){ msg.textContent = t("booking.needDetails"); return; }
   msg.style.color = "";
   msg.textContent = t("booking.sending");
 
