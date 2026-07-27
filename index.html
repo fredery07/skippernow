@@ -1483,7 +1483,7 @@ document.querySelector("#bookingSubmit").addEventListener("click", async ()=>{
 document.querySelector("#bookingSuccessDone").addEventListener("click", ()=>{ closeModal("bookingModal"); openDashboard(); });
 
 window.openPaymentFor = async function(missionId, amountCents){
-  currentPaymentMissionId = missionId;
+  currentPaymentMissionId = missionId;closeModal("dashboardModal");
   document.querySelector("#paymentAmount").textContent = money(amountCents);
   document.querySelector("#paymentMessage").textContent = "";
   document.querySelector("#paymentElementWrap").innerHTML = `<div class="empty-note">${esc(t("dash.loading"))}</div>`;
