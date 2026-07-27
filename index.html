@@ -509,6 +509,11 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
         <label id="bookingDetailsLabel" data-i18n="booking.detailsLabel">DÉCRIVEZ VOTRE BESOIN</label>
         <textarea id="bookingDetails" rows="3" data-i18n-placeholder="booking.detailsPlaceholder" placeholder="Nettoyage, sortie, convoyage, nombre de personnes…"></textarea>
       </div>
+      <div class="field">
+        <label data-i18n="booking.photosLabel">PHOTOS (OPTIONNEL)</label>
+        <input id="bookingPhotos" type="file" accept="image/*" multiple>
+        <div id="bookingPhotosPreview" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"></div>
+      </div>
       <p class="muted" data-i18n="booking.privacyNote">Pour votre sécurité, les coordonnées personnelles (téléphone, email) ne sont jamais partagées directement entre client et professionnel.</p>
       <p class="muted" data-i18n="booking.paymentNote">Le professionnel vous propose un prix. Vous ne payez qu'après avoir accepté son devis.</p>
       <p class="error-text" id="bookingMessage"></p>
@@ -637,7 +642,7 @@ const I18N = {
     "account.roleOwner":"Propriétaire","account.roleOwnerDesc":"Mettre mon bateau en location",
     "account.nameLabel":"PRÉNOM ET NOM","account.namePlaceholder":"Votre nom","account.phoneLabel":"TÉLÉPHONE",
     "account.emailLabel":"EMAIL","account.passwordLabel":"MOT DE PASSE","account.passwordPlaceholder":"8 caractères minimum",
-    "account.portLabel":"PORT PRINCIPAL — VILLE, PAYS","account.portPlaceholder":"Ex. Port Vauban, Antibes, France",
+    "account.portLabel":"PORT PRINCIPAL — VILLE, PAYS","account.portPlaceholder":"Ex. Port Vauban, Antibes, France","account.zoneLabel":"VILLE / ZONE D'INTERVENTION","account.zonePlaceholder":"Ex. Antibes, Cannes, Golfe-Juan…",
     "account.activityLabel":"ACTIVITÉ PROPOSÉE","account.createSubmit":"Créer mon compte","account.loginSubmit":"Se connecter","account.forgot":"Mot de passe oublié ?",
     "account.errMissing":"Complétez les champs et utilisez au moins 8 caractères pour le mot de passe.",
     "account.errName":"Indiquez votre nom.","account.errPort":"Indiquez votre port principal.",
@@ -649,7 +654,7 @@ const I18N = {
     "booking.eyebrowRequest":"DEMANDE DE RÉSERVATION","booking.defaultTarget":"Professionnel sélectionné",
     "booking.port":"Port","booking.price":"Tarif","booking.priceTbd":"À définir avec le professionnel",
     "booking.nameLabel":"VOTRE NOM","booking.phoneLabel":"TÉLÉPHONE","booking.boatLabel":"TYPE DE BATEAU","booking.boatPlaceholder":"Ex. Cap Camarat 9.0",
-    "booking.detailsLabel":"DÉCRIVEZ VOTRE BESOIN","booking.detailsPlaceholder":"Nettoyage, sortie, convoyage, nombre de personnes…","booking.rentalDetailsLabel":"PRÉCISIONS (OPTIONNEL)","booking.rentalDetailsPlaceholder":"Nombre de passagers, horaire souhaité, demandes particulières…",
+    "booking.detailsLabel":"DÉCRIVEZ VOTRE BESOIN","booking.detailsPlaceholder":"Nettoyage, sortie, convoyage, nombre de personnes…","booking.rentalDetailsLabel":"PRÉCISIONS (OPTIONNEL)","booking.rentalDetailsPlaceholder":"Nombre de passagers, horaire souhaité, demandes particulières…","booking.photosLabel":"PHOTOS (OPTIONNEL)",
     "booking.paymentNote":"Le professionnel vous propose un prix. Vous ne payez qu'après avoir accepté son devis.",
     "booking.submit":"Envoyer la demande","booking.successTitle":"Demande envoyée",
     "booking.successText":"Le professionnel peut maintenant consulter votre demande et vous proposer un prix.","booking.successCta":"Voir ma demande",
@@ -753,7 +758,7 @@ const I18N = {
     "account.roleOwner":"Owner","account.roleOwnerDesc":"List my boat for rent",
     "account.nameLabel":"FULL NAME","account.namePlaceholder":"Your name","account.phoneLabel":"PHONE",
     "account.emailLabel":"EMAIL","account.passwordLabel":"PASSWORD","account.passwordPlaceholder":"At least 8 characters",
-    "account.portLabel":"HOME PORT — CITY, COUNTRY","account.portPlaceholder":"E.g. Port Vauban, Antibes, France",
+    "account.portLabel":"HOME PORT — CITY, COUNTRY","account.portPlaceholder":"E.g. Port Vauban, Antibes, France","account.zoneLabel":"CITY / SERVICE AREA","account.zonePlaceholder":"E.g. Antibes, Cannes, Golfe-Juan…",
     "account.activityLabel":"SERVICE OFFERED","account.createSubmit":"Create my account","account.loginSubmit":"Log in","account.forgot":"Forgot password?",
     "account.errMissing":"Fill in all fields and use at least 8 characters for the password.",
     "account.errName":"Please enter your name.","account.errPort":"Please enter your home port.",
@@ -765,7 +770,7 @@ const I18N = {
     "booking.eyebrowRequest":"BOOKING REQUEST","booking.defaultTarget":"Selected professional",
     "booking.port":"Port","booking.price":"Price","booking.priceTbd":"To be agreed with the professional",
     "booking.nameLabel":"YOUR NAME","booking.phoneLabel":"PHONE","booking.boatLabel":"BOAT TYPE","booking.boatPlaceholder":"E.g. Cap Camarat 9.0",
-    "booking.detailsLabel":"DESCRIBE YOUR NEED","booking.detailsPlaceholder":"Cleaning, trip, delivery, number of people…","booking.rentalDetailsLabel":"NOTES (OPTIONAL)","booking.rentalDetailsPlaceholder":"Number of passengers, preferred time, special requests…",
+    "booking.detailsLabel":"DESCRIBE YOUR NEED","booking.detailsPlaceholder":"Cleaning, trip, delivery, number of people…","booking.rentalDetailsLabel":"NOTES (OPTIONAL)","booking.rentalDetailsPlaceholder":"Number of passengers, preferred time, special requests…","booking.photosLabel":"PHOTOS (OPTIONAL)",
     "booking.paymentNote":"The professional will propose a price. You only pay after accepting the quote.",
     "booking.submit":"Send request","booking.successTitle":"Request sent",
     "booking.successText":"The professional can now review your request and propose a price.","booking.successCta":"View my request",
@@ -868,7 +873,7 @@ const I18N = {
     "account.roleOwner":"Propietario","account.roleOwnerDesc":"Poner mi barco en alquiler",
     "account.nameLabel":"NOMBRE COMPLETO","account.namePlaceholder":"Tu nombre","account.phoneLabel":"TELÉFONO",
     "account.emailLabel":"EMAIL","account.passwordLabel":"CONTRASEÑA","account.passwordPlaceholder":"Mínimo 8 caracteres",
-    "account.portLabel":"PUERTO BASE — CIUDAD, PAÍS","account.portPlaceholder":"Ej. Port Vauban, Antibes, Francia",
+    "account.portLabel":"PUERTO BASE — CIUDAD, PAÍS","account.portPlaceholder":"Ej. Port Vauban, Antibes, Francia","account.zoneLabel":"CIUDAD / ZONA DE ACTUACIÓN","account.zonePlaceholder":"Ej. Antibes, Cannes, Golfe-Juan…",
     "account.activityLabel":"SERVICIO OFRECIDO","account.createSubmit":"Crear mi cuenta","account.loginSubmit":"Iniciar sesión","account.forgot":"¿Olvidaste tu contraseña?",
     "account.errMissing":"Completa los campos y usa al menos 8 caracteres para la contraseña.",
     "account.errName":"Indica tu nombre.","account.errPort":"Indica tu puerto principal.",
@@ -880,7 +885,7 @@ const I18N = {
     "booking.eyebrowRequest":"SOLICITUD DE RESERVA","booking.defaultTarget":"Profesional seleccionado",
     "booking.port":"Puerto","booking.price":"Precio","booking.priceTbd":"A definir con el profesional",
     "booking.nameLabel":"TU NOMBRE","booking.phoneLabel":"TELÉFONO","booking.boatLabel":"TIPO DE BARCO","booking.boatPlaceholder":"Ej. Cap Camarat 9.0",
-    "booking.detailsLabel":"DESCRIBE TU NECESIDAD","booking.detailsPlaceholder":"Limpieza, salida, traslado, número de personas…","booking.rentalDetailsLabel":"NOTAS (OPCIONAL)","booking.rentalDetailsPlaceholder":"Número de pasajeros, horario preferido, peticiones especiales…",
+    "booking.detailsLabel":"DESCRIBE TU NECESIDAD","booking.detailsPlaceholder":"Limpieza, salida, traslado, número de personas…","booking.rentalDetailsLabel":"NOTAS (OPCIONAL)","booking.rentalDetailsPlaceholder":"Número de pasajeros, horario preferido, peticiones especiales…","booking.photosLabel":"FOTOS (OPCIONAL)",
     "booking.paymentNote":"El profesional te propondrá un precio. Solo pagas después de aceptar el presupuesto.",
     "booking.submit":"Enviar solicitud","booking.successTitle":"Solicitud enviada",
     "booking.successText":"El profesional ya puede consultar tu solicitud y proponer un precio.","booking.successCta":"Ver mi solicitud",
@@ -1293,6 +1298,15 @@ function refreshRoleFields(){
   document.querySelector("#portField").style.display = needsPort ? "block" : "none";
   document.querySelector("#activityField").style.display = (authMode==="create" && selectedRole==="provider") ? "block" : "none";
   if(authMode==="create" && selectedRole==="skipper") document.querySelector("#accountActivity").value = "skipper";
+  const portLabel = document.querySelector("#portField label");
+  const portInputField = document.querySelector("#accountPort");
+  if(selectedRole==="provider"){
+    portLabel.textContent = t("account.zoneLabel");
+    portInputField.placeholder = t("account.zonePlaceholder");
+  }else{
+    portLabel.textContent = t("account.portLabel");
+    portInputField.placeholder = t("account.portPlaceholder");
+  }
 }
 document.querySelector("#authModeCreate").addEventListener("click", ()=>setAuthMode("create"));
 document.querySelector("#authModeLogin").addEventListener("click", ()=>setAuthMode("login"));
@@ -1408,8 +1422,18 @@ window.openBookingFor = function(targetId, name, homePort, activity){
   detailsInput.placeholder = isBoatRental ? t("booking.rentalDetailsPlaceholder") : t("booking.detailsPlaceholder");
   detailsInput.value = "";
   document.querySelector("#bookingBoat").value = "";
+  document.querySelector("#bookingPhotos").value = "";
+  document.querySelector("#bookingPhotosPreview").innerHTML = "";
   openModal("bookingModal");
 };
+document.querySelector("#bookingPhotos").addEventListener("change", (e)=>{
+  const preview = document.querySelector("#bookingPhotosPreview");
+  preview.innerHTML = "";
+  [...e.target.files].slice(0,4).forEach(file=>{
+    const url = URL.createObjectURL(file);
+    preview.innerHTML += `<img src="${url}" style="width:64px;height:64px;object-fit:cover;border-radius:10px">`;
+  });
+});
 document.querySelector("#bookingSubmit").addEventListener("click", async ()=>{
   const msg = document.querySelector("#bookingMessage");
   if(!currentUser){ closeModal("bookingModal"); openAccountModal("login"); msg.textContent = t("booking.needLogin"); return; }
@@ -1427,12 +1451,23 @@ document.querySelector("#bookingSubmit").addEventListener("click", async ()=>{
   const hours = durationValue === "half" ? 4 : durationValue === "multi" ? 24 : 8;
   const end = new Date(start.getTime() + hours*3600000);
 
+  const photoFiles = [...document.querySelector("#bookingPhotos").files].slice(0,4);
+  const photoUrls = [];
+  for(const file of photoFiles){
+    const path = `${currentUser.id}/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.\-_]/g,"_")}`;
+    const {error: uploadError} = await db.storage.from("mission-photos").upload(path, file);
+    if(uploadError){ msg.style.color = "#b42318"; msg.textContent = uploadError.message; return; }
+    const {data: pub} = db.storage.from("mission-photos").getPublicUrl(path);
+    photoUrls.push(pub.publicUrl);
+  }
+
   const {error} = await db.from("missions").insert({
     client_id: currentUser.id,
     skipper_id: bookingContext.targetId || null,
     port: bookingContext.homePort || portInput.value || "",
     boat_type: boatType,
     description: details,
+    photo_urls: photoUrls.length ? photoUrls : null,
     starts_at: start.toISOString(),
     ends_at: end.toISOString(),
     amount_cents: 0,
@@ -1460,7 +1495,7 @@ window.openPaymentFor = async function(missionId, amountCents){
   }
   try{
     const {data:{session}} = await db.auth.getSession();
-    const res = await fetch(SUPABASE_URL + "/functions/v1/create-payment-intent", {
+    const res = await fetch(SUPABASE_URL + "/functions/v1/smooth-function", {
       method: "POST",
       headers: {"Content-Type":"application/json", "Authorization":"Bearer "+session.access_token, "apikey": SUPABASE_KEY},
       body: JSON.stringify({missionId})
@@ -1485,7 +1520,7 @@ document.querySelector("#paymentSubmit").addEventListener("click", async ()=>{
   if(error){ msg.textContent = error.message; submitBtn.disabled = false; return; }
   try{
     const {data:{session}} = await db.auth.getSession();
-    const res = await fetch(SUPABASE_URL + "/functions/v1/confirm-payment", {
+    const res = await fetch(SUPABASE_URL + "/functions/v1/clever-processor", {
       method: "POST",
       headers: {"Content-Type":"application/json", "Authorization":"Bearer "+session.access_token, "apikey": SUPABASE_KEY},
       body: JSON.stringify({missionId: currentPaymentMissionId, paymentIntentId: paymentIntent.id})
@@ -1826,7 +1861,7 @@ function bindAdminMissionActions(panel){
   document.querySelectorAll("[data-approve-refund]").forEach(btn=>btn.addEventListener("click", async ()=>{
     if(!confirm(t("dash.approveRefund")+" ?")) return;
     const {data:{session}} = await db.auth.getSession();
-    const res = await fetch(SUPABASE_URL + "/functions/v1/refund-payment", {
+    const res = await fetch(SUPABASE_URL + "/functions/v1/rapid-task", {
       method: "POST",
       headers: {"Content-Type":"application/json", "Authorization":"Bearer "+session.access_token, "apikey": SUPABASE_KEY},
       body: JSON.stringify({missionId: btn.dataset.approveRefund})
@@ -1916,6 +1951,7 @@ function requestCard(m, context){
       <div><h3>${esc(m.port||"—")} · ${esc(m.boat_type||"")}</h3><div class="muted">${m.starts_at ? new Date(m.starts_at).toLocaleDateString(currentLang) : ""} — ${esc(m.description||"")}</div></div>
       <span class="status-pill ${statusPillClass(m.status)}">${esc(t("status."+(m.status||"pending")))}</span>
     </div>
+    ${Array.isArray(m.photo_urls) && m.photo_urls.length ? `<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">${m.photo_urls.map(u=>`<img src="${esc(u)}" style="width:56px;height:56px;object-fit:cover;border-radius:8px;cursor:pointer" onclick="window.open('${esc(u)}','_blank')">`).join("")}</div>` : ""}
     <div class="muted" style="margin-top:6px">${priceText}</div>
     <div class="request-actions">${actions}</div>
   </article>`;
@@ -2090,7 +2126,7 @@ async function openConversationThread(clientId, skipperId){
 function profileForm(profile, payout){
   const isPro = ["skipper","provider"].includes(profile?.role);
   return `<div class="field"><label>${esc(t("account.nameLabel"))}</label><input id="profileName" value="${esc(profile?.full_name||"")}"></div>
-    <div class="field"><label>${esc(t("account.portLabel"))}</label><input id="profilePort" value="${esc(profile?.home_port||"")}"></div>
+    <div class="field"><label>${esc(profile?.role === "provider" ? t("account.zoneLabel") : t("account.portLabel"))}</label><input id="profilePort" value="${esc(profile?.home_port||"")}"></div>
     <div class="field"><label>${esc(t("account.phoneLabel"))}</label><input id="profilePhone" value="${esc(profile?.phone||"")}"></div>
     ${isPro ? `<div class="field"><label>${esc(t("card.priceFrom"))} (€)</label><input id="profilePriceFrom" type="number" min="0" step="1" value="${profile?.price_from_cents ? Number(profile.price_from_cents)/100 : ""}" placeholder="Ex. 200"></div>` : ""}
     <div class="field"><label>${esc(t("boatDetail.description"))}</label><textarea id="profileBio" rows="4">${esc(profile?.bio||"")}</textarea></div>
