@@ -2121,7 +2121,7 @@ function adminUserCard(p, missions){
     <div class="request-actions">
 ${!p.verified ? `<button class="small-btn fill" data-approve="${p.id}">${esc(t("dash.approve"))}</button>` : (String(p.id)===String(currentUser.id) ? `` : `<button class="small-btn danger" data-suspend="${p.id}">${esc(t("dash.suspend"))}</button>`)}
       ${(p.suspended && String(p.id)!==String(currentUser.id)) ? `<button class="small-btn danger" data-delete-user="${p.id}">${esc(t("dash.delete"))}</button>` : ""}
-      <button class="small-btn" data-view-boats="${p.id}">${esc(t("dash.viewUserBoats"))}</button>
+      ${p.role === "client" ? `<button class="small-btn" data-view-boats="${p.id}">${esc(t("dash.viewUserBoats"))}</button>` : ""}
       ${p.role !== "admin" ? `<button class="small-btn" data-message-user="${p.id}">${esc(t("dash.navMessages"))}</button>` : ""}
     </div>
   </article>`;
