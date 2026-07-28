@@ -676,7 +676,7 @@ const I18N = {
     "account.roleSkipper":"Skipper","account.roleSkipperDesc":"Recevoir des demandes de sortie et de convoyage",
     "account.roleProvider":"Prestataire","account.roleProviderDesc":"Nettoyage, quai, chantier ou marin à la journée",
     "account.roleOwner":"Propriétaire","account.roleOwnerDesc":"Mettre mon bateau en location",
-    "account.nameLabel":"PRÉNOM ET NOM","account.namePlaceholder":"Votre nom","account.phoneLabel":"TÉLÉPHONE","account.photoLabel":"PHOTO DE PROFIL","account.diplomaLabel":"DIPLÔME / CERTIFICATION","account.diplomaCurrent":"Voir le document actuel","account.diplomaNote":"Photo ou PDF de votre diplôme (permis, brevet, carte professionnelle...). Utilisé pour la vérification par l'équipe SkipperNow, non affiché publiquement.",
+    "account.nameLabel":"PRÉNOM ET NOM","account.namePlaceholder":"Votre nom","account.phoneLabel":"TÉLÉPHONE","account.photoLabel":"PHOTO DE PROFIL","account.photoReminder":"⚠️ Pensez à ajouter une photo de profil : les fiches sans photo inspirent moins confiance et sont moins souvent contactées.","account.diplomaLabel":"DIPLÔME / CERTIFICATION","account.diplomaCurrent":"Voir le document actuel","account.diplomaNote":"Photo ou PDF de votre diplôme (permis, brevet, carte professionnelle...). Utilisé pour la vérification par l'équipe SkipperNow, non affiché publiquement.",
     "account.emailLabel":"EMAIL","account.passwordLabel":"MOT DE PASSE","account.passwordPlaceholder":"8 caractères minimum",
     "account.portLabel":"PORT PRINCIPAL — VILLE, PAYS","account.portPlaceholder":"Ex. Port Vauban, Antibes, France","account.zoneLabel":"VILLE / ZONE D'INTERVENTION","account.zonePlaceholder":"Ex. Antibes, Cannes, Golfe-Juan…",
     "account.activityLabel":"ACTIVITÉ PROPOSÉE","account.createSubmit":"Créer mon compte","account.loginSubmit":"Se connecter","account.forgot":"Mot de passe oublié ?",
@@ -799,7 +799,7 @@ const I18N = {
     "account.roleSkipper":"Skipper","account.roleSkipperDesc":"Receive trip and delivery requests",
     "account.roleProvider":"Service provider","account.roleProviderDesc":"Cleaning, dock, shipyard or day crew",
     "account.roleOwner":"Owner","account.roleOwnerDesc":"List my boat for rent",
-    "account.nameLabel":"FULL NAME","account.namePlaceholder":"Your name","account.phoneLabel":"PHONE","account.photoLabel":"PROFILE PHOTO","account.diplomaLabel":"DIPLOMA / CERTIFICATION","account.diplomaCurrent":"View current document","account.diplomaNote":"Photo or PDF of your certification (license, professional card...). Used for verification by the SkipperNow team, not shown publicly.",
+    "account.nameLabel":"FULL NAME","account.namePlaceholder":"Your name","account.phoneLabel":"PHONE","account.photoLabel":"PROFILE PHOTO","account.photoReminder":"⚠️ Remember to add a profile photo: listings without a photo inspire less trust and get fewer contacts.","account.diplomaLabel":"DIPLOMA / CERTIFICATION","account.diplomaCurrent":"View current document","account.diplomaNote":"Photo or PDF of your certification (license, professional card...). Used for verification by the SkipperNow team, not shown publicly.",
     "account.emailLabel":"EMAIL","account.passwordLabel":"PASSWORD","account.passwordPlaceholder":"At least 8 characters",
     "account.portLabel":"HOME PORT — CITY, COUNTRY","account.portPlaceholder":"E.g. Port Vauban, Antibes, France","account.zoneLabel":"CITY / SERVICE AREA","account.zonePlaceholder":"E.g. Antibes, Cannes, Golfe-Juan…",
     "account.activityLabel":"SERVICE OFFERED","account.createSubmit":"Create my account","account.loginSubmit":"Log in","account.forgot":"Forgot password?",
@@ -921,7 +921,7 @@ const I18N = {
     "account.roleSkipper":"Skipper","account.roleSkipperDesc":"Recibir solicitudes de salidas y traslados",
     "account.roleProvider":"Prestador","account.roleProviderDesc":"Limpieza, puerto, astillero o marinero por día",
     "account.roleOwner":"Propietario","account.roleOwnerDesc":"Poner mi barco en alquiler",
-    "account.nameLabel":"NOMBRE COMPLETO","account.namePlaceholder":"Tu nombre","account.phoneLabel":"TELÉFONO","account.photoLabel":"FOTO DE PERFIL","account.diplomaLabel":"TÍTULO / CERTIFICACIÓN","account.diplomaCurrent":"Ver documento actual","account.diplomaNote":"Foto o PDF de tu titulación (licencia, tarjeta profesional...). Se usa para la verificación del equipo de SkipperNow, no se muestra públicamente.",
+    "account.nameLabel":"NOMBRE COMPLETO","account.namePlaceholder":"Tu nombre","account.phoneLabel":"TELÉFONO","account.photoLabel":"FOTO DE PERFIL","account.photoReminder":"⚠️ No olvides añadir una foto de perfil: los anuncios sin foto generan menos confianza y reciben menos contactos.","account.diplomaLabel":"TÍTULO / CERTIFICACIÓN","account.diplomaCurrent":"Ver documento actual","account.diplomaNote":"Foto o PDF de tu titulación (licencia, tarjeta profesional...). Se usa para la verificación del equipo de SkipperNow, no se muestra públicamente.",
     "account.emailLabel":"EMAIL","account.passwordLabel":"CONTRASEÑA","account.passwordPlaceholder":"Mínimo 8 caracteres",
     "account.portLabel":"PUERTO BASE — CIUDAD, PAÍS","account.portPlaceholder":"Ej. Port Vauban, Antibes, Francia","account.zoneLabel":"CIUDAD / ZONA DE ACTUACIÓN","account.zonePlaceholder":"Ej. Antibes, Cannes, Golfe-Juan…",
     "account.activityLabel":"SERVICIO OFRECIDO","account.createSubmit":"Crear mi cuenta","account.loginSubmit":"Iniciar sesión","account.forgot":"¿Olvidaste tu contraseña?",
@@ -2406,7 +2406,8 @@ function profileForm(profile, payout, forcePayout){
  const isPro = ["skipper","provider","owner"].includes(profile?.role);
  const showPayout = isPro || forcePayout;
  const needsDiploma = ["skipper","provider"].includes(profile?.role);
-  return `<div class="field"><label>${esc(t("account.photoLabel"))}</label>
+  return `${!profile?.profile_photo_url ? `<div class="note-box" style="background:#fff8e6;border-color:#f5d98a;color:#8a6d1a">${esc(t("account.photoReminder"))}</div>` : ""}
+    <div class="field"><label>${esc(t("account.photoLabel"))}</label>
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
         ${profile?.profile_photo_url ? `<img src="${esc(profile.profile_photo_url)}" style="width:64px;height:64px;object-fit:cover;border-radius:50%">` : `<div style="width:64px;height:64px;border-radius:50%;background:var(--mist);display:grid;place-items:center;font-size:24px">⚓</div>`}
         <input id="profilePhotoInput" type="file" accept="image/*">
