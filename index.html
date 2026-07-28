@@ -1834,7 +1834,8 @@ async function renderClientPanel(panel){
       await renderClientPanel("boats");
     });
   }else if(panel === "profile"){
-    main.innerHTML = profileForm(currentProfile);
+    const {data: payout} = await db.from("payout_details").select("*").eq("profile_id", currentUser.id).maybeSingle();
+    main.innerHTML = profileForm(currentProfile, payout, true);
     bindProfileForm();
   }
 }
@@ -2385,8 +2386,9 @@ async function openConversationThread(clientId, skipperId){
   }
 }
 
-function profileForm(profile, payout){
+function profileForm(profile, payout, forcePayout){
  const isPro = ["skipper","provider","owner"].includes(profile?.role);
+ const showPayout = isPro || forcePayout;
  const needsDiploma = ["skipper","provider"].includes(profile?.role);
   return `<div class="field"><label>${esc(t("account.photoLabel"))}</label>
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
@@ -2404,7 +2406,7 @@ function profileForm(profile, payout){
       <input id="profileDiplomaInput" type="file" accept="image/*,.pdf">
       <div class="muted" style="margin-top:4px;font-size:12.5px">${esc(t("account.diplomaNote"))}</div>
     </div>` : ""}
-    ${isPro ? `
+    ${showPayout ? `
     <div class="note-box">${esc(t("dash.payoutDetailsNote"))}</div>
     <div class="field"><label>${esc(t("dash.holderLabel"))}</label><input id="profileHolder" value="${esc(payout?.bank_holder_name||"")}"></div>
     <div class="field"><label>${esc(t("dash.ibanLabel"))}</label><input id="profileIban" value="${esc(payout?.iban||"")}" placeholder="FR76 XXXX XXXX XXXX XXXX XXXX XXX"></div>
