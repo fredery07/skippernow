@@ -468,6 +468,10 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
   <div class="dialog"><div id="boatDetailContent"></div></div>
 </div>
 
+<div class="modal" id="profileDetailModal">
+  <div class="dialog"><div id="profileDetailContent"></div></div>
+</div>
+
 <div class="modal" id="accountModal">
   <div class="dialog">
     <div class="dialog-top">
@@ -1165,6 +1169,7 @@ async function loadListings(){
     return;
   }
   emptyBox.style.display = "none";
+  resultsCache = list;
   box.innerHTML = list.map((p,i)=>{
     const unavailable = blocked.has(p.id);
     const bg = p.profile_photo_url ? `style="background-image:url('${esc(p.profile_photo_url)}')"` : "";
@@ -1180,7 +1185,7 @@ async function loadListings(){
         <div class="tags"><span class="tag">${esc(p.languages||"Français")}</span></div>
         <div class="price-row">
           <div class="price">${p.price_from_cents ? `<strong>${esc(t("card.priceFrom"))} ${money(p.price_from_cents)}</strong>` : `<strong>${esc(t("card.priceOnRequest"))}</strong>`}<small>${esc(t("card.priceNote"))}</small></div>
-          <button class="ghost" ${unavailable?"disabled":""} onclick="openBookingFor('${p.id}', '${esc(String(p.full_name||"").replace(/'/g,"\\'"))}', '${esc(String(p.home_port||"").replace(/'/g,"\\'"))}', '${activeActivity}')">${unavailable ? esc(t("card.unavailable")) : esc(t("card.viewProfile"))}</button>
+          <button class="ghost" ${unavailable?"disabled":""} onclick="openProfileDetail('${p.id}')">${unavailable ? esc(t("card.unavailable")) : esc(t("card.viewProfile"))}</button>
         </div>
       </div>
     </article>`;
@@ -1218,6 +1223,7 @@ async function showProviderResults(activity){
     .eq("verified", true).eq("available", true).in("provider_activity", activityFilter).in("role",["skipper","provider"]);
   if(error){ box.querySelector(".empty-note").textContent = error.message; return; }
   const list = data || [];
+  resultsCache = resultsCache.concat(list);
   const listHtml = list.length ? `<div class="result-list">${list.map(p=>`
     <article class="result-card">
       ${p.profile_photo_url ? `<img class="result-photo" src="${esc(p.profile_photo_url)}" alt="${esc(p.full_name)}">` : `<div class="result-photo">⚓</div>`}
@@ -1225,7 +1231,7 @@ async function showProviderResults(activity){
         <h3>${esc(p.full_name||"—")}</h3>
         <p><strong>${esc(p.home_port||"—")}</strong> · ★ ${Number(p.rating||5).toFixed(1)}</p>
         <p>${esc(p.bio||"")}</p>
-        <button class="small-btn fill" onclick="openBookingFor('${p.id}','${esc(String(p.full_name||"").replace(/'/g,"\\'"))}','${esc(String(p.home_port||"").replace(/'/g,"\\'"))}','${activity}')">${esc(t("card.viewProfile"))}</button>
+        <button class="small-btn fill" onclick="openProfileDetail('${p.id}')">${esc(t("card.viewProfile"))}</button>
       </div>
     </article>`).join("")}</div>` : `<div class="empty-note">${esc(t("results.noProvider"))}</div>`;
   box.innerHTML = `<button class="back-link" type="button" onclick="showProviderCategories()">← Retour</button><h3 style="margin-top:10px">${esc(activityLabel(activity))}</h3>${listHtml}`;
@@ -1233,6 +1239,7 @@ async function showProviderResults(activity){
 window.showProviderCategories = showProviderCategories;
 
 let boatCache = [];
+let resultsCache = [];
 let adminBoatsFilterOwnerId = null;
 let editingBoatId = null;
 let myBoatsCache = [];
@@ -1367,6 +1374,30 @@ window.stepBoatDetailPhoto = function(dir){
   boatDetailPhotoIndex = (boatDetailPhotoIndex + dir + slides.length) % slides.length;
   slides[boatDetailPhotoIndex].classList.add("active");
   dots[boatDetailPhotoIndex]?.classList.add("active");
+};
+window.openProfileDetail = function(id){
+  const p = resultsCache.find(x=>String(x.id)===String(id));
+  if(!p) return;
+  closeModal("providerModal");
+  closeModal("boatFinderModal");
+  const content = document.querySelector("#profileDetailContent");
+  const activity = p.provider_activity || "skipper";
+  const photoStyle = p.profile_photo_url ? `background-image:url('${esc(p.profile_photo_url)}')` : "background:linear-gradient(135deg,#173b51,#3f9c9a)";
+  content.innerHTML = `
+    <div style="margin:-26px -26px 0;height:200px;${photoStyle};background-size:cover;background-position:center;border-radius:22px 22px 0 0;position:relative">
+      ${p.profile_photo_url ? "" : `<div style="position:absolute;inset:0;display:grid;place-items:center;font-size:42px;color:rgba(255,255,255,.85)">⚓</div>`}
+      <button class="close" type="button" onclick="closeModal('profileDetailModal')" style="position:absolute;top:14px;right:14px;background:rgba(255,255,255,.92)">×</button>
+    </div>
+    <div style="padding-top:18px">
+      <small style="color:var(--muted);font-weight:800;letter-spacing:.05em;text-transform:uppercase;font-size:11px">${esc(activityLabel(activity))}</small>
+      <div class="name-row" style="margin:4px 0 6px"><h2 style="margin:0">${esc(p.full_name||"—")} <span class="verified-badge">✓ ${esc(t("card.verifiedBadge"))}</span></h2></div>
+      <div class="boat-card-port" style="margin-bottom:6px">📍 ${esc(p.home_port||"—")}</div>
+      <div class="meta" style="margin-bottom:14px">★ ${Number(p.rating||5).toFixed(1)} · ${p.experience_years||0} ${esc(t("card.experience"))}${p.languages?" · "+esc(p.languages):""}</div>
+      <p class="muted" style="line-height:1.6">${esc(p.bio||t("boatDetail.noDescription"))}</p>
+      <div class="note-box" style="margin-top:14px">${p.price_from_cents ? `${esc(t("card.priceFrom"))} <strong>${money(p.price_from_cents)}</strong> — ${esc(t("card.priceNote"))}` : esc(t("card.priceOnRequest"))}</div>
+      <button class="primary wide" style="margin-top:18px" onclick="closeModal('profileDetailModal');openBookingFor('${p.id}','${esc(String(p.full_name||"").replace(/'/g,"\\'"))}','${esc(String(p.home_port||"").replace(/'/g,"\\'"))}','${activity}')">${esc(t("boatDetail.request"))}</button>
+    </div>`;
+  openModal("profileDetailModal");
 };
 window.closeModal = closeModal;
 
