@@ -1700,7 +1700,8 @@ async function renderClientPanel(panel){
     const rows = data || [];
     main.innerHTML = `
       <div class="note-box">${esc(t("rental.text"))}</div>
-      ${rows.length ? rows.map(b=>`<div class="request-card"><strong>${esc(b.name||"Bateau")}</strong><div class="muted">${esc(b.model||"")} · ${esc(b.home_port||"")}</div></div>`).join("") : `<div class="empty-note">${esc(t("dash.noBoats"))}</div>`}
+      ${rows.length ? `<h3>${esc(t("dash.navBoats"))} (${rows.length})</h3>${rows.map(b=>myBoatCard(b)).join("")}` : `<div class="empty-note">${esc(t("dash.noBoats"))}</div>`}
+      <h3 style="margin-top:24px">${esc(t("join.ownerCta"))}</h3>
       <form id="addBoatForm" style="margin-top:16px">
         <div class="field"><label>${esc(t("account.nameLabel"))}</label><input id="boatNameInput" required></div>
         <div class="field"><label>${esc(t("boatDetail.model"))}</label><input id="boatModelInput"></div>
@@ -1721,6 +1722,7 @@ async function renderClientPanel(panel){
         <div id="boatPhotosPreview" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"></div>
         <button class="primary wide" type="submit">${esc(t("join.ownerCta"))}</button>
       </form>`;
+    bindMyBoatActions();
     document.querySelector("#boatPhotosInput").addEventListener("change", ()=>{
       const preview = document.querySelector("#boatPhotosPreview");
       preview.innerHTML = "";
@@ -1766,7 +1768,27 @@ async function renderClientPanel(panel){
   }
 }
 
-async function renderProDashboard(){
+function myBoatCard(b){
+  const photo = b.photo_url || (Array.isArray(b.photo_urls) && b.photo_urls[0]) || "";
+  return `<article class="request-card">
+    <div class="request-top">
+      ${photo ? `<img src="${esc(photo)}" style="width:76px;height:76px;object-fit:cover;border-radius:12px;flex-shrink:0">` : `<div style="width:76px;height:76px;border-radius:12px;background:var(--mist);display:grid;place-items:center;font-size:26px;flex-shrink:0">⛵</div>`}
+      <div>
+        <h3>${esc(b.name||"Bateau")}</h3>
+        <div class="muted">${esc(b.model||"")}${b.home_port?" · "+esc(b.home_port):""}</div>
+        <div class="muted">${boatSpecsLine(b)||""}</div>
+      </div>
+    </div>
+    <div class="request-actions"><button class="small-btn danger" data-delete-my-boat="${b.id}">${esc(t("dash.delete"))}</button></div>
+  </article>`;
+}
+function bindMyBoatActions(){
+  document.querySelectorAll("[data-delete-my-boat]").forEach(btn=>btn.addEventListener("click", async ()=>{
+    if(!confirm(t("dash.delete")+" ?")) return;
+    const {error} = await db.from("boats").delete().eq("id", btn.dataset.deleteMyBoat);
+    if(error) alert(error.message); else renderClientPanel("boats");
+  }));
+}
   const body = document.querySelector("#dashboardBody");
   body.innerHTML = dashShell([
     {id:"requests", label:t("dash.navRequests")},
