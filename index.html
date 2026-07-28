@@ -1791,6 +1791,7 @@ function bindMyBoatActions(){
     if(error) alert(error.message); else renderClientPanel("boats");
   }));
 }
+async function renderProDashboard(){
   const body = document.querySelector("#dashboardBody");
   body.innerHTML = dashShell([
     {id:"requests", label:t("dash.navRequests")},
