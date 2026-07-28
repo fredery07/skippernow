@@ -1807,7 +1807,13 @@ async function renderAdminPanel(panel){
       if(!error) await renderAdminPanel("commissions");
     });
   }else if(panel === "users"){
-    main.innerHTML = profiles.length ? profiles.map(p=>adminUserCard(p, missions)).join("") : `<div class="empty-note">—</div>`;
+     main.innerHTML = `<input id="userSearch" type="text" placeholder="Rechercher par nom ou email..." style="width:100%;padding:10px;margin-bottom:12px;border:1px solid var(--line);border-radius:8px;font-size:15px">` + (profiles.length ? `<div id="userCardsList">${profiles.map(p=>adminUserCard(p, missions)).join("")}</div>` : `<div class="empty-note">Aucun utilisateur</div>`);
+document.querySelector("#userSearch").addEventListener("input", (e)=>{
+  const q = e.target.value.trim().toLowerCase();
+  const filtered = profiles.filter(p => (p.full_name||"").toLowerCase().includes(q) || (p.contact_email||p.email||"").toLowerCase().includes(q));
+  document.querySelector("#userCardsList").innerHTML = filtered.length ? filtered.map(p=>adminUserCard(p, missions)).join("") : `<div class="empty-note">Aucun résultat</div>`;
+  bindProfileActions();
+});
     bindProfileActions();
   }else if(panel === "boats"){
     main.innerHTML = boats.length ? boats.map(b=>adminBoatCard(b, byId)).join("") : `<div class="empty-note">—</div>`;
