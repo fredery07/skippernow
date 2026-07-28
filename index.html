@@ -1929,7 +1929,7 @@ function requestCard(m, context){
     actions += `<button class="small-btn danger" data-reject-quote="${m.id}">${esc(t("dash.refuseQuote"))}</button>`;
   }
   if(context === "client" && m.status === "accepted" && m.payment_status !== "paid"){
-    actions += `<button class="small-btn fill" data-pay-mission="${m.id}" data-pay-amount="${total}">${esc(t("dash.pay"))}</button>`;
+   actions += `<button class="small-btn fill" data-pay-mission="${m.id}" data-pay-amount="${total}">${esc(t("dash.pay"))}</button>`;actions += `<button class="small-btn danger" data-cancel="${m.id}">${esc(t("dash.cancel"))}</button>`;
   }
   if(context === "pro" && m.status === "in_progress"){
     actions += `<button class="small-btn fill" data-complete="${m.id}">${esc(t("dash.markDone"))}</button>`;
