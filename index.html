@@ -1713,8 +1713,7 @@ async function renderClientPanel(panel){
         year_built: Number(document.querySelector("#boatYearInput").value) || null,
         skipper_included: document.querySelector("#boatSkipperInput").checked,
         description: document.querySelector("#boatDescInput").value.trim(),
-        photo_url: photoUrls[0] || null,
-        photo_urls: photoUrls.length ? photoUrls : null
+        photo_url: photoUrls[0] || null
       });
       if(error){ alert(error.message); submitBtn.disabled = false; return; }
       await renderClientPanel("boats");
