@@ -672,7 +672,7 @@ const I18N = {
     "account.roleSkipper":"Skipper","account.roleSkipperDesc":"Recevoir des demandes de sortie et de convoyage",
     "account.roleProvider":"Prestataire","account.roleProviderDesc":"Nettoyage, quai, chantier ou marin à la journée",
     "account.roleOwner":"Propriétaire","account.roleOwnerDesc":"Mettre mon bateau en location",
-    "account.nameLabel":"PRÉNOM ET NOM","account.namePlaceholder":"Votre nom","account.phoneLabel":"TÉLÉPHONE",
+    "account.nameLabel":"PRÉNOM ET NOM","account.namePlaceholder":"Votre nom","account.phoneLabel":"TÉLÉPHONE","account.photoLabel":"PHOTO DE PROFIL","account.diplomaLabel":"DIPLÔME / CERTIFICATION","account.diplomaCurrent":"Voir le document actuel","account.diplomaNote":"Photo ou PDF de votre diplôme (permis, brevet, carte professionnelle...). Utilisé pour la vérification par l'équipe SkipperNow, non affiché publiquement.",
     "account.emailLabel":"EMAIL","account.passwordLabel":"MOT DE PASSE","account.passwordPlaceholder":"8 caractères minimum",
     "account.portLabel":"PORT PRINCIPAL — VILLE, PAYS","account.portPlaceholder":"Ex. Port Vauban, Antibes, France","account.zoneLabel":"VILLE / ZONE D'INTERVENTION","account.zonePlaceholder":"Ex. Antibes, Cannes, Golfe-Juan…",
     "account.activityLabel":"ACTIVITÉ PROPOSÉE","account.createSubmit":"Créer mon compte","account.loginSubmit":"Se connecter","account.forgot":"Mot de passe oublié ?",
@@ -795,7 +795,7 @@ const I18N = {
     "account.roleSkipper":"Skipper","account.roleSkipperDesc":"Receive trip and delivery requests",
     "account.roleProvider":"Service provider","account.roleProviderDesc":"Cleaning, dock, shipyard or day crew",
     "account.roleOwner":"Owner","account.roleOwnerDesc":"List my boat for rent",
-    "account.nameLabel":"FULL NAME","account.namePlaceholder":"Your name","account.phoneLabel":"PHONE",
+    "account.nameLabel":"FULL NAME","account.namePlaceholder":"Your name","account.phoneLabel":"PHONE","account.photoLabel":"PROFILE PHOTO","account.diplomaLabel":"DIPLOMA / CERTIFICATION","account.diplomaCurrent":"View current document","account.diplomaNote":"Photo or PDF of your certification (license, professional card...). Used for verification by the SkipperNow team, not shown publicly.",
     "account.emailLabel":"EMAIL","account.passwordLabel":"PASSWORD","account.passwordPlaceholder":"At least 8 characters",
     "account.portLabel":"HOME PORT — CITY, COUNTRY","account.portPlaceholder":"E.g. Port Vauban, Antibes, France","account.zoneLabel":"CITY / SERVICE AREA","account.zonePlaceholder":"E.g. Antibes, Cannes, Golfe-Juan…",
     "account.activityLabel":"SERVICE OFFERED","account.createSubmit":"Create my account","account.loginSubmit":"Log in","account.forgot":"Forgot password?",
@@ -917,7 +917,7 @@ const I18N = {
     "account.roleSkipper":"Skipper","account.roleSkipperDesc":"Recibir solicitudes de salidas y traslados",
     "account.roleProvider":"Prestador","account.roleProviderDesc":"Limpieza, puerto, astillero o marinero por día",
     "account.roleOwner":"Propietario","account.roleOwnerDesc":"Poner mi barco en alquiler",
-    "account.nameLabel":"NOMBRE COMPLETO","account.namePlaceholder":"Tu nombre","account.phoneLabel":"TELÉFONO",
+    "account.nameLabel":"NOMBRE COMPLETO","account.namePlaceholder":"Tu nombre","account.phoneLabel":"TELÉFONO","account.photoLabel":"FOTO DE PERFIL","account.diplomaLabel":"TÍTULO / CERTIFICACIÓN","account.diplomaCurrent":"Ver documento actual","account.diplomaNote":"Foto o PDF de tu titulación (licencia, tarjeta profesional...). Se usa para la verificación del equipo de SkipperNow, no se muestra públicamente.",
     "account.emailLabel":"EMAIL","account.passwordLabel":"CONTRASEÑA","account.passwordPlaceholder":"Mínimo 8 caracteres",
     "account.portLabel":"PUERTO BASE — CIUDAD, PAÍS","account.portPlaceholder":"Ej. Port Vauban, Antibes, Francia","account.zoneLabel":"CIUDAD / ZONA DE ACTUACIÓN","account.zonePlaceholder":"Ej. Antibes, Cannes, Golfe-Juan…",
     "account.activityLabel":"SERVICIO OFRECIDO","account.createSubmit":"Crear mi cuenta","account.loginSubmit":"Iniciar sesión","account.forgot":"¿Olvidaste tu contraseña?",
@@ -2164,7 +2164,8 @@ function profileCard(p){
   const badge = p.verified ? "ok" : "";
   return `<article class="request-card">
     <div class="request-top">
-      <div><h3>${esc(p.full_name||"—")}</h3><div class="muted">${esc(p.role||"")} · ${esc(p.home_port||"—")}${p.provider_activity?" · "+esc(activityLabel(p.provider_activity)):""}</div></div>
+      <div><h3>${esc(p.full_name||"—")}</h3><div class="muted">${esc(p.role||"")} · ${esc(p.home_port||"—")}${p.provider_activity?" · "+esc(activityLabel(p.provider_activity)):""}</div>
+      ${p.diploma_url ? `<div class="muted"><a href="${esc(p.diploma_url)}" target="_blank">${esc(t("account.diplomaCurrent"))}</a></div>` : ""}</div>
       <span class="status-pill ${badge}">${p.verified ? "✓" : "—"}</span>
     </div>
     <div class="request-actions">
@@ -2291,11 +2292,23 @@ async function openConversationThread(clientId, skipperId){
 
 function profileForm(profile, payout){
  const isPro = ["skipper","provider","owner"].includes(profile?.role);
-  return `<div class="field"><label>${esc(t("account.nameLabel"))}</label><input id="profileName" value="${esc(profile?.full_name||"")}"></div>
+ const needsDiploma = ["skipper","provider"].includes(profile?.role);
+  return `<div class="field"><label>${esc(t("account.photoLabel"))}</label>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
+        ${profile?.profile_photo_url ? `<img src="${esc(profile.profile_photo_url)}" style="width:64px;height:64px;object-fit:cover;border-radius:50%">` : `<div style="width:64px;height:64px;border-radius:50%;background:var(--mist);display:grid;place-items:center;font-size:24px">⚓</div>`}
+        <input id="profilePhotoInput" type="file" accept="image/*">
+      </div>
+    </div>
+    <div class="field"><label>${esc(t("account.nameLabel"))}</label><input id="profileName" value="${esc(profile?.full_name||"")}"></div>
     <div class="field"><label>${esc(profile?.role === "provider" ? t("account.zoneLabel") : t("account.portLabel"))}</label><input id="profilePort" value="${esc(profile?.home_port||"")}"></div>
     <div class="field"><label>${esc(t("account.phoneLabel"))}</label><input id="profilePhone" value="${esc(profile?.phone||"")}"></div>
     ${isPro ? `<div class="field"><label>${esc(t("card.priceFrom"))} (€)</label><input id="profilePriceFrom" type="number" min="0" step="1" value="${profile?.price_from_cents ? Number(profile.price_from_cents)/100 : ""}" placeholder="Ex. 200"></div>` : ""}
     <div class="field"><label>${esc(t("boatDetail.description"))}</label><textarea id="profileBio" rows="4">${esc(profile?.bio||"")}</textarea></div>
+    ${needsDiploma ? `<div class="field"><label>${esc(t("account.diplomaLabel"))}</label>
+      ${profile?.diploma_url ? `<div class="muted" style="margin-bottom:6px"><a href="${esc(profile.diploma_url)}" target="_blank">${esc(t("account.diplomaCurrent"))}</a></div>` : ""}
+      <input id="profileDiplomaInput" type="file" accept="image/*,.pdf">
+      <div class="muted" style="margin-top:4px;font-size:12.5px">${esc(t("account.diplomaNote"))}</div>
+    </div>` : ""}
     ${isPro ? `
     <div class="note-box">${esc(t("dash.payoutDetailsNote"))}</div>
     <div class="field"><label>${esc(t("dash.holderLabel"))}</label><input id="profileHolder" value="${esc(payout?.bank_holder_name||"")}"></div>
@@ -2307,6 +2320,9 @@ function profileForm(profile, payout){
 }
 function bindProfileForm(){
   document.querySelector("#saveProfileBtn").addEventListener("click", async ()=>{
+    const btn = document.querySelector("#saveProfileBtn");
+    const msg = document.querySelector("#profileMsg");
+    btn.disabled = true;
     const priceInput = document.querySelector("#profilePriceFrom");
     const patch = {
       full_name: document.querySelector("#profileName").value.trim(),
@@ -2314,13 +2330,26 @@ function bindProfileForm(){
       phone: document.querySelector("#profilePhone").value.trim(),
       bio: sanitizeContactInfo(document.querySelector("#profileBio").value.trim())
     };
+    const photoFile = document.querySelector("#profilePhotoInput")?.files[0];
+    if(photoFile){
+      const path = `${currentUser.id}/avatar-${Date.now()}-${photoFile.name.replace(/[^a-zA-Z0-9.\-_]/g,"_")}`;
+      const {error: upErr} = await db.storage.from("mission-photos").upload(path, photoFile);
+      if(upErr){ msg.style.color = "#b42318"; msg.textContent = upErr.message; btn.disabled = false; return; }
+      patch.profile_photo_url = db.storage.from("mission-photos").getPublicUrl(path).data.publicUrl;
+    }
+    const diplomaFile = document.querySelector("#profileDiplomaInput")?.files[0];
+    if(diplomaFile){
+      const path = `${currentUser.id}/diploma-${Date.now()}-${diplomaFile.name.replace(/[^a-zA-Z0-9.\-_]/g,"_")}`;
+      const {error: upErr} = await db.storage.from("mission-photos").upload(path, diplomaFile);
+      if(upErr){ msg.style.color = "#b42318"; msg.textContent = upErr.message; btn.disabled = false; return; }
+      patch.diploma_url = db.storage.from("mission-photos").getPublicUrl(path).data.publicUrl;
+    }
     if(priceInput){
       const euros = Number(priceInput.value);
       patch.price_from_cents = Number.isFinite(euros) && euros > 0 ? Math.round(euros*100) : null;
     }
     const {error} = await db.from("profiles").update(patch).eq("id", currentUser.id);
-    const msg = document.querySelector("#profileMsg");
-    if(error){ msg.style.color = "#b42318"; msg.textContent = error.message; return; }
+    if(error){ msg.style.color = "#b42318"; msg.textContent = error.message; btn.disabled = false; return; }
     const ibanInput = document.querySelector("#profileIban");
     if(ibanInput){
       const {error: payoutError} = await db.from("payout_details").upsert({
@@ -2330,11 +2359,12 @@ function bindProfileForm(){
         bic: document.querySelector("#profileBic").value.trim(),
         updated_at: new Date().toISOString()
       });
-      if(payoutError){ msg.style.color = "#b42318"; msg.textContent = payoutError.message; return; }
+      if(payoutError){ msg.style.color = "#b42318"; msg.textContent = payoutError.message; btn.disabled = false; return; }
     }
     await loadProfile();
     msg.style.color = "#08794e";
     msg.textContent = t("dash.saveSettings");
+    btn.disabled = false;
   });
 }
 
