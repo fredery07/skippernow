@@ -695,7 +695,7 @@ const I18N = {
     "dash.clientEyebrow":"ESPACE CLIENT","dash.clientTitle":"Mes réservations",
     "dash.proEyebrow":"ESPACE PROFESSIONNEL","dash.proTitle":"Mes missions",
     "dash.adminEyebrow":"ADMINISTRATION","dash.adminTitle":"Tableau de bord SkipperNow",
-    "dash.navRequests":"Mes demandes","dash.navBoats":"Mes bateaux","dash.boatsOf":"Bateaux de","dash.clearFilter":"Voir tous les bateaux","dash.navProfile":"Mon profil","dash.navAvailability":"Disponibilités","dash.logout":"Se déconnecter","dash.navMessages":"Messages","dash.noMessages":"Aucune conversation pour le moment.","dash.messagePlaceholder":"Écrivez votre message…","dash.send":"Envoyer","dash.loading":"Chargement…","dash.navSupport":"Contacter le support","dash.noSupport":"Le support n'est pas disponible pour le moment.","dash.supportIntro":"Une question, un souci ? Écrivez directement à l'équipe SkipperNow.",
+    "dash.navRequests":"Mes demandes","dash.navBoats":"Mes bateaux","dash.editBoat":"Modifier l'annonce","dash.boatsOf":"Bateaux de","dash.clearFilter":"Voir tous les bateaux","dash.navProfile":"Mon profil","dash.navAvailability":"Disponibilités","dash.logout":"Se déconnecter","dash.navMessages":"Messages","dash.noMessages":"Aucune conversation pour le moment.","dash.messagePlaceholder":"Écrivez votre message…","dash.send":"Envoyer","dash.loading":"Chargement…","dash.navSupport":"Contacter le support","dash.noSupport":"Le support n'est pas disponible pour le moment.","dash.supportIntro":"Une question, un souci ? Écrivez directement à l'équipe SkipperNow.",
     "booking.privacyNote":"Pour votre sécurité, les coordonnées personnelles (téléphone, email) ne sont jamais partagées directement entre client et professionnel.",
     "dash.navOverview":"Vue d'ensemble","dash.navValidations":"Validations","dash.navMissions":"Missions","dash.navUsers":"Utilisateurs","dash.navSettings":"Réglages",
     "dash.noRequests":"Aucune demande pour le moment.","dash.noBoats":"Aucun bateau ajouté pour le moment.","dash.noMissions":"Aucune mission pour le moment.",
@@ -818,7 +818,7 @@ const I18N = {
     "dash.clientEyebrow":"CLIENT AREA","dash.clientTitle":"My bookings",
     "dash.proEyebrow":"PROFESSIONAL AREA","dash.proTitle":"My jobs",
     "dash.adminEyebrow":"ADMINISTRATION","dash.adminTitle":"SkipperNow dashboard",
-    "dash.navRequests":"My requests","dash.navBoats":"My boats","dash.boatsOf":"Boats owned by","dash.clearFilter":"View all boats","dash.navProfile":"My profile","dash.navAvailability":"Availability","dash.logout":"Log out","dash.navMessages":"Messages","dash.noMessages":"No conversations yet.","dash.messagePlaceholder":"Write your message…","dash.send":"Send","dash.loading":"Loading…","dash.navSupport":"Contact support","dash.noSupport":"Support is not available right now.","dash.supportIntro":"A question or an issue? Message the SkipperNow team directly.",
+    "dash.navRequests":"My requests","dash.navBoats":"My boats","dash.editBoat":"Edit listing","dash.boatsOf":"Boats owned by","dash.clearFilter":"View all boats","dash.navProfile":"My profile","dash.navAvailability":"Availability","dash.logout":"Log out","dash.navMessages":"Messages","dash.noMessages":"No conversations yet.","dash.messagePlaceholder":"Write your message…","dash.send":"Send","dash.loading":"Loading…","dash.navSupport":"Contact support","dash.noSupport":"Support is not available right now.","dash.supportIntro":"A question or an issue? Message the SkipperNow team directly.",
     "booking.privacyNote":"For your safety, personal contact details (phone, email) are never shared directly between client and professional.",
     "dash.navOverview":"Overview","dash.navValidations":"Approvals","dash.navMissions":"Jobs","dash.navUsers":"Users","dash.navSettings":"Settings",
     "dash.noRequests":"No requests yet.","dash.noBoats":"No boats added yet.","dash.noMissions":"No jobs yet.",
@@ -940,7 +940,7 @@ const I18N = {
     "dash.clientEyebrow":"ESPACIO CLIENTE","dash.clientTitle":"Mis reservas",
     "dash.proEyebrow":"ESPACIO PROFESIONAL","dash.proTitle":"Mis servicios",
     "dash.adminEyebrow":"ADMINISTRACIÓN","dash.adminTitle":"Panel de SkipperNow",
-    "dash.navRequests":"Mis solicitudes","dash.navBoats":"Mis barcos","dash.boatsOf":"Barcos de","dash.clearFilter":"Ver todos los barcos","dash.navProfile":"Mi perfil","dash.navAvailability":"Disponibilidad","dash.logout":"Cerrar sesión","dash.navMessages":"Mensajes","dash.noMessages":"Todavía no hay conversaciones.","dash.messagePlaceholder":"Escribe tu mensaje…","dash.send":"Enviar","dash.loading":"Cargando…","dash.navSupport":"Contactar con soporte","dash.noSupport":"El soporte no está disponible en este momento.","dash.supportIntro":"¿Una pregunta o un problema? Escribe directamente al equipo de SkipperNow.",
+    "dash.navRequests":"Mis solicitudes","dash.navBoats":"Mis barcos","dash.editBoat":"Editar anuncio","dash.boatsOf":"Barcos de","dash.clearFilter":"Ver todos los barcos","dash.navProfile":"Mi perfil","dash.navAvailability":"Disponibilidad","dash.logout":"Cerrar sesión","dash.navMessages":"Mensajes","dash.noMessages":"Todavía no hay conversaciones.","dash.messagePlaceholder":"Escribe tu mensaje…","dash.send":"Enviar","dash.loading":"Cargando…","dash.navSupport":"Contactar con soporte","dash.noSupport":"El soporte no está disponible en este momento.","dash.supportIntro":"¿Una pregunta o un problema? Escribe directamente al equipo de SkipperNow.",
     "booking.privacyNote":"Por tu seguridad, los datos personales (teléfono, email) nunca se comparten directamente entre cliente y profesional.",
     "dash.navOverview":"Resumen","dash.navValidations":"Validaciones","dash.navMissions":"Servicios","dash.navUsers":"Usuarios","dash.navSettings":"Ajustes",
     "dash.noRequests":"Todavía no hay solicitudes.","dash.noBoats":"Todavía no hay barcos añadidos.","dash.noMissions":"Todavía no hay servicios.",
@@ -1234,6 +1234,8 @@ window.showProviderCategories = showProviderCategories;
 
 let boatCache = [];
 let adminBoatsFilterOwnerId = null;
+let editingBoatId = null;
+let myBoatsCache = [];
 document.querySelector("#heroBoats").addEventListener("click", ()=>openBoatFinder());
 document.querySelector("#footerFindBoat").addEventListener("click", ()=>openBoatFinder());
 async function openBoatFinder(){
@@ -1661,7 +1663,7 @@ function bindDashNav(renderFn){
   document.querySelectorAll(".dash-side button").forEach(btn=>{
     btn.addEventListener("click", async ()=>{
       if(btn.dataset.panel === "__logout"){ await logout(); return; }
-      if(btn.dataset.panel === "boats") adminBoatsFilterOwnerId = null;
+      if(btn.dataset.panel === "boats"){ adminBoatsFilterOwnerId = null; editingBoatId = null; }
       document.querySelectorAll(".dash-side button").forEach(b=>b.classList.toggle("active", b===btn));
       await renderFn(btn.dataset.panel);
     });
@@ -1700,47 +1702,68 @@ async function renderClientPanel(panel){
   }else if(panel === "boats"){
     const {data} = await db.from("boats").select("*").eq("client_id", currentUser.id).order("created_at",{ascending:false});
     const rows = data || [];
+    myBoatsCache = rows;
+    const editing = editingBoatId ? rows.find(b=>String(b.id)===String(editingBoatId)) : null;
+    const b = editing || {};
     main.innerHTML = `
       <div class="note-box">${esc(t("rental.text"))}</div>
-      ${rows.length ? `<h3>${esc(t("dash.navBoats"))} (${rows.length})</h3>${rows.map(b=>myBoatCard(b)).join("")}` : `<div class="empty-note">${esc(t("dash.noBoats"))}</div>`}
-      <h3 style="margin-top:24px">${esc(t("join.ownerCta"))}</h3>
+      ${rows.length ? `<h3>${esc(t("dash.navBoats"))} (${rows.length})</h3>${rows.map(bt=>myBoatCard(bt)).join("")}` : `<div class="empty-note">${esc(t("dash.noBoats"))}</div>`}
+      <h3 style="margin-top:24px">${editing ? esc(t("dash.editBoat")) : esc(t("join.ownerCta"))}</h3>
       <form id="addBoatForm" style="margin-top:16px">
-        <div class="field"><label>${esc(t("account.nameLabel"))}</label><input id="boatNameInput" required></div>
-        <div class="field"><label>${esc(t("boatDetail.model"))}</label><input id="boatModelInput"></div>
+        <div class="field"><label>${esc(t("account.nameLabel"))}</label><input id="boatNameInput" required value="${esc(b.name||"")}"></div>
+        <div class="field"><label>${esc(t("boatDetail.model"))}</label><input id="boatModelInput" value="${esc(b.model||"")}"></div>
         <div class="field"><label>${esc(t("boatDetail.type"))}</label>
           <select id="boatTypeInput">
-            <option value="sailboat">${esc(t("boatDetail.typeSailboat"))}</option>
-            <option value="motorboat">${esc(t("boatDetail.typeMotorboat"))}</option>
+            <option value="sailboat" ${b.boat_type==="sailboat"?"selected":""}>${esc(t("boatDetail.typeSailboat"))}</option>
+            <option value="motorboat" ${b.boat_type==="motorboat"?"selected":""}>${esc(t("boatDetail.typeMotorboat"))}</option>
           </select>
         </div>
-        <div class="field"><label>${esc(t("boatDetail.port"))}</label><input id="boatPortInput"></div>
-        <div class="field"><label>${esc(t("boatDetail.length"))} (m)</label><input id="boatLengthInput" type="number" step="0.1"></div>
-        <div class="field"><label>${esc(t("boatDetail.capacity"))}</label><input id="boatCapacityInput" type="number" min="1" step="1"></div>
-        <div class="field"><label>${esc(t("boatDetail.cabinsField"))}</label><input id="boatCabinsInput" type="number" min="0" step="1"></div>
-        <div class="field"><label>${esc(t("boatDetail.year"))}</label><input id="boatYearInput" type="number" min="1950" max="${new Date().getFullYear()}" step="1"></div>
-        <div class="field"><label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input id="boatSkipperInput" type="checkbox" style="width:auto"> ${esc(t("boatDetail.skipperIncluded"))}</label></div>
-        <div class="field"><label>${esc(t("boatDetail.description"))}</label><textarea id="boatDescInput" rows="3"></textarea></div>
+        <div class="field"><label>${esc(t("boatDetail.port"))}</label><input id="boatPortInput" value="${esc(b.home_port||"")}"></div>
+        <div class="field"><label>${esc(t("boatDetail.length"))} (m)</label><input id="boatLengthInput" type="number" step="0.1" value="${b.length_m??""}"></div>
+        <div class="field"><label>${esc(t("boatDetail.capacity"))}</label><input id="boatCapacityInput" type="number" min="1" step="1" value="${b.capacity??""}"></div>
+        <div class="field"><label>${esc(t("boatDetail.cabinsField"))}</label><input id="boatCabinsInput" type="number" min="0" step="1" value="${b.cabins??""}"></div>
+        <div class="field"><label>${esc(t("boatDetail.year"))}</label><input id="boatYearInput" type="number" min="1950" max="${new Date().getFullYear()}" step="1" value="${b.year_built??""}"></div>
+        <div class="field"><label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input id="boatSkipperInput" type="checkbox" style="width:auto" ${b.skipper_included?"checked":""}> ${esc(t("boatDetail.skipperIncluded"))}</label></div>
+        <div class="field"><label>${esc(t("boatDetail.description"))}</label><textarea id="boatDescInput" rows="3">${esc(b.description||"")}</textarea></div>
         <div class="field"><label>${esc(t("boatDetail.photos"))}</label><input id="boatPhotosInput" type="file" accept="image/*" multiple></div>
         <div id="boatPhotosPreview" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"></div>
-        <button class="primary wide" type="submit">${esc(t("join.ownerCta"))}</button>
+        <button class="primary wide" type="submit">${editing ? esc(t("dash.saveSettings")) : esc(t("join.ownerCta"))}</button>
+        ${editing ? `<button class="small-btn wide" type="button" id="cancelEditBoat" style="margin-top:8px">${esc(t("dash.cancel"))}</button>` : ""}
       </form>`;
     bindMyBoatActions();
+    document.querySelectorAll("[data-edit-boat]").forEach(btn=>btn.addEventListener("click", ()=>{
+      editingBoatId = btn.dataset.editBoat;
+      renderClientPanel("boats");
+    }));
+    const cancelBtn = document.querySelector("#cancelEditBoat");
+    if(cancelBtn) cancelBtn.addEventListener("click", ()=>{ editingBoatId = null; renderClientPanel("boats"); });
     let boatPhotoFiles = [];
+    let keptPhotoUrls = editing ? [...(Array.isArray(editing.photo_urls) && editing.photo_urls.length ? editing.photo_urls : (editing.photo_url ? [editing.photo_url] : []))] : [];
     function renderBoatPhotosPreview(){
       const preview = document.querySelector("#boatPhotosPreview");
-      preview.innerHTML = boatPhotoFiles.map((file,i)=>{
+      const total = keptPhotoUrls.length + boatPhotoFiles.length;
+      const keptHtml = keptPhotoUrls.map((url,i)=>`<div style="position:relative"><img src="${esc(url)}" style="width:64px;height:64px;object-fit:cover;border-radius:10px">
+          <button type="button" data-remove-kept-photo="${i}" style="position:absolute;top:-6px;right:-6px;width:20px;height:20px;border-radius:50%;background:#c0392b;color:#fff;border:0;font-size:12px;cursor:pointer;line-height:1">×</button></div>`).join("");
+      const newHtml = boatPhotoFiles.map((file,i)=>{
         const url = URL.createObjectURL(file);
         return `<div style="position:relative"><img src="${url}" style="width:64px;height:64px;object-fit:cover;border-radius:10px">
           <button type="button" data-remove-boat-photo="${i}" style="position:absolute;top:-6px;right:-6px;width:20px;height:20px;border-radius:50%;background:#c0392b;color:#fff;border:0;font-size:12px;cursor:pointer;line-height:1">×</button></div>`;
-      }).join("") + (boatPhotoFiles.length < 6 ? `<div class="muted" style="align-self:center;font-size:12.5px">${boatPhotoFiles.length}/6</div>` : "");
+      }).join("");
+      preview.innerHTML = keptHtml + newHtml + (total < 6 ? `<div class="muted" style="align-self:center;font-size:12.5px">${total}/6</div>` : "");
       preview.querySelectorAll("[data-remove-boat-photo]").forEach(btn=>btn.addEventListener("click", ()=>{
         boatPhotoFiles.splice(Number(btn.dataset.removeBoatPhoto), 1);
         renderBoatPhotosPreview();
       }));
+      preview.querySelectorAll("[data-remove-kept-photo]").forEach(btn=>btn.addEventListener("click", ()=>{
+        keptPhotoUrls.splice(Number(btn.dataset.removeKeptPhoto), 1);
+        renderBoatPhotosPreview();
+      }));
     }
+    renderBoatPhotosPreview();
     document.querySelector("#boatPhotosInput").addEventListener("change", ()=>{
       const input = document.querySelector("#boatPhotosInput");
-      boatPhotoFiles = boatPhotoFiles.concat([...input.files]).slice(0,6);
+      const room = Math.max(0, 6 - keptPhotoUrls.length);
+      boatPhotoFiles = boatPhotoFiles.concat([...input.files]).slice(0, room);
       input.value = "";
       renderBoatPhotosPreview();
     });
@@ -1748,17 +1771,17 @@ async function renderClientPanel(panel){
       e.preventDefault();
       const submitBtn = e.target.querySelector("button[type=submit]");
       submitBtn.disabled = true;
-      const photoFiles = boatPhotoFiles.slice(0,6);
-      const photoUrls = [];
+      const photoFiles = boatPhotoFiles.slice(0, Math.max(0, 6 - keptPhotoUrls.length));
+      const newUrls = [];
       for(const file of photoFiles){
         const path = `${currentUser.id}/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.\-_]/g,"_")}`;
         const {error: uploadError} = await db.storage.from("mission-photos").upload(path, file);
         if(uploadError){ alert(uploadError.message); submitBtn.disabled = false; return; }
         const {data: pub} = db.storage.from("mission-photos").getPublicUrl(path);
-        photoUrls.push(pub.publicUrl);
+        newUrls.push(pub.publicUrl);
       }
-      const {error} = await db.from("boats").insert({
-        client_id: currentUser.id,
+      const photoUrls = keptPhotoUrls.concat(newUrls);
+      const payload = {
         name: document.querySelector("#boatNameInput").value.trim(),
         model: document.querySelector("#boatModelInput").value.trim(),
         boat_type: document.querySelector("#boatTypeInput").value,
@@ -1771,8 +1794,12 @@ async function renderClientPanel(panel){
         description: document.querySelector("#boatDescInput").value.trim(),
         photo_url: photoUrls[0] || null,
         photo_urls: photoUrls.length ? photoUrls : null
-      });
+      };
+      const {error} = editing
+        ? await db.from("boats").update(payload).eq("id", editing.id)
+        : await db.from("boats").insert({client_id: currentUser.id, ...payload});
       if(error){ alert(error.message); submitBtn.disabled = false; return; }
+      editingBoatId = null;
       await renderClientPanel("boats");
     });
   }else if(panel === "profile"){
@@ -1792,14 +1819,16 @@ function myBoatCard(b){
         <div class="muted">${boatSpecsLine(b)||""}</div>
       </div>
     </div>
-    <div class="request-actions"><button class="small-btn danger" data-delete-my-boat="${b.id}">${esc(t("dash.delete"))}</button></div>
+    <div class="request-actions"><button class="small-btn" data-edit-boat="${b.id}">${esc(t("dash.editBoat"))}</button><button class="small-btn danger" data-delete-my-boat="${b.id}">${esc(t("dash.delete"))}</button></div>
   </article>`;
 }
 function bindMyBoatActions(){
   document.querySelectorAll("[data-delete-my-boat]").forEach(btn=>btn.addEventListener("click", async ()=>{
     if(!confirm(t("dash.delete")+" ?")) return;
     const {error} = await db.from("boats").delete().eq("id", btn.dataset.deleteMyBoat);
-    if(error) alert(error.message); else renderClientPanel("boats");
+    if(error){ alert(error.message); return; }
+    if(String(editingBoatId)===String(btn.dataset.deleteMyBoat)) editingBoatId = null;
+    renderClientPanel("boats");
   }));
 }
 async function renderProDashboard(){
