@@ -1240,6 +1240,7 @@ window.showProviderCategories = showProviderCategories;
 
 let boatCache = [];
 let resultsCache = [];
+let adminProfilesCache = [];
 let adminBoatsFilterOwnerId = null;
 let editingBoatId = null;
 let myBoatsCache = [];
@@ -1377,8 +1378,8 @@ window.stepBoatDetailPhoto = function(dir){
   slides[boatDetailPhotoIndex].classList.add("active");
   dots[boatDetailPhotoIndex]?.classList.add("active");
 };
-window.openProfileDetail = function(id){
-  const p = resultsCache.find(x=>String(x.id)===String(id));
+window.openProfileDetail = function(id, adminView){
+  const p = (adminView ? adminProfilesCache : resultsCache).find(x=>String(x.id)===String(id));
   if(!p) return;
   closeModal("providerModal");
   closeModal("boatFinderModal");
@@ -1397,9 +1398,11 @@ window.openProfileDetail = function(id){
       <div class="meta" style="margin-bottom:14px">★ ${Number(p.rating||5).toFixed(1)} · ${p.experience_years||0} ${esc(t("card.experience"))}${p.languages?" · "+esc(p.languages):""}</div>
       <p class="muted" style="line-height:1.6">${esc(p.bio||t("boatDetail.noDescription"))}</p>
       <div class="note-box" style="margin-top:14px">${p.price_from_cents ? `${esc(t("card.priceFrom"))} <strong>${money(p.price_from_cents)}</strong> — ${esc(t("card.priceNote"))}` : esc(t("card.priceOnRequest"))}</div>
-      ${(currentUser && String(p.id)===String(currentUser.id))
-        ? `<div class="note-box" style="margin-top:18px">${esc(t("boatDetail.ownListing"))}</div>`
-        : `<button class="primary wide" style="margin-top:18px" onclick="closeModal('profileDetailModal');openBookingFor('${p.id}','${esc(String(p.full_name||"").replace(/'/g,"\\'"))}','${esc(String(p.home_port||"").replace(/'/g,"\\'"))}','${activity}')">${esc(t("boatDetail.request"))}</button>`}
+      ${adminView && p.diploma_url ? `<div class="muted" style="margin-top:10px"><a href="${esc(p.diploma_url)}" target="_blank">${esc(t("account.diplomaCurrent"))}</a></div>` : ""}
+      ${adminView ? ""
+        : (currentUser && String(p.id)===String(currentUser.id))
+          ? `<div class="note-box" style="margin-top:18px">${esc(t("boatDetail.ownListing"))}</div>`
+          : `<button class="primary wide" style="margin-top:18px" onclick="closeModal('profileDetailModal');openBookingFor('${p.id}','${esc(String(p.full_name||"").replace(/'/g,"\\'"))}','${esc(String(p.home_port||"").replace(/'/g,"\\'"))}','${activity}')">${esc(t("boatDetail.request"))}</button>`}
     </div>`;
   openModal("profileDetailModal");
 };
@@ -1956,6 +1959,7 @@ function profilesById(list){ return Object.fromEntries(list.map(p=>[String(p.id)
 async function renderAdminPanel(panel){
   const main = document.querySelector("#dashMain");
   const {profiles, missions, settings, boats, payoutsById} = await loadAdminData();
+  adminProfilesCache = profiles;
   const byId = profilesById(profiles);
   const pending = profiles.filter(p => ["skipper","provider"].includes(p.role) && !p.verified);
   const activeMissions = missions.filter(m => !["cancelled","completed"].includes(m.status));
@@ -2121,6 +2125,7 @@ function adminUserCard(p, missions){
     <div class="request-actions">
 ${!p.verified ? `<button class="small-btn fill" data-approve="${p.id}">${esc(t("dash.approve"))}</button>` : (String(p.id)===String(currentUser.id) ? `` : `<button class="small-btn danger" data-suspend="${p.id}">${esc(t("dash.suspend"))}</button>`)}
       ${(p.suspended && String(p.id)!==String(currentUser.id)) ? `<button class="small-btn danger" data-delete-user="${p.id}">${esc(t("dash.delete"))}</button>` : ""}
+      <button class="small-btn" data-view-profile="${p.id}">${esc(t("card.viewProfile"))}</button>
       ${p.role === "client" ? `<button class="small-btn" data-view-boats="${p.id}">${esc(t("dash.viewUserBoats"))}</button>` : ""}
       ${p.role !== "admin" ? `<button class="small-btn" data-message-user="${p.id}">${esc(t("dash.navMessages"))}</button>` : ""}
     </div>
@@ -2302,6 +2307,9 @@ function bindProfileActions(){
     document.querySelectorAll(".dash-side button").forEach(b=>b.classList.toggle("active", b.dataset.panel==="messages"));
     await renderAdminPanel("messages");
     await openConversationThread(targetId, currentUser.id);
+  }));
+  document.querySelectorAll("[data-view-profile]").forEach(btn=>btn.addEventListener("click", ()=>{
+    openProfileDetail(btn.dataset.viewProfile, true);
   }));
   document.querySelectorAll("[data-view-boats]").forEach(btn=>btn.addEventListener("click", async ()=>{
     adminBoatsFilterOwnerId = btn.dataset.viewBoats;
