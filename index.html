@@ -1946,6 +1946,7 @@ function adminUserCard(p, missions){
     </div>
     <div class="request-actions">
 ${!p.verified ? `<button class="small-btn fill" data-approve="${p.id}">${esc(t("dash.approve"))}</button>` : (String(p.id)===String(currentUser.id) ? `` : `<button class="small-btn danger" data-suspend="${p.id}">${esc(t("dash.suspend"))}</button>`)}
+      ${(p.suspended && String(p.id)!==String(currentUser.id)) ? `<button class="small-btn danger" data-delete-user="${p.id}">${esc(t("dash.delete"))}</button>` : ""}
       ${p.role !== "admin" ? `<button class="small-btn" data-message-user="${p.id}">${esc(t("dash.navMessages"))}</button>` : ""}
     </div>
   </article>`;
@@ -2088,6 +2089,11 @@ function bindProfileActions(){
   document.querySelectorAll("[data-suspend]").forEach(btn=>btn.addEventListener("click", async ()=>{
     if(!confirm(t("dash.suspend")+" ?")) return;
     const {error} = await db.from("profiles").update({verified:false, available:false, suspended:true}).eq("id", btn.dataset.suspend);
+    if(error) alert(error.message); else openDashboard();
+  }));
+  document.querySelectorAll("[data-delete-user]").forEach(btn=>btn.addEventListener("click", async ()=>{
+    if(!confirm(t("dash.delete")+" ?")) return;
+    const {error} = await db.from("profiles").delete().eq("id", btn.dataset.deleteUser);
     if(error) alert(error.message); else openDashboard();
   }));
   document.querySelectorAll("[data-message-user]").forEach(btn=>btn.addEventListener("click", async ()=>{
