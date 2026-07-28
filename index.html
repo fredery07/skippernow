@@ -695,7 +695,7 @@ const I18N = {
     "dash.clientEyebrow":"ESPACE CLIENT","dash.clientTitle":"Mes réservations",
     "dash.proEyebrow":"ESPACE PROFESSIONNEL","dash.proTitle":"Mes missions",
     "dash.adminEyebrow":"ADMINISTRATION","dash.adminTitle":"Tableau de bord SkipperNow",
-    "dash.navRequests":"Mes demandes","dash.navBoats":"Mes bateaux","dash.navProfile":"Mon profil","dash.navAvailability":"Disponibilités","dash.logout":"Se déconnecter","dash.navMessages":"Messages","dash.noMessages":"Aucune conversation pour le moment.","dash.messagePlaceholder":"Écrivez votre message…","dash.send":"Envoyer","dash.loading":"Chargement…","dash.navSupport":"Contacter le support","dash.noSupport":"Le support n'est pas disponible pour le moment.","dash.supportIntro":"Une question, un souci ? Écrivez directement à l'équipe SkipperNow.",
+    "dash.navRequests":"Mes demandes","dash.navBoats":"Mes bateaux","dash.boatsOf":"Bateaux de","dash.clearFilter":"Voir tous les bateaux","dash.navProfile":"Mon profil","dash.navAvailability":"Disponibilités","dash.logout":"Se déconnecter","dash.navMessages":"Messages","dash.noMessages":"Aucune conversation pour le moment.","dash.messagePlaceholder":"Écrivez votre message…","dash.send":"Envoyer","dash.loading":"Chargement…","dash.navSupport":"Contacter le support","dash.noSupport":"Le support n'est pas disponible pour le moment.","dash.supportIntro":"Une question, un souci ? Écrivez directement à l'équipe SkipperNow.",
     "booking.privacyNote":"Pour votre sécurité, les coordonnées personnelles (téléphone, email) ne sont jamais partagées directement entre client et professionnel.",
     "dash.navOverview":"Vue d'ensemble","dash.navValidations":"Validations","dash.navMissions":"Missions","dash.navUsers":"Utilisateurs","dash.navSettings":"Réglages",
     "dash.noRequests":"Aucune demande pour le moment.","dash.noBoats":"Aucun bateau ajouté pour le moment.","dash.noMissions":"Aucune mission pour le moment.",
@@ -818,7 +818,7 @@ const I18N = {
     "dash.clientEyebrow":"CLIENT AREA","dash.clientTitle":"My bookings",
     "dash.proEyebrow":"PROFESSIONAL AREA","dash.proTitle":"My jobs",
     "dash.adminEyebrow":"ADMINISTRATION","dash.adminTitle":"SkipperNow dashboard",
-    "dash.navRequests":"My requests","dash.navBoats":"My boats","dash.navProfile":"My profile","dash.navAvailability":"Availability","dash.logout":"Log out","dash.navMessages":"Messages","dash.noMessages":"No conversations yet.","dash.messagePlaceholder":"Write your message…","dash.send":"Send","dash.loading":"Loading…","dash.navSupport":"Contact support","dash.noSupport":"Support is not available right now.","dash.supportIntro":"A question or an issue? Message the SkipperNow team directly.",
+    "dash.navRequests":"My requests","dash.navBoats":"My boats","dash.boatsOf":"Boats owned by","dash.clearFilter":"View all boats","dash.navProfile":"My profile","dash.navAvailability":"Availability","dash.logout":"Log out","dash.navMessages":"Messages","dash.noMessages":"No conversations yet.","dash.messagePlaceholder":"Write your message…","dash.send":"Send","dash.loading":"Loading…","dash.navSupport":"Contact support","dash.noSupport":"Support is not available right now.","dash.supportIntro":"A question or an issue? Message the SkipperNow team directly.",
     "booking.privacyNote":"For your safety, personal contact details (phone, email) are never shared directly between client and professional.",
     "dash.navOverview":"Overview","dash.navValidations":"Approvals","dash.navMissions":"Jobs","dash.navUsers":"Users","dash.navSettings":"Settings",
     "dash.noRequests":"No requests yet.","dash.noBoats":"No boats added yet.","dash.noMissions":"No jobs yet.",
@@ -940,7 +940,7 @@ const I18N = {
     "dash.clientEyebrow":"ESPACIO CLIENTE","dash.clientTitle":"Mis reservas",
     "dash.proEyebrow":"ESPACIO PROFESIONAL","dash.proTitle":"Mis servicios",
     "dash.adminEyebrow":"ADMINISTRACIÓN","dash.adminTitle":"Panel de SkipperNow",
-    "dash.navRequests":"Mis solicitudes","dash.navBoats":"Mis barcos","dash.navProfile":"Mi perfil","dash.navAvailability":"Disponibilidad","dash.logout":"Cerrar sesión","dash.navMessages":"Mensajes","dash.noMessages":"Todavía no hay conversaciones.","dash.messagePlaceholder":"Escribe tu mensaje…","dash.send":"Enviar","dash.loading":"Cargando…","dash.navSupport":"Contactar con soporte","dash.noSupport":"El soporte no está disponible en este momento.","dash.supportIntro":"¿Una pregunta o un problema? Escribe directamente al equipo de SkipperNow.",
+    "dash.navRequests":"Mis solicitudes","dash.navBoats":"Mis barcos","dash.boatsOf":"Barcos de","dash.clearFilter":"Ver todos los barcos","dash.navProfile":"Mi perfil","dash.navAvailability":"Disponibilidad","dash.logout":"Cerrar sesión","dash.navMessages":"Mensajes","dash.noMessages":"Todavía no hay conversaciones.","dash.messagePlaceholder":"Escribe tu mensaje…","dash.send":"Enviar","dash.loading":"Cargando…","dash.navSupport":"Contactar con soporte","dash.noSupport":"El soporte no está disponible en este momento.","dash.supportIntro":"¿Una pregunta o un problema? Escribe directamente al equipo de SkipperNow.",
     "booking.privacyNote":"Por tu seguridad, los datos personales (teléfono, email) nunca se comparten directamente entre cliente y profesional.",
     "dash.navOverview":"Resumen","dash.navValidations":"Validaciones","dash.navMissions":"Servicios","dash.navUsers":"Usuarios","dash.navSettings":"Ajustes",
     "dash.noRequests":"Todavía no hay solicitudes.","dash.noBoats":"Todavía no hay barcos añadidos.","dash.noMissions":"Todavía no hay servicios.",
@@ -1233,6 +1233,7 @@ async function showProviderResults(activity){
 window.showProviderCategories = showProviderCategories;
 
 let boatCache = [];
+let adminBoatsFilterOwnerId = null;
 document.querySelector("#heroBoats").addEventListener("click", ()=>openBoatFinder());
 document.querySelector("#footerFindBoat").addEventListener("click", ()=>openBoatFinder());
 async function openBoatFinder(){
@@ -1660,6 +1661,7 @@ function bindDashNav(renderFn){
   document.querySelectorAll(".dash-side button").forEach(btn=>{
     btn.addEventListener("click", async ()=>{
       if(btn.dataset.panel === "__logout"){ await logout(); return; }
+      if(btn.dataset.panel === "boats") adminBoatsFilterOwnerId = null;
       document.querySelectorAll(".dash-side button").forEach(b=>b.classList.toggle("active", b===btn));
       await renderFn(btn.dataset.panel);
     });
@@ -1955,7 +1957,12 @@ document.querySelector("#userSearch").addEventListener("input", (e)=>{
 });
     bindProfileActions();
   }else if(panel === "boats"){
-    main.innerHTML = boats.length ? boats.map(b=>adminBoatCard(b, byId)).join("") : `<div class="empty-note">—</div>`;
+    const ownerFilter = adminBoatsFilterOwnerId ? boats.filter(b=>String(b.client_id)===String(adminBoatsFilterOwnerId)) : boats;
+    const ownerName = adminBoatsFilterOwnerId ? (byId[String(adminBoatsFilterOwnerId)]?.full_name || "—") : "";
+    main.innerHTML = (adminBoatsFilterOwnerId ? `<div class="note-box">${esc(t("dash.boatsOf"))} <strong>${esc(ownerName)}</strong> — <a href="#" id="clearBoatsFilter">${esc(t("dash.clearFilter"))}</a></div>` : "")
+      + (ownerFilter.length ? ownerFilter.map(b=>adminBoatCard(b, byId)).join("") : `<div class="empty-note">—</div>`);
+    const clearBtn = document.querySelector("#clearBoatsFilter");
+    if(clearBtn) clearBtn.addEventListener("click", (e)=>{ e.preventDefault(); adminBoatsFilterOwnerId = null; renderAdminPanel("boats"); });
     bindAdminBoatActions();
   }
 }
@@ -2033,6 +2040,7 @@ function adminUserCard(p, missions){
     <div class="request-actions">
 ${!p.verified ? `<button class="small-btn fill" data-approve="${p.id}">${esc(t("dash.approve"))}</button>` : (String(p.id)===String(currentUser.id) ? `` : `<button class="small-btn danger" data-suspend="${p.id}">${esc(t("dash.suspend"))}</button>`)}
       ${(p.suspended && String(p.id)!==String(currentUser.id)) ? `<button class="small-btn danger" data-delete-user="${p.id}">${esc(t("dash.delete"))}</button>` : ""}
+      <button class="small-btn" data-view-boats="${p.id}">${esc(t("dash.navBoats"))}</button>
       ${p.role !== "admin" ? `<button class="small-btn" data-message-user="${p.id}">${esc(t("dash.navMessages"))}</button>` : ""}
     </div>
   </article>`;
@@ -2203,6 +2211,11 @@ function bindProfileActions(){
     document.querySelectorAll(".dash-side button").forEach(b=>b.classList.toggle("active", b.dataset.panel==="messages"));
     await renderAdminPanel("messages");
     await openConversationThread(targetId, currentUser.id);
+  }));
+  document.querySelectorAll("[data-view-boats]").forEach(btn=>btn.addEventListener("click", async ()=>{
+    adminBoatsFilterOwnerId = btn.dataset.viewBoats;
+    document.querySelectorAll(".dash-side button").forEach(b=>b.classList.toggle("active", b.dataset.panel==="boats"));
+    await renderAdminPanel("boats");
   }));
 }
 async function getOrCreateConversation(clientId, skipperId){
