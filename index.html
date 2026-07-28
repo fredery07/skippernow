@@ -1892,7 +1892,7 @@ function adminUserCard(p, missions){
       <span class="status-pill ${p.suspended?"danger":p.verified?"ok":""}">${p.suspended?esc(t("dash.suspended")):p.verified?"✓":"—"}</span>
     </div>
     <div class="request-actions">
-      ${!p.verified ? `<button class="small-btn fill" data-approve="${p.id}">${esc(t("dash.approve"))}</button>` : `<button class="small-btn danger" data-suspend="${p.id}">${esc(t("dash.suspend"))}</button>`}
+${!p.verified ? `<button class="small-btn fill" data-approve="${p.id}">${esc(t("dash.approve"))}</button>` : (String(p.id)===String(currentUser.id) ? `` : `<button class="small-btn danger" data-suspend="${p.id}">${esc(t("dash.suspend"))}</button>`)}
       ${p.role !== "admin" ? `<button class="small-btn" data-message-user="${p.id}">${esc(t("dash.navMessages"))}</button>` : ""}
     </div>
   </article>`;
