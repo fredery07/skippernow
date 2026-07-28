@@ -669,7 +669,7 @@ const I18N = {
     "boatDetail.capacity":"Capacité (personnes)","boatDetail.pax":"pers.","boatDetail.cabinsField":"Nombre de cabines","boatDetail.cabins":"cabines","boatDetail.cabin":"cabine","boatDetail.year":"Année",
     "boatDetail.skipperIncluded":"Skipper inclus","boatDetail.skipperIncludedTag":"Skipper inclus","boatDetail.skipperOptionalTag":"Skipper en option",
     "boatDetail.onRequest":"Sur demande","boatDetail.description":"Description","boatDetail.noDescription":"Aucune description renseignée.","boatDetail.photos":"Photos (jusqu'à 6)",
-    "boatDetail.request":"Demander une réservation","boatDetail.close":"Fermer",
+    "boatDetail.request":"Demander une réservation","boatDetail.close":"Fermer","boatDetail.ownListing":"C'est votre propre annonce — vous ne pouvez pas la réserver.",
     "account.eyebrow":"MON COMPTE","account.createTitle":"Créer votre activité sur SkipperNow","account.loginTitle":"Se connecter à SkipperNow",
     "account.tabCreate":"Créer un compte","account.tabLogin":"Se connecter",
     "account.roleClient":"Client","account.roleClientDesc":"Réserver un skipper, un prestataire ou un bateau",
@@ -792,7 +792,7 @@ const I18N = {
     "boatDetail.capacity":"Capacity (people)","boatDetail.pax":"pax","boatDetail.cabinsField":"Number of cabins","boatDetail.cabins":"cabins","boatDetail.cabin":"cabin","boatDetail.year":"Year",
     "boatDetail.skipperIncluded":"Skipper included","boatDetail.skipperIncludedTag":"Skipper included","boatDetail.skipperOptionalTag":"Skipper optional",
     "boatDetail.onRequest":"On request","boatDetail.description":"Description","boatDetail.noDescription":"No description provided.","boatDetail.photos":"Photos (up to 6)",
-    "boatDetail.request":"Request a booking","boatDetail.close":"Close",
+    "boatDetail.request":"Request a booking","boatDetail.close":"Close","boatDetail.ownListing":"This is your own listing — you can't book it.",
     "account.eyebrow":"MY ACCOUNT","account.createTitle":"Create your activity on SkipperNow","account.loginTitle":"Log in to SkipperNow",
     "account.tabCreate":"Create an account","account.tabLogin":"Log in",
     "account.roleClient":"Client","account.roleClientDesc":"Book a skipper, a service provider or a boat",
@@ -914,7 +914,7 @@ const I18N = {
     "boatDetail.capacity":"Capacidad (personas)","boatDetail.pax":"pers.","boatDetail.cabinsField":"Número de cabinas","boatDetail.cabins":"cabinas","boatDetail.cabin":"cabina","boatDetail.year":"Año",
     "boatDetail.skipperIncluded":"Skipper incluido","boatDetail.skipperIncludedTag":"Skipper incluido","boatDetail.skipperOptionalTag":"Skipper opcional",
     "boatDetail.onRequest":"A consultar","boatDetail.description":"Descripción","boatDetail.noDescription":"Sin descripción disponible.","boatDetail.photos":"Fotos (hasta 6)",
-    "boatDetail.request":"Solicitar una reserva","boatDetail.close":"Cerrar",
+    "boatDetail.request":"Solicitar una reserva","boatDetail.close":"Cerrar","boatDetail.ownListing":"Este es tu propio anuncio — no puedes reservarlo.",
     "account.eyebrow":"MI CUENTA","account.createTitle":"Crea tu actividad en SkipperNow","account.loginTitle":"Iniciar sesión en SkipperNow",
     "account.tabCreate":"Crear una cuenta","account.tabLogin":"Iniciar sesión",
     "account.roleClient":"Cliente","account.roleClientDesc":"Reservar un skipper, un prestador o un barco",
@@ -1359,7 +1359,9 @@ window.openBoatDetail = async function(id){
         </div>
       </div>
       <p class="muted">${esc(boat.description||t("boatDetail.noDescription"))}</p>
-      <button class="primary wide" onclick="closeModal('boatDetailModal');openBookingFor(null,'${esc(String(boat.name||"Bateau").replace(/'/g,"\\'"))}','${esc(String(boat.home_port||"").replace(/'/g,"\\'"))}','boat_rental')">${esc(t("boatDetail.request"))}</button>
+      ${(currentUser && String(boat.client_id)===String(currentUser.id))
+        ? `<div class="note-box">${esc(t("boatDetail.ownListing"))}</div>`
+        : `<button class="primary wide" onclick="closeModal('boatDetailModal');openBookingFor('${esc(boat.client_id||"")}','${esc(String(boat.name||"Bateau").replace(/'/g,"\\'"))}','${esc(String(boat.home_port||"").replace(/'/g,"\\'"))}','boat_rental')">${esc(t("boatDetail.request"))}</button>`}
     </div>`;
   boatDetailPhotoIndex = 0;
   openModal("boatDetailModal");
@@ -1395,7 +1397,9 @@ window.openProfileDetail = function(id){
       <div class="meta" style="margin-bottom:14px">★ ${Number(p.rating||5).toFixed(1)} · ${p.experience_years||0} ${esc(t("card.experience"))}${p.languages?" · "+esc(p.languages):""}</div>
       <p class="muted" style="line-height:1.6">${esc(p.bio||t("boatDetail.noDescription"))}</p>
       <div class="note-box" style="margin-top:14px">${p.price_from_cents ? `${esc(t("card.priceFrom"))} <strong>${money(p.price_from_cents)}</strong> — ${esc(t("card.priceNote"))}` : esc(t("card.priceOnRequest"))}</div>
-      <button class="primary wide" style="margin-top:18px" onclick="closeModal('profileDetailModal');openBookingFor('${p.id}','${esc(String(p.full_name||"").replace(/'/g,"\\'"))}','${esc(String(p.home_port||"").replace(/'/g,"\\'"))}','${activity}')">${esc(t("boatDetail.request"))}</button>
+      ${(currentUser && String(p.id)===String(currentUser.id))
+        ? `<div class="note-box" style="margin-top:18px">${esc(t("boatDetail.ownListing"))}</div>`
+        : `<button class="primary wide" style="margin-top:18px" onclick="closeModal('profileDetailModal');openBookingFor('${p.id}','${esc(String(p.full_name||"").replace(/'/g,"\\'"))}','${esc(String(p.home_port||"").replace(/'/g,"\\'"))}','${activity}')">${esc(t("boatDetail.request"))}</button>`}
     </div>`;
   openModal("profileDetailModal");
 };
@@ -1535,6 +1539,10 @@ function refreshAccountButton(){
 }
 
 window.openBookingFor = function(targetId, name, homePort, activity){
+  if(currentUser && targetId && String(targetId) === String(currentUser.id)){
+    alert(t("boatDetail.ownListing"));
+    return;
+  }
   bookingContext = {targetId, name, homePort, activity};
   document.querySelector("#bookingTargetName").textContent = name || t("booking.defaultTarget");
   document.querySelector("#bookingSummaryPort").textContent = homePort || portInput.value || "—";
