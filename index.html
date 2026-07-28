@@ -655,7 +655,7 @@ const I18N = {
     "boatDetail.type":"Type de bateau","boatDetail.typeSailboat":"Voilier","boatDetail.typeMotorboat":"Bateau à moteur",
     "boatDetail.capacity":"Capacité (personnes)","boatDetail.pax":"pers.","boatDetail.cabinsField":"Nombre de cabines","boatDetail.cabins":"cabines","boatDetail.cabin":"cabine","boatDetail.year":"Année",
     "boatDetail.skipperIncluded":"Skipper inclus","boatDetail.skipperIncludedTag":"Skipper inclus","boatDetail.skipperOptionalTag":"Skipper en option",
-    "boatDetail.onRequest":"Sur demande","boatDetail.description":"Description","boatDetail.noDescription":"Aucune description renseignée.",
+    "boatDetail.onRequest":"Sur demande","boatDetail.description":"Description","boatDetail.noDescription":"Aucune description renseignée.","boatDetail.photos":"Photos (jusqu'à 6)",
     "boatDetail.request":"Demander une réservation","boatDetail.close":"Fermer",
     "account.eyebrow":"MON COMPTE","account.createTitle":"Créer votre activité sur SkipperNow","account.loginTitle":"Se connecter à SkipperNow",
     "account.tabCreate":"Créer un compte","account.tabLogin":"Se connecter",
@@ -778,7 +778,7 @@ const I18N = {
     "boatDetail.type":"Boat type","boatDetail.typeSailboat":"Sailboat","boatDetail.typeMotorboat":"Motorboat",
     "boatDetail.capacity":"Capacity (people)","boatDetail.pax":"pax","boatDetail.cabinsField":"Number of cabins","boatDetail.cabins":"cabins","boatDetail.cabin":"cabin","boatDetail.year":"Year",
     "boatDetail.skipperIncluded":"Skipper included","boatDetail.skipperIncludedTag":"Skipper included","boatDetail.skipperOptionalTag":"Skipper optional",
-    "boatDetail.onRequest":"On request","boatDetail.description":"Description","boatDetail.noDescription":"No description provided.",
+    "boatDetail.onRequest":"On request","boatDetail.description":"Description","boatDetail.noDescription":"No description provided.","boatDetail.photos":"Photos (up to 6)",
     "boatDetail.request":"Request a booking","boatDetail.close":"Close",
     "account.eyebrow":"MY ACCOUNT","account.createTitle":"Create your activity on SkipperNow","account.loginTitle":"Log in to SkipperNow",
     "account.tabCreate":"Create an account","account.tabLogin":"Log in",
@@ -900,7 +900,7 @@ const I18N = {
     "boatDetail.type":"Tipo de barco","boatDetail.typeSailboat":"Velero","boatDetail.typeMotorboat":"Barco a motor",
     "boatDetail.capacity":"Capacidad (personas)","boatDetail.pax":"pers.","boatDetail.cabinsField":"Número de cabinas","boatDetail.cabins":"cabinas","boatDetail.cabin":"cabina","boatDetail.year":"Año",
     "boatDetail.skipperIncluded":"Skipper incluido","boatDetail.skipperIncludedTag":"Skipper incluido","boatDetail.skipperOptionalTag":"Skipper opcional",
-    "boatDetail.onRequest":"A consultar","boatDetail.description":"Descripción","boatDetail.noDescription":"Sin descripción disponible.",
+    "boatDetail.onRequest":"A consultar","boatDetail.description":"Descripción","boatDetail.noDescription":"Sin descripción disponible.","boatDetail.photos":"Fotos (hasta 6)",
     "boatDetail.request":"Solicitar una reserva","boatDetail.close":"Cerrar",
     "account.eyebrow":"MI CUENTA","account.createTitle":"Crea tu actividad en SkipperNow","account.loginTitle":"Iniciar sesión en SkipperNow",
     "account.tabCreate":"Crear una cuenta","account.tabLogin":"Iniciar sesión",
@@ -1676,10 +1676,31 @@ async function renderClientPanel(panel){
         <div class="field"><label>${esc(t("boatDetail.year"))}</label><input id="boatYearInput" type="number" min="1950" max="${new Date().getFullYear()}" step="1"></div>
         <div class="field"><label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input id="boatSkipperInput" type="checkbox" style="width:auto"> ${esc(t("boatDetail.skipperIncluded"))}</label></div>
         <div class="field"><label>${esc(t("boatDetail.description"))}</label><textarea id="boatDescInput" rows="3"></textarea></div>
+        <div class="field"><label>${esc(t("boatDetail.photos"))}</label><input id="boatPhotosInput" type="file" accept="image/*" multiple></div>
+        <div id="boatPhotosPreview" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"></div>
         <button class="primary wide" type="submit">${esc(t("join.ownerCta"))}</button>
       </form>`;
+    document.querySelector("#boatPhotosInput").addEventListener("change", ()=>{
+      const preview = document.querySelector("#boatPhotosPreview");
+      preview.innerHTML = "";
+      [...document.querySelector("#boatPhotosInput").files].slice(0,6).forEach(file=>{
+        const url = URL.createObjectURL(file);
+        preview.innerHTML += `<img src="${url}" style="width:64px;height:64px;object-fit:cover;border-radius:10px">`;
+      });
+    });
     document.querySelector("#addBoatForm").addEventListener("submit", async e=>{
       e.preventDefault();
+      const submitBtn = e.target.querySelector("button[type=submit]");
+      submitBtn.disabled = true;
+      const photoFiles = [...document.querySelector("#boatPhotosInput").files].slice(0,6);
+      const photoUrls = [];
+      for(const file of photoFiles){
+        const path = `${currentUser.id}/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.\-_]/g,"_")}`;
+        const {error: uploadError} = await db.storage.from("mission-photos").upload(path, file);
+        if(uploadError){ alert(uploadError.message); submitBtn.disabled = false; return; }
+        const {data: pub} = db.storage.from("mission-photos").getPublicUrl(path);
+        photoUrls.push(pub.publicUrl);
+      }
       const {error} = await db.from("boats").insert({
         client_id: currentUser.id,
         name: document.querySelector("#boatNameInput").value.trim(),
@@ -1691,9 +1712,11 @@ async function renderClientPanel(panel){
         cabins: Number(document.querySelector("#boatCabinsInput").value) || null,
         year_built: Number(document.querySelector("#boatYearInput").value) || null,
         skipper_included: document.querySelector("#boatSkipperInput").checked,
-        description: document.querySelector("#boatDescInput").value.trim()
+        description: document.querySelector("#boatDescInput").value.trim(),
+        photo_url: photoUrls[0] || null,
+        photo_urls: photoUrls.length ? photoUrls : null
       });
-      if(error){ alert(error.message); return; }
+      if(error){ alert(error.message); submitBtn.disabled = false; return; }
       await renderClientPanel("boats");
     });
   }else if(panel === "profile"){
@@ -2093,8 +2116,18 @@ function bindProfileActions(){
   }));
   document.querySelectorAll("[data-delete-user]").forEach(btn=>btn.addEventListener("click", async ()=>{
     if(!confirm(t("dash.delete")+" ?")) return;
-    const {error} = await db.from("profiles").delete().eq("id", btn.dataset.deleteUser);
-    if(error) alert(error.message); else openDashboard();
+    btn.disabled = true;
+    const {data:{session}} = await db.auth.getSession();
+    try{
+      const res = await fetch(SUPABASE_URL + "/functions/v1/delete-user-admin", {
+        method: "POST",
+        headers: {"Content-Type":"application/json", "Authorization":"Bearer "+session.access_token, "apikey": SUPABASE_KEY},
+        body: JSON.stringify({userId: btn.dataset.deleteUser})
+      });
+      const j = await res.json();
+      if(!res.ok || !j.ok){ alert(j.error || "Erreur"); btn.disabled = false; return; }
+      openDashboard();
+    }catch(err){ alert(err.message); btn.disabled = false; }
   }));
   document.querySelectorAll("[data-message-user]").forEach(btn=>btn.addEventListener("click", async ()=>{
     const targetId = btn.dataset.messageUser;
