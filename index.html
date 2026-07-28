@@ -196,6 +196,15 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
 .boat-card-specs span{background:var(--mist);color:var(--blue);font-size:12px;font-weight:750;padding:5px 9px;border-radius:8px}
 .boat-card-specs-line{color:var(--muted);font-size:12.5px;line-height:1.4}
 .boat-card-fav{position:absolute;top:12px;left:12px;background:rgba(255,255,255,.92);border:0;width:32px;height:32px;border-radius:50%;font-size:16px;color:#c0392b;cursor:pointer;display:grid;place-items:center;box-shadow:0 4px 10px rgba(0,0,0,.15)}
+.boat-photo-slide{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity .5s ease}
+.boat-photo-slide.active{opacity:1}
+.boat-card-dots{position:absolute;bottom:10px;left:0;right:0;display:flex;justify-content:center;gap:5px;z-index:2}
+.boat-card-dots span{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.55);transition:.2s}
+.boat-card-dots span.active{background:#fff;width:16px;border-radius:4px}
+.boat-carousel-arrow{position:absolute;top:50%;transform:translateY(-50%);width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.92);border:0;font-size:15px;font-weight:900;color:var(--navy);cursor:pointer;display:grid;place-items:center;z-index:2;box-shadow:0 4px 10px rgba(0,0,0,.15)}
+.boat-carousel-arrow.prev{left:8px}
+.boat-carousel-arrow.next{right:8px}
+.boat-detail-photo{position:relative}
 .result-card{display:flex;gap:12px;border:1px solid var(--line);border-radius:16px;padding:14px;background:#fff}
 .result-photo{width:70px;height:70px;border-radius:13px;object-fit:cover;background:var(--mist);display:grid;place-items:center;font-size:26px;flex:0 0 70px}
 .result-card h3{margin:0 0 4px;font-size:16px}
@@ -1240,6 +1249,7 @@ function renderBoatResults(){
   const portFilter = portInput.value.trim().toLowerCase();
   const list = portFilter ? boatCache.filter(b=>(b.home_port||"").toLowerCase().includes(portFilter)) : boatCache;
   box.innerHTML = list.length ? list.map(b=>boatCardHtml(b)).join("") : `<div class="empty-note">${esc(t("boatFinder.empty"))}</div>`;
+  startBoatCardCarousels();
 }
 function boatSpecsLine(b){
   const parts = [];
@@ -1267,11 +1277,12 @@ window.toggleBoatFavorite = function(id, ev){
 function boatCardHtml(b){
   const day = Number(b.price_per_day||b.daily_price||b.price||0);
   const priceLabel = day ? `${esc(t("card.priceFrom"))} ${money(day*100)}` : esc(t("boatDetail.onRequest"));
-  const photoStyle = b.photo_url ? `style="background-image:url('${esc(b.photo_url)}')"` : "";
+  const photos = (Array.isArray(b.photo_urls) && b.photo_urls.length ? b.photo_urls : (b.photo_url ? [b.photo_url] : []));
   const specsLine = boatSpecsLine(b);
   return `<article class="boat-card" onclick="openBoatDetail('${b.id}')">
-    <div class="boat-card-photo" ${photoStyle}>
-      ${b.photo_url ? "" : `<div class="no-photo">⛵</div>`}
+    <div class="boat-card-photo" data-carousel="${b.id}">
+      ${photos.length ? photos.map((url,i)=>`<div class="boat-photo-slide ${i===0?"active":""}" style="background-image:url('${esc(url)}')"></div>`).join("") : `<div class="no-photo">⛵</div>`}
+      ${photos.length > 1 ? `<div class="boat-card-dots">${photos.map((_,i)=>`<span class="${i===0?"active":""}"></span>`).join("")}</div>` : ""}
       <button type="button" class="boat-card-fav" data-favorite-btn="${b.id}" onclick="toggleBoatFavorite('${b.id}', event)">${isFavoriteBoat(b.id) ? "♥" : "♡"}</button>
       <span class="boat-card-price">${priceLabel}</span>
     </div>
@@ -1282,10 +1293,27 @@ function boatCardHtml(b){
     </div>
   </article>`;
 }
+function startBoatCardCarousels(){
+  document.querySelectorAll("[data-carousel]").forEach(box=>{
+    const slides = [...box.querySelectorAll(".boat-photo-slide")];
+    const dots = [...box.querySelectorAll(".boat-card-dots span")];
+    if(slides.length < 2 || box.dataset.carouselRunning) return;
+    box.dataset.carouselRunning = "1";
+    let index = 0;
+    setInterval(()=>{
+      slides[index].classList.remove("active");
+      dots[index]?.classList.remove("active");
+      index = (index + 1) % slides.length;
+      slides[index].classList.add("active");
+      dots[index]?.classList.add("active");
+    }, 2800);
+  });
+}
 function renderHomeBoatStrip(){
   const box = document.querySelector("#homeBoatStrip");
   const list = boatCache.slice(0,4);
   box.innerHTML = list.length ? `<div class="boat-grid">${list.map(b=>boatCardHtml(b)).join("")}</div>` : `<div class="empty-note">${esc(t("rental.empty"))}</div>`;
+  startBoatCardCarousels();
 }
 async function preloadHomeBoats(){
   const {data} = await db.from("boats").select("*").order("created_at",{ascending:false}).limit(6);
@@ -1298,11 +1326,12 @@ window.openBoatDetail = async function(id){
   closeModal("boatFinderModal");
   const content = document.querySelector("#boatDetailContent");
   const half = Number(boat.price_half_day||0), day = Number(boat.price_per_day||boat.daily_price||boat.price||0);
-  const photoStyle = boat.photo_url ? `background-image:url('${esc(boat.photo_url)}')` : "background:linear-gradient(135deg,#173b51,#3f9c9a)";
+  const photos = (Array.isArray(boat.photo_urls) && boat.photo_urls.length ? boat.photo_urls : (boat.photo_url ? [boat.photo_url] : []));
   content.innerHTML = `
-    <div style="margin:-26px -26px 0;height:230px;${photoStyle};background-size:cover;background-position:center;border-radius:22px 22px 0 0;position:relative">
-      ${boat.photo_url ? "" : `<div style="position:absolute;inset:0;display:grid;place-items:center;font-size:42px;color:rgba(255,255,255,.85)">⛵</div>`}
-      <button class="close" type="button" onclick="closeModal('boatDetailModal')" style="position:absolute;top:14px;right:14px;background:rgba(255,255,255,.92)">×</button>
+    <div class="boat-detail-photo" style="margin:-26px -26px 0;height:230px;border-radius:22px 22px 0 0;overflow:hidden;${photos.length?"":"background:linear-gradient(135deg,#173b51,#3f9c9a)"}">
+      ${photos.length ? photos.map((url,i)=>`<div class="boat-photo-slide ${i===0?"active":""}" data-detail-slide style="background-image:url('${esc(url)}')"></div>`).join("") : `<div style="position:absolute;inset:0;display:grid;place-items:center;font-size:42px;color:rgba(255,255,255,.85)">⛵</div>`}
+      ${photos.length > 1 ? `<button type="button" class="boat-carousel-arrow prev" onclick="stepBoatDetailPhoto(-1)">‹</button><button type="button" class="boat-carousel-arrow next" onclick="stepBoatDetailPhoto(1)">›</button><div class="boat-card-dots" data-detail-dots>${photos.map((_,i)=>`<span class="${i===0?"active":""}"></span>`).join("")}</div>` : ""}
+      <button class="close" type="button" onclick="closeModal('boatDetailModal')" style="position:absolute;top:14px;right:14px;background:rgba(255,255,255,.92);z-index:3">×</button>
     </div>
     <div style="padding-top:18px">
       <small style="color:var(--muted);font-weight:800;letter-spacing:.05em;text-transform:uppercase;font-size:11px">${esc(t("boatFinder.eyebrow"))}</small>
@@ -1322,7 +1351,19 @@ window.openBoatDetail = async function(id){
       <p class="muted">${esc(boat.description||t("boatDetail.noDescription"))}</p>
       <button class="primary wide" onclick="closeModal('boatDetailModal');openBookingFor(null,'${esc(String(boat.name||"Bateau").replace(/'/g,"\\'"))}','${esc(String(boat.home_port||"").replace(/'/g,"\\'"))}','boat_rental')">${esc(t("boatDetail.request"))}</button>
     </div>`;
+  boatDetailPhotoIndex = 0;
   openModal("boatDetailModal");
+};
+let boatDetailPhotoIndex = 0;
+window.stepBoatDetailPhoto = function(dir){
+  const slides = [...document.querySelectorAll("[data-detail-slide]")];
+  const dots = [...document.querySelectorAll("[data-detail-dots] span")];
+  if(!slides.length) return;
+  slides[boatDetailPhotoIndex].classList.remove("active");
+  dots[boatDetailPhotoIndex]?.classList.remove("active");
+  boatDetailPhotoIndex = (boatDetailPhotoIndex + dir + slides.length) % slides.length;
+  slides[boatDetailPhotoIndex].classList.add("active");
+  dots[boatDetailPhotoIndex]?.classList.add("active");
 };
 window.closeModal = closeModal;
 
