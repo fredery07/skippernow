@@ -1725,19 +1725,30 @@ async function renderClientPanel(panel){
         <button class="primary wide" type="submit">${esc(t("join.ownerCta"))}</button>
       </form>`;
     bindMyBoatActions();
-    document.querySelector("#boatPhotosInput").addEventListener("change", ()=>{
+    let boatPhotoFiles = [];
+    function renderBoatPhotosPreview(){
       const preview = document.querySelector("#boatPhotosPreview");
-      preview.innerHTML = "";
-      [...document.querySelector("#boatPhotosInput").files].slice(0,6).forEach(file=>{
+      preview.innerHTML = boatPhotoFiles.map((file,i)=>{
         const url = URL.createObjectURL(file);
-        preview.innerHTML += `<img src="${url}" style="width:64px;height:64px;object-fit:cover;border-radius:10px">`;
-      });
+        return `<div style="position:relative"><img src="${url}" style="width:64px;height:64px;object-fit:cover;border-radius:10px">
+          <button type="button" data-remove-boat-photo="${i}" style="position:absolute;top:-6px;right:-6px;width:20px;height:20px;border-radius:50%;background:#c0392b;color:#fff;border:0;font-size:12px;cursor:pointer;line-height:1">×</button></div>`;
+      }).join("") + (boatPhotoFiles.length < 6 ? `<div class="muted" style="align-self:center;font-size:12.5px">${boatPhotoFiles.length}/6</div>` : "");
+      preview.querySelectorAll("[data-remove-boat-photo]").forEach(btn=>btn.addEventListener("click", ()=>{
+        boatPhotoFiles.splice(Number(btn.dataset.removeBoatPhoto), 1);
+        renderBoatPhotosPreview();
+      }));
+    }
+    document.querySelector("#boatPhotosInput").addEventListener("change", ()=>{
+      const input = document.querySelector("#boatPhotosInput");
+      boatPhotoFiles = boatPhotoFiles.concat([...input.files]).slice(0,6);
+      input.value = "";
+      renderBoatPhotosPreview();
     });
     document.querySelector("#addBoatForm").addEventListener("submit", async e=>{
       e.preventDefault();
       const submitBtn = e.target.querySelector("button[type=submit]");
       submitBtn.disabled = true;
-      const photoFiles = [...document.querySelector("#boatPhotosInput").files].slice(0,6);
+      const photoFiles = boatPhotoFiles.slice(0,6);
       const photoUrls = [];
       for(const file of photoFiles){
         const path = `${currentUser.id}/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.\-_]/g,"_")}`;
@@ -2067,8 +2078,18 @@ function adminBoatCard(b, byId){
 function bindAdminBoatActions(){
   document.querySelectorAll("[data-delete-boat]").forEach(btn=>btn.addEventListener("click", async ()=>{
     if(!confirm(t("dash.delete")+" ?")) return;
-    const {error} = await db.from("boats").delete().eq("id", btn.dataset.deleteBoat);
-    if(error) alert(error.message); else renderAdminPanel("boats");
+    btn.disabled = true;
+    const {data:{session}} = await db.auth.getSession();
+    try{
+      const res = await fetch(SUPABASE_URL + "/functions/v1/delete-boat-admin", {
+        method: "POST",
+        headers: {"Content-Type":"application/json", "Authorization":"Bearer "+session.access_token, "apikey": SUPABASE_KEY},
+        body: JSON.stringify({boatId: btn.dataset.deleteBoat})
+      });
+      const j = await res.json();
+      if(!res.ok || !j.ok){ alert(j.error || "Erreur"); btn.disabled = false; return; }
+      renderAdminPanel("boats");
+    }catch(err){ alert(err.message); btn.disabled = false; }
   }));
 }
 
