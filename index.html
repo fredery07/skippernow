@@ -2124,7 +2124,7 @@ async function openConversationThread(clientId, skipperId){
 }
 
 function profileForm(profile, payout){
-  const isPro = ["skipper","provider"].includes(profile?.role);
+ const isPro = ["skipper","provider","owner"].includes(profile?.role);
   return `<div class="field"><label>${esc(t("account.nameLabel"))}</label><input id="profileName" value="${esc(profile?.full_name||"")}"></div>
     <div class="field"><label>${esc(profile?.role === "provider" ? t("account.zoneLabel") : t("account.portLabel"))}</label><input id="profilePort" value="${esc(profile?.home_port||"")}"></div>
     <div class="field"><label>${esc(t("account.phoneLabel"))}</label><input id="profilePhone" value="${esc(profile?.phone||"")}"></div>
