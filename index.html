@@ -1976,12 +1976,17 @@ ${!p.verified ? `<button class="small-btn fill" data-approve="${p.id}">${esc(t("
 }
 function adminBoatCard(b, byId){
   const owner = byId[String(b.client_id)];
+  const photo = b.photo_url || (Array.isArray(b.photo_urls) && b.photo_urls[0]) || "";
   return `<article class="request-card">
     <div class="request-top">
+      ${photo ? `<img src="${esc(photo)}" style="width:88px;height:88px;object-fit:cover;border-radius:12px;flex-shrink:0" onclick="window.open('${esc(photo)}','_blank')">` : `<div style="width:88px;height:88px;border-radius:12px;background:var(--mist);display:grid;place-items:center;font-size:28px;flex-shrink:0">⛵</div>`}
       <div>
         <h3>${esc(b.name||"—")}</h3>
-        <div class="muted">${esc(b.model||"")} · ${esc(b.home_port||"—")}${b.length_m?" · "+esc(b.length_m)+" m":""}</div>
-        <div class="muted">${esc(t("dash.owner"))}: ${esc(owner?.full_name||"—")}</div>
+        <div class="muted">${esc(b.model||"")}${b.boat_type?" · "+esc(t("boatDetail.type"+(b.boat_type==="sailboat"?"Sailboat":"Motorboat"))):""} · ${esc(b.home_port||"—")}</div>
+        <div class="muted">${b.length_m?b.length_m+" m · ":""}${b.capacity?b.capacity+" pers. · ":""}${b.cabins!=null?b.cabins+" cabines · ":""}${b.year_built?b.year_built:""}</div>
+        <div class="muted">${esc(t("dash.owner"))}: ${esc(owner?.full_name||"—")} · ${esc(owner?.contact_email||owner?.email||"—")}${b.skipper_included?` · ${esc(t("boatDetail.skipperIncluded"))}`:""}</div>
+        ${b.description ? `<div class="muted" style="margin-top:4px">${esc(b.description)}</div>` : ""}
+        ${Array.isArray(b.photo_urls) && b.photo_urls.length > 1 ? `<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">${b.photo_urls.map(u=>`<img src="${esc(u)}" style="width:48px;height:48px;object-fit:cover;border-radius:8px;cursor:pointer" onclick="window.open('${esc(u)}','_blank')">`).join("")}</div>` : ""}
       </div>
     </div>
     <div class="request-actions"><button class="small-btn danger" data-delete-boat="${b.id}">${esc(t("dash.delete"))}</button></div>
