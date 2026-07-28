@@ -43,6 +43,8 @@ nav{display:flex;align-items:center;justify-content:space-between;width:100%}
 .hero-bg.active{opacity:1}
 .hero-shade{background:linear-gradient(90deg,rgba(7,29,50,.68),rgba(7,29,50,.42) 45%,rgba(7,29,50,.15));z-index:1}
 .photo-band{height:340px;margin-top:64px;background-image:url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1800&q=85');background-size:cover;background-position:center;border-radius:28px 28px 0 0}
+.video-band{height:380px;overflow:hidden}
+.video-band video{width:100%;height:100%;object-fit:cover;display:block}
 .eyebrow{color:var(--aqua);font-weight:800;letter-spacing:.08em;text-transform:uppercase;font-size:13px}
 .hero h1{font-size:clamp(38px,5.5vw,66px);letter-spacing:-.04em;line-height:1.04;margin:16px 0}
 .hero p{font-size:19px;line-height:1.6;color:#d7e9e8;max-width:610px}
@@ -355,6 +357,7 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
   <div class="tabs" id="listingTabs">
     <button type="button" class="active" data-activity="skipper" data-i18n="tabs.skippers">Skippers</button>
     <button type="button" data-activity="day_sailor" data-i18n="tabs.daySailors">Marins à la journée</button>
+    <button type="button" data-activity="cleaning" data-i18n="tabs.cleaning">Prestataires</button>
   </div>
 
   <div class="cards" id="cards"></div>
@@ -383,7 +386,11 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
 
 </main>
 
-<div class="photo-band" aria-label="Voile"></div>
+<section class="video-band">
+  <video autoplay muted loop playsinline poster="https://images.pexels.com/videos/5124098/pexels-photo-5124098.jpeg?auto=compress&cs=tinysrgb&h=1080&fit=crop&w=1920" aria-label="Voilier naviguant au large">
+    <source src="https://videos.pexels.com/video-files/5124098/5124098-hd_1920_1080_30fps.mp4" type="video/mp4">
+  </video>
+</section>
 <footer>
   <div class="shell">
     <div class="footer-grid">
@@ -605,6 +612,9 @@ const I18N = {
     "rental.examplesTitle":"Dernières annonces","rental.empty":"Aucun bateau publié pour le moment. Soyez le premier propriétaire à proposer le vôtre !",
     "results.skippersHeading":"Skippers disponibles","results.skippersSub":"Professionnels vérifiés près de votre port de départ",
     "results.daySailorsHeading":"Marins à la journée disponibles","results.daySailorsSub":"Aide à bord et missions ponctuelles près de votre port de départ",
+    "results.cleaningHeading":"Prestataires disponibles","results.cleaningSub":"Nettoyage, services à quai et entretien près de votre port de départ",
+    "results.count.cleaning.one":"1 prestataire","results.count.cleaning.other":"{n} prestataires",
+    "results.emptyCleaningText":"Aucun prestataire vérifié sur ce port pour l'instant. Vous proposez du nettoyage ou des services à quai sur la Côte d'Azur ? Rejoignez SkipperNow dès maintenant.",
     "results.empty":"Aucun profil vérifié pour cette recherche.",
     "results.emptyTitle":"Soyez parmi les premiers !",
     "results.emptySkipperText":"Aucun skipper vérifié sur ce port pour l'instant. Vous êtes skipper professionnel sur la Côte d'Azur ? Rejoignez SkipperNow dès maintenant.",
@@ -612,7 +622,7 @@ const I18N = {
     "results.emptyCtaDaySailor":"Devenir marin à la journée",
     "results.count.skipper.one":"1 skipper","results.count.skipper.other":"{n} skippers",
     "results.count.day_sailor.one":"1 marin à la journée","results.count.day_sailor.other":"{n} marins à la journée",
-    "tabs.skippers":"Skippers","tabs.daySailors":"Marins à la journée",
+    "tabs.skippers":"Skippers","tabs.daySailors":"Marins à la journée","tabs.cleaning":"Prestataires",
     "card.experience":"an(s) d'expérience","card.priceOnRequest":"Sur demande","card.priceNote":"tarif confirmé avant réservation","card.priceFrom":"À partir de","card.verifiedBadge":"Vérifié",
     "stats.missions":"missions réalisées","stats.pros":"professionnels vérifiés","stats.rating":"note moyenne",
     "card.available":"Disponible","card.unavailable":"Indisponible","card.unavailableOn":"Indisponible le","card.viewProfile":"Voir le profil",
@@ -725,6 +735,9 @@ const I18N = {
     "rental.examplesTitle":"Latest listings","rental.empty":"No boats published yet. Be the first owner to list yours!",
     "results.skippersHeading":"Available skippers","results.skippersSub":"Verified professionals near your departure port",
     "results.daySailorsHeading":"Available day sailors","results.daySailorsSub":"Hands-on help and one-off jobs near your departure port",
+    "results.cleaningHeading":"Available service providers","results.cleaningSub":"Cleaning, dock services and maintenance near your departure port",
+    "results.count.cleaning.one":"1 service provider","results.count.cleaning.other":"{n} service providers",
+    "results.emptyCleaningText":"No verified service provider at this port yet. Do you offer cleaning or dock services on the Côte d'Azur? Join SkipperNow now.",
     "results.empty":"No verified profile for this search.",
     "results.emptyTitle":"Be one of the first!",
     "results.emptySkipperText":"No verified skipper at this port yet. Are you a professional skipper on the Côte d'Azur? Join SkipperNow now.",
@@ -732,7 +745,7 @@ const I18N = {
     "results.emptyCtaDaySailor":"Become a day sailor",
     "results.count.skipper.one":"1 skipper","results.count.skipper.other":"{n} skippers",
     "results.count.day_sailor.one":"1 day sailor","results.count.day_sailor.other":"{n} day sailors",
-    "tabs.skippers":"Skippers","tabs.daySailors":"Day sailors",
+    "tabs.skippers":"Skippers","tabs.daySailors":"Day sailors","tabs.cleaning":"Service providers",
     "card.experience":"year(s) of experience","card.priceOnRequest":"On request","card.priceNote":"price confirmed before booking","card.priceFrom":"From","card.verifiedBadge":"Verified",
     "stats.missions":"jobs completed","stats.pros":"verified professionals","stats.rating":"average rating",
     "card.available":"Available","card.unavailable":"Unavailable","card.unavailableOn":"Unavailable on","card.viewProfile":"View profile",
@@ -844,6 +857,9 @@ const I18N = {
     "rental.examplesTitle":"Últimos anuncios","rental.empty":"Todavía no hay barcos publicados. ¡Sé el primer propietario en publicar el tuyo!",
     "results.skippersHeading":"Skippers disponibles","results.skippersSub":"Profesionales verificados cerca de tu puerto de salida",
     "results.daySailorsHeading":"Marineros por día disponibles","results.daySailorsSub":"Ayuda a bordo y trabajos puntuales cerca de tu puerto de salida",
+    "results.cleaningHeading":"Prestadores disponibles","results.cleaningSub":"Limpieza, servicios de puerto y mantenimiento cerca de tu puerto de salida",
+    "results.count.cleaning.one":"1 prestador","results.count.cleaning.other":"{n} prestadores",
+    "results.emptyCleaningText":"Todavía no hay prestador verificado en este puerto. ¿Ofreces limpieza o servicios de puerto en la Costa Azul? Únete a SkipperNow ahora.",
     "results.empty":"Ningún perfil verificado para esta búsqueda.",
     "results.emptyTitle":"¡Sé de los primeros!",
     "results.emptySkipperText":"Todavía no hay skipper verificado en este puerto. ¿Eres skipper profesional en la Costa Azul? Únete a SkipperNow ahora.",
@@ -851,7 +867,7 @@ const I18N = {
     "results.emptyCtaDaySailor":"Ser marinero por día",
     "results.count.skipper.one":"1 skipper","results.count.skipper.other":"{n} skippers",
     "results.count.day_sailor.one":"1 marinero por día","results.count.day_sailor.other":"{n} marineros por día",
-    "tabs.skippers":"Skippers","tabs.daySailors":"Marineros por día",
+    "tabs.skippers":"Skippers","tabs.daySailors":"Marineros por día","tabs.cleaning":"Prestadores",
     "card.experience":"año(s) de experiencia","card.priceOnRequest":"A consultar","card.priceNote":"precio confirmado antes de la reserva","card.priceFrom":"Desde","card.verifiedBadge":"Verificado",
     "stats.missions":"servicios realizados","stats.pros":"profesionales verificados","stats.rating":"valoración media",
     "card.available":"Disponible","card.unavailable":"No disponible","card.unavailableOn":"No disponible el","card.viewProfile":"Ver perfil",
@@ -1002,6 +1018,12 @@ document.querySelectorAll(".modal").forEach(m=>m.addEventListener("click",e=>{if
 const ACTIVITY_LABEL_KEY = {skipper:"activity.skipper",cleaning:"activity.cleaning",dock_service:"activity.cleaning",shipyard:"activity.shipyard",day_sailor:"activity.daySailor"};
 function activityLabel(activity){ return t(ACTIVITY_LABEL_KEY[activity] || "activity.cleaning"); }
 
+const TAB_CONFIG = {
+  skipper:{icon:"⚓",headingKey:"results.skippersHeading",subKey:"results.skippersSub",countKey:"skipper",emptyTextKey:"results.emptySkipperText",ctaLabelKey:"join.skipperCta",ctaRole:"skipper"},
+  day_sailor:{icon:"👷",headingKey:"results.daySailorsHeading",subKey:"results.daySailorsSub",countKey:"day_sailor",emptyTextKey:"results.emptyDaySailorText",ctaLabelKey:"results.emptyCtaDaySailor",ctaRole:"provider"},
+  cleaning:{icon:"🧽",headingKey:"results.cleaningHeading",subKey:"results.cleaningSub",countKey:"cleaning",emptyTextKey:"results.emptyCleaningText",ctaLabelKey:"join.providerCta",ctaRole:"provider"}
+};
+
 const POPULAR_PORTS = [
   ["Port de Cannes","Cannes, France",43.5513,7.0174],["Port Vauban","Antibes, France",43.5854,7.1282],
   ["Vieux-Port de Golfe-Juan","Golfe-Juan, France",43.5616,7.0750],["Port de Nice","Nice, France",43.6933,7.2844],
@@ -1052,13 +1074,9 @@ async function switchActivityTab(activity){
   document.querySelectorAll("#listingTabs button").forEach(b=>b.classList.toggle("active", b.dataset.activity===activity));
   const heading = document.querySelector("#resultsHeading");
   const sub = document.querySelector("#resultsSub");
-  if(activity === "day_sailor"){
-    heading.textContent = t("results.daySailorsHeading");
-    sub.textContent = t("results.daySailorsSub");
-  }else{
-    heading.textContent = t("results.skippersHeading");
-    sub.textContent = t("results.skippersSub");
-  }
+  const cfg = TAB_CONFIG[activity] || TAB_CONFIG.skipper;
+  heading.textContent = t(cfg.headingKey);
+  sub.textContent = t(cfg.subKey);
   await loadListings();
 }
 
@@ -1110,20 +1128,18 @@ async function loadListings(){
   const box = document.querySelector("#cards");
   const emptyBox = document.querySelector("#emptyResults");
   const countBox = document.querySelector("#resultCount");
-  countBox.textContent = tCount("results.count." + (activeActivity==="skipper"?"skipper":"day_sailor"), list.length);
+  const cfg = TAB_CONFIG[activeActivity] || TAB_CONFIG.skipper;
+  countBox.textContent = tCount("results.count." + cfg.countKey, list.length);
 
   if(!list.length){
     box.innerHTML = "";
     emptyBox.style.display = "block";
     emptyBox.className = "empty-cta";
-    const isDaySailor = activeActivity === "day_sailor";
-    const ctaRole = isDaySailor ? "provider" : "skipper";
-    const ctaLabel = isDaySailor ? t("results.emptyCtaDaySailor") : t("join.skipperCta");
     emptyBox.innerHTML = `
-      <div class="empty-icon">${isDaySailor ? "👷" : "⚓"}</div>
+      <div class="empty-icon">${cfg.icon}</div>
       <h3>${esc(t("results.emptyTitle"))}</h3>
-      <p>${esc(isDaySailor ? t("results.emptyDaySailorText") : t("results.emptySkipperText"))}</p>
-      <button class="primary" type="button" data-role="${ctaRole}">${esc(ctaLabel)}</button>
+      <p>${esc(t(cfg.emptyTextKey))}</p>
+      <button class="primary" type="button" data-role="${cfg.ctaRole}">${esc(t(cfg.ctaLabelKey))}</button>
     `;
     emptyBox.querySelector("[data-role]").addEventListener("click", (e)=>openAccountModal("create", e.currentTarget.dataset.role));
     return;
@@ -1134,7 +1150,7 @@ async function loadListings(){
     const bg = p.profile_photo_url ? `style="background-image:url('${esc(p.profile_photo_url)}')"` : "";
     return `<article class="card">
       <div class="photo" ${bg}>
-        ${p.profile_photo_url ? "" : `<div class="avatar">${activeActivity==="day_sailor"?"👷":"⚓"}</div>`}
+        ${p.profile_photo_url ? "" : `<div class="avatar">${cfg.icon}</div>`}
         <span class="online ${unavailable?"off":""}">● ${unavailable ? esc(t("card.unavailableOn"))+" "+new Date(chosenDate+"T12:00:00").toLocaleDateString(currentLang) : esc(t("card.available"))}</span>
       </div>
       <div class="content">
@@ -2207,8 +2223,9 @@ function bindProfileForm(){
 function refreshDynamicTexts(){
   const heading = document.querySelector("#resultsHeading");
   const sub = document.querySelector("#resultsSub");
-  if(activeActivity === "day_sailor"){ heading.textContent = t("results.daySailorsHeading"); sub.textContent = t("results.daySailorsSub"); }
-  else { heading.textContent = t("results.skippersHeading"); sub.textContent = t("results.skippersSub"); }
+  const cfg = TAB_CONFIG[activeActivity] || TAB_CONFIG.skipper;
+  heading.textContent = t(cfg.headingKey);
+  sub.textContent = t(cfg.subKey);
   loadListings();
   renderHomeBoatStrip();
   refreshAccountButton();
