@@ -195,6 +195,12 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
 .provider-spotlight-body h4{margin:0 0 4px;font-size:17px}
 .owner-cta-link{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;margin-top:16px;padding:13px 16px;border:1.5px dashed var(--line);border-radius:14px;background:var(--mist);color:var(--navy);font-weight:800;font-size:14px;cursor:pointer;text-align:left}
 .owner-cta-link:hover{border-color:var(--aqua);background:#eafaf9}
+.join-filler-card{border:1.5px dashed var(--line);background:var(--mist);display:flex;align-items:center;justify-content:center;padding:24px}
+.join-filler-inner{text-align:center}
+.join-filler-icon{width:48px;height:48px;margin:0 auto 10px;border-radius:14px;background:#fff;display:grid;place-items:center;font-size:22px}
+.join-filler-inner h3{font-size:17px;margin:0 0 6px}
+.join-filler-inner p{margin:0 0 14px}
+.join-filler-inner button{width:100%}
 .boat-card-photo .no-photo{position:absolute;inset:0;display:grid;place-items:center;font-size:34px;color:rgba(255,255,255,.85)}
 .boat-card-price{position:absolute;top:12px;right:12px;background:#fff;color:var(--navy);font-weight:900;padding:6px 12px;border-radius:999px;font-size:13px;box-shadow:0 4px 12px rgba(0,0,0,.18)}
 .boat-card-body{padding:16px}
@@ -1245,6 +1251,16 @@ async function loadListings(){
   }
   emptyBox.style.display = "none";
   resultsCache = list;
+  const fillerCount = list.length > 0 && list.length < 3 ? 3 - list.length : 0;
+  const fillerHtml = Array.from({length: fillerCount}).map(()=>`
+    <article class="card join-filler-card">
+      <div class="join-filler-inner">
+        <div class="join-filler-icon">${cfg.icon}</div>
+        <h3>${esc(t("results.emptyTitle"))}</h3>
+        <p class="meta">${esc(t(cfg.emptyTextKey))}</p>
+        <button class="primary" type="button" data-role="${cfg.ctaRole}">${esc(t(cfg.ctaLabelKey))}</button>
+      </div>
+    </article>`).join("");
   box.innerHTML = list.map((p,i)=>{
     const unavailable = blocked.has(p.id);
     const bg = p.profile_photo_url ? `style="background-image:url('${esc(p.profile_photo_url)}')"` : "";
@@ -1264,7 +1280,8 @@ async function loadListings(){
         </div>
       </div>
     </article>`;
-  }).join("");
+  }).join("") + fillerHtml;
+  box.querySelectorAll(".join-filler-card [data-role]").forEach(btn=>btn.addEventListener("click", (e)=>openAccountModal("create", e.currentTarget.dataset.role)));
 }
 
 document.querySelector("#searchForm").addEventListener("submit", e=>{
