@@ -187,8 +187,10 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
 .boat-card{background:#fff;border:1px solid var(--line);border-radius:20px;overflow:hidden;box-shadow:0 8px 24px rgba(16,43,63,.07);cursor:pointer;transition:.2s}
 .boat-card:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
 .boat-card-photo{height:170px;background:linear-gradient(135deg,#173b51,#3f9c9a);background-size:cover;background-position:center;position:relative}
-.provider-spotlight{height:190px;border-radius:16px;background:linear-gradient(135deg,#173b51,#3f9c9a);background-size:cover;background-position:center;position:relative;transition:background-image .4s ease}
-.provider-spotlight .ph-icon{position:absolute;inset:0;display:grid;place-items:center;font-size:34px;color:rgba(255,255,255,.85)}
+.provider-spotlight{height:190px;border-radius:16px;background:linear-gradient(135deg,#173b51,#3f9c9a);background-size:cover;background-position:center;position:relative;transition:opacity .25s ease}
+.provider-spotlight-badge{position:absolute;top:12px;left:12px;background:rgba(255,255,255,.94);color:var(--ok);font-weight:800;font-size:12px;padding:5px 10px;border-radius:20px;box-shadow:0 4px 10px rgba(0,0,0,.15)}
+.provider-spotlight-rating{position:absolute;bottom:12px;right:12px;background:rgba(7,29,50,.72);color:#ffce54;font-weight:800;font-size:13px;padding:5px 10px;border-radius:20px}
+.provider-spotlight .ph-icon{position:absolute;inset:0;display:grid;place-items:center;font-size:42px;color:rgba(255,255,255,.85)}
 .provider-spotlight-body{padding:14px 2px 0}
 .provider-spotlight-body h4{margin:0 0 4px;font-size:17px}
 .boat-card-photo .no-photo{position:absolute;inset:0;display:grid;place-items:center;font-size:34px;color:rgba(255,255,255,.85)}
@@ -1443,22 +1445,33 @@ function renderHomeProvidersStrip(){
   const box = document.querySelector("#homeProvidersStrip");
   if(!homeProvidersCache.length){ box.innerHTML = `<div class="empty-note">${esc(t("providersShowcase.empty"))}</div>`; return; }
   homeProvidersIndex = 0;
+  resultsCache = resultsCache.concat(homeProvidersCache);
   box.innerHTML = `
-    <div class="provider-spotlight" id="providerSpotlightPhoto"></div>
+    <div class="provider-spotlight" id="providerSpotlightPhoto">
+      <span class="provider-spotlight-badge">✓ ${esc(t("card.verifiedBadge"))}</span>
+      <span class="provider-spotlight-rating" id="providerSpotlightRating"></span>
+    </div>
     <div class="provider-spotlight-body">
       <h4 id="providerSpotlightName"></h4>
       <div class="muted" id="providerSpotlightMeta"></div>
+      <button class="small-btn fill" id="providerSpotlightCta" type="button" style="margin-top:10px">${esc(t("card.viewProfile"))}</button>
     </div>
     <div class="boat-card-dots" id="providerSpotlightDots" style="position:static;margin-top:10px;justify-content:flex-start"></div>`;
   renderProviderSpotlight();
   if(homeProvidersCache.length > 1 && !box.dataset.carouselRunning){
     box.dataset.carouselRunning = "1";
     setInterval(()=>{
-      homeProvidersIndex = (homeProvidersIndex + 1) % homeProvidersCache.length;
-      renderProviderSpotlight();
-    }, 3200);
+      const photo = document.querySelector("#providerSpotlightPhoto");
+      if(photo) photo.style.opacity = "0";
+      setTimeout(()=>{
+        homeProvidersIndex = (homeProvidersIndex + 1) % homeProvidersCache.length;
+        renderProviderSpotlight();
+        if(photo) photo.style.opacity = "1";
+      }, 250);
+    }, 3400);
   }
 }
+const ACTIVITY_ICON = {skipper:"⚓",cleaning:"🧽",dock_service:"🧽",shipyard:"🛠️",day_sailor:"👷"};
 function renderProviderSpotlight(){
   const p = homeProvidersCache[homeProvidersIndex];
   if(!p) return;
@@ -1466,9 +1479,14 @@ function renderProviderSpotlight(){
   if(!photo) return;
   const activity = p.provider_activity || "skipper";
   photo.style.backgroundImage = p.profile_photo_url ? `url('${esc(p.profile_photo_url)}')` : "";
-  photo.innerHTML = p.profile_photo_url ? "" : `<div class="ph-icon">⚓</div>`;
+  const iconEl = photo.querySelector(".ph-icon");
+  if(iconEl) iconEl.remove();
+  if(!p.profile_photo_url) photo.insertAdjacentHTML("afterbegin", `<div class="ph-icon">${ACTIVITY_ICON[activity]||"⚓"}</div>`);
   document.querySelector("#providerSpotlightName").textContent = p.full_name || "—";
   document.querySelector("#providerSpotlightMeta").textContent = `${activityLabel(activity)} · ${p.home_port||"—"}`;
+  document.querySelector("#providerSpotlightRating").textContent = `★ ${Number(p.rating||5).toFixed(1)}`;
+  const cta = document.querySelector("#providerSpotlightCta");
+  if(cta) cta.onclick = ()=>openProfileDetail(p.id);
   const dots = document.querySelector("#providerSpotlightDots");
   if(dots) dots.innerHTML = homeProvidersCache.map((_,i)=>`<span class="${i===homeProvidersIndex?"active":""}"></span>`).join("");
 }
