@@ -466,6 +466,7 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
         <option value="" data-i18n="boatFinder.allTypes">Tous les types</option>
         <option value="sailboat" data-i18n="boatDetail.typeSailboat">Voilier</option>
         <option value="motorboat" data-i18n="boatDetail.typeMotorboat">Bateau à moteur</option>
+        <option value="rib" data-i18n="boatDetail.typeRib">Semi-rigide</option>
       </select>
       <input id="boatFinderCapacityInput" type="number" min="1" step="1" data-i18n-placeholder="boatFinder.minCapacity" placeholder="Capacité min." style="width:130px;padding:11px 14px;border:1px solid var(--line);border-radius:12px">
     </div>
@@ -674,7 +675,7 @@ const I18N = {
     "results.noProvider":"Aucun prestataire disponible pour ce service pour le moment.",
     "boatFinder.eyebrow":"LOCATION DE BATEAUX","boatFinder.title":"Bateaux disponibles","boatFinder.empty":"Aucun bateau ne correspond à votre recherche.","boatFinder.allTypes":"Tous les types","boatFinder.minCapacity":"Capacité min.",
     "boatDetail.model":"Modèle","boatDetail.port":"Port d'attache","boatDetail.length":"Longueur","boatDetail.halfDay":"Demi-journée","boatDetail.fullDay":"Journée",
-    "boatDetail.type":"Type de bateau","boatDetail.typeSailboat":"Voilier","boatDetail.typeMotorboat":"Bateau à moteur",
+    "boatDetail.type":"Type de bateau","boatDetail.typeSailboat":"Voilier","boatDetail.typeMotorboat":"Yacht à moteur","boatDetail.typeRib":"Semi-rigide",
     "boatDetail.capacity":"Capacité (personnes)","boatDetail.pax":"pers.","boatDetail.cabinsField":"Nombre de cabines","boatDetail.cabins":"cabines","boatDetail.cabin":"cabine","boatDetail.year":"Année",
     "boatDetail.skipperIncluded":"Skipper inclus","boatDetail.skipperIncludedTag":"Skipper inclus","boatDetail.skipperOptionalTag":"Skipper en option",
     "boatDetail.onRequest":"Sur demande","boatDetail.description":"Description","boatDetail.noDescription":"Aucune description renseignée.","boatDetail.photos":"Photos (jusqu'à 6)",
@@ -797,7 +798,7 @@ const I18N = {
     "results.noProvider":"No service provider available for this service yet.",
     "boatFinder.eyebrow":"BOAT RENTALS","boatFinder.title":"Available boats","boatFinder.empty":"No boats match your search.","boatFinder.allTypes":"All types","boatFinder.minCapacity":"Min. capacity",
     "boatDetail.model":"Model","boatDetail.port":"Home port","boatDetail.length":"Length","boatDetail.halfDay":"Half day","boatDetail.fullDay":"Full day",
-    "boatDetail.type":"Boat type","boatDetail.typeSailboat":"Sailboat","boatDetail.typeMotorboat":"Motorboat",
+    "boatDetail.type":"Boat type","boatDetail.typeSailboat":"Sailboat","boatDetail.typeMotorboat":"Motor yacht","boatDetail.typeRib":"RIB / inflatable",
     "boatDetail.capacity":"Capacity (people)","boatDetail.pax":"pax","boatDetail.cabinsField":"Number of cabins","boatDetail.cabins":"cabins","boatDetail.cabin":"cabin","boatDetail.year":"Year",
     "boatDetail.skipperIncluded":"Skipper included","boatDetail.skipperIncludedTag":"Skipper included","boatDetail.skipperOptionalTag":"Skipper optional",
     "boatDetail.onRequest":"On request","boatDetail.description":"Description","boatDetail.noDescription":"No description provided.","boatDetail.photos":"Photos (up to 6)",
@@ -919,7 +920,7 @@ const I18N = {
     "results.noProvider":"Todavía no hay prestadores disponibles para este servicio.",
     "boatFinder.eyebrow":"ALQUILER DE BARCOS","boatFinder.title":"Barcos disponibles","boatFinder.empty":"Ningún barco coincide con tu búsqueda.","boatFinder.allTypes":"Todos los tipos","boatFinder.minCapacity":"Capacidad mín.",
     "boatDetail.model":"Modelo","boatDetail.port":"Puerto base","boatDetail.length":"Eslora","boatDetail.halfDay":"Medio día","boatDetail.fullDay":"Día completo",
-    "boatDetail.type":"Tipo de barco","boatDetail.typeSailboat":"Velero","boatDetail.typeMotorboat":"Barco a motor",
+    "boatDetail.type":"Tipo de barco","boatDetail.typeSailboat":"Velero","boatDetail.typeMotorboat":"Yate a motor","boatDetail.typeRib":"Semirrígida",
     "boatDetail.capacity":"Capacidad (personas)","boatDetail.pax":"pers.","boatDetail.cabinsField":"Número de cabinas","boatDetail.cabins":"cabinas","boatDetail.cabin":"cabina","boatDetail.year":"Año",
     "boatDetail.skipperIncluded":"Skipper incluido","boatDetail.skipperIncludedTag":"Skipper incluido","boatDetail.skipperOptionalTag":"Skipper opcional",
     "boatDetail.onRequest":"A consultar","boatDetail.description":"Descripción","boatDetail.noDescription":"Sin descripción disponible.","boatDetail.photos":"Fotos (hasta 6)",
@@ -1351,9 +1352,13 @@ async function renderBoatResults(){
   box.innerHTML = list.length ? list.map(b=>boatCardHtml(b)).join("") : `<div class="empty-note">${esc(t("boatFinder.empty"))}</div>`;
   startBoatCardCarousels();
 }
+function boatTypeLabel(type){
+  const key = type === "motorboat" ? "boatDetail.typeMotorboat" : type === "rib" ? "boatDetail.typeRib" : "boatDetail.typeSailboat";
+  return t(key);
+}
 function boatSpecsLine(b){
   const parts = [];
-  if(b.boat_type) parts.push(t(b.boat_type === "motorboat" ? "boatDetail.typeMotorboat" : "boatDetail.typeSailboat"));
+  if(b.boat_type) parts.push(boatTypeLabel(b.boat_type));
   if(b.skipper_included !== null && b.skipper_included !== undefined) parts.push(t(b.skipper_included ? "boatDetail.skipperIncludedTag" : "boatDetail.skipperOptionalTag"));
   if(b.capacity) parts.push(`${b.capacity} ${esc(t("boatDetail.pax"))}`);
   if(b.cabins !== null && b.cabins !== undefined) parts.push(`${b.cabins} ${esc(t(b.cabins===1?"boatDetail.cabin":"boatDetail.cabins"))}`);
@@ -1847,6 +1852,7 @@ async function renderClientPanel(panel){
           <select id="boatTypeInput">
             <option value="sailboat" ${b.boat_type==="sailboat"?"selected":""}>${esc(t("boatDetail.typeSailboat"))}</option>
             <option value="motorboat" ${b.boat_type==="motorboat"?"selected":""}>${esc(t("boatDetail.typeMotorboat"))}</option>
+            <option value="rib" ${b.boat_type==="rib"?"selected":""}>${esc(t("boatDetail.typeRib"))}</option>
           </select>
         </div>
         <div class="field"><label>${esc(t("boatDetail.port"))}</label><input id="boatPortInput" value="${esc(b.home_port||"")}"></div>
@@ -2237,7 +2243,7 @@ function adminBoatCard(b, byId){
       ${photo ? `<img src="${esc(photo)}" style="width:88px;height:88px;object-fit:cover;border-radius:12px;flex-shrink:0" onclick="window.open('${esc(photo)}','_blank')">` : `<div style="width:88px;height:88px;border-radius:12px;background:var(--mist);display:grid;place-items:center;font-size:28px;flex-shrink:0">⛵</div>`}
       <div>
         <h3>${esc(b.name||"—")}</h3>
-        <div class="muted">${esc(b.model||"")}${b.boat_type?" · "+esc(t("boatDetail.type"+(b.boat_type==="sailboat"?"Sailboat":"Motorboat"))):""} · ${esc(b.home_port||"—")}</div>
+        <div class="muted">${esc(b.model||"")}${b.boat_type?" · "+esc(boatTypeLabel(b.boat_type)):""} · ${esc(b.home_port||"—")}</div>
         <div class="muted">${b.length_m?b.length_m+" m · ":""}${b.capacity?b.capacity+" pers. · ":""}${b.cabins!=null?b.cabins+" cabines · ":""}${b.year_built?b.year_built:""}</div>
         <div class="muted">${esc(t("dash.owner"))}: ${esc(owner?.full_name||"—")} · ${esc(owner?.contact_email||owner?.email||"—")}${b.skipper_included?` · ${esc(t("boatDetail.skipperIncluded"))}`:""}</div>
         ${b.description ? `<div class="muted" style="margin-top:4px">${esc(b.description)}</div>` : ""}
