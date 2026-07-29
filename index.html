@@ -460,6 +460,15 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
       <div><small data-i18n="boatFinder.eyebrow">LOCATION DE BATEAUX</small><h2 data-i18n="boatFinder.title">Bateaux disponibles</h2></div>
       <button class="close" data-close="boatFinderModal" type="button">×</button>
     </div>
+    <div class="boat-finder-filters" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px">
+      <input id="boatFinderPortInput" type="search" autocomplete="off" data-i18n-placeholder="search.portPlaceholder" placeholder="Ex. Cannes, Miami, Ibiza…" style="flex:2;min-width:160px;padding:11px 14px;border:1px solid var(--line);border-radius:12px">
+      <select id="boatFinderTypeInput" style="flex:1;min-width:140px;padding:11px 14px;border:1px solid var(--line);border-radius:12px">
+        <option value="" data-i18n="boatFinder.allTypes">Tous les types</option>
+        <option value="sailboat" data-i18n="boatDetail.typeSailboat">Voilier</option>
+        <option value="motorboat" data-i18n="boatDetail.typeMotorboat">Bateau à moteur</option>
+      </select>
+      <input id="boatFinderCapacityInput" type="number" min="1" step="1" data-i18n-placeholder="boatFinder.minCapacity" placeholder="Capacité min." style="width:130px;padding:11px 14px;border:1px solid var(--line);border-radius:12px">
+    </div>
     <div id="boatFinderResults" class="boat-grid"></div>
   </div>
 </div>
@@ -663,7 +672,7 @@ const I18N = {
     "activity.daySailor":"Marin à la journée","activity.daySailorDesc":"Aide à bord, manutention, convoyage court.",
     "activity.skipper":"Skipper professionnel","activity.skipperDesc":"Sortie, location, convoyage et prise en main du bateau.",
     "results.noProvider":"Aucun prestataire disponible pour ce service pour le moment.",
-    "boatFinder.eyebrow":"LOCATION DE BATEAUX","boatFinder.title":"Bateaux disponibles","boatFinder.empty":"Aucun bateau en location pour le moment.",
+    "boatFinder.eyebrow":"LOCATION DE BATEAUX","boatFinder.title":"Bateaux disponibles","boatFinder.empty":"Aucun bateau ne correspond à votre recherche.","boatFinder.allTypes":"Tous les types","boatFinder.minCapacity":"Capacité min.",
     "boatDetail.model":"Modèle","boatDetail.port":"Port d'attache","boatDetail.length":"Longueur","boatDetail.halfDay":"Demi-journée","boatDetail.fullDay":"Journée",
     "boatDetail.type":"Type de bateau","boatDetail.typeSailboat":"Voilier","boatDetail.typeMotorboat":"Bateau à moteur",
     "boatDetail.capacity":"Capacité (personnes)","boatDetail.pax":"pers.","boatDetail.cabinsField":"Nombre de cabines","boatDetail.cabins":"cabines","boatDetail.cabin":"cabine","boatDetail.year":"Année",
@@ -786,7 +795,7 @@ const I18N = {
     "activity.daySailor":"Day sailor","activity.daySailorDesc":"Hands-on help, handling, short delivery trips.",
     "activity.skipper":"Professional skipper","activity.skipperDesc":"Trips, rentals, deliveries and boat familiarisation.",
     "results.noProvider":"No service provider available for this service yet.",
-    "boatFinder.eyebrow":"BOAT RENTALS","boatFinder.title":"Available boats","boatFinder.empty":"No boats available to rent yet.",
+    "boatFinder.eyebrow":"BOAT RENTALS","boatFinder.title":"Available boats","boatFinder.empty":"No boats match your search.","boatFinder.allTypes":"All types","boatFinder.minCapacity":"Min. capacity",
     "boatDetail.model":"Model","boatDetail.port":"Home port","boatDetail.length":"Length","boatDetail.halfDay":"Half day","boatDetail.fullDay":"Full day",
     "boatDetail.type":"Boat type","boatDetail.typeSailboat":"Sailboat","boatDetail.typeMotorboat":"Motorboat",
     "boatDetail.capacity":"Capacity (people)","boatDetail.pax":"pax","boatDetail.cabinsField":"Number of cabins","boatDetail.cabins":"cabins","boatDetail.cabin":"cabin","boatDetail.year":"Year",
@@ -908,7 +917,7 @@ const I18N = {
     "activity.daySailor":"Marinero por día","activity.daySailorDesc":"Ayuda a bordo, manipulación, traslados cortos.",
     "activity.skipper":"Skipper profesional","activity.skipperDesc":"Salidas, alquiler, traslados y familiarización con el barco.",
     "results.noProvider":"Todavía no hay prestadores disponibles para este servicio.",
-    "boatFinder.eyebrow":"ALQUILER DE BARCOS","boatFinder.title":"Barcos disponibles","boatFinder.empty":"Todavía no hay barcos en alquiler.",
+    "boatFinder.eyebrow":"ALQUILER DE BARCOS","boatFinder.title":"Barcos disponibles","boatFinder.empty":"Ningún barco coincide con tu búsqueda.","boatFinder.allTypes":"Todos los tipos","boatFinder.minCapacity":"Capacidad mín.",
     "boatDetail.model":"Modelo","boatDetail.port":"Puerto base","boatDetail.length":"Eslora","boatDetail.halfDay":"Medio día","boatDetail.fullDay":"Día completo",
     "boatDetail.type":"Tipo de barco","boatDetail.typeSailboat":"Velero","boatDetail.typeMotorboat":"Barco a motor",
     "boatDetail.capacity":"Capacidad (personas)","boatDetail.pax":"pers.","boatDetail.cabinsField":"Número de cabinas","boatDetail.cabins":"cabinas","boatDetail.cabin":"cabina","boatDetail.year":"Año",
@@ -1250,15 +1259,30 @@ async function openBoatFinder(){
   openModal("boatFinderModal");
   const box = document.querySelector("#boatFinderResults");
   box.innerHTML = `<div class="empty-note">…</div>`;
+  const finderPort = document.querySelector("#boatFinderPortInput");
+  if(portInput.value.trim()) finderPort.value = portInput.value.trim();
   const {data, error} = await db.from("boats").select("*").order("created_at",{ascending:false});
   if(error){ box.innerHTML = `<div class="empty-note">${esc(error.message)}</div>`; return; }
   boatCache = data || [];
   renderBoatResults();
+  if(!finderPort.dataset.bound){
+    finderPort.dataset.bound = "1";
+    finderPort.addEventListener("input", renderBoatResults);
+    document.querySelector("#boatFinderTypeInput").addEventListener("change", renderBoatResults);
+    document.querySelector("#boatFinderCapacityInput").addEventListener("input", renderBoatResults);
+  }
 }
 function renderBoatResults(){
   const box = document.querySelector("#boatFinderResults");
-  const portFilter = portInput.value.trim().toLowerCase();
-  const list = portFilter ? boatCache.filter(b=>(b.home_port||"").toLowerCase().includes(portFilter)) : boatCache;
+  const portFilter = (document.querySelector("#boatFinderPortInput")?.value || "").trim().toLowerCase();
+  const typeFilter = document.querySelector("#boatFinderTypeInput")?.value || "";
+  const capacityFilter = Number(document.querySelector("#boatFinderCapacityInput")?.value) || 0;
+  const list = boatCache.filter(b=>{
+    if(portFilter && !(b.home_port||"").toLowerCase().includes(portFilter)) return false;
+    if(typeFilter && b.boat_type !== typeFilter) return false;
+    if(capacityFilter && Number(b.capacity||0) < capacityFilter) return false;
+    return true;
+  });
   box.innerHTML = list.length ? list.map(b=>boatCardHtml(b)).join("") : `<div class="empty-note">${esc(t("boatFinder.empty"))}</div>`;
   startBoatCardCarousels();
 }
@@ -2033,11 +2057,12 @@ async function renderAdminPanel(panel){
       if(!error) await renderAdminPanel("commissions");
     });
   }else if(panel === "users"){
-     main.innerHTML = `<input id="userSearch" type="text" placeholder="Rechercher par nom ou email..." style="width:100%;padding:10px;margin-bottom:12px;border:1px solid var(--line);border-radius:8px;font-size:15px">` + (profiles.length ? `<div id="userCardsList">${profiles.map(p=>adminUserCard(p, missions)).join("")}</div>` : `<div class="empty-note">Aucun utilisateur</div>`);
+     const defaultCommission = Number(settings?.first_commission_percent ?? 15);
+     main.innerHTML = `<input id="userSearch" type="text" placeholder="Rechercher par nom ou email..." style="width:100%;padding:10px;margin-bottom:12px;border:1px solid var(--line);border-radius:8px;font-size:15px">` + (profiles.length ? `<div id="userCardsList">${profiles.map(p=>adminUserCard(p, missions, defaultCommission)).join("")}</div>` : `<div class="empty-note">Aucun utilisateur</div>`);
 document.querySelector("#userSearch").addEventListener("input", (e)=>{
   const q = e.target.value.trim().toLowerCase();
   const filtered = profiles.filter(p => (p.full_name||"").toLowerCase().includes(q) || (p.contact_email||p.email||"").toLowerCase().includes(q));
-  document.querySelector("#userCardsList").innerHTML = filtered.length ? filtered.map(p=>adminUserCard(p, missions)).join("") : `<div class="empty-note">Aucun résultat</div>`;
+  document.querySelector("#userCardsList").innerHTML = filtered.length ? filtered.map(p=>adminUserCard(p, missions, defaultCommission)).join("") : `<div class="empty-note">Aucun résultat</div>`;
   bindProfileActions();
 });
     bindProfileActions();
@@ -2110,8 +2135,9 @@ function bindAdminMissionActions(panel){
     if(error) alert(error.message); else renderAdminPanel(panel);
   }));
 }
-function adminUserCard(p, missions){
+function adminUserCard(p, missions, defaultCommission){
   const missionCount = missions.filter(m => String(m.client_id)===String(p.id) || String(m.skipper_id)===String(p.id)).length;
+  const isProfessional = ["skipper","provider"].includes(p.role);
   return `<article class="request-card">
     <div class="request-top">
       <div>
@@ -2122,6 +2148,13 @@ function adminUserCard(p, missions){
       </div>
       <span class="status-pill ${p.suspended?"danger":p.verified?"ok":""}">${p.suspended?esc(t("dash.suspended")):p.verified?"✓":"—"}</span>
     </div>
+    ${isProfessional ? `<div style="display:flex;align-items:center;gap:8px;margin-top:8px">
+      <label class="muted" style="font-size:12.5px;white-space:nowrap">${esc(t("dash.commissionProviderTitle"))}</label>
+      <input type="number" min="0" max="50" step="0.5" value="${Number(p.commission_percent ?? defaultCommission)}" data-commission-input="${p.id}" style="width:70px;padding:6px 8px;border:1px solid var(--line);border-radius:8px">
+      <span class="muted" style="font-size:12.5px">%</span>
+      <button class="small-btn" data-save-commission="${p.id}">${esc(t("dash.saveRate"))}</button>
+      <span class="ok-text" data-commission-msg="${p.id}" style="font-size:12.5px"></span>
+    </div>` : ""}
     <div class="request-actions">
 ${!p.verified ? `<button class="small-btn fill" data-approve="${p.id}">${esc(t("dash.approve"))}</button>` : (String(p.id)===String(currentUser.id) ? `` : `<button class="small-btn danger" data-suspend="${p.id}">${esc(t("dash.suspend"))}</button>`)}
       ${(p.suspended && String(p.id)!==String(currentUser.id)) ? `<button class="small-btn danger" data-delete-user="${p.id}">${esc(t("dash.delete"))}</button>` : ""}
@@ -2310,6 +2343,14 @@ function bindProfileActions(){
   }));
   document.querySelectorAll("[data-view-profile]").forEach(btn=>btn.addEventListener("click", ()=>{
     openProfileDetail(btn.dataset.viewProfile, true);
+  }));
+  document.querySelectorAll("[data-save-commission]").forEach(btn=>btn.addEventListener("click", async ()=>{
+    const id = btn.dataset.saveCommission;
+    const input = document.querySelector(`[data-commission-input="${id}"]`);
+    const msg = document.querySelector(`[data-commission-msg="${id}"]`);
+    const rate = Math.max(0, Math.min(50, Number(input.value)));
+    const {error} = await db.from("profiles").update({commission_percent: rate}).eq("id", id);
+    if(msg){ msg.style.color = error ? "#b42318" : "#08794e"; msg.textContent = error ? error.message : t("dash.saveRate"); }
   }));
   document.querySelectorAll("[data-view-boats]").forEach(btn=>btn.addEventListener("click", async ()=>{
     adminBoatsFilterOwnerId = btn.dataset.viewBoats;
