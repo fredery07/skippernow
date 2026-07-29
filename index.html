@@ -187,6 +187,10 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
 .boat-card{background:#fff;border:1px solid var(--line);border-radius:20px;overflow:hidden;box-shadow:0 8px 24px rgba(16,43,63,.07);cursor:pointer;transition:.2s}
 .boat-card:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
 .boat-card-photo{height:170px;background:linear-gradient(135deg,#173b51,#3f9c9a);background-size:cover;background-position:center;position:relative}
+.provider-spotlight{height:190px;border-radius:16px;background:linear-gradient(135deg,#173b51,#3f9c9a);background-size:cover;background-position:center;position:relative;transition:background-image .4s ease}
+.provider-spotlight .ph-icon{position:absolute;inset:0;display:grid;place-items:center;font-size:34px;color:rgba(255,255,255,.85)}
+.provider-spotlight-body{padding:14px 2px 0}
+.provider-spotlight-body h4{margin:0 0 4px;font-size:17px}
 .boat-card-photo .no-photo{position:absolute;inset:0;display:grid;place-items:center;font-size:34px;color:rgba(255,255,255,.85)}
 .boat-card-price{position:absolute;top:12px;right:12px;background:#fff;color:var(--navy);font-weight:900;padding:6px 12px;border-radius:999px;font-size:13px;box-shadow:0 4px 12px rgba(0,0,0,.18)}
 .boat-card-body{padding:16px}
@@ -338,12 +342,9 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
 
   <section class="rental-hub" id="rentalHub">
     <div class="rental-box">
-      <span class="pill-link">🚤 <span data-i18n="rental.badge">LOCATION DE BATEAUX</span></span>
-      <h3 data-i18n="rental.title">Mettre mon bateau en location</h3>
-      <p data-i18n="rental.text">Créez votre compte propriétaire, ajoutez photos, caractéristiques, port d'attache et disponibilités. Vous pourrez ensuite proposer la location avec ou sans skipper.</p>
-      <div class="cta-row">
-        <button class="primary" id="listBoatBtn" type="button" data-i18n="rental.cta">Mettre mon bateau en location</button>
-      </div>
+      <span class="pill-link">🧰 <span data-i18n="providersShowcase.badge">PRESTATAIRES INSCRITS</span></span>
+      <h3 data-i18n="providersShowcase.title">Nos professionnels vérifiés</h3>
+      <div id="homeProvidersStrip"><div class="empty-note" data-i18n="providersShowcase.empty">Aucun prestataire inscrit pour le moment.</div></div>
     </div>
     <div class="rental-box">
       <span class="pill-link">🌊 <span data-i18n="rental.examplesBadge">BATEAUX DISPONIBLES</span></span>
@@ -351,6 +352,9 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
       <div id="homeBoatStrip"><div class="empty-note" data-i18n="rental.empty">Aucun bateau publié pour le moment.</div></div>
     </div>
   </section>
+  <p style="text-align:center;margin:-20px 0 36px">
+    <button class="ghost" id="listBoatBtn" type="button" data-i18n="rental.cta">Mettre mon bateau en location</button>
+  </p>
 
   <section class="how" style="margin-top:36px">
     <h2 data-i18n="how.title">Comment ça marche ?</h2>
@@ -635,7 +639,7 @@ const I18N = {
     "search.portLabel":"PORT DE DÉPART — MONDE ENTIER","search.portPlaceholder":"Ex. Cannes, Miami, Ibiza…",
     "search.dateLabel":"DATE","search.durationLabel":"DURÉE","search.submit":"Rechercher",
     "duration.half":"Demi-journée","duration.day":"Journée","duration.multi":"Plusieurs jours",
-    "rental.badge":"LOCATION DE BATEAUX","rental.title":"Mettre mon bateau en location",
+    "rental.badge":"LOCATION DE BATEAUX","rental.title":"Mettre mon bateau en location","providersShowcase.badge":"PRESTATAIRES INSCRITS","providersShowcase.title":"Nos professionnels vérifiés","providersShowcase.empty":"Aucun prestataire inscrit pour le moment.",
     "rental.text":"Créez votre compte propriétaire, ajoutez photos, caractéristiques, port d'attache et disponibilités. Vous pourrez ensuite proposer la location avec ou sans skipper.",
     "rental.cta":"Mettre mon bateau en location","rental.examplesBadge":"BATEAUX DISPONIBLES",
     "rental.examplesTitle":"Dernières annonces","rental.empty":"Aucun bateau publié pour le moment. Soyez le premier propriétaire à proposer le vôtre !",
@@ -758,7 +762,7 @@ const I18N = {
     "search.portLabel":"DEPARTURE PORT — WORLDWIDE","search.portPlaceholder":"E.g. Cannes, Miami, Ibiza…",
     "search.dateLabel":"DATE","search.durationLabel":"DURATION","search.submit":"Search",
     "duration.half":"Half day","duration.day":"Full day","duration.multi":"Several days",
-    "rental.badge":"BOAT RENTALS","rental.title":"List my boat for rent",
+    "rental.badge":"BOAT RENTALS","rental.title":"List my boat for rent","providersShowcase.badge":"REGISTERED PROVIDERS","providersShowcase.title":"Our verified professionals","providersShowcase.empty":"No provider registered yet.",
     "rental.text":"Create an owner account, add photos, specifications, home port and availability. You can then offer your boat with or without a skipper.",
     "rental.cta":"List my boat for rent","rental.examplesBadge":"AVAILABLE BOATS",
     "rental.examplesTitle":"Latest listings","rental.empty":"No boats published yet. Be the first owner to list yours!",
@@ -880,7 +884,7 @@ const I18N = {
     "search.portLabel":"PUERTO DE SALIDA — TODO EL MUNDO","search.portPlaceholder":"Ej. Cannes, Miami, Ibiza…",
     "search.dateLabel":"FECHA","search.durationLabel":"DURACIÓN","search.submit":"Buscar",
     "duration.half":"Medio día","duration.day":"Día completo","duration.multi":"Varios días",
-    "rental.badge":"ALQUILER DE BARCOS","rental.title":"Poner mi barco en alquiler",
+    "rental.badge":"ALQUILER DE BARCOS","rental.title":"Poner mi barco en alquiler","providersShowcase.badge":"PRESTADORES REGISTRADOS","providersShowcase.title":"Nuestros profesionales verificados","providersShowcase.empty":"Todavía no hay ningún prestador registrado.",
     "rental.text":"Crea una cuenta de propietario, añade fotos, características, puerto base y disponibilidad. Luego podrás ofrecer tu barco con o sin skipper.",
     "rental.cta":"Poner mi barco en alquiler","rental.examplesBadge":"BARCOS DISPONIBLES",
     "rental.examplesTitle":"Últimos anuncios","rental.empty":"Todavía no hay barcos publicados. ¡Sé el primer propietario en publicar el tuyo!",
@@ -1427,6 +1431,46 @@ async function preloadHomeBoats(){
   const {data} = await db.from("boats").select("*").order("created_at",{ascending:false}).limit(6);
   boatCache = data || [];
   renderHomeBoatStrip();
+}
+let homeProvidersCache = [];
+let homeProvidersIndex = 0;
+async function preloadHomeProviders(){
+  const {data} = await db.from("profiles").select("*").eq("verified", true).in("role",["skipper","provider"]).order("created_at",{ascending:false}).limit(8);
+  homeProvidersCache = data || [];
+  renderHomeProvidersStrip();
+}
+function renderHomeProvidersStrip(){
+  const box = document.querySelector("#homeProvidersStrip");
+  if(!homeProvidersCache.length){ box.innerHTML = `<div class="empty-note">${esc(t("providersShowcase.empty"))}</div>`; return; }
+  homeProvidersIndex = 0;
+  box.innerHTML = `
+    <div class="provider-spotlight" id="providerSpotlightPhoto"></div>
+    <div class="provider-spotlight-body">
+      <h4 id="providerSpotlightName"></h4>
+      <div class="muted" id="providerSpotlightMeta"></div>
+    </div>
+    <div class="boat-card-dots" id="providerSpotlightDots" style="position:static;margin-top:10px;justify-content:flex-start"></div>`;
+  renderProviderSpotlight();
+  if(homeProvidersCache.length > 1 && !box.dataset.carouselRunning){
+    box.dataset.carouselRunning = "1";
+    setInterval(()=>{
+      homeProvidersIndex = (homeProvidersIndex + 1) % homeProvidersCache.length;
+      renderProviderSpotlight();
+    }, 3200);
+  }
+}
+function renderProviderSpotlight(){
+  const p = homeProvidersCache[homeProvidersIndex];
+  if(!p) return;
+  const photo = document.querySelector("#providerSpotlightPhoto");
+  if(!photo) return;
+  const activity = p.provider_activity || "skipper";
+  photo.style.backgroundImage = p.profile_photo_url ? `url('${esc(p.profile_photo_url)}')` : "";
+  photo.innerHTML = p.profile_photo_url ? "" : `<div class="ph-icon">⚓</div>`;
+  document.querySelector("#providerSpotlightName").textContent = p.full_name || "—";
+  document.querySelector("#providerSpotlightMeta").textContent = `${activityLabel(activity)} · ${p.home_port||"—"}`;
+  const dots = document.querySelector("#providerSpotlightDots");
+  if(dots) dots.innerHTML = homeProvidersCache.map((_,i)=>`<span class="${i===homeProvidersIndex?"active":""}"></span>`).join("");
 }
 window.openBoatDetail = async function(id){
   const boat = boatCache.find(b=>String(b.id)===String(id));
@@ -2688,6 +2732,7 @@ function startHeroCarousel(){
   if(currentUser) await loadProfile();
   refreshAccountButton();
   await preloadHomeBoats();
+  await preloadHomeProviders();
   await loadListings();
   await loadTrustStats();
 })();
