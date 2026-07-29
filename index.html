@@ -1058,6 +1058,25 @@ const POPULAR_PORTS = [
   ["Marina Ibiza","Ibiza, Espagne",38.9107,1.4350],["Port de Palma","Palma de Majorque, Espagne",39.5662,2.6388],
   ["Port of Miami","Miami, États-Unis",25.7740,-80.1700],["Marina Puerto Bahía","Las Terrenas, République dominicaine",19.1986,-69.4380]
 ];
+const PORT_AREA_GROUPS = [
+  ["antibes","juan les pins","juan-les-pins","port gallice","port vauban"],
+  ["cannes","le cannet","la bocca"],
+  ["golfe-juan","golfe juan","vallauris"],
+  ["nice","villefranche","saint-jean-cap-ferrat","saint jean cap ferrat"],
+  ["monaco","monte-carlo","monte carlo","cap-d'ail","cap d'ail"],
+  ["saint-tropez","saint tropez","gassin","ramatuelle"]
+];
+function portMatches(homePort, query){
+  const h = (homePort||"").toLowerCase();
+  const q = (query||"").trim().toLowerCase();
+  if(!q) return true;
+  if(h.includes(q)) return true;
+  for(const group of PORT_AREA_GROUPS){
+    const qInGroup = group.some(term=>q.includes(term) || term.includes(q));
+    if(qInGroup && group.some(term=>h.includes(term))) return true;
+  }
+  return false;
+}
 const portInput = document.querySelector("#portInput");
 const portSuggestions = document.querySelector("#portSuggestions");
 let portSearchTimer;
@@ -1150,7 +1169,7 @@ async function loadListings(){
   ]);
   const blocked = new Set((blocksRes.data||[]).map(x=>x.skipper_id));
   let list = profilesRes.data || [];
-  if(portFilter) list = list.filter(p => (p.home_port||"").toLowerCase().includes(portFilter.toLowerCase()));
+  if(portFilter) list = list.filter(p => portMatches(p.home_port, portFilter));
 
   const box = document.querySelector("#cards");
   const emptyBox = document.querySelector("#emptyResults");
@@ -1242,7 +1261,7 @@ function renderProviderResults(activity){
   const listBox = document.querySelector("#providerResultsList");
   if(!listBox) return;
   const portFilter = (document.querySelector("#providerPortFilter")?.value || "").trim().toLowerCase();
-  const list = providerResultsCache.filter(p => !portFilter || (p.home_port||"").toLowerCase().includes(portFilter));
+  const list = providerResultsCache.filter(p => portMatches(p.home_port, portFilter));
   resultsCache = resultsCache.concat(list);
   listBox.innerHTML = list.length ? `<div class="result-list">${list.map(p=>`
     <article class="result-card">
@@ -1289,7 +1308,7 @@ function renderBoatResults(){
   const typeFilter = document.querySelector("#boatFinderTypeInput")?.value || "";
   const capacityFilter = Number(document.querySelector("#boatFinderCapacityInput")?.value) || 0;
   const list = boatCache.filter(b=>{
-    if(portFilter && !(b.home_port||"").toLowerCase().includes(portFilter)) return false;
+    if(portFilter && !portMatches(b.home_port, portFilter)) return false;
     if(typeFilter && b.boat_type !== typeFilter) return false;
     if(capacityFilter && Number(b.capacity||0) < capacityFilter) return false;
     return true;
