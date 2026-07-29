@@ -209,7 +209,8 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
 .result-photo{width:70px;height:70px;border-radius:13px;object-fit:cover;background:var(--mist);display:grid;place-items:center;font-size:26px;flex:0 0 70px}
 .result-card h3{margin:0 0 4px;font-size:16px}
 .result-card p{margin:4px 0;font-size:13px;color:var(--muted);line-height:1.4}
-.back-link{border:0;background:none;color:var(--blue);font-weight:800;cursor:pointer;padding:0}
+.back-link{display:inline-flex;align-items:center;gap:6px;border:0;background:none;color:var(--blue);font-weight:800;cursor:pointer;padding:8px 0;margin-bottom:14px;font-size:14.5px}
+.back-link:hover{text-decoration:underline}
 
 .dash-shell{display:grid;grid-template-columns:210px 1fr;gap:20px}
 .dash-side{background:var(--navy);color:#fff;border-radius:20px;padding:18px;height:max-content;position:sticky;top:14px}
@@ -443,7 +444,7 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
       <div><small data-i18n="providerModal.eyebrow">SERVICES NAUTIQUES</small><h2 data-i18n="providerModal.title">Trouver un prestataire</h2></div>
       <button class="close" data-close="providerModal" type="button">×</button>
     </div>
-    <p class="muted" data-i18n="providerModal.intro">Choisissez le service dont vous avez besoin près de votre port.</p>
+    <p class="muted" id="providerModalIntro" data-i18n="providerModal.intro">Choisissez le service dont vous avez besoin près de votre port.</p>
     <div class="provider-grid" id="providerGrid">
       <button class="provider-service" data-activity="cleaning" type="button"><span class="provider-icon">🧽</span><b data-i18n="activity.cleaning">Préparation et services à quai</b><span class="desc" data-i18n="activity.cleaningDesc">Nettoyage, rinçage, avitaillement, amarrage et assistance au départ.</span></button>
       <button class="provider-service" data-activity="shipyard" type="button"><span class="provider-icon">🛠️</span><b data-i18n="activity.shipyard">Chantier et entretien</b><span class="desc" data-i18n="activity.shipyardDesc">Antifouling, peinture, petites réparations, mise à l'eau.</span></button>
@@ -681,7 +682,7 @@ const I18N = {
     "boatDetail.onRequest":"Sur demande","boatDetail.description":"Description","boatDetail.noDescription":"Aucune description renseignée.","boatDetail.photos":"Photos (jusqu'à 6)",
     "boatDetail.request":"Demander une réservation","boatDetail.close":"Fermer","boatDetail.ownListing":"C'est votre propre annonce — vous ne pouvez pas la réserver.",
     "account.eyebrow":"MON COMPTE","account.createTitle":"Créer votre activité sur SkipperNow","account.loginTitle":"Se connecter à SkipperNow",
-    "account.tabCreate":"Créer un compte","account.tabLogin":"Se connecter",
+    "account.tabCreate":"Créer un compte","account.tabLogin":"Se connecter","common.back":"Retour",
     "account.roleClient":"Client","account.roleClientDesc":"Réserver un skipper, un prestataire ou un bateau",
     "account.roleSkipper":"Skipper","account.roleSkipperDesc":"Recevoir des demandes de sortie et de convoyage",
     "account.roleProvider":"Prestataire","account.roleProviderDesc":"Nettoyage, quai, chantier ou marin à la journée",
@@ -804,7 +805,7 @@ const I18N = {
     "boatDetail.onRequest":"On request","boatDetail.description":"Description","boatDetail.noDescription":"No description provided.","boatDetail.photos":"Photos (up to 6)",
     "boatDetail.request":"Request a booking","boatDetail.close":"Close","boatDetail.ownListing":"This is your own listing — you can't book it.",
     "account.eyebrow":"MY ACCOUNT","account.createTitle":"Create your activity on SkipperNow","account.loginTitle":"Log in to SkipperNow",
-    "account.tabCreate":"Create an account","account.tabLogin":"Log in",
+    "account.tabCreate":"Create an account","account.tabLogin":"Log in","common.back":"Back",
     "account.roleClient":"Client","account.roleClientDesc":"Book a skipper, a service provider or a boat",
     "account.roleSkipper":"Skipper","account.roleSkipperDesc":"Receive trip and delivery requests",
     "account.roleProvider":"Service provider","account.roleProviderDesc":"Cleaning, dock, shipyard or day crew",
@@ -926,7 +927,7 @@ const I18N = {
     "boatDetail.onRequest":"A consultar","boatDetail.description":"Descripción","boatDetail.noDescription":"Sin descripción disponible.","boatDetail.photos":"Fotos (hasta 6)",
     "boatDetail.request":"Solicitar una reserva","boatDetail.close":"Cerrar","boatDetail.ownListing":"Este es tu propio anuncio — no puedes reservarlo.",
     "account.eyebrow":"MI CUENTA","account.createTitle":"Crea tu actividad en SkipperNow","account.loginTitle":"Iniciar sesión en SkipperNow",
-    "account.tabCreate":"Crear una cuenta","account.tabLogin":"Iniciar sesión",
+    "account.tabCreate":"Crear una cuenta","account.tabLogin":"Iniciar sesión","common.back":"Volver",
     "account.roleClient":"Cliente","account.roleClientDesc":"Reservar un skipper, un prestador o un barco",
     "account.roleSkipper":"Skipper","account.roleSkipperDesc":"Recibir solicitudes de salidas y traslados",
     "account.roleProvider":"Prestador","account.roleProviderDesc":"Limpieza, puerto, astillero o marinero por día",
@@ -1276,18 +1277,20 @@ document.querySelectorAll(".provider-service").forEach(btn=>{
 function showProviderCategories(){
   document.querySelector("#providerGrid").style.display = "grid";
   document.querySelector("#providerResults").style.display = "none";
+  document.querySelector("#providerModalIntro").style.display = "block";
 }
 async function showProviderResults(activity){
   document.querySelector("#providerGrid").style.display = "none";
+  document.querySelector("#providerModalIntro").style.display = "none";
   const box = document.querySelector("#providerResults");
   box.style.display = "block";
-  box.innerHTML = `<button class="back-link" type="button" onclick="showProviderCategories()">← ${esc(t("account.tabLogin")==="Log in"?"Back":"Retour")}</button><h3>${esc(activityLabel(activity))}</h3><div class="empty-note">…</div>`;
+  box.innerHTML = `<button class="back-link" type="button" onclick="showProviderCategories()">← ${esc(t("common.back"))}</button><h3>${esc(activityLabel(activity))}</h3><div class="empty-note">…</div>`;
   const activityFilter = activity === "cleaning" ? ["cleaning","dock_service"] : [activity];
   const {data, error} = await db.from("profiles").select("*")
     .eq("verified", true).eq("available", true).in("provider_activity", activityFilter).in("role",["skipper","provider"]);
   if(error){ box.querySelector(".empty-note").textContent = error.message; return; }
   providerResultsCache = data || [];
-  box.innerHTML = `<button class="back-link" type="button" onclick="showProviderCategories()">← Retour</button><h3 style="margin-top:10px">${esc(activityLabel(activity))}</h3>
+  box.innerHTML = `<button class="back-link" type="button" onclick="showProviderCategories()">← ${esc(t("common.back"))}</button><h3 style="margin-top:10px">${esc(activityLabel(activity))}</h3>
     <input id="providerPortFilter" type="search" name="q_port_providers" autocomplete="off" data-lpignore="true" data-1p-ignore="true" data-form-type="other" placeholder="${esc(t("search.portPlaceholder"))}" value="${esc(portInput.value)}" style="width:100%;margin:12px 0 16px;padding:11px 14px;border:1px solid var(--line);border-radius:12px">
     <div id="providerResultsList"></div>`;
   document.querySelector("#providerPortFilter").addEventListener("input", ()=>renderProviderResults(activity));
