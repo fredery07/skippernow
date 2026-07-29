@@ -305,7 +305,7 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
   <form class="search-card" id="searchForm">
     <div class="field">
       <label data-i18n="search.portLabel">PORT DE DÉPART — MONDE ENTIER</label>
-      <input id="portInput" type="search" autocomplete="off" data-i18n-placeholder="search.portPlaceholder" placeholder="Ex. Cannes, Miami, Ibiza…">
+      <input id="portInput" type="search" name="q_port_main" autocomplete="off" data-lpignore="true" data-1p-ignore="true" data-form-type="other" data-i18n-placeholder="search.portPlaceholder" placeholder="Ex. Cannes, Miami, Ibiza…">
       <div id="portSuggestions" class="port-suggestions"></div>
     </div>
     <div class="field">
@@ -461,7 +461,7 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
       <button class="close" data-close="boatFinderModal" type="button">×</button>
     </div>
     <div class="boat-finder-filters" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px">
-      <input id="boatFinderPortInput" type="search" autocomplete="off" data-i18n-placeholder="search.portPlaceholder" placeholder="Ex. Cannes, Miami, Ibiza…" style="flex:2;min-width:160px;padding:11px 14px;border:1px solid var(--line);border-radius:12px">
+      <input id="boatFinderPortInput" type="search" name="q_port_boats" autocomplete="off" data-lpignore="true" data-1p-ignore="true" data-form-type="other" data-i18n-placeholder="search.portPlaceholder" placeholder="Ex. Cannes, Miami, Ibiza…" style="flex:2;min-width:160px;padding:11px 14px;border:1px solid var(--line);border-radius:12px">
       <select id="boatFinderTypeInput" style="flex:1;min-width:140px;padding:11px 14px;border:1px solid var(--line);border-radius:12px">
         <option value="" data-i18n="boatFinder.allTypes">Tous les types</option>
         <option value="sailboat" data-i18n="boatDetail.typeSailboat">Voilier</option>
@@ -1233,7 +1233,7 @@ async function showProviderResults(activity){
   if(error){ box.querySelector(".empty-note").textContent = error.message; return; }
   providerResultsCache = data || [];
   box.innerHTML = `<button class="back-link" type="button" onclick="showProviderCategories()">← Retour</button><h3 style="margin-top:10px">${esc(activityLabel(activity))}</h3>
-    <input id="providerPortFilter" type="search" autocomplete="off" placeholder="${esc(t("search.portPlaceholder"))}" value="${esc(portInput.value)}" style="width:100%;margin:12px 0 16px;padding:11px 14px;border:1px solid var(--line);border-radius:12px">
+    <input id="providerPortFilter" type="search" name="q_port_providers" autocomplete="off" data-lpignore="true" data-1p-ignore="true" data-form-type="other" placeholder="${esc(t("search.portPlaceholder"))}" value="${esc(portInput.value)}" style="width:100%;margin:12px 0 16px;padding:11px 14px;border:1px solid var(--line);border-radius:12px">
     <div id="providerResultsList"></div>`;
   document.querySelector("#providerPortFilter").addEventListener("input", ()=>renderProviderResults(activity));
   renderProviderResults(activity);
