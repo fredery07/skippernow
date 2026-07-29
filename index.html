@@ -1232,15 +1232,19 @@ async function showProviderResults(activity){
     .eq("verified", true).eq("available", true).in("provider_activity", activityFilter).in("role",["skipper","provider"]);
   if(error){ box.querySelector(".empty-note").textContent = error.message; return; }
   providerResultsCache = data || [];
+  box.innerHTML = `<button class="back-link" type="button" onclick="showProviderCategories()">← Retour</button><h3 style="margin-top:10px">${esc(activityLabel(activity))}</h3>
+    <input id="providerPortFilter" type="search" autocomplete="off" placeholder="${esc(t("search.portPlaceholder"))}" value="${esc(portInput.value)}" style="width:100%;margin:12px 0 16px;padding:11px 14px;border:1px solid var(--line);border-radius:12px">
+    <div id="providerResultsList"></div>`;
+  document.querySelector("#providerPortFilter").addEventListener("input", ()=>renderProviderResults(activity));
   renderProviderResults(activity);
 }
 function renderProviderResults(activity){
-  const box = document.querySelector("#providerResults");
-  const portValue = document.querySelector("#providerPortFilter")?.value ?? portInput.value;
-  const portFilter = portValue.trim().toLowerCase();
+  const listBox = document.querySelector("#providerResultsList");
+  if(!listBox) return;
+  const portFilter = (document.querySelector("#providerPortFilter")?.value || "").trim().toLowerCase();
   const list = providerResultsCache.filter(p => !portFilter || (p.home_port||"").toLowerCase().includes(portFilter));
   resultsCache = resultsCache.concat(list);
-  const listHtml = list.length ? `<div class="result-list">${list.map(p=>`
+  listBox.innerHTML = list.length ? `<div class="result-list">${list.map(p=>`
     <article class="result-card">
       ${p.profile_photo_url ? `<img class="result-photo" src="${esc(p.profile_photo_url)}" alt="${esc(p.full_name)}">` : `<div class="result-photo">⚓</div>`}
       <div>
@@ -1250,10 +1254,6 @@ function renderProviderResults(activity){
         <button class="small-btn fill" onclick="openProfileDetail('${p.id}')">${esc(t("card.viewProfile"))}</button>
       </div>
     </article>`).join("")}</div>` : `<div class="empty-note">${esc(t("results.noProvider"))}</div>`;
-  box.innerHTML = `<button class="back-link" type="button" onclick="showProviderCategories()">← Retour</button><h3 style="margin-top:10px">${esc(activityLabel(activity))}</h3>
-    <input id="providerPortFilter" type="search" autocomplete="off" placeholder="${esc(t("search.portPlaceholder"))}" value="${esc(portValue)}" style="width:100%;margin:12px 0 16px;padding:11px 14px;border:1px solid var(--line);border-radius:12px">
-    ${listHtml}`;
-  document.querySelector("#providerPortFilter").addEventListener("input", ()=>renderProviderResults(activity));
 }
 window.showProviderCategories = showProviderCategories;
 
