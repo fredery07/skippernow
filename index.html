@@ -193,6 +193,8 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
 .provider-spotlight .ph-icon{position:absolute;inset:0;display:grid;place-items:center;font-size:42px;color:rgba(255,255,255,.85)}
 .provider-spotlight-body{padding:14px 2px 0}
 .provider-spotlight-body h4{margin:0 0 4px;font-size:17px}
+.owner-cta-link{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;margin-top:16px;padding:13px 16px;border:1.5px dashed var(--line);border-radius:14px;background:var(--mist);color:var(--navy);font-weight:800;font-size:14px;cursor:pointer;text-align:left}
+.owner-cta-link:hover{border-color:var(--aqua);background:#eafaf9}
 .boat-card-photo .no-photo{position:absolute;inset:0;display:grid;place-items:center;font-size:34px;color:rgba(255,255,255,.85)}
 .boat-card-price{position:absolute;top:12px;right:12px;background:#fff;color:var(--navy);font-weight:900;padding:6px 12px;border-radius:999px;font-size:13px;box-shadow:0 4px 12px rgba(0,0,0,.18)}
 .boat-card-body{padding:16px}
@@ -352,11 +354,13 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
       <span class="pill-link">🌊 <span data-i18n="rental.examplesBadge">BATEAUX DISPONIBLES</span></span>
       <h3 data-i18n="rental.examplesTitle">Dernières annonces</h3>
       <div id="homeBoatStrip"><div class="empty-note" data-i18n="rental.empty">Aucun bateau publié pour le moment.</div></div>
+      <button class="owner-cta-link" id="listBoatBtn" type="button">
+        <span data-i18n="rental.ctaShort">Vous êtes propriétaire ? Mettre mon bateau en location</span>
+        <span aria-hidden="true">→</span>
+      </button>
     </div>
   </section>
-  <p style="text-align:center;margin:-20px 0 36px">
-    <button class="ghost" id="listBoatBtn" type="button" data-i18n="rental.cta">Mettre mon bateau en location</button>
-  </p>
+
 
   <section class="how" style="margin-top:36px">
     <h2 data-i18n="how.title">Comment ça marche ?</h2>
@@ -643,7 +647,7 @@ const I18N = {
     "duration.half":"Demi-journée","duration.day":"Journée","duration.multi":"Plusieurs jours",
     "rental.badge":"LOCATION DE BATEAUX","rental.title":"Mettre mon bateau en location","providersShowcase.badge":"PRESTATAIRES INSCRITS","providersShowcase.title":"Nos professionnels vérifiés","providersShowcase.empty":"Aucun prestataire inscrit pour le moment.",
     "rental.text":"Créez votre compte propriétaire, ajoutez photos, caractéristiques, port d'attache et disponibilités. Vous pourrez ensuite proposer la location avec ou sans skipper.",
-    "rental.cta":"Mettre mon bateau en location","rental.examplesBadge":"BATEAUX DISPONIBLES",
+    "rental.cta":"Mettre mon bateau en location","rental.ctaShort":"Vous êtes propriétaire ? Mettre mon bateau en location","rental.examplesBadge":"BATEAUX DISPONIBLES",
     "rental.examplesTitle":"Dernières annonces","rental.empty":"Aucun bateau publié pour le moment. Soyez le premier propriétaire à proposer le vôtre !",
     "results.skippersHeading":"Skippers disponibles","results.skippersSub":"Professionnels vérifiés près de votre port de départ",
     "results.daySailorsHeading":"Marins à la journée disponibles","results.daySailorsSub":"Aide à bord et missions ponctuelles près de votre port de départ",
@@ -766,7 +770,7 @@ const I18N = {
     "duration.half":"Half day","duration.day":"Full day","duration.multi":"Several days",
     "rental.badge":"BOAT RENTALS","rental.title":"List my boat for rent","providersShowcase.badge":"REGISTERED PROVIDERS","providersShowcase.title":"Our verified professionals","providersShowcase.empty":"No provider registered yet.",
     "rental.text":"Create an owner account, add photos, specifications, home port and availability. You can then offer your boat with or without a skipper.",
-    "rental.cta":"List my boat for rent","rental.examplesBadge":"AVAILABLE BOATS",
+    "rental.cta":"List my boat for rent","rental.ctaShort":"Are you a boat owner? List your boat for rent","rental.examplesBadge":"AVAILABLE BOATS",
     "rental.examplesTitle":"Latest listings","rental.empty":"No boats published yet. Be the first owner to list yours!",
     "results.skippersHeading":"Available skippers","results.skippersSub":"Verified professionals near your departure port",
     "results.daySailorsHeading":"Available day sailors","results.daySailorsSub":"Hands-on help and one-off jobs near your departure port",
@@ -888,7 +892,7 @@ const I18N = {
     "duration.half":"Medio día","duration.day":"Día completo","duration.multi":"Varios días",
     "rental.badge":"ALQUILER DE BARCOS","rental.title":"Poner mi barco en alquiler","providersShowcase.badge":"PRESTADORES REGISTRADOS","providersShowcase.title":"Nuestros profesionales verificados","providersShowcase.empty":"Todavía no hay ningún prestador registrado.",
     "rental.text":"Crea una cuenta de propietario, añade fotos, características, puerto base y disponibilidad. Luego podrás ofrecer tu barco con o sin skipper.",
-    "rental.cta":"Poner mi barco en alquiler","rental.examplesBadge":"BARCOS DISPONIBLES",
+    "rental.cta":"Poner mi barco en alquiler","rental.ctaShort":"¿Eres propietario? Pon tu barco en alquiler","rental.examplesBadge":"BARCOS DISPONIBLES",
     "rental.examplesTitle":"Últimos anuncios","rental.empty":"Todavía no hay barcos publicados. ¡Sé el primer propietario en publicar el tuyo!",
     "results.skippersHeading":"Skippers disponibles","results.skippersSub":"Profesionales verificados cerca de tu puerto de salida",
     "results.daySailorsHeading":"Marineros por día disponibles","results.daySailorsSub":"Ayuda a bordo y trabajos puntuales cerca de tu puerto de salida",
