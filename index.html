@@ -668,6 +668,10 @@ const I18N = {
     "notif.unreadMessages":"message(s) non lu(s)","notif.quotesReceived":"devis reçu(s) à examiner","notif.awaitingValidation":"mission(s) à valider","notif.newRequests":"nouvelle(s) demande(s) disponible(s)",
     "notif.pendingValidations":"profil(s) en attente de validation","notif.refundRequests":"demande(s) de remboursement","notif.openDisputes":"litige(s) ouvert(s)","notif.empty":"Aucune notification pour le moment.",
     "hero.eyebrow":"Disponible dans tous les ports du monde",
+    "seo.titleDefault":"SkipperNow — Votre skipper, au bon port, au bon moment","seo.descDefault":"Trouvez un skipper, un prestataire nautique ou un bateau à louer dans n'importe quel port du monde, même à la dernière minute.",
+    "seo.title.skipper":"Trouver un skipper à {port} | SkipperNow","seo.desc.skipper":"Réservez un skipper professionnel vérifié à {port}. Paiement sécurisé, réponse rapide, même à la dernière minute.",
+    "seo.title.day_sailor":"Marin à la journée à {port} | SkipperNow","seo.desc.day_sailor":"Trouvez un marin à la journée disponible à {port} pour vos missions ponctuelles (nettoyage, avitaillement, aide au port...).",
+    "seo.title.cleaning":"Prestataire nautique à {port} | SkipperNow","seo.desc.cleaning":"Trouvez un prestataire nautique vérifié à {port} : nettoyage, entretien, mécanique et plus.",
     "hero.title":"Votre skipper,<br>au bon port, au bon moment.",
     "hero.subtitle":"Trouvez un skipper, un marin ou un prestataire nautique dans n'importe quel port du monde, même à la dernière minute.",
     "hero.trust1":"Profils vérifiés","hero.trust2":"Réponse rapide","hero.trust3":"Paiement sécurisé",
@@ -821,6 +825,10 @@ const I18N = {
     "notif.unreadMessages":"unread message(s)","notif.quotesReceived":"quote(s) received to review","notif.awaitingValidation":"job(s) to validate","notif.newRequests":"new request(s) available",
     "notif.pendingValidations":"profile(s) pending approval","notif.refundRequests":"refund request(s)","notif.openDisputes":"open dispute(s)","notif.empty":"No notifications yet.",
     "hero.eyebrow":"Available in every port worldwide",
+    "seo.titleDefault":"SkipperNow — Your skipper, at the right port, at the right time","seo.descDefault":"Find a skipper, a marine service provider, or a boat to rent in any port worldwide, even last minute.",
+    "seo.title.skipper":"Find a skipper in {port} | SkipperNow","seo.desc.skipper":"Book a verified professional skipper in {port}. Secure payment, fast response, even last minute.",
+    "seo.title.day_sailor":"Day sailor in {port} | SkipperNow","seo.desc.day_sailor":"Find a day sailor available in {port} for one-off jobs (cleaning, provisioning, dock assistance...).",
+    "seo.title.cleaning":"Marine service provider in {port} | SkipperNow","seo.desc.cleaning":"Find a verified marine service provider in {port}: cleaning, maintenance, mechanics and more.",
     "hero.title":"Your skipper,<br>at the right port, at the right time.",
     "hero.subtitle":"Find a skipper, a crew member or a marine service provider in any port worldwide, even at the last minute.",
     "hero.trust1":"Verified profiles","hero.trust2":"Fast response","hero.trust3":"Secure payment",
@@ -973,6 +981,10 @@ const I18N = {
     "notif.unreadMessages":"mensaje(s) sin leer","notif.quotesReceived":"presupuesto(s) recibido(s) para revisar","notif.awaitingValidation":"servicio(s) por validar","notif.newRequests":"nueva(s) solicitud(es) disponible(s)",
     "notif.pendingValidations":"perfil(es) pendiente(s) de validación","notif.refundRequests":"solicitud(es) de reembolso","notif.openDisputes":"disputa(s) abierta(s)","notif.empty":"Sin notificaciones por ahora.",
     "hero.eyebrow":"Disponible en todos los puertos del mundo",
+    "seo.titleDefault":"SkipperNow — Tu skipper, en el puerto y momento adecuados","seo.descDefault":"Encuentra un skipper, un prestador náutico o un barco de alquiler en cualquier puerto del mundo, incluso a última hora.",
+    "seo.title.skipper":"Encontrar un skipper en {port} | SkipperNow","seo.desc.skipper":"Reserva un skipper profesional verificado en {port}. Pago seguro, respuesta rápida, incluso a última hora.",
+    "seo.title.day_sailor":"Marinero por día en {port} | SkipperNow","seo.desc.day_sailor":"Encuentra un marinero disponible por día en {port} para trabajos puntuales (limpieza, avituallamiento, ayuda en el puerto...).",
+    "seo.title.cleaning":"Prestador náutico en {port} | SkipperNow","seo.desc.cleaning":"Encuentra un prestador náutico verificado en {port}: limpieza, mantenimiento, mecánica y más.",
     "hero.title":"Tu skipper,<br>en el puerto y momento adecuados.",
     "hero.subtitle":"Encuentra un skipper, un marinero o un prestador náutico en cualquier puerto del mundo, incluso en el último momento.",
     "hero.trust1":"Perfiles verificados","hero.trust2":"Respuesta rápida","hero.trust3":"Pago seguro",
@@ -1247,6 +1259,16 @@ async function filterByPortNearby(items, portFilter, getHomePort, radiusKm){
   const checks = await Promise.all(remaining.map(async it=>({it, ok: await portMatchesNearby(getHomePort(it), portFilter, radiusKm)})));
   return fast.concat(checks.filter(c=>c.ok).map(c=>c.it));
 }
+function updateSeoMeta(){
+  const port = portInput.value.trim();
+  const titleTpl = t("seo.title."+activeActivity) || t("seo.titleDefault");
+  const descTpl = t("seo.desc."+activeActivity) || t("seo.descDefault");
+  const title = port ? titleTpl.replace("{port}", port) : t("seo.titleDefault");
+  const desc = port ? descTpl.replace("{port}", port) : t("seo.descDefault");
+  document.title = title;
+  const metaDesc = document.querySelector('meta[name="description"]');
+  if(metaDesc) metaDesc.setAttribute("content", desc);
+}
 const portInput = document.querySelector("#portInput");
 const portSuggestions = document.querySelector("#portSuggestions");
 let portSearchTimer;
@@ -1256,6 +1278,7 @@ function renderPortSuggestions(items){
   [...portSuggestions.querySelectorAll(".port-option")].forEach((btn,i)=>btn.onclick=()=>{
     portInput.value = items[i].name;
     portSuggestions.classList.remove("open");
+    updateSeoMeta();
   });
 }
 function localPortMatches(q){
@@ -1276,6 +1299,7 @@ async function searchPorts(q){
 }
 portInput.addEventListener("focus", ()=>{ if(!portInput.value) renderPortSuggestions(POPULAR_PORTS.slice(0,8).map(x=>({name:x[0],place:x[1]}))); });
 portInput.addEventListener("input", ()=>{ clearTimeout(portSearchTimer); portSearchTimer = setTimeout(()=>searchPorts(portInput.value.trim()),300); });
+portInput.addEventListener("blur", ()=>setTimeout(updateSeoMeta, 150));
 document.addEventListener("click", e=>{ if(!e.target.closest(".field")) portSuggestions.classList.remove("open"); });
 
 const dateInput = document.querySelector("#dateInput");
@@ -1293,6 +1317,7 @@ async function switchActivityTab(activity){
   const cfg = TAB_CONFIG[activity] || TAB_CONFIG.skipper;
   heading.textContent = t(cfg.headingKey);
   sub.textContent = t(cfg.subKey);
+  updateSeoMeta();
   await loadListings();
 }
 
@@ -1300,6 +1325,7 @@ document.querySelectorAll("#portChips button").forEach(chip=>{
   chip.addEventListener("click", ()=>{
     portInput.value = chip.dataset.port;
     switchActivityTab("skipper");
+    updateSeoMeta();
     document.querySelector("main").scrollIntoView({behavior:"smooth"});
   });
 });
@@ -3061,6 +3087,7 @@ function refreshDynamicTexts(){
   const cfg = TAB_CONFIG[activeActivity] || TAB_CONFIG.skipper;
   heading.textContent = t(cfg.headingKey);
   sub.textContent = t(cfg.subKey);
+  updateSeoMeta();
   loadListings();
   renderHomeBoatStrip();
   refreshAccountButton();
@@ -3141,6 +3168,15 @@ function startHeroCarousel(){
   applyStaticTranslations();
   startHeroCarousel();
   initFaqBot();
+  const params = new URLSearchParams(location.search);
+  const urlPort = params.get("port");
+  const urlActivity = params.get("activity");
+  if(urlPort) portInput.value = urlPort;
+  if(urlActivity && TAB_CONFIG[urlActivity]){
+    activeActivity = urlActivity;
+    document.querySelectorAll("#listingTabs button").forEach(b=>b.classList.toggle("active", b.dataset.activity===urlActivity));
+  }
+  updateSeoMeta();
   const {data:{session}} = await db.auth.getSession();
   currentUser = session?.user || null;
   if(currentUser) await loadProfile();
