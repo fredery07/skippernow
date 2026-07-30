@@ -709,6 +709,10 @@ const I18N = {
     "account.roleProvider":"Prestataire","account.roleProviderDesc":"Nettoyage, quai, chantier ou marin à la journée",
     "account.roleOwner":"Propriétaire","account.roleOwnerDesc":"Mettre mon bateau en location",
     "account.nameLabel":"PRÉNOM ET NOM","account.namePlaceholder":"Votre nom","account.phoneLabel":"TÉLÉPHONE","account.photoLabel":"PHOTO DE PROFIL","account.photoReminder":"⚠️ Pensez à ajouter une photo de profil : les fiches sans photo inspirent moins confiance et sont moins souvent contactées.","account.diplomaLabel":"DIPLÔME / CERTIFICATION","account.diplomaCurrent":"Voir le document actuel","account.diplomaNote":"Photo ou PDF de votre diplôme (permis, brevet, carte professionnelle...). Utilisé pour la vérification par l'équipe SkipperNow, non affiché publiquement.",
+    "account.experienceLabel":"ANNÉES D'EXPÉRIENCE","account.languagesLabel":"LANGUES PARLÉES","account.languagesPlaceholder":"Ex : Français, English, Español",
+    "account.skillsLabel":"COMPÉTENCES / TYPES DE BATEAUX MAÎTRISÉS","account.skillsPlaceholder":"Ex : Voilier, Catamaran, Yacht à moteur, Convoyage",
+    "account.travelRadiusLabel":"RAYON DE DÉPLACEMENT","account.priceHalfDayLabel":"TARIF DEMI-JOURNÉE","account.priceHourLabel":"TARIF HORAIRE (optionnel)","account.travelFeeLabel":"FRAIS DE DÉPLACEMENT",
+    "account.siretLabel":"SIRET / N° D'ENTREPRISE","account.insuranceLabel":"ASSURANCE PROFESSIONNELLE","account.insurancePlaceholder":"Assureur et n° de police",
     "account.emailLabel":"EMAIL","account.passwordLabel":"MOT DE PASSE","account.passwordPlaceholder":"8 caractères minimum",
     "account.portLabel":"PORT PRINCIPAL — VILLE, PAYS","account.portPlaceholder":"Ex. Port Vauban, Antibes, France","account.zoneLabel":"VILLE / ZONE D'INTERVENTION","account.zonePlaceholder":"Ex. Antibes, Cannes, Golfe-Juan…",
     "account.activityLabel":"ACTIVITÉ PROPOSÉE","account.createSubmit":"Créer mon compte","account.loginSubmit":"Se connecter","account.forgot":"Mot de passe oublié ?",
@@ -837,6 +841,10 @@ const I18N = {
     "account.roleProvider":"Service provider","account.roleProviderDesc":"Cleaning, dock, shipyard or day crew",
     "account.roleOwner":"Owner","account.roleOwnerDesc":"List my boat for rent",
     "account.nameLabel":"FULL NAME","account.namePlaceholder":"Your name","account.phoneLabel":"PHONE","account.photoLabel":"PROFILE PHOTO","account.photoReminder":"⚠️ Remember to add a profile photo: listings without a photo inspire less trust and get fewer contacts.","account.diplomaLabel":"DIPLOMA / CERTIFICATION","account.diplomaCurrent":"View current document","account.diplomaNote":"Photo or PDF of your certification (license, professional card...). Used for verification by the SkipperNow team, not shown publicly.",
+    "account.experienceLabel":"YEARS OF EXPERIENCE","account.languagesLabel":"LANGUAGES SPOKEN","account.languagesPlaceholder":"E.g. French, English, Spanish",
+    "account.skillsLabel":"SKILLS / BOAT TYPES MASTERED","account.skillsPlaceholder":"E.g. Sailboat, Catamaran, Motor yacht, Delivery",
+    "account.travelRadiusLabel":"TRAVEL RADIUS","account.priceHalfDayLabel":"HALF-DAY RATE","account.priceHourLabel":"HOURLY RATE (optional)","account.travelFeeLabel":"TRAVEL FEE",
+    "account.siretLabel":"BUSINESS REGISTRATION NUMBER","account.insuranceLabel":"PROFESSIONAL INSURANCE","account.insurancePlaceholder":"Insurer and policy number",
     "account.emailLabel":"EMAIL","account.passwordLabel":"PASSWORD","account.passwordPlaceholder":"At least 8 characters",
     "account.portLabel":"HOME PORT — CITY, COUNTRY","account.portPlaceholder":"E.g. Port Vauban, Antibes, France","account.zoneLabel":"CITY / SERVICE AREA","account.zonePlaceholder":"E.g. Antibes, Cannes, Golfe-Juan…",
     "account.activityLabel":"SERVICE OFFERED","account.createSubmit":"Create my account","account.loginSubmit":"Log in","account.forgot":"Forgot password?",
@@ -964,6 +972,10 @@ const I18N = {
     "account.roleProvider":"Prestador","account.roleProviderDesc":"Limpieza, puerto, astillero o marinero por día",
     "account.roleOwner":"Propietario","account.roleOwnerDesc":"Poner mi barco en alquiler",
     "account.nameLabel":"NOMBRE COMPLETO","account.namePlaceholder":"Tu nombre","account.phoneLabel":"TELÉFONO","account.photoLabel":"FOTO DE PERFIL","account.photoReminder":"⚠️ No olvides añadir una foto de perfil: los anuncios sin foto generan menos confianza y reciben menos contactos.","account.diplomaLabel":"TÍTULO / CERTIFICACIÓN","account.diplomaCurrent":"Ver documento actual","account.diplomaNote":"Foto o PDF de tu titulación (licencia, tarjeta profesional...). Se usa para la verificación del equipo de SkipperNow, no se muestra públicamente.",
+    "account.experienceLabel":"AÑOS DE EXPERIENCIA","account.languagesLabel":"IDIOMAS HABLADOS","account.languagesPlaceholder":"Ej: Francés, English, Español",
+    "account.skillsLabel":"HABILIDADES / TIPOS DE BARCO DOMINADOS","account.skillsPlaceholder":"Ej: Velero, Catamarán, Yate a motor, Traslado",
+    "account.travelRadiusLabel":"RADIO DE DESPLAZAMIENTO","account.priceHalfDayLabel":"TARIFA MEDIO DÍA","account.priceHourLabel":"TARIFA POR HORA (opcional)","account.travelFeeLabel":"GASTOS DE DESPLAZAMIENTO",
+    "account.siretLabel":"NÚMERO DE EMPRESA","account.insuranceLabel":"SEGURO PROFESIONAL","account.insurancePlaceholder":"Aseguradora y n.º de póliza",
     "account.emailLabel":"EMAIL","account.passwordLabel":"CONTRASEÑA","account.passwordPlaceholder":"Mínimo 8 caracteres",
     "account.portLabel":"PUERTO BASE — CIUDAD, PAÍS","account.portPlaceholder":"Ej. Port Vauban, Antibes, Francia","account.zoneLabel":"CIUDAD / ZONA DE ACTUACIÓN","account.zonePlaceholder":"Ej. Antibes, Cannes, Golfe-Juan…",
     "account.activityLabel":"SERVICIO OFRECIDO","account.createSubmit":"Crear mi cuenta","account.loginSubmit":"Iniciar sesión","account.forgot":"¿Olvidaste tu contraseña?",
@@ -1598,6 +1610,12 @@ window.openProfileDetail = function(id, adminView){
       <div class="boat-card-port" style="margin-bottom:6px">📍 ${esc(p.home_port||"—")}</div>
       <div class="meta" style="margin-bottom:14px">★ ${Number(p.rating||5).toFixed(1)} · ${p.experience_years||0} ${esc(t("card.experience"))}${p.languages?" · "+esc(p.languages):""}</div>
       <p class="muted" style="line-height:1.6">${esc(p.bio||t("boatDetail.noDescription"))}</p>
+      ${p.skills ? `<div style="margin:14px 0"><strong style="font-size:13px">${esc(t("account.skillsLabel"))}</strong><div class="tags" style="margin-top:6px">${p.skills.split(",").map(x=>x.trim()).filter(Boolean).map(x=>`<span class="tag">${esc(x)}</span>`).join("")}</div></div>` : ""}
+      ${(p.price_half_day_cents || p.price_hour_cents || p.travel_fee_cents) ? `<div class="muted" style="margin-bottom:10px">
+        ${p.price_half_day_cents ? `${esc(t("account.priceHalfDayLabel"))}: <strong>${money(p.price_half_day_cents)}</strong><br>` : ""}
+        ${p.price_hour_cents ? `${esc(t("account.priceHourLabel"))}: <strong>${money(p.price_hour_cents)}</strong><br>` : ""}
+        ${p.travel_fee_cents ? `${esc(t("account.travelFeeLabel"))}: <strong>${money(p.travel_fee_cents)}</strong>` : ""}
+      </div>` : ""}
       <div class="note-box" style="margin-top:14px">${p.price_from_cents ? `${esc(t("card.priceFrom"))} <strong>${money(p.price_from_cents)}</strong> — ${esc(t("card.priceNote"))}` : esc(t("card.priceOnRequest"))}</div>
       ${adminView && p.diploma_url ? `<div class="muted" style="margin-top:10px"><a href="${esc(p.diploma_url)}" target="_blank">${esc(t("account.diplomaCurrent"))}</a></div>` : ""}
       ${adminView ? ""
@@ -2667,13 +2685,22 @@ function profileForm(profile, payout, forcePayout){
     <div class="field"><label>${esc(t("account.nameLabel"))}</label><input id="profileName" value="${esc(profile?.full_name||"")}"></div>
     <div class="field"><label>${esc(profile?.role === "provider" ? t("account.zoneLabel") : t("account.portLabel"))}</label><input id="profilePort" value="${esc(profile?.home_port||"")}"></div>
     <div class="field"><label>${esc(t("account.phoneLabel"))}</label><input id="profilePhone" value="${esc(profile?.phone||"")}"></div>
-    ${isPro ? `<div class="field"><label>${esc(t("card.priceFrom"))} (€)</label><input id="profilePriceFrom" type="number" min="0" step="1" value="${profile?.price_from_cents ? Number(profile.price_from_cents)/100 : ""}" placeholder="Ex. 200"></div>` : ""}
+    ${isPro ? `<div class="field"><label>${esc(t("account.experienceLabel"))}</label><input id="profileExperience" type="number" min="0" step="1" value="${profile?.experience_years??""}"></div>
+    <div class="field"><label>${esc(t("account.languagesLabel"))}</label><input id="profileLanguages" placeholder="${esc(t("account.languagesPlaceholder"))}" value="${esc(profile?.languages||"")}"></div>
+    <div class="field"><label>${esc(t("account.skillsLabel"))}</label><input id="profileSkills" placeholder="${esc(t("account.skillsPlaceholder"))}" value="${esc(profile?.skills||"")}"></div>
+    <div class="field"><label>${esc(t("account.travelRadiusLabel"))} (km)</label><input id="profileTravelRadius" type="number" min="0" step="1" value="${profile?.travel_radius_km??""}"></div>` : ""}
+    ${isPro ? `<div class="field"><label>${esc(t("card.priceFrom"))} (€)</label><input id="profilePriceFrom" type="number" min="0" step="1" value="${profile?.price_from_cents ? Number(profile.price_from_cents)/100 : ""}" placeholder="Ex. 200"></div>
+    <div class="field"><label>${esc(t("account.priceHalfDayLabel"))} (€)</label><input id="profilePriceHalf" type="number" min="0" step="1" value="${profile?.price_half_day_cents ? Number(profile.price_half_day_cents)/100 : ""}"></div>
+    <div class="field"><label>${esc(t("account.priceHourLabel"))} (€)</label><input id="profilePriceHour" type="number" min="0" step="1" value="${profile?.price_hour_cents ? Number(profile.price_hour_cents)/100 : ""}"></div>
+    <div class="field"><label>${esc(t("account.travelFeeLabel"))} (€)</label><input id="profileTravelFee" type="number" min="0" step="1" value="${profile?.travel_fee_cents ? Number(profile.travel_fee_cents)/100 : ""}"></div>` : ""}
     <div class="field"><label>${esc(t("boatDetail.description"))}</label><textarea id="profileBio" rows="4">${esc(profile?.bio||"")}</textarea></div>
     ${needsDiploma ? `<div class="field"><label>${esc(t("account.diplomaLabel"))}</label>
       ${profile?.diploma_url ? `<div class="muted" style="margin-bottom:6px"><a href="${esc(profile.diploma_url)}" target="_blank">${esc(t("account.diplomaCurrent"))}</a></div>` : ""}
       <input id="profileDiplomaInput" type="file" accept="image/*,.pdf">
       <div class="muted" style="margin-top:4px;font-size:12.5px">${esc(t("account.diplomaNote"))}</div>
-    </div>` : ""}
+    </div>
+    <div class="field"><label>${esc(t("account.siretLabel"))}</label><input id="profileSiret" value="${esc(profile?.siret||"")}"></div>
+    <div class="field"><label>${esc(t("account.insuranceLabel"))}</label><input id="profileInsurance" placeholder="${esc(t("account.insurancePlaceholder"))}" value="${esc(profile?.insurance_info||"")}"></div>` : ""}
     ${showPayout ? `
     <div class="note-box">${esc(t("dash.payoutDetailsNote"))}</div>
     <div class="field"><label>${esc(t("dash.holderLabel"))}</label><input id="profileHolder" value="${esc(payout?.bank_holder_name||"")}"></div>
@@ -2695,6 +2722,33 @@ function bindProfileForm(){
       phone: document.querySelector("#profilePhone").value.trim(),
       bio: sanitizeContactInfo(document.querySelector("#profileBio").value.trim())
     };
+    const expInput = document.querySelector("#profileExperience");
+    if(expInput) patch.experience_years = Number(expInput.value) || null;
+    const langInput = document.querySelector("#profileLanguages");
+    if(langInput) patch.languages = langInput.value.trim();
+    const skillsInput = document.querySelector("#profileSkills");
+    if(skillsInput) patch.skills = skillsInput.value.trim();
+    const radiusInput = document.querySelector("#profileTravelRadius");
+    if(radiusInput) patch.travel_radius_km = Number(radiusInput.value) || null;
+    const siretInput = document.querySelector("#profileSiret");
+    if(siretInput) patch.siret = siretInput.value.trim();
+    const insuranceInput = document.querySelector("#profileInsurance");
+    if(insuranceInput) patch.insurance_info = insuranceInput.value.trim();
+    const priceHalfInput = document.querySelector("#profilePriceHalf");
+    if(priceHalfInput){
+      const half = Number(priceHalfInput.value);
+      patch.price_half_day_cents = Number.isFinite(half) && half > 0 ? Math.round(half*100) : null;
+    }
+    const priceHourInput = document.querySelector("#profilePriceHour");
+    if(priceHourInput){
+      const hour = Number(priceHourInput.value);
+      patch.price_hour_cents = Number.isFinite(hour) && hour > 0 ? Math.round(hour*100) : null;
+    }
+    const travelFeeInput = document.querySelector("#profileTravelFee");
+    if(travelFeeInput){
+      const fee = Number(travelFeeInput.value);
+      patch.travel_fee_cents = Number.isFinite(fee) && fee > 0 ? Math.round(fee*100) : null;
+    }
     const photoFile = document.querySelector("#profilePhotoInput")?.files[0];
     if(photoFile){
       const path = `${currentUser.id}/avatar-${Date.now()}-${photoFile.name.replace(/[^a-zA-Z0-9.\-_]/g,"_")}`;
