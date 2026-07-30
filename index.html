@@ -693,6 +693,9 @@ const I18N = {
     "results.count.day_sailor.one":"1 marin à la journée","results.count.day_sailor.other":"{n} marins à la journée",
     "tabs.skippers":"Skippers","tabs.daySailors":"Marins à la journée","tabs.cleaning":"Prestataires",
     "card.experience":"an(s) d'expérience","card.priceOnRequest":"Sur demande","card.priceNote":"tarif confirmé avant réservation","card.priceFrom":"À partir de","card.verifiedBadge":"Vérifié",
+    "card.superSkipperBadge":"Super Skipper","card.recommendedProviderBadge":"Prestataire recommandé",
+    "boatDetail.verifiedBadge":"Bateau vérifié",
+    "dash.verifyBoat":"Vérifier le bateau","dash.unverifyBoat":"Retirer la vérification","dash.markFeatured":"Mettre en avant","dash.unfeature":"Retirer la mise en avant",
     "stats.missions":"missions réalisées","stats.pros":"professionnels vérifiés","stats.rating":"note moyenne",
     "card.available":"Disponible","card.unavailable":"Indisponible","card.unavailableOn":"Indisponible le","card.viewProfile":"Voir le profil",
     "how.title":"Comment ça marche ?",
@@ -843,6 +846,9 @@ const I18N = {
     "results.count.day_sailor.one":"1 day sailor","results.count.day_sailor.other":"{n} day sailors",
     "tabs.skippers":"Skippers","tabs.daySailors":"Day sailors","tabs.cleaning":"Service providers",
     "card.experience":"year(s) of experience","card.priceOnRequest":"On request","card.priceNote":"price confirmed before booking","card.priceFrom":"From","card.verifiedBadge":"Verified",
+    "card.superSkipperBadge":"Super Skipper","card.recommendedProviderBadge":"Recommended provider",
+    "boatDetail.verifiedBadge":"Verified boat",
+    "dash.verifyBoat":"Verify boat","dash.unverifyBoat":"Remove verification","dash.markFeatured":"Feature","dash.unfeature":"Remove feature",
     "stats.missions":"jobs completed","stats.pros":"verified professionals","stats.rating":"average rating",
     "card.available":"Available","card.unavailable":"Unavailable","card.unavailableOn":"Unavailable on","card.viewProfile":"View profile",
     "how.title":"How does it work?",
@@ -992,6 +998,9 @@ const I18N = {
     "results.count.day_sailor.one":"1 marinero por día","results.count.day_sailor.other":"{n} marineros por día",
     "tabs.skippers":"Skippers","tabs.daySailors":"Marineros por día","tabs.cleaning":"Prestadores",
     "card.experience":"año(s) de experiencia","card.priceOnRequest":"A consultar","card.priceNote":"precio confirmado antes de la reserva","card.priceFrom":"Desde","card.verifiedBadge":"Verificado",
+    "card.superSkipperBadge":"Super Skipper","card.recommendedProviderBadge":"Prestador recomendado",
+    "boatDetail.verifiedBadge":"Barco verificado",
+    "dash.verifyBoat":"Verificar barco","dash.unverifyBoat":"Quitar verificación","dash.markFeatured":"Destacar","dash.unfeature":"Quitar destacado",
     "stats.missions":"servicios realizados","stats.pros":"profesionales verificados","stats.rating":"valoración media",
     "card.available":"Disponible","card.unavailable":"No disponible","card.unavailableOn":"No disponible el","card.viewProfile":"Ver perfil",
     "how.title":"¿Cómo funciona?",
@@ -1165,6 +1174,11 @@ document.querySelectorAll(".modal").forEach(m=>m.addEventListener("click",e=>{if
 
 const ACTIVITY_LABEL_KEY = {skipper:"activity.skipper",cleaning:"activity.cleaning",dock_service:"activity.cleaning",shipyard:"activity.shipyard",day_sailor:"activity.daySailor"};
 function activityLabel(activity){ return t(ACTIVITY_LABEL_KEY[activity] || "activity.cleaning"); }
+function featuredBadgeHtml(p){
+  if(!p?.featured) return "";
+  const key = p.role === "skipper" ? "card.superSkipperBadge" : "card.recommendedProviderBadge";
+  return ` <span class="verified-badge" style="background:#fff4d6;color:#8a6d1a">⭐ ${esc(t(key))}</span>`;
+}
 
 const TAB_CONFIG = {
   skipper:{icon:"⚓",headingKey:"results.skippersHeading",subKey:"results.skippersSub",countKey:"skipper",emptyTextKey:"results.emptySkipperText",ctaLabelKey:"join.skipperCta",ctaRole:"skipper"},
@@ -1373,7 +1387,7 @@ async function loadListings(){
         <span class="online ${unavailable?"off":""}">● ${unavailable ? esc(t("card.unavailableOn"))+" "+new Date(chosenDate+"T12:00:00").toLocaleDateString(currentLang) : esc(t("card.available"))}</span>
       </div>
       <div class="content">
-        <div class="name-row"><h3>${esc(p.full_name||"—")} <span class="verified-badge">✓ ${esc(t("card.verifiedBadge"))}</span></h3><span class="rating">★ ${Number(p.rating||5).toFixed(1)}</span></div>
+        <div class="name-row"><h3>${esc(p.full_name||"—")} <span class="verified-badge">✓ ${esc(t("card.verifiedBadge"))}</span>${featuredBadgeHtml(p)}</h3><span class="rating">★ ${Number(p.rating||5).toFixed(1)}</span></div>
         <div class="meta">${esc(p.home_port||"—")} · ${p.experience_years||0} ${esc(t("card.experience"))}</div>
         <p class="meta">${esc(p.bio||"")}</p>
         <div class="tags"><span class="tag">${esc(p.languages||"Français")}</span></div>
@@ -1527,7 +1541,7 @@ function boatCardHtml(b){
       <span class="boat-card-price">${priceLabel}</span>
     </div>
     <div class="boat-card-body">
-      <h3>${esc(b.name||"Bateau")}</h3>
+      <h3>${esc(b.name||"Bateau")}${b.verified ? ` <span class="verified-badge">✓ ${esc(t("boatDetail.verifiedBadge"))}</span>` : ""}</h3>
       <div class="boat-card-port">📍 ${esc(b.home_port||"—")}</div>
       ${specsLine ? `<div class="boat-card-specs-line">${specsLine}</div>` : ""}
     </div>
@@ -1631,7 +1645,7 @@ window.openBoatDetail = async function(id){
     </div>
     <div style="padding-top:18px">
       <small style="color:var(--muted);font-weight:800;letter-spacing:.05em;text-transform:uppercase;font-size:11px">${esc(t("boatFinder.eyebrow"))}</small>
-      <h2 style="margin:4px 0 6px">${esc(boat.name||"Bateau")}</h2>
+      <h2 style="margin:4px 0 6px">${esc(boat.name||"Bateau")}${boat.verified ? ` <span class="verified-badge">✓ ${esc(t("boatDetail.verifiedBadge"))}</span>` : ""}</h2>
       <div class="boat-card-port" style="margin-bottom:12px">📍 ${esc(boat.home_port||"—")}</div>
       ${boatSpecsLine(boat) ? `<div class="boat-card-specs-line" style="margin-bottom:18px;font-size:14px">${boatSpecsLine(boat)}</div>` : ""}
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px">
@@ -1682,7 +1696,7 @@ window.openProfileDetail = function(id, adminView){
     </div>
     <div style="padding-top:18px">
       <small style="color:var(--muted);font-weight:800;letter-spacing:.05em;text-transform:uppercase;font-size:11px">${esc(activityLabel(activity))}</small>
-      <div class="name-row" style="margin:4px 0 6px"><h2 style="margin:0">${esc(p.full_name||"—")} <span class="verified-badge">✓ ${esc(t("card.verifiedBadge"))}</span></h2></div>
+      <div class="name-row" style="margin:4px 0 6px"><h2 style="margin:0">${esc(p.full_name||"—")} <span class="verified-badge">✓ ${esc(t("card.verifiedBadge"))}</span>${featuredBadgeHtml(p)}</h2></div>
       <div class="boat-card-port" style="margin-bottom:6px">📍 ${esc(p.home_port||"—")}</div>
       <div class="meta" style="margin-bottom:14px">★ ${Number(p.rating||5).toFixed(1)} · ${p.experience_years||0} ${esc(t("card.experience"))}${p.languages?" · "+esc(p.languages):""}</div>
       <p class="muted" style="line-height:1.6">${esc(p.bio||t("boatDetail.noDescription"))}</p>
@@ -2529,7 +2543,7 @@ function adminUserCard(p, missions, defaultCommission){
   return `<article class="request-card">
     <div class="request-top">
       <div>
-        <h3>${esc(p.full_name||"—")}</h3>
+        <h3>${esc(p.full_name||"—")}${featuredBadgeHtml(p)}</h3>
         <div class="muted">${esc(p.role||"")}${p.provider_activity?" · "+esc(activityLabel(p.provider_activity)):""} · ${esc(p.home_port||"—")}</div>
         <div class="muted">${esc(p.contact_email||p.email||"—")} · ${esc(p.phone||"—")}</div>
         <div class="muted">${esc(t("dash.missionsCount"))}: ${missionCount}${p.rating?` · ★ ${Number(p.rating).toFixed(1)}`:""}</div>
@@ -2552,6 +2566,7 @@ function adminUserCard(p, missions, defaultCommission){
     </div>
     <div class="request-actions">
 ${!p.verified ? `<button class="small-btn fill" data-approve="${p.id}">${esc(t("dash.approve"))}</button><button class="small-btn danger" data-reject-doc="${p.id}">${esc(t("dash.rejectDocument"))}</button>` : (String(p.id)===String(currentUser.id) ? `` : `<button class="small-btn danger" data-suspend="${p.id}">${esc(t("dash.suspend"))}</button>`)}
+      ${(isProfessional && p.verified) ? (p.featured ? `<button class="small-btn" data-unfeature="${p.id}">${esc(t("dash.unfeature"))}</button>` : `<button class="small-btn" data-feature="${p.id}">${esc(t("dash.markFeatured"))}</button>`) : ""}
       ${(p.suspended && String(p.id)!==String(currentUser.id)) ? `<button class="small-btn danger" data-delete-user="${p.id}">${esc(t("dash.delete"))}</button>` : ""}
       <button class="small-btn" data-view-profile="${p.id}">${esc(t("card.viewProfile"))}</button>
       ${p.role === "client" ? `<button class="small-btn" data-view-boats="${p.id}">${esc(t("dash.viewUserBoats"))}</button>` : ""}
@@ -2566,7 +2581,7 @@ function adminBoatCard(b, byId){
     <div class="request-top">
       ${photo ? `<img src="${esc(photo)}" style="width:88px;height:88px;object-fit:cover;border-radius:12px;flex-shrink:0" onclick="window.open('${esc(photo)}','_blank')">` : `<div style="width:88px;height:88px;border-radius:12px;background:var(--mist);display:grid;place-items:center;font-size:28px;flex-shrink:0">⛵</div>`}
       <div>
-        <h3>${esc(b.name||"—")}</h3>
+        <h3>${esc(b.name||"—")}${b.verified ? ` <span class="verified-badge">✓ ${esc(t("boatDetail.verifiedBadge"))}</span>` : ""}</h3>
         <div class="muted">${esc(b.model||"")}${b.boat_type?" · "+esc(boatTypeLabel(b.boat_type)):""} · ${esc(b.home_port||"—")}</div>
         <div class="muted">${b.length_m?b.length_m+" m · ":""}${b.capacity?b.capacity+" pers. · ":""}${b.cabins!=null?b.cabins+" cabines · ":""}${b.year_built?b.year_built:""}</div>
         <div class="muted">${esc(t("dash.owner"))}: ${esc(owner?.full_name||"—")} · ${esc(owner?.contact_email||owner?.email||"—")}${b.skipper_included?` · ${esc(t("boatDetail.skipperIncluded"))}`:""}</div>
@@ -2574,7 +2589,10 @@ function adminBoatCard(b, byId){
         ${Array.isArray(b.photo_urls) && b.photo_urls.length > 1 ? `<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">${b.photo_urls.map(u=>`<img src="${esc(u)}" style="width:48px;height:48px;object-fit:cover;border-radius:8px;cursor:pointer" onclick="window.open('${esc(u)}','_blank')">`).join("")}</div>` : ""}
       </div>
     </div>
-    <div class="request-actions"><button class="small-btn danger" data-delete-boat="${b.id}">${esc(t("dash.delete"))}</button></div>
+    <div class="request-actions">
+      ${b.verified ? `<button class="small-btn" data-unverify-boat="${b.id}">${esc(t("dash.unverifyBoat"))}</button>` : `<button class="small-btn fill" data-verify-boat="${b.id}">${esc(t("dash.verifyBoat"))}</button>`}
+      <button class="small-btn danger" data-delete-boat="${b.id}">${esc(t("dash.delete"))}</button>
+    </div>
   </article>`;
 }
 function bindAdminBoatActions(){
@@ -2592,6 +2610,14 @@ function bindAdminBoatActions(){
       if(!res.ok || !j.ok){ alert(j.error || "Erreur"); btn.disabled = false; return; }
       renderAdminPanel("boats");
     }catch(err){ alert(err.message); btn.disabled = false; }
+  }));
+  document.querySelectorAll("[data-verify-boat]").forEach(btn=>btn.addEventListener("click", async ()=>{
+    const {error} = await db.from("boats").update({verified:true}).eq("id", btn.dataset.verifyBoat);
+    if(error) alert(error.message); else renderAdminPanel("boats");
+  }));
+  document.querySelectorAll("[data-unverify-boat]").forEach(btn=>btn.addEventListener("click", async ()=>{
+    const {error} = await db.from("boats").update({verified:false}).eq("id", btn.dataset.unverifyBoat);
+    if(error) alert(error.message); else renderAdminPanel("boats");
   }));
 }
 
@@ -2768,6 +2794,14 @@ function bindProfileActions(){
     const reason = prompt(t("dash.rejectDocument") + " — " + t("dispute.reasonPrompt"));
     if(reason === null || !reason.trim()) return;
     const {error} = await db.from("profiles").update({verified:false, document_rejection_reason: reason.trim()}).eq("id", btn.dataset.rejectDoc);
+    if(error) alert(error.message); else openDashboard();
+  }));
+  document.querySelectorAll("[data-feature]").forEach(btn=>btn.addEventListener("click", async ()=>{
+    const {error} = await db.from("profiles").update({featured:true}).eq("id", btn.dataset.feature);
+    if(error) alert(error.message); else openDashboard();
+  }));
+  document.querySelectorAll("[data-unfeature]").forEach(btn=>btn.addEventListener("click", async ()=>{
+    const {error} = await db.from("profiles").update({featured:false}).eq("id", btn.dataset.unfeature);
     if(error) alert(error.message); else openDashboard();
   }));
   document.querySelectorAll("[data-save-note]").forEach(btn=>btn.addEventListener("click", async ()=>{
