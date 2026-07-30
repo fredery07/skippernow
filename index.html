@@ -38,6 +38,7 @@ nav{display:flex;align-items:center;justify-content:space-between;width:100%}
 .small-btn.fill{background:var(--navy);color:#fff}
 .small-btn.danger{border-color:#b43b3b;color:#b43b3b}
 .language-select{border:1px solid var(--line);background:#fff;color:var(--navy);border-radius:11px;padding:10px 8px;font-weight:900;cursor:pointer}
+.account-avatar{width:32px;height:32px;border-radius:50%;background:var(--navy);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:800;background-size:cover;background-position:center;flex:0 0 auto}
 
 .hero{background:linear-gradient(135deg,#071d32 0%,#0d4551 66%,#157d80 100%);color:#fff;padding:76px 0 116px;position:relative;overflow:hidden}
 .hero-chart{position:absolute;inset:0;z-index:1;opacity:.5;pointer-events:none}
@@ -115,6 +116,9 @@ main{padding:52px 0 90px}
 .price strong{font-size:19px}
 .price small{display:block;color:var(--muted)}
 .empty-note{padding:24px;border:1px dashed var(--line);border-radius:16px;text-align:center;color:var(--muted);background:#fff}
+.compact-join-card{background:var(--mist);border:1px dashed var(--aqua);border-radius:20px;padding:22px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:10px}
+.compact-join-icon{font-size:26px}
+.compact-join-card p{margin:0;color:var(--blue);font-weight:700;font-size:14px;line-height:1.45}
 .empty-cta{position:relative;padding:56px 28px;border-radius:20px;text-align:center;overflow:hidden;background:var(--navy)}
 .empty-cta video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
 .empty-cta .empty-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,29,50,.55),rgba(7,29,50,.82));z-index:1}
@@ -127,6 +131,12 @@ main{padding:52px 0 90px}
 
 .rental-hub{margin:0 0 36px;display:grid;grid-template-columns:1.2fr 1fr;gap:18px}
 .rental-box{background:#fff;border:1px solid var(--line);border-radius:22px;padding:24px;box-shadow:0 10px 28px rgba(16,43,63,.05)}
+.category-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.category-tile{border:1px solid var(--line);background:#fff;border-radius:16px;padding:16px 10px;text-align:center;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:8px}
+.category-tile:hover{border-color:var(--aqua);background:var(--mist)}
+.category-icon{font-size:26px}
+.category-tile strong{font-size:13px;color:var(--navy)}
+@media(max-width:480px){.category-grid{grid-template-columns:1fr}}
 .rental-box h3{margin:0 0 8px;font-size:22px}
 .rental-box p{color:var(--muted);line-height:1.6}
 .cta-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
@@ -295,6 +305,7 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
         <button class="link" id="notifBtn" type="button" aria-label="Notifications" style="position:relative;font-size:18px">🔔<span id="notifBadge" style="display:none;position:absolute;top:-4px;right:-6px;background:#c0392b;color:#fff;border-radius:999px;font-size:10.5px;font-weight:800;min-width:16px;height:16px;line-height:16px;text-align:center;padding:0 3px">0</span></button>
         <div id="notifPanel" style="display:none;position:absolute;top:calc(100% + 8px);right:0;width:300px;max-height:360px;overflow:auto;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);z-index:200;padding:8px"></div>
       </div>
+      <span id="accountAvatar" class="account-avatar" style="display:none" aria-hidden="true"></span>
       <button class="link" id="loginBtn" type="button" data-i18n="nav.login">Se connecter</button>
       <button class="primary" id="signupBtn" type="button" data-i18n="nav.signup">Créer un compte</button>
     </div>
@@ -380,9 +391,13 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
 
   <section class="rental-hub" id="rentalHub">
     <div class="rental-box">
-      <span class="pill-link">🧰 <span data-i18n="providersShowcase.badge">PRESTATAIRES INSCRITS</span></span>
-      <h3 data-i18n="providersShowcase.title">Nos professionnels vérifiés</h3>
-      <div id="homeProvidersStrip"><div class="empty-note" data-i18n="providersShowcase.empty">Aucun prestataire inscrit pour le moment.</div></div>
+      <span class="pill-link">🧭 <span data-i18n="categories.badge">CATÉGORIES</span></span>
+      <h3 data-i18n="categories.title">Trouver le bon professionnel</h3>
+      <div class="category-grid" id="homeCategoryGrid">
+        <button type="button" class="category-tile" data-activity="skipper"><span class="category-icon">⚓</span><strong data-i18n="tabs.skippers">Skippers</strong></button>
+        <button type="button" class="category-tile" data-activity="day_sailor"><span class="category-icon">👷</span><strong data-i18n="tabs.daySailors">Marins à la journée</strong></button>
+        <button type="button" class="category-tile" data-activity="cleaning"><span class="category-icon">🧽</span><strong data-i18n="tabs.cleaning">Prestataires</strong></button>
+      </div>
     </div>
     <div class="rental-box">
       <span class="pill-link">🌊 <span data-i18n="rental.examplesBadge">BATEAUX DISPONIBLES</span></span>
@@ -704,6 +719,10 @@ const I18N = {
     "search.dateLabel":"DATE","search.durationLabel":"DURÉE","search.submit":"Rechercher",
     "duration.half":"Demi-journée","duration.day":"Journée","duration.multi":"Plusieurs jours",
     "rental.badge":"LOCATION DE BATEAUX","rental.title":"Mettre mon bateau en location","providersShowcase.badge":"PRESTATAIRES INSCRITS","providersShowcase.title":"Nos professionnels vérifiés","providersShowcase.empty":"Aucun prestataire inscrit pour le moment.",
+    "categories.badge":"CATÉGORIES","categories.title":"Trouver le bon professionnel",
+    "results.compactJoin.skipper":"Vous êtes skipper dans cette zone ? Rejoignez SkipperNow et recevez vos premières demandes.",
+    "results.compactJoin.day_sailor":"Vous proposez de l'aide à bord dans cette zone ? Rejoignez SkipperNow et recevez vos premières demandes.",
+    "results.compactJoin.cleaning":"Vous proposez des services nautiques dans cette zone ? Rejoignez SkipperNow et recevez vos premières demandes.",
     "rental.text":"Créez votre compte propriétaire, ajoutez photos, caractéristiques, port d'attache et disponibilités. Vous pourrez ensuite proposer la location avec ou sans skipper.",
     "rental.cta":"Mettre mon bateau en location","rental.ctaShort":"Vous êtes propriétaire ? Mettre mon bateau en location","rental.examplesBadge":"BATEAUX DISPONIBLES",
     "rental.examplesTitle":"Dernières annonces","rental.empty":"Aucun bateau publié pour le moment. Soyez le premier propriétaire à proposer le vôtre !",
@@ -720,7 +739,7 @@ const I18N = {
     "results.count.skipper.one":"1 skipper","results.count.skipper.other":"{n} skippers",
     "results.count.day_sailor.one":"1 marin à la journée","results.count.day_sailor.other":"{n} marins à la journée",
     "tabs.skippers":"Skippers","tabs.daySailors":"Marins à la journée","tabs.cleaning":"Prestataires",
-    "card.experience":"an(s) d'expérience","card.priceOnRequest":"Sur demande","card.priceNote":"tarif confirmé avant réservation","card.priceFrom":"À partir de","card.verifiedBadge":"Vérifié",
+    "card.experience":"an(s) d'expérience","card.newOnPlatform":"Nouveau sur SkipperNow","card.priceOnRequest":"Sur demande","card.priceNote":"tarif confirmé avant réservation","card.priceFrom":"À partir de","card.verifiedBadge":"Vérifié",
     "card.superSkipperBadge":"Super Skipper","card.recommendedProviderBadge":"Prestataire recommandé",
     "boatDetail.verifiedBadge":"Bateau vérifié",
     "dash.verifyBoat":"Vérifier le bateau","dash.unverifyBoat":"Retirer la vérification","dash.markFeatured":"Mettre en avant","dash.unfeature":"Retirer la mise en avant",
@@ -759,7 +778,7 @@ const I18N = {
     "boatDetail.type":"Type de bateau","boatDetail.typeSailboat":"Voilier","boatDetail.typeMotorboat":"Yacht à moteur","boatDetail.typeRib":"Semi-rigide",
     "boatDetail.capacity":"Capacité (personnes)","boatDetail.pax":"pers.","boatDetail.cabinsField":"Nombre de cabines","boatDetail.cabins":"cabines","boatDetail.cabin":"cabine","boatDetail.year":"Année",
     "boatDetail.skipperIncluded":"Skipper inclus","boatDetail.skipperIncludedTag":"Skipper inclus","boatDetail.skipperOptionalTag":"Skipper en option",
-    "boatDetail.onRequest":"Sur demande","boatDetail.description":"Description","boatDetail.noDescription":"Aucune description renseignée.","boatDetail.photos":"Photos (jusqu'à 6)",
+    "boatDetail.onRequest":"Sur demande","boatDetail.perDaySuffix":" /jour","boatDetail.perHalfDaySuffix":" /demi-journée","boatDetail.description":"Description","boatDetail.noDescription":"Aucune description renseignée.","boatDetail.photos":"Photos (jusqu'à 6)",
     "boatDetail.request":"Demander une réservation","boatDetail.close":"Fermer","boatDetail.ownListing":"C'est votre propre annonce — vous ne pouvez pas la réserver.",
     "boatDetail.brand":"Marque","boatDetail.width":"Largeur","boatDetail.draft":"Tirant d'eau","boatDetail.berths":"Couchages",
     "boatDetail.engineType":"Type de moteur","boatDetail.engineCount":"Nombre de moteurs","boatDetail.enginePower":"Puissance (ch)","boatDetail.fuelType":"Type de carburant",
@@ -861,6 +880,10 @@ const I18N = {
     "search.dateLabel":"DATE","search.durationLabel":"DURATION","search.submit":"Search",
     "duration.half":"Half day","duration.day":"Full day","duration.multi":"Several days",
     "rental.badge":"BOAT RENTALS","rental.title":"List my boat for rent","providersShowcase.badge":"REGISTERED PROVIDERS","providersShowcase.title":"Our verified professionals","providersShowcase.empty":"No provider registered yet.",
+    "categories.badge":"CATEGORIES","categories.title":"Find the right professional",
+    "results.compactJoin.skipper":"Are you a skipper in this area? Join SkipperNow and get your first requests.",
+    "results.compactJoin.day_sailor":"Do you offer help on board in this area? Join SkipperNow and get your first requests.",
+    "results.compactJoin.cleaning":"Do you offer marine services in this area? Join SkipperNow and get your first requests.",
     "rental.text":"Create an owner account, add photos, specifications, home port and availability. You can then offer your boat with or without a skipper.",
     "rental.cta":"List my boat for rent","rental.ctaShort":"Are you a boat owner? List your boat for rent","rental.examplesBadge":"AVAILABLE BOATS",
     "rental.examplesTitle":"Latest listings","rental.empty":"No boats published yet. Be the first owner to list yours!",
@@ -877,7 +900,7 @@ const I18N = {
     "results.count.skipper.one":"1 skipper","results.count.skipper.other":"{n} skippers",
     "results.count.day_sailor.one":"1 day sailor","results.count.day_sailor.other":"{n} day sailors",
     "tabs.skippers":"Skippers","tabs.daySailors":"Day sailors","tabs.cleaning":"Service providers",
-    "card.experience":"year(s) of experience","card.priceOnRequest":"On request","card.priceNote":"price confirmed before booking","card.priceFrom":"From","card.verifiedBadge":"Verified",
+    "card.experience":"year(s) of experience","card.newOnPlatform":"New on SkipperNow","card.priceOnRequest":"On request","card.priceNote":"price confirmed before booking","card.priceFrom":"From","card.verifiedBadge":"Verified",
     "card.superSkipperBadge":"Super Skipper","card.recommendedProviderBadge":"Recommended provider",
     "boatDetail.verifiedBadge":"Verified boat",
     "dash.verifyBoat":"Verify boat","dash.unverifyBoat":"Remove verification","dash.markFeatured":"Feature","dash.unfeature":"Remove feature",
@@ -916,7 +939,7 @@ const I18N = {
     "boatDetail.type":"Boat type","boatDetail.typeSailboat":"Sailboat","boatDetail.typeMotorboat":"Motor yacht","boatDetail.typeRib":"RIB / inflatable",
     "boatDetail.capacity":"Capacity (people)","boatDetail.pax":"pax","boatDetail.cabinsField":"Number of cabins","boatDetail.cabins":"cabins","boatDetail.cabin":"cabin","boatDetail.year":"Year",
     "boatDetail.skipperIncluded":"Skipper included","boatDetail.skipperIncludedTag":"Skipper included","boatDetail.skipperOptionalTag":"Skipper optional",
-    "boatDetail.onRequest":"On request","boatDetail.description":"Description","boatDetail.noDescription":"No description provided.","boatDetail.photos":"Photos (up to 6)",
+    "boatDetail.onRequest":"On request","boatDetail.perDaySuffix":" /day","boatDetail.perHalfDaySuffix":" /half-day","boatDetail.description":"Description","boatDetail.noDescription":"No description provided.","boatDetail.photos":"Photos (up to 6)",
     "boatDetail.request":"Request a booking","boatDetail.close":"Close","boatDetail.ownListing":"This is your own listing — you can't book it.",
     "boatDetail.brand":"Brand","boatDetail.width":"Beam","boatDetail.draft":"Draft","boatDetail.berths":"Berths",
     "boatDetail.engineType":"Engine type","boatDetail.engineCount":"Number of engines","boatDetail.enginePower":"Power (hp)","boatDetail.fuelType":"Fuel type",
@@ -1017,6 +1040,10 @@ const I18N = {
     "search.dateLabel":"FECHA","search.durationLabel":"DURACIÓN","search.submit":"Buscar",
     "duration.half":"Medio día","duration.day":"Día completo","duration.multi":"Varios días",
     "rental.badge":"ALQUILER DE BARCOS","rental.title":"Poner mi barco en alquiler","providersShowcase.badge":"PRESTADORES REGISTRADOS","providersShowcase.title":"Nuestros profesionales verificados","providersShowcase.empty":"Todavía no hay ningún prestador registrado.",
+    "categories.badge":"CATEGORÍAS","categories.title":"Encuentra al profesional adecuado",
+    "results.compactJoin.skipper":"¿Eres skipper en esta zona? Únete a SkipperNow y recibe tus primeras solicitudes.",
+    "results.compactJoin.day_sailor":"¿Ofreces ayuda a bordo en esta zona? Únete a SkipperNow y recibe tus primeras solicitudes.",
+    "results.compactJoin.cleaning":"¿Ofreces servicios náuticos en esta zona? Únete a SkipperNow y recibe tus primeras solicitudes.",
     "rental.text":"Crea una cuenta de propietario, añade fotos, características, puerto base y disponibilidad. Luego podrás ofrecer tu barco con o sin skipper.",
     "rental.cta":"Poner mi barco en alquiler","rental.ctaShort":"¿Eres propietario? Pon tu barco en alquiler","rental.examplesBadge":"BARCOS DISPONIBLES",
     "rental.examplesTitle":"Últimos anuncios","rental.empty":"Todavía no hay barcos publicados. ¡Sé el primer propietario en publicar el tuyo!",
@@ -1033,7 +1060,7 @@ const I18N = {
     "results.count.skipper.one":"1 skipper","results.count.skipper.other":"{n} skippers",
     "results.count.day_sailor.one":"1 marinero por día","results.count.day_sailor.other":"{n} marineros por día",
     "tabs.skippers":"Skippers","tabs.daySailors":"Marineros por día","tabs.cleaning":"Prestadores",
-    "card.experience":"año(s) de experiencia","card.priceOnRequest":"A consultar","card.priceNote":"precio confirmado antes de la reserva","card.priceFrom":"Desde","card.verifiedBadge":"Verificado",
+    "card.experience":"año(s) de experiencia","card.newOnPlatform":"Nuevo en SkipperNow","card.priceOnRequest":"A consultar","card.priceNote":"precio confirmado antes de la reserva","card.priceFrom":"Desde","card.verifiedBadge":"Verificado",
     "card.superSkipperBadge":"Super Skipper","card.recommendedProviderBadge":"Prestador recomendado",
     "boatDetail.verifiedBadge":"Barco verificado",
     "dash.verifyBoat":"Verificar barco","dash.unverifyBoat":"Quitar verificación","dash.markFeatured":"Destacar","dash.unfeature":"Quitar destacado",
@@ -1072,7 +1099,7 @@ const I18N = {
     "boatDetail.type":"Tipo de barco","boatDetail.typeSailboat":"Velero","boatDetail.typeMotorboat":"Yate a motor","boatDetail.typeRib":"Semirrígida",
     "boatDetail.capacity":"Capacidad (personas)","boatDetail.pax":"pers.","boatDetail.cabinsField":"Número de cabinas","boatDetail.cabins":"cabinas","boatDetail.cabin":"cabina","boatDetail.year":"Año",
     "boatDetail.skipperIncluded":"Skipper incluido","boatDetail.skipperIncludedTag":"Skipper incluido","boatDetail.skipperOptionalTag":"Skipper opcional",
-    "boatDetail.onRequest":"A consultar","boatDetail.description":"Descripción","boatDetail.noDescription":"Sin descripción disponible.","boatDetail.photos":"Fotos (hasta 6)",
+    "boatDetail.onRequest":"A consultar","boatDetail.perDaySuffix":" /día","boatDetail.perHalfDaySuffix":" /medio día","boatDetail.description":"Descripción","boatDetail.noDescription":"Sin descripción disponible.","boatDetail.photos":"Fotos (hasta 6)",
     "boatDetail.request":"Solicitar una reserva","boatDetail.close":"Cerrar","boatDetail.ownListing":"Este es tu propio anuncio — no puedes reservarlo.",
     "boatDetail.brand":"Marca","boatDetail.width":"Manga","boatDetail.draft":"Calado","boatDetail.berths":"Literas",
     "boatDetail.engineType":"Tipo de motor","boatDetail.engineCount":"Número de motores","boatDetail.enginePower":"Potencia (cv)","boatDetail.fuelType":"Tipo de combustible",
@@ -1165,7 +1192,7 @@ function t(key, vars){
   if(vars) for(const k in vars) text = text.replace("{"+k+"}", vars[k]);
   return text;
 }
-function pluralKey(base, n){ return base + "." + (Math.abs(n) <= 1 ? "one" : "other"); }
+function pluralKey(base, n){ return base + "." + (n === 1 ? "one" : "other"); }
 function tCount(base, n){ return t(pluralKey(base, n), {n}); }
 
 function applyStaticTranslations(){
@@ -1345,6 +1372,13 @@ async function switchActivityTab(activity){
   await loadListings();
 }
 
+document.querySelectorAll("#homeCategoryGrid .category-tile").forEach(tile=>{
+  tile.addEventListener("click", ()=>{
+    switchActivityTab(tile.dataset.activity);
+    document.querySelector("#listingTabs").scrollIntoView({behavior:"smooth"});
+  });
+});
+
 document.querySelectorAll("#portChips button").forEach(chip=>{
   chip.addEventListener("click", ()=>{
     portInput.value = chip.dataset.port;
@@ -1396,38 +1430,14 @@ async function loadListings(){
   const countBox = document.querySelector("#resultCount");
   const cfg = TAB_CONFIG[activeActivity] || TAB_CONFIG.skipper;
   countBox.textContent = tCount("results.count." + cfg.countKey, list.length);
-
-  if(!list.length){
-    box.innerHTML = "";
-    emptyBox.style.display = "block";
-    emptyBox.className = "empty-cta";
-    emptyBox.innerHTML = `
-      <video autoplay muted loop playsinline poster="https://images.pexels.com/videos/5124098/pexels-photo-5124098.jpeg?auto=compress&cs=tinysrgb&h=1080&fit=crop&w=1920">
-        <source src="https://videos.pexels.com/video-files/5124098/5124098-hd_1920_1080_30fps.mp4" type="video/mp4">
-      </video>
-      <div class="empty-overlay"></div>
-      <div class="empty-content">
-        <div class="empty-icon">${cfg.icon}</div>
-        <h3>${esc(t("results.emptyTitle"))}</h3>
-        <p>${esc(t(cfg.emptyTextKey))}</p>
-        <button class="primary" type="button" data-role="${cfg.ctaRole}">${esc(t(cfg.ctaLabelKey))}</button>
-      </div>
-    `;
-    emptyBox.querySelector("[data-role]").addEventListener("click", (e)=>openAccountModal("create", e.currentTarget.dataset.role));
-    return;
-  }
   emptyBox.style.display = "none";
   resultsCache = list;
-  const fillerCount = list.length > 0 && list.length < 3 ? 3 - list.length : 0;
-  const fillerHtml = Array.from({length: fillerCount}).map(()=>`
-    <article class="card join-filler-card">
-      <div class="join-filler-inner">
-        <div class="join-filler-icon">${cfg.icon}</div>
-        <h3>${esc(t("results.emptyTitle"))}</h3>
-        <p class="meta">${esc(t(cfg.emptyTextKey))}</p>
-        <button class="primary" type="button" data-role="${cfg.ctaRole}">${esc(t(cfg.ctaLabelKey))}</button>
-      </div>
-    </article>`).join("");
+  const compactJoinCard = `
+    <article class="card compact-join-card">
+      <div class="compact-join-icon">${cfg.icon}</div>
+      <p>${esc(t("results.compactJoin." + activeActivity))}</p>
+      <button class="small-btn fill" type="button" data-role="${cfg.ctaRole}">${esc(t(cfg.ctaLabelKey))}</button>
+    </article>`;
   box.innerHTML = list.map((p,i)=>{
     const unavailable = blocked.has(p.id);
     const bg = p.profile_photo_url ? `style="background-image:url('${esc(p.profile_photo_url)}')"` : "";
@@ -1438,7 +1448,7 @@ async function loadListings(){
       </div>
       <div class="content">
         <div class="name-row"><h3>${esc(p.full_name||"—")} <span class="verified-badge">✓ ${esc(t("card.verifiedBadge"))}</span>${featuredBadgeHtml(p)}</h3><span class="rating">★ ${Number(p.rating||5).toFixed(1)}</span></div>
-        <div class="meta">${esc(p.home_port||"—")} · ${p.experience_years||0} ${esc(t("card.experience"))}</div>
+        <div class="meta">${esc(p.home_port||"—")} · ${p.experience_years ? p.experience_years+" "+esc(t("card.experience")) : esc(t("card.newOnPlatform"))}</div>
         <p class="meta">${esc(p.bio||"")}</p>
         <div class="tags"><span class="tag">${esc(p.languages||"Français")}</span></div>
         <div class="price-row">
@@ -1447,8 +1457,8 @@ async function loadListings(){
         </div>
       </div>
     </article>`;
-  }).join("") + fillerHtml;
-  box.querySelectorAll(".join-filler-card [data-role]").forEach(btn=>btn.addEventListener("click", (e)=>openAccountModal("create", e.currentTarget.dataset.role)));
+  }).join("") + compactJoinCard;
+  box.querySelector(".compact-join-card [data-role]")?.addEventListener("click", (e)=>openAccountModal("create", e.currentTarget.dataset.role));
 }
 
 document.querySelector("#searchForm").addEventListener("submit", e=>{
@@ -1578,9 +1588,22 @@ window.toggleBoatFavorite = function(id, ev){
   const btn = document.querySelector(`[data-favorite-btn="${key}"]`);
   if(btn) btn.textContent = favs.includes(key) ? "♥" : "♡";
 };
+function normalizeBoatTitle(b){
+  const composed = [b.brand, b.model].filter(Boolean).join(" ").trim();
+  if(composed) return composed;
+  if(b.name && b.name.trim()) return b.name.trim().replace(/\w\S*/g, w=>w[0].toUpperCase()+w.slice(1).toLowerCase());
+  return "Bateau";
+}
+function normalizePlaceLabel(place){
+  if(!place || !place.trim()) return "—";
+  return place.trim().replace(/\w\S*/g, w=>w[0].toUpperCase()+w.slice(1).toLowerCase());
+}
 function boatCardHtml(b){
   const day = Number(b.price_per_day||b.daily_price||b.price||0);
-  const priceLabel = day ? `${esc(t("card.priceFrom"))} ${money(day*100)}` : esc(t("boatDetail.onRequest"));
+  const half = Number(b.price_half_day||0);
+  let priceLabel = esc(t("boatDetail.onRequest"));
+  if(day) priceLabel = `${esc(t("card.priceFrom"))} ${money(day*100)}${esc(t("boatDetail.perDaySuffix"))}`;
+  else if(half) priceLabel = `${esc(t("card.priceFrom"))} ${money(half*100)}${esc(t("boatDetail.perHalfDaySuffix"))}`;
   const photos = (Array.isArray(b.photo_urls) && b.photo_urls.length ? b.photo_urls : (b.photo_url ? [b.photo_url] : []));
   const specsLine = boatSpecsLine(b);
   return `<article class="boat-card" onclick="openBoatDetail('${b.id}')">
@@ -1591,8 +1614,8 @@ function boatCardHtml(b){
       <span class="boat-card-price">${priceLabel}</span>
     </div>
     <div class="boat-card-body">
-      <h3>${esc(b.name||"Bateau")}${b.verified ? ` <span class="verified-badge">✓ ${esc(t("boatDetail.verifiedBadge"))}</span>` : ""}</h3>
-      <div class="boat-card-port">📍 ${esc(b.home_port||"—")}</div>
+      <h3>${esc(normalizeBoatTitle(b))}${b.verified ? ` <span class="verified-badge">✓ ${esc(t("boatDetail.verifiedBadge"))}</span>` : ""}</h3>
+      <div class="boat-card-port">📍 ${esc(normalizePlaceLabel(b.home_port))}</div>
       ${specsLine ? `<div class="boat-card-specs-line">${specsLine}</div>` : ""}
     </div>
   </article>`;
@@ -1633,6 +1656,7 @@ async function preloadHomeProviders(){
 }
 function renderHomeProvidersStrip(){
   const box = document.querySelector("#homeProvidersStrip");
+  if(!box) return;
   if(!homeProvidersCache.length){ box.innerHTML = `<div class="empty-note">${esc(t("providersShowcase.empty"))}</div>`; return; }
   homeProvidersIndex = 0;
   resultsCache = resultsCache.concat(homeProvidersCache);
@@ -1910,7 +1934,27 @@ async function loadProfile(){
   currentProfile = data;
 }
 function refreshAccountButton(){
-  document.querySelector("#loginBtn").textContent = currentUser ? (currentProfile?.full_name || t("nav.myAccount")) : t("nav.login");
+  const loginBtn = document.querySelector("#loginBtn");
+  const signupBtn = document.querySelector("#signupBtn");
+  const avatar = document.querySelector("#accountAvatar");
+  if(currentUser){
+    loginBtn.textContent = t("nav.myAccount");
+    signupBtn.style.display = "none";
+    avatar.style.display = "inline-flex";
+    const photo = currentProfile?.profile_photo_url;
+    if(photo){
+      avatar.style.backgroundImage = `url('${photo}')`;
+      avatar.textContent = "";
+    }else{
+      avatar.style.backgroundImage = "";
+      const source = (currentProfile?.full_name || currentUser.email || "?").trim();
+      avatar.textContent = source.split(/\s+/).map(w=>w[0]).slice(0,2).join("").toUpperCase();
+    }
+  }else{
+    loginBtn.textContent = t("nav.login");
+    signupBtn.style.display = "";
+    avatar.style.display = "none";
+  }
   document.querySelector("#notifWrap").style.display = currentUser ? "block" : "none";
   if(currentUser) refreshNotifications(); else document.querySelector("#notifBadge").style.display = "none";
 }
@@ -3206,7 +3250,6 @@ function startHeroCarousel(){
   if(currentUser) await loadProfile();
   refreshAccountButton();
   await preloadHomeBoats();
-  await preloadHomeProviders();
   await loadListings();
   await loadTrustStats();
 })();
