@@ -278,6 +278,10 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
       <select id="languageSelect" class="language-select" aria-label="Langue">
         <option value="fr">FR</option><option value="en">EN</option><option value="es">ES</option>
       </select>
+      <div style="position:relative;display:none" id="notifWrap">
+        <button class="link" id="notifBtn" type="button" aria-label="Notifications" style="position:relative;font-size:18px">🔔<span id="notifBadge" style="display:none;position:absolute;top:-4px;right:-6px;background:#c0392b;color:#fff;border-radius:999px;font-size:10.5px;font-weight:800;min-width:16px;height:16px;line-height:16px;text-align:center;padding:0 3px">0</span></button>
+        <div id="notifPanel" style="display:none;position:absolute;top:calc(100% + 8px);right:0;width:300px;max-height:360px;overflow:auto;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);z-index:200;padding:8px"></div>
+      </div>
       <button class="link" id="loginBtn" type="button" data-i18n="nav.login">Se connecter</button>
       <button class="primary" id="signupBtn" type="button" data-i18n="nav.signup">Créer un compte</button>
     </div>
@@ -661,6 +665,8 @@ let currentPaymentMissionId = null;
 const I18N = {
   fr:{
     "nav.login":"Se connecter","nav.signup":"Créer un compte","nav.myAccount":"Mon espace",
+    "notif.unreadMessages":"message(s) non lu(s)","notif.quotesReceived":"devis reçu(s) à examiner","notif.awaitingValidation":"mission(s) à valider","notif.newRequests":"nouvelle(s) demande(s) disponible(s)",
+    "notif.pendingValidations":"profil(s) en attente de validation","notif.refundRequests":"demande(s) de remboursement","notif.openDisputes":"litige(s) ouvert(s)","notif.empty":"Aucune notification pour le moment.",
     "hero.eyebrow":"Disponible dans tous les ports du monde",
     "hero.title":"Votre skipper,<br>au bon port, au bon moment.",
     "hero.subtitle":"Trouvez un skipper, un marin ou un prestataire nautique dans n'importe quel port du monde, même à la dernière minute.",
@@ -809,6 +815,8 @@ const I18N = {
   },
   en:{
     "nav.login":"Log in","nav.signup":"Create an account","nav.myAccount":"My account",
+    "notif.unreadMessages":"unread message(s)","notif.quotesReceived":"quote(s) received to review","notif.awaitingValidation":"job(s) to validate","notif.newRequests":"new request(s) available",
+    "notif.pendingValidations":"profile(s) pending approval","notif.refundRequests":"refund request(s)","notif.openDisputes":"open dispute(s)","notif.empty":"No notifications yet.",
     "hero.eyebrow":"Available in every port worldwide",
     "hero.title":"Your skipper,<br>at the right port, at the right time.",
     "hero.subtitle":"Find a skipper, a crew member or a marine service provider in any port worldwide, even at the last minute.",
@@ -956,6 +964,8 @@ const I18N = {
   },
   es:{
     "nav.login":"Iniciar sesión","nav.signup":"Crear una cuenta","nav.myAccount":"Mi cuenta",
+    "notif.unreadMessages":"mensaje(s) sin leer","notif.quotesReceived":"presupuesto(s) recibido(s) para revisar","notif.awaitingValidation":"servicio(s) por validar","notif.newRequests":"nueva(s) solicitud(es) disponible(s)",
+    "notif.pendingValidations":"perfil(es) pendiente(s) de validación","notif.refundRequests":"solicitud(es) de reembolso","notif.openDisputes":"disputa(s) abierta(s)","notif.empty":"Sin notificaciones por ahora.",
     "hero.eyebrow":"Disponible en todos los puertos del mundo",
     "hero.title":"Tu skipper,<br>en el puerto y momento adecuados.",
     "hero.subtitle":"Encuentra un skipper, un marinero o un prestador náutico en cualquier puerto del mundo, incluso en el último momento.",
@@ -1837,7 +1847,59 @@ async function loadProfile(){
 }
 function refreshAccountButton(){
   document.querySelector("#loginBtn").textContent = currentUser ? (currentProfile?.full_name || t("nav.myAccount")) : t("nav.login");
+  document.querySelector("#notifWrap").style.display = currentUser ? "block" : "none";
+  if(currentUser) refreshNotifications(); else document.querySelector("#notifBadge").style.display = "none";
 }
+async function refreshNotifications(){
+  if(!currentUser || !currentProfile) return;
+  const items = [];
+  try{
+    const {count: unreadMsgCount} = await db.from("messages").select("id", {count:"exact", head:true}).is("read_at", null).neq("sender_id", currentUser.id).in("conversation_id",
+      (await db.from("conversations").select("id").or(`client_id.eq.${currentUser.id},skipper_id.eq.${currentUser.id}`)).data?.map(c=>c.id) || []);
+    if(unreadMsgCount) items.push({label: `${unreadMsgCount} ${t("notif.unreadMessages")}`, panel:"messages"});
+  }catch(_e){}
+  const role = currentProfile.role;
+  if(role === "client"){
+    const {data: quoted} = await db.from("missions").select("id",{count:"exact"}).eq("client_id", currentUser.id).eq("status","quoted");
+    if(quoted?.length) items.push({label: `${quoted.length} ${t("notif.quotesReceived")}`, panel:"requests"});
+    const {data: awaiting} = await db.from("missions").select("id",{count:"exact"}).eq("client_id", currentUser.id).eq("status","awaiting_validation");
+    if(awaiting?.length) items.push({label: `${awaiting.length} ${t("notif.awaitingValidation")}`, panel:"requests"});
+  }else if(["skipper","provider"].includes(role)){
+    const {data: pending} = await db.from("missions").select("id",{count:"exact"}).eq("status","pending").is("skipper_id", null);
+    if(pending?.length) items.push({label: `${pending.length} ${t("notif.newRequests")}`, panel:"requests"});
+  }else if(role === "admin"){
+    const {data: pendingUsers} = await db.from("profiles").select("id",{count:"exact"}).eq("verified", false).in("role",["skipper","provider"]);
+    if(pendingUsers?.length) items.push({label: `${pendingUsers.length} ${t("notif.pendingValidations")}`, panel:"validations"});
+    const {data: refunds} = await db.from("missions").select("id",{count:"exact"}).eq("payment_status","refund_requested");
+    if(refunds?.length) items.push({label: `${refunds.length} ${t("notif.refundRequests")}`, panel:"refunds"});
+    const {data: disputes} = await db.from("missions").select("id",{count:"exact"}).eq("dispute_status","open");
+    if(disputes?.length) items.push({label: `${disputes.length} ${t("notif.openDisputes")}`, panel:"disputes"});
+  }
+  const badge = document.querySelector("#notifBadge");
+  const total = items.reduce((s,it)=>s + (Number(String(it.label).match(/^\d+/)?.[0]) || 1), 0);
+  badge.textContent = total > 9 ? "9+" : String(total);
+  badge.style.display = total > 0 ? "flex" : "none";
+  document.querySelector("#notifPanel").innerHTML = items.length
+    ? items.map(it=>`<button type="button" class="request-card" style="width:100%;text-align:left;cursor:pointer;display:block;margin-bottom:6px" data-notif-panel="${it.panel}">${esc(it.label)}</button>`).join("")
+    : `<div class="empty-note" style="padding:12px">${esc(t("notif.empty"))}</div>`;
+  document.querySelectorAll("[data-notif-panel]").forEach(btn=>btn.addEventListener("click", async ()=>{
+    document.querySelector("#notifPanel").style.display = "none";
+    await openDashboard();
+    document.querySelectorAll(".dash-side button").forEach(b=>b.classList.toggle("active", b.dataset.panel===btn.dataset.notifPanel));
+    if(currentProfile.role === "client") await renderClientPanel(btn.dataset.notifPanel);
+    else if(currentProfile.role === "admin") await renderAdminPanel(btn.dataset.notifPanel);
+    else await renderProPanel(btn.dataset.notifPanel);
+  }));
+}
+document.querySelector("#notifBtn").addEventListener("click", ()=>{
+  const panel = document.querySelector("#notifPanel");
+  panel.style.display = panel.style.display === "none" ? "block" : "none";
+});
+document.addEventListener("click", (e)=>{
+  const wrap = document.querySelector("#notifWrap");
+  if(wrap && !wrap.contains(e.target)) document.querySelector("#notifPanel").style.display = "none";
+});
+setInterval(()=>{ if(currentUser) refreshNotifications(); }, 45000);
 
 window.openBookingFor = function(targetId, name, homePort, activity){
   if(currentUser && targetId && String(targetId) === String(currentUser.id)){
@@ -2810,6 +2872,10 @@ async function openConversationThread(clientId, skipperId){
     ]);
     if(error) throw error;
     const rows = messages || [];
+    const unreadIds = rows.filter(m => String(m.sender_id) !== String(currentUser.id) && !m.read_at).map(m=>m.id);
+    if(unreadIds.length){
+      db.from("messages").update({read_at: new Date().toISOString()}).in("id", unreadIds).then(()=>refreshNotifications());
+    }
     thread.innerHTML = `
       <div class="request-top" style="margin-bottom:10px">
         <div><h3 style="margin:0">${esc(otherProfile?.full_name || "—")}</h3></div>
