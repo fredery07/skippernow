@@ -312,7 +312,7 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
 </header>
 
 <section class="hero">
-  <video class="hero-video" autoplay muted loop playsinline poster="https://images.unsplash.com/photo-1719813916544-9a0d82f96a53?auto=format&fit=crop&w=1800&q=80" aria-label="Vidéo de présentation SkipperNow">
+  <video class="hero-video" id="heroVideo" autoplay muted playsinline poster="https://images.unsplash.com/photo-1719813916544-9a0d82f96a53?auto=format&fit=crop&w=1800&q=80" aria-label="Vidéo de présentation SkipperNow">
     <source src="hero.mp4" type="video/mp4">
   </video>
   <div class="hero-shade"></div>
@@ -3231,6 +3231,23 @@ function startHeroCarousel(){
 
 (async function init(){
   applyStaticTranslations();
+  (function initHeroVideoBoomerang(){
+    const v = document.querySelector("#heroVideo");
+    if(!v) return;
+    let reversing = false;
+    v.addEventListener("ended", ()=>{ reversing = true; step(); });
+    function step(){
+      if(!reversing) return;
+      if(v.currentTime <= 0.05){
+        reversing = false;
+        v.currentTime = 0;
+        v.play();
+        return;
+      }
+      v.currentTime = Math.max(0, v.currentTime - 0.033);
+      requestAnimationFrame(step);
+    }
+  })();
   initFaqBot();
   const params = new URLSearchParams(location.search);
   const urlPort = params.get("port");
