@@ -49,8 +49,9 @@ nav{display:flex;align-items:center;justify-content:space-between;width:100%}
 .hero-waypoint{fill:var(--brass-light);opacity:.9}
 .hero-waypoint-ring{fill:none;stroke:var(--brass-light);stroke-width:1;opacity:.55}
 .hero-inner{position:relative;z-index:2;max-width:760px}
-.hero-video,.hero-shade{position:absolute;inset:0}
-.hero-video{width:100%;height:100%;object-fit:cover}
+.hero-bg,.hero-shade{position:absolute;inset:0}
+.hero-bg{background-size:cover;background-position:center;opacity:0;transition:opacity 1s ease-in-out}
+.hero-bg.active{opacity:1}
 .hero-shade{background:linear-gradient(90deg,rgba(7,29,50,.74),rgba(7,29,50,.5) 45%,rgba(7,29,50,.22));z-index:1}
 .photo-band{height:340px;margin-top:64px;background-image:url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1800&q=85');background-size:cover;background-position:center;border-radius:28px 28px 0 0}
 .image-band{height:380px;overflow:hidden;background-size:cover;background-position:center}
@@ -311,9 +312,11 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
 </header>
 
 <section class="hero">
-  <video class="hero-video" id="heroVideo" autoplay muted playsinline poster="https://images.unsplash.com/photo-1719813916544-9a0d82f96a53?auto=format&fit=crop&w=1800&q=80" aria-label="Vidéo de présentation SkipperNow">
-    <source src="hero.mp4" type="video/mp4">
-  </video>
+  <div class="hero-bg active" style="background-image:url('https://images.unsplash.com/photo-1719813916544-9a0d82f96a53?auto=format&fit=crop&w=1800&q=80')"></div>
+  <div class="hero-bg" style="background-image:url('https://images.unsplash.com/photo-1624184780131-189b96898b84?auto=format&fit=crop&w=1800&q=80')"></div>
+  <div class="hero-bg" style="background-image:url('https://images.unsplash.com/photo-1688076164054-a3a7667befc3?auto=format&fit=crop&w=1800&q=80')"></div>
+  <div class="hero-bg" style="background-image:url('https://images.unsplash.com/photo-1719813916924-68f2cf5cc795?auto=format&fit=crop&w=1800&q=80')"></div>
+  <div class="hero-bg" style="background-image:url('https://images.unsplash.com/photo-1562281302-809108fd533c?auto=format&fit=crop&w=1800&q=80')"></div>
   <div class="hero-shade"></div>
   <div class="hero-chart" aria-hidden="true">
     <svg viewBox="0 0 1200 620" preserveAspectRatio="xMidYMid slice">
@@ -3226,23 +3229,7 @@ function startHeroCarousel(){
 
 (async function init(){
   applyStaticTranslations();
-  (function initHeroVideoBoomerang(){
-    const v = document.querySelector("#heroVideo");
-    if(!v) return;
-    let reversing = false;
-    v.addEventListener("ended", ()=>{ reversing = true; step(); });
-    function step(){
-      if(!reversing) return;
-      if(v.currentTime <= 0.05){
-        reversing = false;
-        v.currentTime = 0;
-        v.play();
-        return;
-      }
-      v.currentTime = Math.max(0, v.currentTime - 0.033);
-      requestAnimationFrame(step);
-    }
-  })();
+  startHeroCarousel();
   initFaqBot();
   const params = new URLSearchParams(location.search);
   const urlPort = params.get("port");
