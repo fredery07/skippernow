@@ -25,8 +25,8 @@ a{color:inherit}
 
 header{height:76px;background:rgba(255,255,255,.94);backdrop-filter:blur(18px);display:flex;align-items:center;position:sticky;top:0;z-index:30;border-bottom:1px solid rgba(220,232,233,.75)}
 nav{display:flex;align-items:center;justify-content:space-between;width:100%}
-.logo{display:flex;align-items:center;gap:10px;font-weight:850;font-size:22px;color:var(--navy);text-decoration:none;background:none;border:0;cursor:pointer}
-.mark{width:37px;height:37px;border-radius:12px;background:var(--navy);display:grid;place-items:center;color:var(--aqua);font-size:20px}
+.logo{display:flex;align-items:center;gap:12px;font-weight:900;font-size:27px;letter-spacing:-.01em;color:var(--navy);text-decoration:none;background:none;border:0;cursor:pointer}
+.mark{width:50px;height:50px;border-radius:15px;background:var(--navy);display:grid;place-items:center;color:var(--aqua);font-size:22px;box-shadow:0 4px 12px rgba(7,29,50,.22)}
 .nav-actions{display:flex;gap:10px;align-items:center}
 .link{border:0;background:transparent;color:var(--ink);font-weight:700;cursor:pointer;padding:10px 8px}
 .primary{border:0;background:var(--navy);color:white;border-radius:13px;padding:13px 18px;font-weight:800;cursor:pointer}
@@ -222,6 +222,15 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
 .provider-service span.desc{font-size:13px;color:var(--muted);line-height:1.4}
 .provider-icon{font-size:24px}
 .result-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}
+.tile-browse h2{font-size:22px}
+.tile-scroll-row{display:flex;gap:14px;overflow-x:auto;padding:16px 2px 10px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
+.tile-scroll-row::-webkit-scrollbar{height:6px}
+.tile-scroll-row::-webkit-scrollbar-thumb{background:var(--line);border-radius:6px}
+.tile-scroll-card{flex:0 0 200px;height:240px;border-radius:18px;position:relative;overflow:hidden;cursor:pointer;border:0;padding:0;background-size:cover;background-position:center;scroll-snap-align:start;transition:.2s}
+.tile-scroll-card:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(16,43,63,.18)}
+.tile-scroll-card::after{content:"";position:absolute;left:0;right:0;bottom:0;height:56%;background:linear-gradient(0deg,rgba(7,29,50,.72) 0%,rgba(7,29,50,0) 100%)}
+.tile-scroll-card span{position:absolute;left:16px;bottom:14px;z-index:2;color:#fff;font-weight:800;font-size:17px;text-shadow:0 2px 8px rgba(0,0,0,.2)}
+@media(max-width:640px){.tile-scroll-card{flex:0 0 150px;height:190px}.tile-scroll-card span{font-size:15px;left:12px;bottom:10px}}
 .boat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:18px;margin-top:16px}
 .boat-list{display:flex;flex-direction:column;gap:16px;margin-top:16px}
 .boat-list-card{display:flex;gap:16px;border:1px solid var(--line);border-radius:18px;padding:14px;cursor:pointer;transition:.15s;background:#fff}
@@ -321,7 +330,7 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
 
 <header>
   <nav class="shell">
-    <button class="logo" id="goHome" type="button"><span class="mark">⚓</span>SkipperNow</button>
+    <button class="logo" id="goHome" type="button"><span class="mark"><svg viewBox="0 0 24 24" width="28" height="28" fill="none"><circle cx="12" cy="4.1" r="2.1" stroke="currentColor" stroke-width="1.7"/><rect x="11.1" y="5.7" width="1.8" height="12.6" rx="0.9" fill="currentColor"/><circle cx="12" cy="18.6" r="1" fill="currentColor"/><rect x="7.4" y="8.6" width="9.2" height="1.6" rx="0.8" fill="currentColor"/><circle cx="7.4" cy="9.4" r="1.25" fill="currentColor"/><circle cx="16.6" cy="9.4" r="1.25" fill="currentColor"/><path d="M12 18.6C8 19.6 4.6 18 3.6 14" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/><path d="M12 18.6C16 19.6 19.4 18 20.4 14" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/><path d="M3.6 14L2.1 11.7L5.5 13.1Z" fill="currentColor"/><path d="M20.4 14L21.9 11.7L18.5 13.1Z" fill="currentColor"/></svg></span>SkipperNow</button>
     <div class="nav-actions">
       <select id="languageSelect" class="language-select" aria-label="Langue">
         <option value="fr">FR</option><option value="en">EN</option><option value="es">ES</option>
@@ -441,6 +450,27 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
   </section>
 
 
+  <section class="tile-browse" style="margin-top:56px">
+    <h2 data-i18n="browseByType.title">Le bateau idéal pour chacune de vos envies</h2>
+    <div class="tile-scroll-row" id="typeTileRow">
+      <button type="button" class="tile-scroll-card" data-boat-type="motorboat" style="background-image:url('https://images.unsplash.com/photo-1540946485063-a40da27545f8?auto=format&fit=crop&w=500&q=80')"><span data-i18n="boatType.motor">Moteur</span></button>
+      <button type="button" class="tile-scroll-card" data-boat-type="sailboat" style="background-image:url('https://images.unsplash.com/photo-1500627964684-141351970a7f?auto=format&fit=crop&w=500&q=80')"><span data-i18n="boatType.sailboat">Voilier</span></button>
+      <button type="button" class="tile-scroll-card" data-boat-type="rib" style="background-image:url('https://images.unsplash.com/photo-1569263979104-865ab7cd8d13?auto=format&fit=crop&w=500&q=80')"><span data-i18n="boatType.rib">Semi-rigide</span></button>
+      <button type="button" class="tile-scroll-card" data-boat-type="catamaran" style="background-image:url('https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=500&q=80')"><span data-i18n="boatType.catamaran">Catamaran</span></button>
+    </div>
+  </section>
+
+  <section class="tile-browse" style="margin-top:44px">
+    <h2 data-i18n="browseByPort.title">Explorez nos ports de la Côte d'Azur</h2>
+    <div class="tile-scroll-row" id="portTileRow">
+      <button type="button" class="tile-scroll-card" data-port="Cannes" style="background-image:url('https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=500&q=80')"><span>Cannes</span></button>
+      <button type="button" class="tile-scroll-card" data-port="Antibes" style="background-image:url('https://images.unsplash.com/photo-1591450127310-2e0656a41d2d?auto=format&fit=crop&w=500&q=80')"><span>Antibes</span></button>
+      <button type="button" class="tile-scroll-card" data-port="Nice" style="background-image:url('https://images.unsplash.com/photo-1585159812596-fac104f2f069?auto=format&fit=crop&w=500&q=80')"><span>Nice</span></button>
+      <button type="button" class="tile-scroll-card" data-port="Monaco" style="background-image:url('https://images.unsplash.com/photo-1548574505-5e239809ee19?auto=format&fit=crop&w=500&q=80')"><span>Monaco</span></button>
+      <button type="button" class="tile-scroll-card" data-port="Saint-Tropez" style="background-image:url('https://images.unsplash.com/photo-1596627116790-af6f96d60f2c?auto=format&fit=crop&w=500&q=80')"><span>Saint-Tropez</span></button>
+    </div>
+  </section>
+
   <section class="how" style="margin-top:36px">
     <h2 data-i18n="how.title">Comment ça marche ?</h2>
     <div class="steps">
@@ -491,7 +521,7 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
   <div class="shell">
     <div class="footer-grid">
       <div>
-        <div class="logo" style="color:#fff"><span class="mark">⚓</span>SkipperNow</div>
+        <div class="logo" style="color:#fff"><span class="mark"><svg viewBox="0 0 24 24" width="28" height="28" fill="none"><circle cx="12" cy="4.1" r="2.1" stroke="currentColor" stroke-width="1.7"/><rect x="11.1" y="5.7" width="1.8" height="12.6" rx="0.9" fill="currentColor"/><circle cx="12" cy="18.6" r="1" fill="currentColor"/><rect x="7.4" y="8.6" width="9.2" height="1.6" rx="0.8" fill="currentColor"/><circle cx="7.4" cy="9.4" r="1.25" fill="currentColor"/><circle cx="16.6" cy="9.4" r="1.25" fill="currentColor"/><path d="M12 18.6C8 19.6 4.6 18 3.6 14" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/><path d="M12 18.6C16 19.6 19.4 18 20.4 14" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/><path d="M3.6 14L2.1 11.7L5.5 13.1Z" fill="currentColor"/><path d="M20.4 14L21.9 11.7L18.5 13.1Z" fill="currentColor"/></svg></span>SkipperNow</div>
         <p style="max-width:340px;color:#b9d0d0" data-i18n="footer.tagline">La plateforme mondiale pour trouver un skipper, un prestataire nautique ou un bateau en location.</p>
       </div>
       <div>
@@ -566,6 +596,7 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
         <option value="sailboat" data-i18n="boatDetail.typeSailboat">Voilier</option>
         <option value="motorboat" data-i18n="boatDetail.typeMotorboat">Bateau à moteur</option>
         <option value="rib" data-i18n="boatDetail.typeRib">Semi-rigide</option>
+        <option value="catamaran" data-i18n="boatDetail.typeCatamaran">Catamaran</option>
       </select>
       <input id="boatFinderCapacityInput" type="number" min="1" step="1" data-i18n-placeholder="boatFinder.minCapacity" placeholder="Capacité min." style="width:130px;padding:11px 14px;border:1px solid var(--line);border-radius:12px">
     </div>
@@ -744,7 +775,7 @@ const I18N = {
     "search.dateLabel":"DATE","search.durationLabel":"DURÉE","search.submit":"Rechercher",
     "duration.half":"Demi-journée","duration.day":"Journée","duration.multi":"Plusieurs jours",
     "rental.badge":"LOCATION DE BATEAUX","rental.title":"Mettre mon bateau en location","providersShowcase.badge":"PRESTATAIRES INSCRITS","providersShowcase.title":"Nos professionnels vérifiés","providersShowcase.empty":"Aucun prestataire inscrit pour le moment.",
-    "categories.badge":"CATÉGORIES","categories.title":"Trouver le bon professionnel","categories.skipperDesc":"Sortie, location, convoyage et prise en main du bateau.","categories.daySailorDesc":"Aide à bord, manutention, convoyage court.","categories.providersDesc":"Nettoyage, chantier, entretien et services à quai.",
+    "categories.badge":"CATÉGORIES","categories.title":"Trouver le bon professionnel","categories.skipperDesc":"Sortie, location, convoyage et prise en main du bateau.","categories.daySailorDesc":"Aide à bord, manutention, convoyage court.","categories.providersDesc":"Nettoyage, chantier, entretien et services à quai.","browseByType.title":"Le bateau idéal pour chacune de vos envies","browseByPort.title":"Explorez nos ports de la Côte d'Azur","boatType.motor":"Moteur","boatType.sailboat":"Voilier","boatType.rib":"Semi-rigide","boatType.catamaran":"Catamaran",
     "results.compactJoin.skipper":"Vous êtes skipper dans cette zone ? Rejoignez SkipperNow et recevez vos premières demandes.",
     "results.compactJoin.day_sailor":"Vous proposez de l'aide à bord dans cette zone ? Rejoignez SkipperNow et recevez vos premières demandes.",
     "results.compactJoin.cleaning":"Vous proposez des services nautiques dans cette zone ? Rejoignez SkipperNow et recevez vos premières demandes.",
@@ -800,7 +831,7 @@ const I18N = {
     "results.noProvider":"Aucun prestataire disponible pour ce service pour le moment.",
     "boatFinder.eyebrow":"LOCATION DE BATEAUX","boatFinder.title":"Bateaux disponibles","boatFinder.empty":"Aucun bateau ne correspond à votre recherche.","boatFinder.allTypes":"Tous les types","boatFinder.minCapacity":"Capacité min.",
     "boatDetail.model":"Modèle","boatDetail.port":"Port d'attache","boatDetail.length":"Longueur","boatDetail.halfDay":"Demi-journée","boatDetail.fullDay":"Journée",
-    "boatDetail.type":"Type de bateau","boatDetail.typeSailboat":"Voilier","boatDetail.typeMotorboat":"Yacht à moteur","boatDetail.typeRib":"Semi-rigide",
+    "boatDetail.type":"Type de bateau","boatDetail.typeSailboat":"Voilier","boatDetail.typeMotorboat":"Yacht à moteur","boatDetail.typeRib":"Semi-rigide","boatDetail.typeCatamaran":"Catamaran",
     "boatDetail.capacity":"Capacité (personnes)","boatDetail.pax":"pers.","boatDetail.cabinsField":"Nombre de cabines","boatDetail.cabins":"cabines","boatDetail.cabin":"cabine","boatDetail.year":"Année",
     "boatDetail.skipperIncluded":"Skipper inclus","boatDetail.skipperIncludedTag":"Skipper inclus","boatDetail.skipperOptionalTag":"Skipper en option",
     "boatDetail.onRequest":"Sur demande","boatDetail.perDaySuffix":" /jour","boatDetail.perHalfDaySuffix":" /demi-journée","boatDetail.description":"Description","boatDetail.noDescription":"Aucune description renseignée.","boatDetail.photos":"Photos (jusqu'à 6)",
@@ -905,7 +936,7 @@ const I18N = {
     "search.dateLabel":"DATE","search.durationLabel":"DURATION","search.submit":"Search",
     "duration.half":"Half day","duration.day":"Full day","duration.multi":"Several days",
     "rental.badge":"BOAT RENTALS","rental.title":"List my boat for rent","providersShowcase.badge":"REGISTERED PROVIDERS","providersShowcase.title":"Our verified professionals","providersShowcase.empty":"No provider registered yet.",
-    "categories.badge":"CATEGORIES","categories.title":"Find the right professional","categories.skipperDesc":"Trips, rentals, deliveries and boat familiarisation.","categories.daySailorDesc":"Hands-on help, handling, short delivery trips.","categories.providersDesc":"Cleaning, shipyard, maintenance and dock services.",
+    "categories.badge":"CATEGORIES","categories.title":"Find the right professional","categories.skipperDesc":"Trips, rentals, deliveries and boat familiarisation.","categories.daySailorDesc":"Hands-on help, handling, short delivery trips.","categories.providersDesc":"Cleaning, shipyard, maintenance and dock services.","browseByType.title":"The ideal boat for every occasion","browseByPort.title":"Explore our French Riviera ports","boatType.motor":"Motorboat","boatType.sailboat":"Sailboat","boatType.rib":"RIB","boatType.catamaran":"Catamaran",
     "results.compactJoin.skipper":"Are you a skipper in this area? Join SkipperNow and get your first requests.",
     "results.compactJoin.day_sailor":"Do you offer help on board in this area? Join SkipperNow and get your first requests.",
     "results.compactJoin.cleaning":"Do you offer marine services in this area? Join SkipperNow and get your first requests.",
@@ -961,7 +992,7 @@ const I18N = {
     "results.noProvider":"No service provider available for this service yet.",
     "boatFinder.eyebrow":"BOAT RENTALS","boatFinder.title":"Available boats","boatFinder.empty":"No boats match your search.","boatFinder.allTypes":"All types","boatFinder.minCapacity":"Min. capacity",
     "boatDetail.model":"Model","boatDetail.port":"Home port","boatDetail.length":"Length","boatDetail.halfDay":"Half day","boatDetail.fullDay":"Full day",
-    "boatDetail.type":"Boat type","boatDetail.typeSailboat":"Sailboat","boatDetail.typeMotorboat":"Motor yacht","boatDetail.typeRib":"RIB / inflatable",
+    "boatDetail.type":"Boat type","boatDetail.typeSailboat":"Sailboat","boatDetail.typeMotorboat":"Motor yacht","boatDetail.typeRib":"RIB / inflatable","boatDetail.typeCatamaran":"Catamaran",
     "boatDetail.capacity":"Capacity (people)","boatDetail.pax":"pax","boatDetail.cabinsField":"Number of cabins","boatDetail.cabins":"cabins","boatDetail.cabin":"cabin","boatDetail.year":"Year",
     "boatDetail.skipperIncluded":"Skipper included","boatDetail.skipperIncludedTag":"Skipper included","boatDetail.skipperOptionalTag":"Skipper optional",
     "boatDetail.onRequest":"On request","boatDetail.perDaySuffix":" /day","boatDetail.perHalfDaySuffix":" /half-day","boatDetail.description":"Description","boatDetail.noDescription":"No description provided.","boatDetail.photos":"Photos (up to 6)",
@@ -1065,7 +1096,7 @@ const I18N = {
     "search.dateLabel":"FECHA","search.durationLabel":"DURACIÓN","search.submit":"Buscar",
     "duration.half":"Medio día","duration.day":"Día completo","duration.multi":"Varios días",
     "rental.badge":"ALQUILER DE BARCOS","rental.title":"Poner mi barco en alquiler","providersShowcase.badge":"PRESTADORES REGISTRADOS","providersShowcase.title":"Nuestros profesionales verificados","providersShowcase.empty":"Todavía no hay ningún prestador registrado.",
-    "categories.badge":"CATEGORÍAS","categories.title":"Encuentra al profesional adecuado","categories.skipperDesc":"Salidas, alquiler, traslados y familiarización con el barco.","categories.daySailorDesc":"Ayuda a bordo, manipulación, traslados cortos.","categories.providersDesc":"Limpieza, astillero, mantenimiento y servicios en el muelle.",
+    "categories.badge":"CATEGORÍAS","categories.title":"Encuentra al profesional adecuado","categories.skipperDesc":"Salidas, alquiler, traslados y familiarización con el barco.","categories.daySailorDesc":"Ayuda a bordo, manipulación, traslados cortos.","categories.providersDesc":"Limpieza, astillero, mantenimiento y servicios en el muelle.","browseByType.title":"El barco ideal para cada ocasión","browseByPort.title":"Explora nuestros puertos de la Costa Azul","boatType.motor":"Motor","boatType.sailboat":"Velero","boatType.rib":"Semirrígida","boatType.catamaran":"Catamarán",
     "results.compactJoin.skipper":"¿Eres skipper en esta zona? Únete a SkipperNow y recibe tus primeras solicitudes.",
     "results.compactJoin.day_sailor":"¿Ofreces ayuda a bordo en esta zona? Únete a SkipperNow y recibe tus primeras solicitudes.",
     "results.compactJoin.cleaning":"¿Ofreces servicios náuticos en esta zona? Únete a SkipperNow y recibe tus primeras solicitudes.",
@@ -1121,7 +1152,7 @@ const I18N = {
     "results.noProvider":"Todavía no hay prestadores disponibles para este servicio.",
     "boatFinder.eyebrow":"ALQUILER DE BARCOS","boatFinder.title":"Barcos disponibles","boatFinder.empty":"Ningún barco coincide con tu búsqueda.","boatFinder.allTypes":"Todos los tipos","boatFinder.minCapacity":"Capacidad mín.",
     "boatDetail.model":"Modelo","boatDetail.port":"Puerto base","boatDetail.length":"Eslora","boatDetail.halfDay":"Medio día","boatDetail.fullDay":"Día completo",
-    "boatDetail.type":"Tipo de barco","boatDetail.typeSailboat":"Velero","boatDetail.typeMotorboat":"Yate a motor","boatDetail.typeRib":"Semirrígida",
+    "boatDetail.type":"Tipo de barco","boatDetail.typeSailboat":"Velero","boatDetail.typeMotorboat":"Yate a motor","boatDetail.typeRib":"Semirrígida","boatDetail.typeCatamaran":"Catamarán",
     "boatDetail.capacity":"Capacidad (personas)","boatDetail.pax":"pers.","boatDetail.cabinsField":"Número de cabinas","boatDetail.cabins":"cabinas","boatDetail.cabin":"cabina","boatDetail.year":"Año",
     "boatDetail.skipperIncluded":"Skipper incluido","boatDetail.skipperIncludedTag":"Skipper incluido","boatDetail.skipperOptionalTag":"Skipper opcional",
     "boatDetail.onRequest":"A consultar","boatDetail.perDaySuffix":" /día","boatDetail.perHalfDaySuffix":" /medio día","boatDetail.description":"Descripción","boatDetail.noDescription":"Sin descripción disponible.","boatDetail.photos":"Fotos (hasta 6)",
@@ -1588,13 +1619,21 @@ let editingBoatId = null;
 let myBoatsCache = [];
 document.querySelector("#heroBoats").addEventListener("click", ()=>openBoatFinder());
 document.querySelector("#viewAllBoatsBtn").addEventListener("click", ()=>openBoatFinder());
+document.querySelectorAll("#typeTileRow .tile-scroll-card").forEach(tile=>{
+  tile.addEventListener("click", ()=>openBoatFinder(null, tile.dataset.boatType));
+});
+document.querySelectorAll("#portTileRow .tile-scroll-card").forEach(tile=>{
+  tile.addEventListener("click", ()=>openBoatFinder(tile.dataset.port));
+});
 document.querySelector("#footerFindBoat").addEventListener("click", ()=>openBoatFinder());
-async function openBoatFinder(){
+async function openBoatFinder(presetPort, presetType){
   openModal("boatFinderModal");
   const box = document.querySelector("#boatFinderResults");
   box.innerHTML = `<div class="empty-note">…</div>`;
   const finderPort = document.querySelector("#boatFinderPortInput");
-  if(portInput.value.trim()) finderPort.value = portInput.value.trim();
+  if(presetPort) finderPort.value = presetPort;
+  else if(portInput.value.trim()) finderPort.value = portInput.value.trim();
+  if(presetType) document.querySelector("#boatFinderTypeInput").value = presetType;
   const {data, error} = await db.from("boats").select("*").order("created_at",{ascending:false});
   if(error){ box.innerHTML = `<div class="empty-note">${esc(error.message)}</div>`; return; }
   boatCache = data || [];
@@ -1621,7 +1660,7 @@ async function renderBoatResults(){
   startBoatCardCarousels();
 }
 function boatTypeLabel(type){
-  const key = type === "motorboat" ? "boatDetail.typeMotorboat" : type === "rib" ? "boatDetail.typeRib" : "boatDetail.typeSailboat";
+  const key = type === "motorboat" ? "boatDetail.typeMotorboat" : type === "rib" ? "boatDetail.typeRib" : type === "catamaran" ? "boatDetail.typeCatamaran" : "boatDetail.typeSailboat";
   return t(key);
 }
 function boatSpecsLine(b){
@@ -2316,6 +2355,7 @@ async function renderClientPanel(panel){
             <option value="sailboat" ${b.boat_type==="sailboat"?"selected":""}>${esc(t("boatDetail.typeSailboat"))}</option>
             <option value="motorboat" ${b.boat_type==="motorboat"?"selected":""}>${esc(t("boatDetail.typeMotorboat"))}</option>
             <option value="rib" ${b.boat_type==="rib"?"selected":""}>${esc(t("boatDetail.typeRib"))}</option>
+            <option value="catamaran" ${b.boat_type==="catamaran"?"selected":""}>${esc(t("boatDetail.typeCatamaran"))}</option>
           </select>
         </div>
         <div class="field"><label>${esc(t("boatDetail.port"))}</label><input id="boatPortInput" value="${esc(b.home_port||"")}"></div>
