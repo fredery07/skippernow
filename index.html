@@ -527,7 +527,10 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
   <div class="dialog large">
     <div class="dialog-top">
       <div><small data-i18n="providerModal.eyebrow">SERVICES NAUTIQUES</small><h2 data-i18n="providerModal.title">Trouver un prestataire</h2></div>
-      <button class="close" data-close="providerModal" type="button">×</button>
+      <div style="display:flex;align-items:center;gap:10px;flex:0 0 auto">
+        <button class="back-link" id="providerModalBack" type="button" style="display:none;margin:0;padding:6px 0">← <span data-i18n="common.back">Retour</span></button>
+        <button class="close" data-close="providerModal" type="button">×</button>
+      </div>
     </div>
     <p class="muted" id="providerModalIntro" data-i18n="providerModal.intro">Choisissez le service dont vous avez besoin près de votre port.</p>
     <div class="provider-grid" id="providerGrid">
@@ -1519,25 +1522,28 @@ document.querySelector("#heroProviders").addEventListener("click", ()=>{
 document.querySelectorAll(".provider-service").forEach(btn=>{
   btn.addEventListener("click", ()=>showProviderResults(btn.dataset.activity));
 });
+document.querySelector("#providerModalBack").addEventListener("click", ()=>showProviderCategories());
 function showProviderCategories(){
   document.querySelector("#providerGrid").style.display = "grid";
   document.querySelector("#providerResults").style.display = "none";
   document.querySelector("#providerModalIntro").style.display = "block";
+  document.querySelector("#providerModalBack").style.display = "none";
 }
 async function showProviderResults(activity){
   document.querySelector("#providerGrid").style.display = "none";
   document.querySelector("#providerModalIntro").style.display = "none";
+  document.querySelector("#providerModalBack").style.display = "inline-flex";
   const box = document.querySelector("#providerResults");
   box.style.display = "block";
   const heading = activity === "all_providers" ? esc(t("tabs.cleaning")) : esc(activityLabel(activity));
-  box.innerHTML = `<button class="back-link" type="button" onclick="showProviderCategories()">← ${esc(t("common.back"))}</button><h3>${heading}</h3><div class="empty-note">…</div>`;
+  box.innerHTML = `<h3>${heading}</h3><div class="empty-note">…</div>`;
   const activityFilter = providerActivityFilter(activity);
   let profileQuery = db.from("profiles").select("*").eq("verified", true).eq("available", true).in("role",["skipper","provider"]);
   profileQuery = activity === "skipper" ? profileQuery.or("provider_activity.is.null,provider_activity.eq.skipper") : profileQuery.in("provider_activity", activityFilter);
   const {data, error} = await profileQuery;
   if(error){ box.querySelector(".empty-note").textContent = error.message; return; }
   providerResultsCache = data || [];
-  box.innerHTML = `<button class="back-link" type="button" onclick="showProviderCategories()">← ${esc(t("common.back"))}</button><h3 style="margin-top:10px">${heading}</h3>
+  box.innerHTML = `<h3>${heading}</h3>
     <input id="providerPortFilter" type="search" name="q_port_providers" autocomplete="off" data-lpignore="true" data-1p-ignore="true" data-form-type="other" placeholder="${esc(t("search.portPlaceholder"))}" value="${esc(portInput.value)}" style="width:100%;margin:12px 0 16px;padding:11px 14px;border:1px solid var(--line);border-radius:12px">
     <div id="providerResultsList"></div>`;
   document.querySelector("#providerPortFilter").addEventListener("input", ()=>renderProviderResults(activity));
