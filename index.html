@@ -114,6 +114,7 @@ main{padding:52px 0 90px}
 .meta{color:var(--muted);font-size:14px;margin:7px 0}
 .tags{display:flex;flex-wrap:wrap;gap:6px}
 .tag{background:var(--mist);color:var(--blue);border-radius:8px;padding:6px 8px;font-size:12px;font-weight:750}
+.result-card .tag{display:inline-block;margin:2px 0 6px}
 .price-row{border-top:1px solid var(--line);margin-top:15px;padding-top:14px;display:flex;justify-content:space-between;align-items:center;gap:10px}
 .price strong{font-size:19px}
 .price small{display:block;color:var(--muted)}
@@ -402,7 +403,7 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
       <div class="category-grid" id="homeCategoryGrid">
         <button type="button" class="category-tile" data-activity="skipper"><span class="category-icon">⚓</span><strong data-i18n="tabs.skippers">Skippers</strong></button>
         <button type="button" class="category-tile" data-activity="day_sailor"><span class="category-icon">👷</span><strong data-i18n="tabs.daySailors">Marins à la journée</strong></button>
-        <button type="button" class="category-tile" data-activity="cleaning"><span class="category-icon">🧽</span><strong data-i18n="tabs.cleaning">Prestataires</strong></button>
+        <button type="button" class="category-tile" data-activity="all_providers"><span class="category-icon">🧽</span><strong data-i18n="tabs.cleaning">Prestataires</strong></button>
       </div>
     </div>
     <div class="rental-box">
@@ -1497,13 +1498,14 @@ async function showProviderResults(activity){
   document.querySelector("#providerModalIntro").style.display = "none";
   const box = document.querySelector("#providerResults");
   box.style.display = "block";
-  box.innerHTML = `<button class="back-link" type="button" onclick="showProviderCategories()">← ${esc(t("common.back"))}</button><h3>${esc(activityLabel(activity))}</h3><div class="empty-note">…</div>`;
-  const activityFilter = activity === "cleaning" ? ["cleaning","dock_service"] : [activity];
+  const heading = activity === "all_providers" ? esc(t("tabs.cleaning")) : esc(activityLabel(activity));
+  box.innerHTML = `<button class="back-link" type="button" onclick="showProviderCategories()">← ${esc(t("common.back"))}</button><h3>${heading}</h3><div class="empty-note">…</div>`;
+  const activityFilter = activity === "all_providers" ? ["cleaning","dock_service","shipyard"] : (activity === "cleaning" ? ["cleaning","dock_service"] : [activity]);
   const {data, error} = await db.from("profiles").select("*")
     .eq("verified", true).eq("available", true).in("provider_activity", activityFilter).in("role",["skipper","provider"]);
   if(error){ box.querySelector(".empty-note").textContent = error.message; return; }
   providerResultsCache = data || [];
-  box.innerHTML = `<button class="back-link" type="button" onclick="showProviderCategories()">← ${esc(t("common.back"))}</button><h3 style="margin-top:10px">${esc(activityLabel(activity))}</h3>
+  box.innerHTML = `<button class="back-link" type="button" onclick="showProviderCategories()">← ${esc(t("common.back"))}</button><h3 style="margin-top:10px">${heading}</h3>
     <input id="providerPortFilter" type="search" name="q_port_providers" autocomplete="off" data-lpignore="true" data-1p-ignore="true" data-form-type="other" placeholder="${esc(t("search.portPlaceholder"))}" value="${esc(portInput.value)}" style="width:100%;margin:12px 0 16px;padding:11px 14px;border:1px solid var(--line);border-radius:12px">
     <div id="providerResultsList"></div>`;
   document.querySelector("#providerPortFilter").addEventListener("input", ()=>renderProviderResults(activity));
@@ -1517,9 +1519,10 @@ async function renderProviderResults(activity){
   resultsCache = resultsCache.concat(list);
   listBox.innerHTML = list.length ? `<div class="result-list">${list.map(p=>`
     <article class="result-card">
-      ${p.profile_photo_url ? `<img class="result-photo" src="${esc(p.profile_photo_url)}" alt="${esc(p.full_name)}">` : `<div class="result-photo">⚓</div>`}
+      ${p.profile_photo_url ? `<img class="result-photo" src="${esc(p.profile_photo_url)}" alt="${esc(p.full_name)}">` : `<div class="result-photo">${ACTIVITY_ICON[p.provider_activity]||"⚓"}</div>`}
       <div>
         <h3>${esc(p.full_name||"—")}</h3>
+        <span class="tag">${ACTIVITY_ICON[p.provider_activity]||"⚓"} ${esc(activityLabel(p.provider_activity))}</span>
         <p><strong>${esc(p.home_port||"—")}</strong> · ★ ${Number(p.rating||5).toFixed(1)}</p>
         <p>${esc(p.bio||"")}</p>
         <button class="small-btn fill" onclick="openProfileDetail('${p.id}')">${esc(t("card.viewProfile"))}</button>
