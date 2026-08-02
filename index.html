@@ -81,6 +81,16 @@ nav{display:flex;align-items:center;justify-content:space-between;width:100%}
 .launch-banner{display:flex;align-items:center;justify-content:center;gap:10px;text-align:center;margin:22px 0 10px;background:var(--navy);border-radius:20px;padding:16px 24px;box-shadow:0 14px 34px rgba(7,29,50,.22);color:var(--brass-light);font-weight:700;font-size:14px}
 .launch-banner-icon{font-size:16px}
 @media(max-width:640px){.launch-banner{padding:14px 16px;font-size:12.5px}}
+.sea-carousel{position:relative;border-radius:24px;overflow:hidden;height:420px;box-shadow:0 20px 50px rgba(16,43,63,.14)}
+.sea-carousel-track{position:absolute;inset:0}
+.sea-slide{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity 1.2s ease}
+.sea-slide.active{opacity:1}
+.sea-carousel::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(7,29,50,.55) 0%,rgba(7,29,50,0) 45%)}
+.sea-carousel-caption{position:absolute;left:28px;bottom:28px;z-index:2;color:#fff;font-family:var(--display);font-weight:600;font-size:26px;max-width:70%;text-shadow:0 2px 12px rgba(0,0,0,.25)}
+.sea-carousel-dots{position:absolute;right:24px;bottom:28px;z-index:2;display:flex;gap:8px}
+.sea-carousel-dots span{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.45);transition:.2s}
+.sea-carousel-dots span.active{background:#fff;width:22px;border-radius:5px}
+@media(max-width:640px){.sea-carousel{height:280px}.sea-carousel-caption{font-size:19px;max-width:85%;left:18px;bottom:18px}.sea-carousel-dots{right:18px;bottom:18px}}
 .port-suggestions{display:none;position:absolute;left:0;right:0;top:calc(100% + 8px);z-index:80;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);max-height:300px;overflow:auto}
 .port-suggestions.open{display:block}
 .port-option{display:block;width:100%;text-align:left;border:0;border-bottom:1px solid var(--line);background:#fff;padding:11px 14px;cursor:pointer}
@@ -119,7 +129,7 @@ main{padding:52px 0 90px}
 .price strong{font-size:19px}
 .price small{display:block;color:var(--muted)}
 .empty-note{padding:24px;border:1px dashed var(--line);border-radius:16px;text-align:center;color:var(--muted);background:#fff}
-.compact-join-card{background:var(--mist);border:1px dashed var(--aqua);border-radius:20px;padding:22px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:10px}
+.compact-join-card{background:var(--mist);border:1px dashed var(--aqua);border-radius:20px;padding:26px 22px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:10px;align-self:start;box-shadow:0 8px 25px rgba(16,43,63,.04)}
 .compact-join-icon{font-size:26px}
 .compact-join-card p{margin:0;color:var(--blue);font-weight:700;font-size:14px;line-height:1.45}
 .empty-cta{position:relative;padding:56px 28px;border-radius:20px;text-align:center;overflow:hidden;background:var(--navy)}
@@ -427,22 +437,18 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
     </div>
   </section>
 
-  <div class="section-head" style="margin-top:56px">
-    <div>
-      <h2 id="resultsHeading" data-i18n="results.skippersHeading">Skippers disponibles</h2>
-      <p id="resultsSub" data-i18n="results.skippersSub">Professionnels vérifiés près de votre port de départ</p>
+  <section class="sea-carousel" id="seaCarousel" style="margin-top:56px">
+    <div class="sea-carousel-track">
+      <div class="sea-slide active" style="background-image:url('https://images.unsplash.com/photo-1541777594744-addc2de9d110?auto=format&fit=crop&w=1600&q=80')"></div>
+      <div class="sea-slide" style="background-image:url('https://images.unsplash.com/photo-1615642847532-46622fd5a38e?auto=format&fit=crop&w=1600&q=80')"></div>
+      <div class="sea-slide" style="background-image:url('https://images.unsplash.com/photo-1568682057239-760834b6ce63?auto=format&fit=crop&w=1600&q=80')"></div>
+      <div class="sea-slide" style="background-image:url('https://images.unsplash.com/photo-1517696522815-46a004b80a2d?auto=format&fit=crop&w=1600&q=80')"></div>
     </div>
-    <div class="count" id="resultCount">—</div>
-  </div>
-
-  <div class="tabs" id="listingTabs">
-    <button type="button" class="active" data-activity="skipper" data-i18n="tabs.skippers">Skippers</button>
-    <button type="button" data-activity="day_sailor" data-i18n="tabs.daySailors">Marins à la journée</button>
-    <button type="button" data-activity="cleaning" data-i18n="tabs.cleaning">Prestataires</button>
-  </div>
-
-  <div class="cards" id="cards"></div>
-  <div class="empty-note" id="emptyResults" style="display:none" data-i18n="results.empty">Aucun profil vérifié pour cette recherche.</div>
+    <div class="sea-carousel-caption" data-i18n="seaCarousel.caption">Vos plus belles sorties en mer commencent ici</div>
+    <div class="sea-carousel-dots">
+      <span class="active"></span><span></span><span></span><span></span>
+    </div>
+  </section>
 
   <section class="gallery-section">
     <div class="section-head">
@@ -746,7 +752,7 @@ const I18N = {
     "card.superSkipperBadge":"Super Skipper","card.recommendedProviderBadge":"Prestataire recommandé",
     "boatDetail.verifiedBadge":"Bateau vérifié",
     "dash.verifyBoat":"Vérifier le bateau","dash.unverifyBoat":"Retirer la vérification","dash.markFeatured":"Mettre en avant","dash.unfeature":"Retirer la mise en avant",
-    "stats.missions":"missions réalisées","stats.pros":"professionnels vérifiés","stats.rating":"note moyenne","launch.banner":"Plateforme en lancement — les premiers professionnels inscrits bénéficient d'une visibilité prioritaire.",
+    "stats.missions":"missions réalisées","stats.pros":"professionnels vérifiés","stats.rating":"note moyenne","launch.banner":"Plateforme en lancement — les premiers professionnels inscrits bénéficient d'une visibilité prioritaire.","seaCarousel.caption":"Vos plus belles sorties en mer commencent ici",
     "card.available":"Disponible","card.unavailable":"Indisponible","card.unavailableOn":"Indisponible le","card.viewProfile":"Voir le profil",
     "how.title":"Comment ça marche ?",
     "how.step1Title":"Je cherche","how.step1Text":"Choisissez un skipper, un prestataire ou un bateau selon votre port et votre date.",
@@ -907,7 +913,7 @@ const I18N = {
     "card.superSkipperBadge":"Super Skipper","card.recommendedProviderBadge":"Recommended provider",
     "boatDetail.verifiedBadge":"Verified boat",
     "dash.verifyBoat":"Verify boat","dash.unverifyBoat":"Remove verification","dash.markFeatured":"Feature","dash.unfeature":"Remove feature",
-    "stats.missions":"jobs completed","stats.pros":"verified professionals","stats.rating":"average rating","launch.banner":"Platform launching now — early professionals get priority visibility.",
+    "stats.missions":"jobs completed","stats.pros":"verified professionals","stats.rating":"average rating","launch.banner":"Platform launching now — early professionals get priority visibility.","seaCarousel.caption":"Your best days at sea start here",
     "card.available":"Available","card.unavailable":"Unavailable","card.unavailableOn":"Unavailable on","card.viewProfile":"View profile",
     "how.title":"How does it work?",
     "how.step1Title":"I search","how.step1Text":"Choose a skipper, a service provider or a boat for your port and date.",
@@ -1067,7 +1073,7 @@ const I18N = {
     "card.superSkipperBadge":"Super Skipper","card.recommendedProviderBadge":"Prestador recomendado",
     "boatDetail.verifiedBadge":"Barco verificado",
     "dash.verifyBoat":"Verificar barco","dash.unverifyBoat":"Quitar verificación","dash.markFeatured":"Destacar","dash.unfeature":"Quitar destacado",
-    "stats.missions":"servicios realizados","stats.pros":"profesionales verificados","stats.rating":"valoración media","launch.banner":"Plataforma en lanzamiento — los primeros profesionales inscritos obtienen visibilidad prioritaria.",
+    "stats.missions":"servicios realizados","stats.pros":"profesionales verificados","stats.rating":"valoración media","launch.banner":"Plataforma en lanzamiento — los primeros profesionales inscritos obtienen visibilidad prioritaria.","seaCarousel.caption":"Tus mejores salidas al mar empiezan aquí",
     "card.available":"Disponible","card.unavailable":"No disponible","card.unavailableOn":"No disponible el","card.viewProfile":"Ver perfil",
     "how.title":"¿Cómo funciona?",
     "how.step1Title":"Busco","how.step1Text":"Elige un skipper, un prestador o un barco según tu puerto y fecha.",
@@ -1369,8 +1375,8 @@ async function switchActivityTab(activity){
   const heading = document.querySelector("#resultsHeading");
   const sub = document.querySelector("#resultsSub");
   const cfg = TAB_CONFIG[activity] || TAB_CONFIG.skipper;
-  heading.textContent = t(cfg.headingKey);
-  sub.textContent = t(cfg.subKey);
+  if(heading) heading.textContent = t(cfg.headingKey);
+  if(sub) sub.textContent = t(cfg.subKey);
   updateSeoMeta();
   await loadListings();
 }
@@ -1423,6 +1429,21 @@ function providerActivityFilter(activity){
   return [activity];
 }
 
+function startSeaCarousel(){
+  const slides = [...document.querySelectorAll("#seaCarousel .sea-slide")];
+  const dots = [...document.querySelectorAll("#seaCarousel .sea-carousel-dots span")];
+  if(slides.length < 2) return;
+  let index = 0;
+  setInterval(()=>{
+    slides[index].classList.remove("active");
+    dots[index]?.classList.remove("active");
+    index = (index + 1) % slides.length;
+    slides[index].classList.add("active");
+    dots[index]?.classList.add("active");
+  }, 4000);
+}
+startSeaCarousel();
+
 async function loadListings(){
   const chosenDate = dateInput.value;
   const portFilter = portInput.value.trim();
@@ -1442,6 +1463,7 @@ async function loadListings(){
   if(portFilter) list = await filterByPortNearby(list, portFilter, p=>p.home_port, 25);
 
   const box = document.querySelector("#cards");
+  if(!box) return;
   const emptyBox = document.querySelector("#emptyResults");
   const countBox = document.querySelector("#resultCount");
   const cfg = TAB_CONFIG[activeActivity] || TAB_CONFIG.skipper;
@@ -1484,8 +1506,8 @@ document.querySelector("#searchForm").addEventListener("submit", e=>{
 });
 
 document.querySelector("#heroSkipper").addEventListener("click", ()=>{
-  switchActivityTab("skipper");
-  document.querySelector("#resultsHeading").scrollIntoView({behavior:"smooth", block:"start"});
+  showProviderResults("skipper");
+  openModal("providerModal");
 });
 document.querySelector("#heroProviders").addEventListener("click", ()=>{
   showProviderCategories();
@@ -1507,8 +1529,9 @@ async function showProviderResults(activity){
   const heading = activity === "all_providers" ? esc(t("tabs.cleaning")) : esc(activityLabel(activity));
   box.innerHTML = `<button class="back-link" type="button" onclick="showProviderCategories()">← ${esc(t("common.back"))}</button><h3>${heading}</h3><div class="empty-note">…</div>`;
   const activityFilter = providerActivityFilter(activity);
-  const {data, error} = await db.from("profiles").select("*")
-    .eq("verified", true).eq("available", true).in("provider_activity", activityFilter).in("role",["skipper","provider"]);
+  let profileQuery = db.from("profiles").select("*").eq("verified", true).eq("available", true).in("role",["skipper","provider"]);
+  profileQuery = activity === "skipper" ? profileQuery.or("provider_activity.is.null,provider_activity.eq.skipper") : profileQuery.in("provider_activity", activityFilter);
+  const {data, error} = await profileQuery;
   if(error){ box.querySelector(".empty-note").textContent = error.message; return; }
   providerResultsCache = data || [];
   box.innerHTML = `<button class="back-link" type="button" onclick="showProviderCategories()">← ${esc(t("common.back"))}</button><h3 style="margin-top:10px">${heading}</h3>
@@ -1871,7 +1894,7 @@ document.querySelectorAll("[data-role]").forEach(el=>{
 });
 document.querySelector("#footerBecomePro").addEventListener("click", ()=>openAccountModal("create","provider"));
 document.querySelector("#footerAddBoat").addEventListener("click", ()=>openAccountModal("create","owner"));
-document.querySelector("#footerFindSkipper").addEventListener("click", ()=>{switchActivityTab("skipper");document.querySelector("main").scrollIntoView({behavior:"smooth"})});
+document.querySelector("#footerFindSkipper").addEventListener("click", ()=>{showProviderResults("skipper");openModal("providerModal")});
 document.querySelector("#footerFindProvider").addEventListener("click", ()=>{showProviderCategories();openModal("providerModal")});
 document.querySelector("#footerContact").addEventListener("click", async ()=>{
   const {data} = await db.from("platform_settings").select("support_email").eq("id",1).maybeSingle();
@@ -3171,8 +3194,8 @@ function refreshDynamicTexts(){
   const heading = document.querySelector("#resultsHeading");
   const sub = document.querySelector("#resultsSub");
   const cfg = TAB_CONFIG[activeActivity] || TAB_CONFIG.skipper;
-  heading.textContent = t(cfg.headingKey);
-  sub.textContent = t(cfg.subKey);
+  if(heading) heading.textContent = t(cfg.headingKey);
+  if(sub) sub.textContent = t(cfg.subKey);
   updateSeoMeta();
   loadListings();
   renderHomeBoatStrip();
