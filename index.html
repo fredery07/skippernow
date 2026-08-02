@@ -223,6 +223,15 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
 .provider-icon{font-size:24px}
 .result-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}
 .boat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:18px;margin-top:16px}
+.boat-list{display:flex;flex-direction:column;gap:16px;margin-top:16px}
+.boat-list-card{display:flex;gap:16px;border:1px solid var(--line);border-radius:18px;padding:14px;cursor:pointer;transition:.15s;background:#fff}
+.boat-list-card:hover{border-color:var(--aqua);box-shadow:0 10px 26px rgba(16,43,63,.08)}
+.boat-list-photo{position:relative;flex:0 0 220px;height:160px;border-radius:14px;overflow:hidden}
+.boat-list-body{flex:1;min-width:0;display:flex;flex-direction:column}
+.boat-list-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.boat-list-desc{color:var(--muted);font-size:13.5px;margin:6px 0;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.boat-list-bottom{margin-top:auto;display:flex;justify-content:space-between;align-items:center;padding-top:8px}
+@media(max-width:640px){.boat-list-card{flex-direction:column}.boat-list-photo{flex:none;width:100%;height:180px}}
 .boat-card{background:#fff;border:1px solid var(--line);border-radius:20px;overflow:hidden;box-shadow:0 8px 24px rgba(16,43,63,.07);cursor:pointer;transition:.2s}
 .boat-card:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
 .boat-card-photo{height:170px;background:linear-gradient(135deg,#173b51,#3f9c9a);background-size:cover;background-position:center;position:relative}
@@ -423,6 +432,7 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
       <span class="pill-link">🌊 <span data-i18n="rental.examplesBadge">BATEAUX DISPONIBLES</span></span>
       <h3 data-i18n="rental.examplesTitle">Dernières annonces</h3>
       <div id="homeBoatStrip"><div class="empty-note" data-i18n="rental.empty">Aucun bateau publié pour le moment.</div></div>
+      <button class="back-link" id="viewAllBoatsBtn" type="button" style="margin-top:4px;padding:0"><span data-i18n="rental.viewAll">Voir toutes les annonces</span> →</button>
       <button class="owner-cta-link" id="listBoatBtn" type="button">
         <span data-i18n="rental.ctaShort">Vous êtes propriétaire ? Mettre mon bateau en location</span>
         <span aria-hidden="true">→</span>
@@ -559,7 +569,7 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
       </select>
       <input id="boatFinderCapacityInput" type="number" min="1" step="1" data-i18n-placeholder="boatFinder.minCapacity" placeholder="Capacité min." style="width:130px;padding:11px 14px;border:1px solid var(--line);border-radius:12px">
     </div>
-    <div id="boatFinderResults" class="boat-grid"></div>
+    <div id="boatFinderResults" class="boat-list"></div>
   </div>
 </div>
 
@@ -740,7 +750,7 @@ const I18N = {
     "results.compactJoin.cleaning":"Vous proposez des services nautiques dans cette zone ? Rejoignez SkipperNow et recevez vos premières demandes.",
     "rental.text":"Créez votre compte propriétaire, ajoutez photos, caractéristiques, port d'attache et disponibilités. Vous pourrez ensuite proposer la location avec ou sans skipper.",
     "rental.cta":"Mettre mon bateau en location","rental.ctaShort":"Vous êtes propriétaire ? Mettre mon bateau en location","rental.examplesBadge":"BATEAUX DISPONIBLES",
-    "rental.examplesTitle":"Dernières annonces","rental.empty":"Aucun bateau publié pour le moment. Soyez le premier propriétaire à proposer le vôtre !",
+    "rental.examplesTitle":"Dernières annonces","rental.viewAll":"Voir toutes les annonces","rental.empty":"Aucun bateau publié pour le moment. Soyez le premier propriétaire à proposer le vôtre !",
     "results.skippersHeading":"Skippers disponibles","results.skippersSub":"Professionnels vérifiés près de votre port de départ",
     "results.daySailorsHeading":"Marins à la journée disponibles","results.daySailorsSub":"Aide à bord et missions ponctuelles près de votre port de départ",
     "results.cleaningHeading":"Prestataires disponibles","results.cleaningSub":"Nettoyage, services à quai et entretien près de votre port de départ",
@@ -901,7 +911,7 @@ const I18N = {
     "results.compactJoin.cleaning":"Do you offer marine services in this area? Join SkipperNow and get your first requests.",
     "rental.text":"Create an owner account, add photos, specifications, home port and availability. You can then offer your boat with or without a skipper.",
     "rental.cta":"List my boat for rent","rental.ctaShort":"Are you a boat owner? List your boat for rent","rental.examplesBadge":"AVAILABLE BOATS",
-    "rental.examplesTitle":"Latest listings","rental.empty":"No boats published yet. Be the first owner to list yours!",
+    "rental.examplesTitle":"Latest listings","rental.viewAll":"View all listings","rental.empty":"No boats published yet. Be the first owner to list yours!",
     "results.skippersHeading":"Available skippers","results.skippersSub":"Verified professionals near your departure port",
     "results.daySailorsHeading":"Available day sailors","results.daySailorsSub":"Hands-on help and one-off jobs near your departure port",
     "results.cleaningHeading":"Available service providers","results.cleaningSub":"Cleaning, dock services and maintenance near your departure port",
@@ -1061,7 +1071,7 @@ const I18N = {
     "results.compactJoin.cleaning":"¿Ofreces servicios náuticos en esta zona? Únete a SkipperNow y recibe tus primeras solicitudes.",
     "rental.text":"Crea una cuenta de propietario, añade fotos, características, puerto base y disponibilidad. Luego podrás ofrecer tu barco con o sin skipper.",
     "rental.cta":"Poner mi barco en alquiler","rental.ctaShort":"¿Eres propietario? Pon tu barco en alquiler","rental.examplesBadge":"BARCOS DISPONIBLES",
-    "rental.examplesTitle":"Últimos anuncios","rental.empty":"Todavía no hay barcos publicados. ¡Sé el primer propietario en publicar el tuyo!",
+    "rental.examplesTitle":"Últimos anuncios","rental.viewAll":"Ver todos los anuncios","rental.empty":"Todavía no hay barcos publicados. ¡Sé el primer propietario en publicar el tuyo!",
     "results.skippersHeading":"Skippers disponibles","results.skippersSub":"Profesionales verificados cerca de tu puerto de salida",
     "results.daySailorsHeading":"Marineros por día disponibles","results.daySailorsSub":"Ayuda a bordo y trabajos puntuales cerca de tu puerto de salida",
     "results.cleaningHeading":"Prestadores disponibles","results.cleaningSub":"Limpieza, servicios de puerto y mantenimiento cerca de tu puerto de salida",
@@ -1577,6 +1587,7 @@ let adminBoatsFilterOwnerId = null;
 let editingBoatId = null;
 let myBoatsCache = [];
 document.querySelector("#heroBoats").addEventListener("click", ()=>openBoatFinder());
+document.querySelector("#viewAllBoatsBtn").addEventListener("click", ()=>openBoatFinder());
 document.querySelector("#footerFindBoat").addEventListener("click", ()=>openBoatFinder());
 async function openBoatFinder(){
   openModal("boatFinderModal");
@@ -1606,7 +1617,7 @@ async function renderBoatResults(){
     if(capacityFilter && Number(b.capacity||0) < capacityFilter) return false;
     return true;
   });
-  box.innerHTML = list.length ? list.map(b=>boatCardHtml(b)).join("") : `<div class="empty-note">${esc(t("boatFinder.empty"))}</div>`;
+  box.innerHTML = list.length ? list.map(b=>boatListCardHtml(b)).join("") : `<div class="empty-note">${esc(t("boatFinder.empty"))}</div>`;
   startBoatCardCarousels();
 }
 function boatTypeLabel(type){
@@ -1647,6 +1658,33 @@ function normalizeBoatTitle(b){
 function normalizePlaceLabel(place){
   if(!place || !place.trim()) return "—";
   return place.trim().replace(/\w\S*/g, w=>w[0].toUpperCase()+w.slice(1).toLowerCase());
+}
+function boatListCardHtml(b){
+  const day = Number(b.price_per_day||b.daily_price||b.price||0);
+  const half = Number(b.price_half_day||0);
+  let priceLabel = esc(t("boatDetail.onRequest"));
+  if(day) priceLabel = `${esc(t("card.priceFrom"))} ${money(day*100)}${esc(t("boatDetail.perDaySuffix"))}`;
+  else if(half) priceLabel = `${esc(t("card.priceFrom"))} ${money(half*100)}${esc(t("boatDetail.perHalfDaySuffix"))}`;
+  const photos = (Array.isArray(b.photo_urls) && b.photo_urls.length ? b.photo_urls : (b.photo_url ? [b.photo_url] : []));
+  const specsLine = boatSpecsLine(b);
+  return `<article class="boat-list-card" onclick="openBoatDetail('${b.id}')">
+    <div class="boat-list-photo" data-carousel="${b.id}">
+      ${photos.length ? photos.map((url,i)=>`<div class="boat-photo-slide ${i===0?"active":""}" style="background-image:url('${esc(url)}')"></div>`).join("") : `<div class="no-photo">⛵</div>`}
+      ${photos.length > 1 ? `<div class="boat-card-dots">${photos.map((_,i)=>`<span class="${i===0?"active":""}"></span>`).join("")}</div>` : ""}
+      <button type="button" class="boat-card-fav" data-favorite-btn="${b.id}" onclick="toggleBoatFavorite('${b.id}', event)">${isFavoriteBoat(b.id) ? "♥" : "♡"}</button>
+    </div>
+    <div class="boat-list-body">
+      <div class="boat-list-top">
+        <h3 style="margin:0">${esc(normalizeBoatTitle(b))}${b.verified ? ` <span class="verified-badge">✓ ${esc(t("boatDetail.verifiedBadge"))}</span>` : ""}</h3>
+      </div>
+      <div class="boat-card-port">📍 ${esc(normalizePlaceLabel(b.home_port))}</div>
+      ${b.description ? `<p class="boat-list-desc">${esc(b.description)}</p>` : ""}
+      <div class="boat-list-bottom">
+        ${specsLine ? `<div class="boat-card-specs-line">${specsLine}</div>` : "<span></span>"}
+        <strong>${priceLabel}</strong>
+      </div>
+    </div>
+  </article>`;
 }
 function boatCardHtml(b){
   const day = Number(b.price_per_day||b.daily_price||b.price||0);
