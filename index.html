@@ -450,16 +450,6 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
   </section>
 
 
-  <section class="tile-browse" style="margin-top:56px">
-    <h2 data-i18n="browseByType.title">Le bateau idéal pour chacune de vos envies</h2>
-    <div class="tile-scroll-row" id="typeTileRow">
-      <button type="button" class="tile-scroll-card" data-boat-type="motorboat" style="background-image:url('https://images.unsplash.com/photo-1768407160493-d53b0a41203b?auto=format&fit=crop&w=500&q=80')"><span data-i18n="boatType.motor">Moteur</span></button>
-      <button type="button" class="tile-scroll-card" data-boat-type="sailboat" style="background-image:url('https://images.unsplash.com/photo-1500627964684-141351970a7f?auto=format&fit=crop&w=500&q=80')"><span data-i18n="boatType.sailboat">Voilier</span></button>
-      <button type="button" class="tile-scroll-card" data-boat-type="rib" style="background-image:url('https://images.unsplash.com/photo-1590419625135-3e35daf586e5?auto=format&fit=crop&w=500&q=80')"><span data-i18n="boatType.rib">Semi-rigide</span></button>
-      <button type="button" class="tile-scroll-card" data-boat-type="catamaran" style="background-image:url('https://images.unsplash.com/photo-1758131081890-d2b893c2e919?auto=format&fit=crop&w=500&q=80')"><span data-i18n="boatType.catamaran">Catamaran</span></button>
-    </div>
-  </section>
-
   <section class="tile-browse" style="margin-top:44px">
     <h2 data-i18n="browseByPort.title">Explorez nos ports de la Côte d'Azur</h2>
     <div class="tile-scroll-row" id="portTileRow">
@@ -1619,9 +1609,6 @@ let editingBoatId = null;
 let myBoatsCache = [];
 document.querySelector("#heroBoats").addEventListener("click", ()=>openBoatFinder());
 document.querySelector("#viewAllBoatsBtn").addEventListener("click", ()=>openBoatFinder());
-document.querySelectorAll("#typeTileRow .tile-scroll-card").forEach(tile=>{
-  tile.addEventListener("click", ()=>openBoatFinder(null, tile.dataset.boatType));
-});
 document.querySelectorAll("#portTileRow .tile-scroll-card").forEach(tile=>{
   tile.addEventListener("click", ()=>openBoatFinder(tile.dataset.port));
 });
