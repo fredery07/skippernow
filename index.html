@@ -78,6 +78,9 @@ nav{display:flex;align-items:center;justify-content:space-between;width:100%}
 .trust-stat strong{display:block;font-family:var(--display);font-weight:600;font-size:29px;color:var(--brass-light)}
 .trust-stat span{color:#c7dada;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em}
 @media(max-width:640px){.trust-stats{gap:6px;padding:18px 8px}.trust-stat{padding:8px 16px}.trust-stat:not(:last-child):after{display:none}.trust-stat strong{font-size:22px}}
+.launch-banner{display:flex;align-items:center;justify-content:center;gap:10px;text-align:center;margin:22px 0 10px;background:var(--navy);border-radius:20px;padding:16px 24px;box-shadow:0 14px 34px rgba(7,29,50,.22);color:var(--brass-light);font-weight:700;font-size:14px}
+.launch-banner-icon{font-size:16px}
+@media(max-width:640px){.launch-banner{padding:14px 16px;font-size:12.5px}}
 .port-suggestions{display:none;position:absolute;left:0;right:0;top:calc(100% + 8px);z-index:80;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);max-height:300px;overflow:auto}
 .port-suggestions.open{display:block}
 .port-option{display:block;width:100%;text-align:left;border:0;border-bottom:1px solid var(--line);background:#fff;padding:11px 14px;cursor:pointer}
@@ -378,7 +381,11 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
 </div>
 
 <div class="shell">
-  <div class="trust-stats" id="trustStats">
+  <div class="launch-banner" id="launchBanner">
+    <span class="launch-banner-icon">🚀</span>
+    <span data-i18n="launch.banner">Plateforme en lancement — les premiers professionnels inscrits bénéficient d'une visibilité prioritaire.</span>
+  </div>
+  <div class="trust-stats" id="trustStats" style="display:none">
     <div class="trust-stat"><strong id="statMissions">—</strong><span data-i18n="stats.missions">missions réalisées</span></div>
     <div class="trust-stat"><strong id="statPros">—</strong><span data-i18n="stats.pros">professionnels vérifiés</span></div>
     <div class="trust-stat"><strong id="statRating">—</strong><span data-i18n="stats.rating">note moyenne</span></div>
@@ -738,7 +745,7 @@ const I18N = {
     "card.superSkipperBadge":"Super Skipper","card.recommendedProviderBadge":"Prestataire recommandé",
     "boatDetail.verifiedBadge":"Bateau vérifié",
     "dash.verifyBoat":"Vérifier le bateau","dash.unverifyBoat":"Retirer la vérification","dash.markFeatured":"Mettre en avant","dash.unfeature":"Retirer la mise en avant",
-    "stats.missions":"missions réalisées","stats.pros":"professionnels vérifiés","stats.rating":"note moyenne",
+    "stats.missions":"missions réalisées","stats.pros":"professionnels vérifiés","stats.rating":"note moyenne","launch.banner":"Plateforme en lancement — les premiers professionnels inscrits bénéficient d'une visibilité prioritaire.",
     "card.available":"Disponible","card.unavailable":"Indisponible","card.unavailableOn":"Indisponible le","card.viewProfile":"Voir le profil",
     "how.title":"Comment ça marche ?",
     "how.step1Title":"Je cherche","how.step1Text":"Choisissez un skipper, un prestataire ou un bateau selon votre port et votre date.",
@@ -899,7 +906,7 @@ const I18N = {
     "card.superSkipperBadge":"Super Skipper","card.recommendedProviderBadge":"Recommended provider",
     "boatDetail.verifiedBadge":"Verified boat",
     "dash.verifyBoat":"Verify boat","dash.unverifyBoat":"Remove verification","dash.markFeatured":"Feature","dash.unfeature":"Remove feature",
-    "stats.missions":"jobs completed","stats.pros":"verified professionals","stats.rating":"average rating",
+    "stats.missions":"jobs completed","stats.pros":"verified professionals","stats.rating":"average rating","launch.banner":"Platform launching now — early professionals get priority visibility.",
     "card.available":"Available","card.unavailable":"Unavailable","card.unavailableOn":"Unavailable on","card.viewProfile":"View profile",
     "how.title":"How does it work?",
     "how.step1Title":"I search","how.step1Text":"Choose a skipper, a service provider or a boat for your port and date.",
@@ -1059,7 +1066,7 @@ const I18N = {
     "card.superSkipperBadge":"Super Skipper","card.recommendedProviderBadge":"Prestador recomendado",
     "boatDetail.verifiedBadge":"Barco verificado",
     "dash.verifyBoat":"Verificar barco","dash.unverifyBoat":"Quitar verificación","dash.markFeatured":"Destacar","dash.unfeature":"Quitar destacado",
-    "stats.missions":"servicios realizados","stats.pros":"profesionales verificados","stats.rating":"valoración media",
+    "stats.missions":"servicios realizados","stats.pros":"profesionales verificados","stats.rating":"valoración media","launch.banner":"Plataforma en lanzamiento — los primeros profesionales inscritos obtienen visibilidad prioritaria.",
     "card.available":"Disponible","card.unavailable":"No disponible","card.unavailableOn":"No disponible el","card.viewProfile":"Ver perfil",
     "how.title":"¿Cómo funciona?",
     "how.step1Title":"Busco","how.step1Text":"Elige un skipper, un prestador o un barco según tu puerto y fecha.",
@@ -1369,8 +1376,8 @@ async function switchActivityTab(activity){
 
 document.querySelectorAll("#homeCategoryGrid .category-tile").forEach(tile=>{
   tile.addEventListener("click", ()=>{
-    switchActivityTab(tile.dataset.activity);
-    document.querySelector("#listingTabs").scrollIntoView({behavior:"smooth"});
+    showProviderResults(tile.dataset.activity);
+    openModal("providerModal");
   });
 });
 
@@ -1384,21 +1391,28 @@ document.querySelectorAll("#portChips button").forEach(chip=>{
 });
 
 async function loadTrustStats(){
+  const banner = document.querySelector("#launchBanner");
+  const stats = document.querySelector("#trustStats");
   try{
     const [{count:missionsCount}, {count:prosCount}, {data:ratedProfiles}] = await Promise.all([
       db.from("missions").select("id", {count:"exact", head:true}).eq("status","completed"),
       db.from("profiles").select("id", {count:"exact", head:true}).eq("verified", true).in("role", ["skipper","provider"]),
       db.from("profiles").select("rating").not("rating", "is", null).gt("rating", 0)
     ]);
+    const hasRealTraction = (missionsCount ?? 0) > 0 || (prosCount ?? 0) > 0;
+    if(!hasRealTraction){
+      // Pas encore assez de data réelle : on garde le message de lancement plutôt que d'afficher des zéros.
+      return;
+    }
     document.querySelector("#statMissions").textContent = missionsCount ?? 0;
     document.querySelector("#statPros").textContent = prosCount ?? 0;
     const ratings = (ratedProfiles || []).map(p => Number(p.rating)).filter(n => Number.isFinite(n));
     const avg = ratings.length ? (ratings.reduce((a,b)=>a+b,0) / ratings.length) : 0;
     document.querySelector("#statRating").textContent = ratings.length ? "★ " + avg.toFixed(1) : "—";
+    banner.style.display = "none";
+    stats.style.display = "";
   }catch(_e){
-    document.querySelector("#statMissions").textContent = "0";
-    document.querySelector("#statPros").textContent = "0";
-    document.querySelector("#statRating").textContent = "—";
+    // En cas d'erreur, on laisse simplement la bannière de lancement visible.
   }
 }
 
