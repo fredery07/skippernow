@@ -1417,6 +1417,12 @@ async function loadTrustStats(){
   }
 }
 
+function providerActivityFilter(activity){
+  if(activity === "all_providers") return ["cleaning","dock_service","shipyard"];
+  if(activity === "cleaning") return ["cleaning","dock_service","shipyard"];
+  return [activity];
+}
+
 async function loadListings(){
   const chosenDate = dateInput.value;
   const portFilter = portInput.value.trim();
@@ -1425,7 +1431,7 @@ async function loadListings(){
   if(activeActivity === "skipper"){
     query = query.or("provider_activity.is.null,provider_activity.eq.skipper").in("role",["skipper","provider"]);
   }else{
-    query = query.eq("provider_activity", activeActivity).in("role",["skipper","provider"]);
+    query = query.in("provider_activity", providerActivityFilter(activeActivity)).in("role",["skipper","provider"]);
   }
   const [profilesRes, blocksRes] = await Promise.all([
     query,
@@ -1460,7 +1466,7 @@ async function loadListings(){
         <div class="name-row"><h3>${esc(p.full_name||"—")} <span class="verified-badge">✓ ${esc(t("card.verifiedBadge"))}</span>${featuredBadgeHtml(p)}</h3><span class="rating">★ ${Number(p.rating||5).toFixed(1)}</span></div>
         <div class="meta">${esc(p.home_port||"—")} · ${p.experience_years ? p.experience_years+" "+esc(t("card.experience")) : esc(t("card.newOnPlatform"))}</div>
         <p class="meta">${esc(p.bio||"")}</p>
-        <div class="tags"><span class="tag">${esc(p.languages||"Français")}</span></div>
+        <div class="tags"><span class="tag">${(ACTIVITY_ICON[p.provider_activity]||cfg.icon)} ${esc(activityLabel(p.provider_activity||activeActivity))}</span><span class="tag">${esc(p.languages||"Français")}</span></div>
         <div class="price-row">
           <div class="price">${p.price_from_cents ? `<strong>${esc(t("card.priceFrom"))} ${money(p.price_from_cents)}</strong>` : `<strong>${esc(t("card.priceOnRequest"))}</strong>`}<small>${esc(t("card.priceNote"))}</small></div>
           <button class="ghost" ${unavailable?"disabled":""} onclick="openProfileDetail('${p.id}')">${unavailable ? esc(t("card.unavailable")) : esc(t("card.viewProfile"))}</button>
@@ -1500,7 +1506,7 @@ async function showProviderResults(activity){
   box.style.display = "block";
   const heading = activity === "all_providers" ? esc(t("tabs.cleaning")) : esc(activityLabel(activity));
   box.innerHTML = `<button class="back-link" type="button" onclick="showProviderCategories()">← ${esc(t("common.back"))}</button><h3>${heading}</h3><div class="empty-note">…</div>`;
-  const activityFilter = activity === "all_providers" ? ["cleaning","dock_service","shipyard"] : (activity === "cleaning" ? ["cleaning","dock_service"] : [activity]);
+  const activityFilter = providerActivityFilter(activity);
   const {data, error} = await db.from("profiles").select("*")
     .eq("verified", true).eq("available", true).in("provider_activity", activityFilter).in("role",["skipper","provider"]);
   if(error){ box.querySelector(".empty-note").textContent = error.message; return; }
