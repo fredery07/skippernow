@@ -144,11 +144,14 @@ main{padding:52px 0 90px}
 
 .rental-hub{margin:0 0 36px;display:grid;grid-template-columns:1.2fr 1fr;gap:18px}
 .rental-box{background:#fff;border:1px solid var(--line);border-radius:22px;padding:24px;box-shadow:0 10px 28px rgba(16,43,63,.05)}
-.category-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
-.category-tile{border:1px solid var(--line);background:#fff;border-radius:16px;padding:16px 10px;text-align:center;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:8px}
+.category-grid{display:flex;flex-direction:column;gap:10px;margin-top:14px}
+.category-tile{border:1px solid var(--line);background:#fff;border-radius:16px;padding:16px 18px;text-align:left;cursor:pointer;display:flex;align-items:center;gap:14px}
 .category-tile:hover{border-color:var(--aqua);background:var(--mist)}
-.category-icon{font-size:26px}
-.category-tile strong{font-size:13px;color:var(--navy)}
+.category-icon{font-size:24px;flex:0 0 auto;width:48px;height:48px;border-radius:14px;background:var(--mist);display:flex;align-items:center;justify-content:center}
+.category-text{display:flex;flex-direction:column;gap:2px;flex:1}
+.category-tile strong{font-size:15px;color:var(--navy)}
+.category-desc{font-size:12.5px;color:var(--muted);line-height:1.4}
+.category-arrow{color:var(--aqua);font-size:18px;flex:0 0 auto}
 @media(max-width:480px){.category-grid{grid-template-columns:1fr}}
 .rental-box h3{margin:0 0 8px;font-size:22px}
 .rental-box p{color:var(--muted);line-height:1.6}
@@ -411,9 +414,9 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
       <span class="pill-link">🧭 <span data-i18n="categories.badge">CATÉGORIES</span></span>
       <h3 data-i18n="categories.title">Trouver le bon professionnel</h3>
       <div class="category-grid" id="homeCategoryGrid">
-        <button type="button" class="category-tile" data-activity="skipper"><span class="category-icon">⚓</span><strong data-i18n="tabs.skippers">Skippers</strong></button>
-        <button type="button" class="category-tile" data-activity="day_sailor"><span class="category-icon">👷</span><strong data-i18n="tabs.daySailors">Marins à la journée</strong></button>
-        <button type="button" class="category-tile" data-activity="all_providers"><span class="category-icon">🧽</span><strong data-i18n="tabs.cleaning">Prestataires</strong></button>
+        <button type="button" class="category-tile" data-activity="skipper"><span class="category-icon">⚓</span><span class="category-text"><strong data-i18n="tabs.skippers">Skippers</strong><span class="category-desc" data-i18n="categories.skipperDesc">Sortie, location, convoyage et prise en main du bateau.</span></span><span class="category-arrow">→</span></button>
+        <button type="button" class="category-tile" data-activity="day_sailor"><span class="category-icon">👷</span><span class="category-text"><strong data-i18n="tabs.daySailors">Marins à la journée</strong><span class="category-desc" data-i18n="categories.daySailorDesc">Aide à bord, manutention, convoyage court.</span></span><span class="category-arrow">→</span></button>
+        <button type="button" class="category-tile" data-activity="all_providers"><span class="category-icon">🧽</span><span class="category-text"><strong data-i18n="tabs.cleaning">Prestataires</strong><span class="category-desc" data-i18n="categories.providersDesc">Nettoyage, chantier, entretien et services à quai.</span></span><span class="category-arrow">→</span></button>
       </div>
     </div>
     <div class="rental-box">
@@ -728,7 +731,7 @@ const I18N = {
     "search.dateLabel":"DATE","search.durationLabel":"DURÉE","search.submit":"Rechercher",
     "duration.half":"Demi-journée","duration.day":"Journée","duration.multi":"Plusieurs jours",
     "rental.badge":"LOCATION DE BATEAUX","rental.title":"Mettre mon bateau en location","providersShowcase.badge":"PRESTATAIRES INSCRITS","providersShowcase.title":"Nos professionnels vérifiés","providersShowcase.empty":"Aucun prestataire inscrit pour le moment.",
-    "categories.badge":"CATÉGORIES","categories.title":"Trouver le bon professionnel",
+    "categories.badge":"CATÉGORIES","categories.title":"Trouver le bon professionnel","categories.skipperDesc":"Sortie, location, convoyage et prise en main du bateau.","categories.daySailorDesc":"Aide à bord, manutention, convoyage court.","categories.providersDesc":"Nettoyage, chantier, entretien et services à quai.",
     "results.compactJoin.skipper":"Vous êtes skipper dans cette zone ? Rejoignez SkipperNow et recevez vos premières demandes.",
     "results.compactJoin.day_sailor":"Vous proposez de l'aide à bord dans cette zone ? Rejoignez SkipperNow et recevez vos premières demandes.",
     "results.compactJoin.cleaning":"Vous proposez des services nautiques dans cette zone ? Rejoignez SkipperNow et recevez vos premières demandes.",
@@ -889,7 +892,7 @@ const I18N = {
     "search.dateLabel":"DATE","search.durationLabel":"DURATION","search.submit":"Search",
     "duration.half":"Half day","duration.day":"Full day","duration.multi":"Several days",
     "rental.badge":"BOAT RENTALS","rental.title":"List my boat for rent","providersShowcase.badge":"REGISTERED PROVIDERS","providersShowcase.title":"Our verified professionals","providersShowcase.empty":"No provider registered yet.",
-    "categories.badge":"CATEGORIES","categories.title":"Find the right professional",
+    "categories.badge":"CATEGORIES","categories.title":"Find the right professional","categories.skipperDesc":"Trips, rentals, deliveries and boat familiarisation.","categories.daySailorDesc":"Hands-on help, handling, short delivery trips.","categories.providersDesc":"Cleaning, shipyard, maintenance and dock services.",
     "results.compactJoin.skipper":"Are you a skipper in this area? Join SkipperNow and get your first requests.",
     "results.compactJoin.day_sailor":"Do you offer help on board in this area? Join SkipperNow and get your first requests.",
     "results.compactJoin.cleaning":"Do you offer marine services in this area? Join SkipperNow and get your first requests.",
@@ -1049,7 +1052,7 @@ const I18N = {
     "search.dateLabel":"FECHA","search.durationLabel":"DURACIÓN","search.submit":"Buscar",
     "duration.half":"Medio día","duration.day":"Día completo","duration.multi":"Varios días",
     "rental.badge":"ALQUILER DE BARCOS","rental.title":"Poner mi barco en alquiler","providersShowcase.badge":"PRESTADORES REGISTRADOS","providersShowcase.title":"Nuestros profesionales verificados","providersShowcase.empty":"Todavía no hay ningún prestador registrado.",
-    "categories.badge":"CATEGORÍAS","categories.title":"Encuentra al profesional adecuado",
+    "categories.badge":"CATEGORÍAS","categories.title":"Encuentra al profesional adecuado","categories.skipperDesc":"Salidas, alquiler, traslados y familiarización con el barco.","categories.daySailorDesc":"Ayuda a bordo, manipulación, traslados cortos.","categories.providersDesc":"Limpieza, astillero, mantenimiento y servicios en el muelle.",
     "results.compactJoin.skipper":"¿Eres skipper en esta zona? Únete a SkipperNow y recibe tus primeras solicitudes.",
     "results.compactJoin.day_sailor":"¿Ofreces ayuda a bordo en esta zona? Únete a SkipperNow y recibe tus primeras solicitudes.",
     "results.compactJoin.cleaning":"¿Ofreces servicios náuticos en esta zona? Únete a SkipperNow y recibe tus primeras solicitudes.",
