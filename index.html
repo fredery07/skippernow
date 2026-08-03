@@ -598,7 +598,7 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
 </div>
 
 <div class="modal" id="boatDetailModal">
-  <div class="dialog xlarge"><div id="boatDetailContent"></div></div>
+  <div class="dialog"><div id="boatDetailContent"></div></div>
 </div>
 
 <div class="modal" id="invoiceModal" style="z-index:1200">
@@ -1834,7 +1834,7 @@ window.openBoatDetail = async function(id){
       ${photos.length > 1 ? `<button type="button" class="boat-carousel-arrow prev" onclick="stepBoatDetailPhoto(-1)">‹</button><button type="button" class="boat-carousel-arrow next" onclick="stepBoatDetailPhoto(1)">›</button><div class="boat-card-dots" data-detail-dots>${photos.map((_,i)=>`<span class="${i===0?"active":""}"></span>`).join("")}</div>` : ""}
       <button class="close" type="button" onclick="closeModal('boatDetailModal')" style="position:absolute;top:14px;right:14px;background:rgba(255,255,255,.92);z-index:3">×</button>
     </div>
-    <div style="padding-top:22px;max-width:680px;margin:0 auto">
+    <div style="padding-top:18px">
       <small style="color:var(--muted);font-weight:800;letter-spacing:.05em;text-transform:uppercase;font-size:11px">${esc(t("boatFinder.eyebrow"))}</small>
       <h2 style="margin:4px 0 6px">${esc(boat.name||"Bateau")}${boat.verified ? ` <span class="verified-badge">✓ ${esc(t("boatDetail.verifiedBadge"))}</span>` : ""}</h2>
       <div class="boat-card-port" style="margin-bottom:12px">📍 ${esc(boat.home_port||"—")}</div>
