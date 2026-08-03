@@ -1827,7 +1827,7 @@ window.openBoatDetail = async function(id){
   const half = Number(boat.price_half_day||0), day = Number(boat.price_per_day||boat.daily_price||boat.price||0);
   const photos = (Array.isArray(boat.photo_urls) && boat.photo_urls.length ? boat.photo_urls : (boat.photo_url ? [boat.photo_url] : []));
   content.innerHTML = `
-    <div class="boat-detail-photo" style="margin:-26px -26px 0;height:420px;border-radius:22px 22px 0 0;overflow:hidden;${photos.length?"":"background:linear-gradient(135deg,#173b51,#3f9c9a)"}">
+    <div class="boat-detail-photo" style="margin:-26px -26px 0;height:230px;border-radius:22px 22px 0 0;overflow:hidden;${photos.length?"":"background:linear-gradient(135deg,#173b51,#3f9c9a)"}">
       ${photos.length ? photos.map((url,i)=>`<div class="boat-photo-slide ${i===0?"active":""}" data-detail-slide style="background-image:url('${esc(url)}')"></div>`).join("") : `<div style="position:absolute;inset:0;display:grid;place-items:center;font-size:42px;color:rgba(255,255,255,.85)">⛵</div>`}
       ${photos.length > 1 ? `<button type="button" class="boat-carousel-arrow prev" onclick="stepBoatDetailPhoto(-1)">‹</button><button type="button" class="boat-carousel-arrow next" onclick="stepBoatDetailPhoto(1)">›</button><div class="boat-card-dots" data-detail-dots>${photos.map((_,i)=>`<span class="${i===0?"active":""}"></span>`).join("")}</div>` : ""}
       <button class="close" type="button" onclick="closeModal('boatDetailModal')" style="position:absolute;top:14px;right:14px;background:rgba(255,255,255,.92);z-index:3">×</button>
