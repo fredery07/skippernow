@@ -1,0 +1,905 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SkipperNow — Maquette App Mobile</title>
+<meta name="description" content="Prototype interactif de l'application mobile SkipperNow — parcours client, professionnel et administrateur.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#071d32;--blue:#0d6672;--aqua:#39d1c5;--mist:#eef8f7;--ink:#102b3f;
+  --muted:#647784;--line:#dce8e9;--shadow:0 18px 55px rgba(7,29,50,.13);
+  --ok:#057554;--ok-bg:#dcf8ef;--warn:#8a5a00;--warn-bg:#fff0cf;--danger:#a22e2e;--danger-bg:#ffe6e6;
+  --brass:#b6883a;--brass-light:#e4c581;--paper:#faf7ef;--display:'Fraunces',Georgia,serif;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:linear-gradient(180deg,#eef8f7,#f7f3e9 60%,#eef8f7);min-height:100vh}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+img{max-width:100%}
+
+/* ---------- page chrome around the phone ---------- */
+.stage{max-width:1080px;margin:0 auto;padding:36px 18px 70px;display:flex;flex-direction:column;align-items:center;gap:22px}
+.stage-header{text-align:center;max-width:640px}
+.stage-header .eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--brass);font-weight:800;letter-spacing:.14em;text-transform:uppercase;font-size:11px}
+.stage-header .eyebrow:before{content:"";width:20px;height:1px;background:var(--brass)}
+.stage-header h1{font-family:var(--display);font-weight:600;font-size:clamp(26px,4vw,38px);color:var(--navy);margin:12px 0 6px;letter-spacing:-.01em}
+.stage-header p{color:var(--muted);font-size:14.5px;line-height:1.6;margin:0}
+
+.role-switcher{display:flex;gap:6px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:5px;box-shadow:var(--shadow)}
+.role-switcher button{border:0;background:transparent;border-radius:999px;padding:10px 18px;font-weight:800;font-size:13.5px;color:var(--muted);display:flex;align-items:center;gap:7px;transition:.15s}
+.role-switcher button.active{background:var(--navy);color:#fff}
+
+.layout{display:flex;gap:34px;align-items:flex-start;justify-content:center;flex-wrap:wrap}
+
+/* ---------- device frame ---------- */
+.device{width:376px;height:790px;background:#0b0b0e;border-radius:52px;padding:14px;box-shadow:0 30px 70px rgba(7,29,50,.35),0 0 0 2px #1c1c22;position:relative;flex:0 0 auto}
+.device:before{content:"";position:absolute;left:50%;top:30px;transform:translateX(-50%);width:118px;height:26px;background:#0b0b0e;border-radius:16px;z-index:9}
+.screen{background:var(--paper);width:100%;height:100%;border-radius:38px;overflow:hidden;display:flex;flex-direction:column;position:relative}
+.statusbar{height:46px;flex:0 0 auto;display:flex;align-items:flex-end;justify-content:space-between;padding:0 26px 6px;font-size:13px;font-weight:800;color:var(--navy);background:transparent;position:relative;z-index:5}
+.statusbar .icons{display:flex;gap:5px;align-items:center;font-size:12px}
+
+.app-header{flex:0 0 auto;min-height:54px;display:flex;align-items:center;gap:10px;padding:6px 16px;position:relative}
+.app-header .back{width:34px;height:34px;border-radius:11px;background:#fff;border:1px solid var(--line);display:grid;place-items:center;flex:0 0 auto;font-size:16px;font-weight:900;color:var(--navy)}
+.app-header .htitle{flex:1;font-weight:850;font-size:16.5px;color:var(--navy);letter-spacing:-.01em}
+.app-header .logo-mark{width:30px;height:30px;border-radius:9px;background:var(--navy);color:var(--aqua);display:grid;place-items:center;font-size:15px;flex:0 0 auto}
+.app-header .hicon{width:34px;height:34px;border-radius:11px;background:#fff;border:1px solid var(--line);display:grid;place-items:center;flex:0 0 auto;font-size:15px;position:relative}
+.app-header .dot{position:absolute;top:6px;right:6px;width:7px;height:7px;border-radius:50%;background:var(--danger);border:1.5px solid #fff}
+
+.content{flex:1;overflow-y:auto;padding:6px 16px 18px;-webkit-overflow-scrolling:touch}
+.content::-webkit-scrollbar{width:0}
+
+.tabbar{flex:0 0 auto;display:flex;justify-content:space-around;align-items:center;padding:9px 6px 12px;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);border-top:1px solid var(--line)}
+.tabbar button{background:transparent;border:0;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--muted);font-size:10px;font-weight:800;width:64px;padding:2px}
+.tabbar button .ticon{font-size:19px;line-height:1}
+.tabbar button .tlabel{display:block;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tabbar button.active{color:var(--navy)}
+.tabbar button.active .ticon{transform:translateY(-1px)}
+
+.home-indicator{display:none}
+
+/* ---------- generic UI atoms ---------- */
+.eyebrow-sm{color:var(--brass);font-weight:800;letter-spacing:.1em;text-transform:uppercase;font-size:10.5px}
+h2.section{font-family:var(--display);font-weight:600;font-size:20px;color:var(--navy);margin:4px 0 12px;letter-spacing:-.01em}
+.muted{color:var(--muted)}
+.card{background:#fff;border:1px solid var(--line);border-radius:17px;padding:14px}
+.card + .card{margin-top:10px}
+.stack{display:flex;flex-direction:column;gap:10px}
+.row{display:flex;align-items:center;gap:10px}
+.between{display:flex;align-items:center;justify-content:space-between}
+
+.searchbar{display:flex;align-items:center;gap:9px;background:#fff;border:1px solid var(--line);border-radius:15px;padding:13px 15px;box-shadow:0 8px 20px rgba(7,29,50,.06)}
+.searchbar input{border:0;outline:0;background:transparent;flex:1;font-weight:600;color:var(--ink)}
+.searchbar .ic{color:var(--muted)}
+
+.chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 14px;font-weight:800;font-size:12.5px;color:var(--navy);white-space:nowrap}
+.chip.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+.chip-row{display:flex;gap:8px;overflow-x:auto;padding-bottom:2px}
+.chip-row::-webkit-scrollbar{display:none}
+
+.category-tile{display:flex;align-items:center;gap:12px;width:100%;background:#fff;border:1px solid var(--line);border-radius:16px;padding:13px;text-align:left}
+.category-tile .cicon{width:44px;height:44px;border-radius:13px;background:var(--mist);display:grid;place-items:center;font-size:20px;flex:0 0 auto}
+.category-tile strong{display:block;font-size:14px;color:var(--navy)}
+.category-tile span.d{font-size:12px;color:var(--muted)}
+.category-tile .arrow{margin-left:auto;color:var(--muted)}
+
+.avatar-ph{border-radius:14px;background:linear-gradient(135deg,var(--blue),var(--aqua));display:grid;place-items:center;color:#fff;font-weight:800;flex:0 0 auto}
+.avatar-round{border-radius:50%}
+
+.pro-card{display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;background:#fff;border:1px solid var(--line);border-radius:17px;padding:13px}
+.pro-card .info{flex:1;min-width:0}
+.pro-card .name-row{display:flex;align-items:center;gap:6px;font-weight:850;font-size:14.5px;color:var(--navy)}
+.pro-card .meta{font-size:12px;color:var(--muted);margin-top:2px}
+.pro-card .badges{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px}
+.pro-card .price{font-weight:900;color:var(--navy);font-size:14.5px;white-space:nowrap}
+.pro-card .price span{display:block;font-weight:700;font-size:10.5px;color:var(--muted)}
+.rating{display:inline-flex;align-items:center;gap:3px;color:var(--brass);font-weight:850;font-size:12.5px}
+
+.badge{display:inline-flex;align-items:center;gap:4px;font-size:10.5px;padding:3.5px 8px;border-radius:999px;background:var(--mist);color:var(--blue);font-weight:800}
+.status{display:inline-flex;align-items:center;gap:5px;font-size:11px;padding:4px 10px;border-radius:999px;font-weight:850}
+.status.pending{background:var(--warn-bg);color:var(--warn)}
+.status.confirmed{background:var(--ok-bg);color:var(--ok)}
+.status.progress{background:#e1eefc;color:#1d5aa8}
+.status.completed{background:var(--mist);color:var(--blue)}
+.status.cancelled{background:var(--danger-bg);color:var(--danger)}
+
+.btn{border:0;border-radius:13px;padding:13px 16px;font-weight:850;font-size:14px;width:100%;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-navy{background:var(--navy);color:#fff}
+.btn-aqua{background:var(--aqua);color:var(--navy)}
+.btn-outline{background:#fff;border:1.5px solid var(--line);color:var(--navy)}
+.btn-danger-outline{background:#fff;border:1.5px solid var(--danger-bg);color:var(--danger)}
+.btn-sm{width:auto;padding:9px 14px;font-size:12.5px;border-radius:11px}
+.btn:disabled{opacity:.5}
+
+.cover{height:150px;border-radius:17px;background:linear-gradient(135deg,#071d32,#0d4551 55%,#157d80);position:relative;display:flex;align-items:flex-end;padding:14px;overflow:hidden}
+.cover .cover-icon{position:absolute;right:14px;top:14px;font-size:44px;opacity:.35}
+.profile-head{display:flex;gap:12px;align-items:flex-end;margin-top:-38px;padding:0 4px;position:relative;z-index:2}
+.profile-head>div{padding-bottom:2px}
+.profile-head .avatar-ph{width:72px;height:72px;font-size:26px;border:4px solid var(--paper)}
+
+.tabs-inline{display:flex;gap:4px;background:var(--mist);border-radius:12px;padding:4px;margin:12px 0}
+.tabs-inline button{flex:1;border:0;background:transparent;padding:9px 6px;border-radius:9px;font-weight:800;font-size:12.5px;color:var(--muted)}
+.tabs-inline button.active{background:#fff;color:var(--navy);box-shadow:0 3px 10px rgba(7,29,50,.1)}
+
+.sticky-cta{position:sticky;bottom:-18px;background:linear-gradient(0deg,var(--paper) 70%,transparent);padding:16px 0 18px;margin:6px -16px -18px;z-index:6}
+.sticky-cta .price-box{margin:0 16px}
+.price-box{display:flex;align-items:center;justify-content:space-between;background:#fff;border:1px solid var(--line);border-radius:15px;padding:12px 14px;margin-bottom:10px}
+.price-box strong{font-size:19px;color:var(--navy);font-family:var(--display);font-weight:600}
+
+.field{border:1px solid var(--line);border-radius:14px;padding:10px 13px;background:#fff}
+.field label{display:block;color:var(--muted);font-size:10.5px;font-weight:850;margin-bottom:4px;letter-spacing:.03em;text-transform:uppercase}
+.field select,.field input,.field textarea{border:0;outline:0;width:100%;color:var(--ink);background:transparent;font-weight:700;resize:none}
+
+.date-chip-row{display:flex;gap:8px;overflow-x:auto;margin:10px 0}
+.date-chip{flex:0 0 auto;text-align:center;border:1.5px solid var(--line);border-radius:14px;padding:10px 14px;background:#fff}
+.date-chip.active{border-color:var(--navy);background:var(--navy);color:#fff}
+.date-chip .dow{display:block;font-size:10px;font-weight:800;opacity:.7;text-transform:uppercase}
+.date-chip .num{display:block;font-size:16px;font-weight:900;margin-top:2px}
+
+.timeline{position:relative;padding-left:26px}
+.timeline .t-item{position:relative;padding-bottom:20px}
+.timeline .t-item:before{content:"";position:absolute;left:-21px;top:2px;width:12px;height:12px;border-radius:50%;background:var(--line);border:2px solid #fff;box-shadow:0 0 0 1px var(--line)}
+.timeline .t-item.done:before{background:var(--ok)}
+.timeline .t-item.now:before{background:var(--aqua)}
+.timeline .t-item:after{content:"";position:absolute;left:-16px;top:16px;bottom:-4px;width:2px;background:var(--line)}
+.timeline .t-item:last-child:after{display:none}
+.timeline .t-title{font-weight:850;font-size:13.5px;color:var(--navy)}
+.timeline .t-sub{font-size:11.5px;color:var(--muted)}
+
+.map-ph{height:120px;border-radius:15px;background:repeating-linear-gradient(135deg,#dfeeee,#dfeeee 10px,#e8f4f3 10px,#e8f4f3 20px);position:relative;display:grid;place-items:center;color:var(--blue);font-weight:800;font-size:12.5px;border:1px solid var(--line)}
+
+.msg-row{display:flex;gap:10px;align-items:center;width:100%;text-align:left;background:transparent;border:0;padding:10px 4px;border-bottom:1px solid var(--line)}
+.msg-row:last-child{border-bottom:0}
+.msg-row .prev{font-size:12.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.msg-row .unread{width:9px;height:9px;border-radius:50%;background:var(--aqua);flex:0 0 auto}
+.msg-row .time{font-size:10.5px;color:var(--muted);flex:0 0 auto}
+
+.chat-thread{display:flex;flex-direction:column;gap:9px;padding-bottom:6px}
+.bubble{max-width:78%;padding:10px 13px;border-radius:16px;font-size:13.5px;line-height:1.4}
+.bubble.them{align-self:flex-start;background:#fff;border:1px solid var(--line);border-bottom-left-radius:4px}
+.bubble.me{align-self:flex-end;background:var(--navy);color:#fff;border-bottom-right-radius:4px}
+.bubble.sys{align-self:center;background:var(--mist);color:var(--blue);font-size:11.5px;font-weight:800;border-radius:999px;padding:6px 12px}
+.chat-input-bar{display:flex;gap:8px;align-items:center;padding:10px 4px 2px}
+.chat-input-bar .box{flex:1;border:1px solid var(--line);background:#fff;border-radius:999px;padding:10px 16px;color:var(--muted);font-size:13px}
+.chat-input-bar .send{width:38px;height:38px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;flex:0 0 auto;font-size:15px}
+
+.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:8px}
+.calendar-grid .dow{font-size:10px;font-weight:800;color:var(--muted);text-align:center;text-transform:uppercase}
+.day-cell{aspect-ratio:1;border-radius:10px;display:grid;place-items:center;font-size:12.5px;font-weight:800;background:var(--mist);color:var(--muted)}
+.day-cell.avail{background:var(--ok-bg);color:var(--ok)}
+.day-cell.booked{background:var(--navy);color:#fff}
+.day-cell.off{background:#f1f1ef;color:#c7c7c2}
+.day-cell.blank{background:transparent}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin-top:10px}
+.legend span{display:inline-flex;align-items:center;gap:5px}
+.legend i{width:10px;height:10px;border-radius:3px;display:inline-block}
+
+.kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.kpi-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:13px}
+.kpi-card strong{display:block;font-family:var(--display);font-weight:600;font-size:23px;color:var(--navy)}
+.kpi-card span{font-size:11px;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.02em}
+.kpi-card .delta{font-size:11px;font-weight:850;margin-top:4px;display:inline-block}
+.kpi-card .delta.up{color:var(--ok)}
+.kpi-card .delta.down{color:var(--danger)}
+
+.bars{display:flex;align-items:flex-end;gap:7px;height:90px;margin:8px 0}
+.bars .bar{flex:1;background:linear-gradient(180deg,var(--aqua),var(--blue));border-radius:6px 6px 2px 2px}
+
+.list-row{display:flex;align-items:center;gap:11px;width:100%;text-align:left;background:transparent;border:0;padding:11px 2px;border-bottom:1px solid var(--line)}
+.list-row:last-child{border-bottom:0}
+.list-row .grow{flex:1;min-width:0}
+.list-row .ttl{font-weight:850;font-size:13.5px;color:var(--navy)}
+.list-row .sub{font-size:11.5px;color:var(--muted);margin-top:2px}
+.list-row .chev{color:var(--muted)}
+
+.menu-item{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:#fff;border:0;border-bottom:1px solid var(--line);padding:14px 2px}
+.menu-item:last-child{border-bottom:0}
+.menu-item .mi-icon{width:34px;height:34px;border-radius:10px;background:var(--mist);display:grid;place-items:center;font-size:15px}
+.menu-item .grow{flex:1;font-weight:750;font-size:13.5px}
+.menu-item.danger .grow{color:var(--danger)}
+
+.toggle{width:42px;height:25px;border-radius:999px;background:var(--line);position:relative;flex:0 0 auto;border:0}
+.toggle.on{background:var(--aqua)}
+.toggle:after{content:"";position:absolute;top:2.5px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:.15s;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+.toggle.on:after{left:19px}
+
+.success-wrap{display:flex;flex-direction:column;align-items:center;text-align:center;padding:30px 6px 10px}
+.success-ring{width:78px;height:78px;border-radius:50%;background:var(--ok-bg);display:grid;place-items:center;font-size:36px;color:var(--ok);margin-bottom:16px}
+.divider{height:1px;background:var(--line);margin:12px 0}
+.slider{width:100%}
+textarea.field-t{border:1px solid var(--line);border-radius:14px;padding:12px 13px;width:100%;background:#fff;font-weight:600;min-height:74px}
+
+.notice{background:#fff8ec;border:1px solid var(--brass-light);color:#7a5a17;border-radius:13px;padding:11px 13px;font-size:12px;font-weight:700;line-height:1.5}
+.credit-card-mock{background:linear-gradient(135deg,var(--navy),#0d4551);border-radius:16px;padding:18px;color:#fff;position:relative;overflow:hidden}
+.credit-card-mock .cnum{font-size:16px;letter-spacing:2px;font-weight:700;margin:22px 0 14px}
+.credit-card-mock .crow{display:flex;justify-content:space-between;font-size:10px;text-transform:uppercase;color:#c7dada}
+
+.footer-note{text-align:center;color:var(--muted);font-size:12px;line-height:1.6;max-width:520px}
+.footer-note a{color:var(--blue);font-weight:700}
+
+@media(max-width:820px){.layout{flex-direction:column;align-items:center}}
+@media(max-width:420px){.device{width:100%;max-width:376px;height:82vh;min-height:640px;border-radius:36px;padding:10px}.screen{border-radius:26px}}
+</style>
+</head>
+<body>
+
+<div class="stage">
+  <div class="stage-header">
+    <span class="eyebrow">Prototype interactif</span>
+    <h1>SkipperNow — Maquette de l'application mobile</h1>
+    <p>Aperçu cliquable des parcours <strong>client</strong>, <strong>professionnel</strong> (skipper / marin à la journée / prestataire) et <strong>administrateur</strong>. Aucune donnée n'est réelle — tout le contenu est fictif, à des fins de démonstration.</p>
+  </div>
+
+  <div class="role-switcher" id="roleSwitcher"></div>
+
+  <div class="layout">
+    <div class="device">
+      <div class="screen">
+        <div class="statusbar">
+          <span>9:41</span>
+          <span class="icons">📶 🛜 🔋</span>
+        </div>
+        <div class="app-header" id="appHeader"></div>
+        <div class="content" id="screenContent"></div>
+        <div class="tabbar" id="tabBar"></div>
+      </div>
+    </div>
+  </div>
+
+  <p class="footer-note">Maquette front-end statique (HTML / CSS / JS, sans dépendance) — même philosophie que le site en production : aucune étape de build. Basée sur l'identité visuelle SkipperNow (navy · aqua · laiton, typographies Fraunces &amp; Inter).</p>
+</div>
+
+<script>
+/* =========================================================
+   SkipperNow — Maquette app mobile (prototype statique)
+   ========================================================= */
+
+const ICON = { skipper:"⚓", day_sailor:"👷", cleaning:"🧽", provider:"🧽", boat:"⛵", admin:"🛠️" };
+
+const PROS = [
+  {id:"p1", name:"Julien Ferrand", kind:"skipper", port:"Saint-Tropez", country:"France", rating:4.9, reviews:128, price:180, unit:"/ jour", badges:["Permis hauturier","10 ans d'expérience"], bio:"Skipper professionnel basé à Saint-Tropez, spécialisé dans les sorties à la journée et le convoyage en Méditerranée. Anglais et italien courants."},
+  {id:"p2", name:"Camille Dutoit", kind:"cleaning", port:"Cannes", country:"France", rating:4.8, reviews:64, price:90, unit:"/ prestation", badges:["Éco-responsable","Intervention express"], bio:"Prestataire de nettoyage et d'entretien à quai. Interventions rapides avant/après navigation, produits respectueux du milieu marin."},
+  {id:"p3", name:"Marco Rossi", kind:"skipper", port:"Portofino", country:"Italie", rating:5.0, reviews:52, price:220, unit:"/ jour", badges:["Multicoque","Régates"], bio:"Skipper italien expérimenté, à l'aise sur monocoques et catamarans. Disponible pour sorties, régates et transferts."},
+  {id:"p4", name:"Aegean Breeze — Voilier 12m", kind:"boat", port:"Athènes", country:"Grèce", rating:4.7, reviews:39, price:450, unit:"/ jour", badges:["8 personnes","Skipper en option"], bio:"Voilier de 12 mètres tout équipé, idéal pour une semaine en mer Égée. Location avec ou sans skipper."},
+  {id:"p5", name:"Anaïs Kerguen", kind:"day_sailor", port:"La Rochelle", country:"France", rating:4.9, reviews:31, price:140, unit:"/ jour", badges:["Voile légère","Pédagogie"], bio:"Marin à la journée, accompagne particuliers et familles pour des sorties encadrées en toute sécurité."},
+];
+
+const MISSIONS_PRO = [
+  {id:"m1", client:"Sophie Marchand", port:"Saint-Tropez", date:"12 août 2026", time:"09:00", status:"pending", price:180, note:"Sortie journée pour 4 personnes, départ port de Saint-Tropez."},
+  {id:"m2", client:"Thomas Keller", port:"Saint-Tropez", date:"14 août 2026", time:"10:30", status:"confirmed", price:180, note:"Initiation à la voile, 2 adultes + 1 enfant."},
+  {id:"m3", client:"Anna Petrova", port:"Nice", date:"6 août 2026", time:"08:00", status:"progress", price:220, note:"Convoyage Nice → Monaco."},
+  {id:"m4", client:"Lucas Bernard", port:"Saint-Tropez", date:"29 juillet 2026", time:"14:00", status:"completed", price:180, note:"Sortie coucher de soleil."},
+  {id:"m5", client:"Elena Popescu", port:"Cannes", date:"22 juillet 2026", time:"11:00", status:"completed", price:180, note:"Sortie pêche à la journée."},
+];
+
+const BOOKINGS_CLIENT = [
+  {id:"b1", pro:"Julien Ferrand", port:"Saint-Tropez", date:"12 août 2026", time:"09:00", status:"confirmed", price:180},
+  {id:"b2", pro:"Camille Dutoit", port:"Cannes", date:"18 août 2026", time:"08:00", status:"pending", price:90},
+  {id:"b3", pro:"Marco Rossi", port:"Portofino", date:"3 juillet 2026", time:"09:00", status:"completed", price:220},
+];
+
+const CONVERSATIONS = [
+  {id:"c1", name:"Julien Ferrand", preview:"Parfait, rendez-vous à 9h au ponton B.", time:"09:24", unread:true},
+  {id:"c2", name:"Camille Dutoit", preview:"C'est noté, je passe demain matin.", time:"Hier", unread:false},
+  {id:"c3", name:"Support SkipperNow", preview:"Votre paiement a bien été confirmé.", time:"Lun", unread:false},
+];
+
+const CHAT_MESSAGES = [
+  {from:"sys", text:"Réservation confirmée pour le 12 août"},
+  {from:"them", text:"Bonjour ! Je confirme notre sortie du 12 août à 9h au ponton B, port de Saint-Tropez."},
+  {from:"me", text:"Parfait, merci ! On sera 4 personnes."},
+  {from:"them", text:"Très bien, prévoyez des vêtements chauds pour le large 😊"},
+  {from:"me", text:"Noté, à bientôt !"},
+];
+
+const USERS_ADMIN = [
+  {id:"u1", name:"Julien Ferrand", role:"skipper", status:"verified", port:"Saint-Tropez"},
+  {id:"u2", name:"Sophie Marchand", role:"client", status:"verified", port:"—"},
+  {id:"u3", name:"Camille Dutoit", role:"provider", status:"pending", port:"Cannes"},
+  {id:"u4", name:"Marco Rossi", role:"skipper", status:"verified", port:"Portofino"},
+  {id:"u5", name:"Yohan Petit", role:"client", status:"suspended", port:"—"},
+];
+
+const DISPUTES = [
+  {id:"d1", mission:"Mission #4821", parties:"Sophie Marchand ↔ Julien Ferrand", reason:"Retard de départ non justifié", status:"open"},
+  {id:"d2", mission:"Mission #4790", parties:"Yohan Petit ↔ Camille Dutoit", reason:"Prestation jugée incomplète", status:"open"},
+  {id:"d3", mission:"Mission #4650", parties:"Anna Petrova ↔ Marco Rossi", reason:"Annulation tardive", status:"resolved"},
+];
+
+const STATUS_LABEL = {pending:"En attente", confirmed:"Confirmée", progress:"En cours", completed:"Terminée", cancelled:"Annulée", verified:"Vérifié", suspended:"Suspendu", open:"Ouvert", resolved:"Résolu"};
+
+function statusChip(s){ return `<span class="status ${s}">${STATUS_LABEL[s]||s}</span>`; }
+function initials(name){ return name.split(" ").map(w=>w[0]).slice(0,2).join("").toUpperCase(); }
+function avatar(name,size,rounded){ return `<div class="avatar-ph ${rounded?"avatar-round":""}" style="width:${size}px;height:${size}px;font-size:${Math.round(size*.36)}px">${initials(name)}</div>`; }
+function stars(r){ const full=Math.round(r); return "★".repeat(full)+"☆".repeat(5-full); }
+
+/* ---------------- app state ---------------- */
+const TAB_ROOT = {
+  client: {home:"c_home", search:"c_search", bookings:"c_bookings", messages:"c_messages", account:"c_account"},
+  pro:    {missions:"pro_missions", calendar:"pro_calendar", earnings:"pro_earnings", messages:"c_messages", account:"pro_account"},
+  admin:  {dashboard:"a_dashboard", users:"a_users", missions:"a_missions", disputes:"a_disputes", settings:"a_settings"},
+};
+const TAB_DEFS = {
+  client:[["home","🏠","Accueil"],["search","🔎","Recherche"],["bookings","🎟️","Résa"],["messages","💬","Messages"],["account","👤","Profil"]],
+  pro:[["missions","🧭","Missions"],["calendar","📅","Agenda"],["earnings","💶","Revenus"],["messages","💬","Messages"],["account","👤","Profil"]],
+  admin:[["dashboard","📊","Tableau"],["users","👥","Utilisateurs"],["missions","🧭","Missions"],["disputes","⚖️","Litiges"],["settings","⚙️","Réglages"]],
+};
+const ROLE_LABEL = {client:"Client", pro:"Professionnel", admin:"Administrateur"};
+const ROLE_ICON = {client:"🙋", pro:"⚓", admin:"🛠️"};
+
+let role = "client";
+let tab = "home";
+let stack = [{screen:"c_home"}];
+let searchFilter = "all";
+let bookingFilter = "upcoming";
+let missionFilter = "pending";
+let selectedDateIdx = 1;
+let toast = null;
+
+function push(screen, params){ stack.push({screen, params}); render(); window.scrollTo(0,0); }
+function pop(){ if(stack.length>1){ stack.pop(); render(); } }
+function setRole(r){ role=r; tab=Object.keys(TAB_ROOT[r])[0]; stack=[{screen:TAB_ROOT[r][tab]}]; render(); }
+function setTab(t){ tab=t; stack=[{screen:TAB_ROOT[role][t]}]; render(); }
+function showToast(msg){ toast=msg; render(); setTimeout(()=>{ toast=null; renderToastOnly(); }, 1800); }
+
+function current(){ return stack[stack.length-1]; }
+function findPro(id){ return PROS.find(p=>p.id===id); }
+function findMission(id){ return MISSIONS_PRO.find(m=>m.id===id); }
+function findBooking(id){ return BOOKINGS_CLIENT.find(b=>b.id===id); }
+function findUser(id){ return USERS_ADMIN.find(u=>u.id===id); }
+function findDispute(id){ return DISPUTES.find(d=>d.id===id); }
+
+/* ---------------- header ---------------- */
+function renderHeader(){
+  const el = document.getElementById("appHeader");
+  const { screen } = current();
+  const isRoot = stack.length===1;
+  let title = HEADER_TITLES[screen] || "";
+  el.innerHTML = `
+    ${isRoot ? `<div class="logo-mark">⚓</div>` : `<button class="back" data-back="1">‹</button>`}
+    <div class="htitle">${title}</div>
+    ${isRoot ? `<button class="hicon" data-fake="1">🔔<span class="dot"></span></button>` : `<span style="width:34px"></span>`}
+  `;
+}
+const HEADER_TITLES = {
+  c_home:"Bonjour, Camille 👋", c_search:"Rechercher", c_bookings:"Mes réservations", c_messages:"Messages", c_account:"Mon profil",
+  proProfile:"Profil professionnel", booking:"Réserver", payment:"Paiement", bookingConfirmed:"Confirmation",
+  missionTracking:"Suivi de mission", chat:"Conversation",
+  pro_missions:"Mes missions", pro_calendar:"Disponibilités", pro_earnings:"Revenus", pro_account:"Mon profil pro",
+  missionDetail:"Détail mission",
+  a_dashboard:"Tableau de bord", a_users:"Utilisateurs", a_missions:"Toutes les missions", a_disputes:"Litiges", a_settings:"Réglages plateforme",
+  userDetail:"Fiche utilisateur", disputeDetail:"Détail du litige",
+};
+
+/* ---------------- tab bar ---------------- */
+function renderTabBar(){
+  const el = document.getElementById("tabBar");
+  el.innerHTML = TAB_DEFS[role].map(([id,icon,label])=>`
+    <button data-tab="${id}" class="${tab===id?"active":""}">
+      <span class="ticon">${icon}</span><span class="tlabel">${label}</span>
+    </button>`).join("");
+}
+
+/* ---------------- role switcher ---------------- */
+function renderRoleSwitcher(){
+  const el = document.getElementById("roleSwitcher");
+  el.innerHTML = ["client","pro","admin"].map(r=>`
+    <button data-role="${r}" class="${role===r?"active":""}">${ROLE_ICON[r]} ${ROLE_LABEL[r]}</button>
+  `).join("");
+}
+
+/* ================= SCREENS ================= */
+const SCREENS = {};
+
+/* ---- client: home ---- */
+SCREENS.c_home = () => `
+  <div class="searchbar" data-nav="push:c_search"><span class="ic">🔎</span><input placeholder="Un port, une date, une activité…" readonly></div>
+  <h2 class="section" style="margin-top:18px">Que recherchez-vous ?</h2>
+  <div class="stack">
+    <button class="category-tile" data-nav="push:c_search:skipper"><span class="cicon">⚓</span><span><strong>Un skipper</strong><span class="d">Sortie, location ou convoyage</span></span><span class="arrow">→</span></button>
+    <button class="category-tile" data-nav="push:c_search:day_sailor"><span class="cicon">👷</span><span><strong>Un marin à la journée</strong><span class="d">Accompagnement ponctuel</span></span><span class="arrow">→</span></button>
+    <button class="category-tile" data-nav="push:c_search:cleaning"><span class="cicon">🧽</span><span><strong>Un prestataire</strong><span class="d">Nettoyage, entretien, services à quai</span></span><span class="arrow">→</span></button>
+    <button class="category-tile" data-nav="push:c_search:boat"><span class="cicon">⛵</span><span><strong>Louer un bateau</strong><span class="d">Avec ou sans skipper</span></span><span class="arrow">→</span></button>
+  </div>
+  <h2 class="section" style="margin-top:20px">Ports populaires</h2>
+  <div class="chip-row">
+    ${["Saint-Tropez","Cannes","Nice","Portofino","Athènes","La Rochelle"].map(p=>`<span class="chip">📍 ${p}</span>`).join("")}
+  </div>
+  <h2 class="section" style="margin-top:20px">Recommandés près de vous</h2>
+  <div class="stack">${PROS.slice(0,3).map(proCard).join("")}</div>
+`;
+
+/* ---- client: search ---- */
+SCREENS.c_search = (params) => {
+  if (params) searchFilter = params;
+  const filters = [["all","Tous"],["skipper","⚓ Skippers"],["day_sailor","👷 Marins"],["cleaning","🧽 Prestataires"],["boat","⛵ Bateaux"]];
+  const list = PROS.filter(p=>searchFilter==="all" || p.kind===searchFilter);
+  return `
+    <div class="stack" style="margin-bottom:10px">
+      <div class="row">
+        <div class="field" style="flex:1"><label>Port</label><input value="Saint-Tropez" readonly></div>
+        <div class="field" style="flex:1"><label>Date</label><input value="12 août" readonly></div>
+      </div>
+    </div>
+    <div class="chip-row">${filters.map(([k,l])=>`<button class="chip ${searchFilter===k?"active":""}" data-filter="${k}">${l}</button>`).join("")}</div>
+    <p class="muted" style="font-size:12.5px;margin:12px 2px">${list.length} résultat${list.length>1?"s":""}</p>
+    <div class="stack">${list.map(proCard).join("") || `<p class="muted">Aucun résultat pour ce filtre.</p>`}</div>
+  `;
+};
+
+function proCard(p){
+  return `<button class="pro-card" data-nav="push:proProfile:${p.id}">
+    ${avatar(p.name,52,false)}
+    <div class="info">
+      <div class="name-row">${p.name} <span class="rating">${stars(p.rating)}</span></div>
+      <div class="meta">${ICON[p.kind]} ${p.port}, ${p.country} · ${p.reviews} avis</div>
+      <div class="badges">${p.badges.map(b=>`<span class="badge">${b}</span>`).join("")}</div>
+    </div>
+    <div class="price">${p.price}€<span>${p.unit}</span></div>
+  </button>`;
+}
+
+/* ---- client: pro profile ---- */
+SCREENS.proProfile = (id) => {
+  const p = findPro(id);
+  return `
+    <div class="cover"><span class="cover-icon">${ICON[p.kind]}</span></div>
+    <div class="profile-head">${avatar(p.name,72,false)}
+      <div><div style="font-weight:900;font-size:17px;color:var(--navy)">${p.name}</div>
+      <div class="meta muted" style="font-size:12.5px">${p.port}, ${p.country}</div>
+      <span class="rating">${stars(p.rating)} ${p.rating} (${p.reviews})</span></div>
+    </div>
+    <div class="badges" style="margin:12px 0">${p.badges.map(b=>`<span class="badge">${b}</span>`).join("")}</div>
+    <div class="tabs-inline"><button class="active">À propos</button><button>Avis (${p.reviews})</button><button>Disponibilités</button></div>
+    <p style="font-size:13.5px;line-height:1.6;color:var(--ink)">${p.bio}</p>
+    <div class="card" style="margin-top:14px">
+      <div class="between"><strong style="font-size:13px">Vérifications</strong></div>
+      <div class="stack" style="margin-top:8px">
+        <div class="row muted" style="font-size:12.5px">✅ Identité vérifiée</div>
+        <div class="row muted" style="font-size:12.5px">✅ Assurance professionnelle à jour</div>
+        <div class="row muted" style="font-size:12.5px">✅ Permis / qualifications contrôlés</div>
+      </div>
+    </div>
+    <div class="sticky-cta">
+      <div class="price-box"><div><strong>${p.price}€</strong><span class="muted" style="font-size:11px;display:block">${p.unit}</span></div>
+      <button class="btn btn-navy" style="width:auto;padding:12px 20px" data-nav="push:booking:${p.id}">Réserver</button></div>
+    </div>
+  `;
+};
+
+/* ---- client: booking ---- */
+SCREENS.booking = (id) => {
+  const p = findPro(id);
+  const days = [["LUN","10"],["MAR","11"],["MER","12"],["JEU","13"],["VEN","14"],["SAM","15"]];
+  return `
+    <div class="card row"><div class="grow"><strong style="font-size:13.5px">${p.name}</strong><div class="muted" style="font-size:12px">${ICON[p.kind]} ${p.port}, ${p.country}</div></div></div>
+    <h2 class="section" style="margin-top:16px">Choisissez une date</h2>
+    <div class="date-chip-row">
+      ${days.map((d,i)=>`<div class="date-chip ${selectedDateIdx===i?"active":""}" data-date="${i}"><span class="dow">${d[0]}</span><span class="num">${d[1]}</span></div>`).join("")}
+    </div>
+    <div class="field" style="margin-top:4px"><label>Heure</label><input value="09:00"></div>
+    <div class="field" style="margin-top:10px"><label>Nombre de personnes</label><input value="4 personnes"></div>
+    <div class="field" style="margin-top:10px"><label>Message au professionnel (optionnel)</label><textarea class="field-t" placeholder="Précisez votre demande…" style="border:0;padding:0"></textarea></div>
+    <h2 class="section" style="margin-top:18px">Récapitulatif</h2>
+    <div class="card stack" style="gap:8px">
+      <div class="between" style="font-size:13px"><span class="muted">Sous-total</span><span>${p.price}€</span></div>
+      <div class="between" style="font-size:13px"><span class="muted">Frais de service</span><span>${Math.round(p.price*0.08)}€</span></div>
+      <div class="divider"></div>
+      <div class="between" style="font-weight:900;font-size:15px"><span>Total</span><span>${p.price+Math.round(p.price*0.08)}€</span></div>
+    </div>
+    <button class="btn btn-navy" style="margin-top:16px" data-nav="push:payment:${p.id}">Continuer vers le paiement</button>
+  `;
+};
+
+/* ---- client: payment ---- */
+SCREENS.payment = (id) => {
+  const p = findPro(id);
+  const total = p.price+Math.round(p.price*0.08);
+  return `
+    <div class="notice">🔒 Vos fonds sont conservés en sécurité et versés au professionnel après validation de la mission.</div>
+    <h2 class="section" style="margin-top:16px">Moyen de paiement</h2>
+    <div class="credit-card-mock">
+      <div class="row" style="justify-content:space-between"><span>💳</span><span style="font-weight:800;font-size:12px">VISA</span></div>
+      <div class="cnum">•••• •••• •••• 4242</div>
+      <div class="crow"><span>Titulaire</span><span>Expire</span></div>
+      <div class="crow" style="color:#fff;font-weight:700;font-size:12px"><span>Camille Marchand</span><span>08/29</span></div>
+    </div>
+    <button class="btn btn-outline" style="margin-top:10px">＋ Ajouter un autre moyen de paiement</button>
+    <div class="card stack" style="margin-top:16px;gap:8px">
+      <div class="between" style="font-size:13px"><span class="muted">Mission avec ${p.name}</span><span>${p.price}€</span></div>
+      <div class="between" style="font-size:13px"><span class="muted">Frais de service</span><span>${Math.round(p.price*0.08)}€</span></div>
+      <div class="divider"></div>
+      <div class="between" style="font-weight:900;font-size:15px"><span>Total à payer</span><span>${total}€</span></div>
+    </div>
+    <button class="btn btn-aqua" style="margin-top:16px" data-nav="push:bookingConfirmed:${p.id}">Payer ${total}€</button>
+  `;
+};
+
+/* ---- client: booking confirmed ---- */
+SCREENS.bookingConfirmed = (id) => {
+  const p = findPro(id);
+  return `
+    <div class="success-wrap">
+      <div class="success-ring">✓</div>
+      <h2 class="section" style="margin:0 0 6px">Réservation confirmée</h2>
+      <p class="muted" style="font-size:13px;max-width:260px">Votre mission avec ${p.name} est confirmée. Un message de confirmation a été envoyé.</p>
+    </div>
+    <div class="card stack" style="gap:6px">
+      <div class="between" style="font-size:13px"><span class="muted">Professionnel</span><span style="font-weight:800">${p.name}</span></div>
+      <div class="between" style="font-size:13px"><span class="muted">Port</span><span style="font-weight:800">${p.port}</span></div>
+      <div class="between" style="font-size:13px"><span class="muted">Date</span><span style="font-weight:800">12 août 2026, 09:00</span></div>
+      <div class="between" style="font-size:13px"><span class="muted">Montant</span><span style="font-weight:800">${p.price+Math.round(p.price*0.08)}€</span></div>
+    </div>
+    <button class="btn btn-navy" style="margin-top:16px" data-nav="push:missionTracking:b1">Voir ma réservation</button>
+    <button class="btn btn-outline" style="margin-top:10px" data-tab-jump="client:home">Retour à l'accueil</button>
+  `;
+};
+
+/* ---- client: bookings tab ---- */
+SCREENS.c_bookings = () => `
+  <div class="tabs-inline">
+    <button class="${bookingFilter==="upcoming"?"active":""}" data-bfilter="upcoming">À venir</button>
+    <button class="${bookingFilter==="past"?"active":""}" data-bfilter="past">Passées</button>
+  </div>
+  <div class="stack">
+    ${BOOKINGS_CLIENT.filter(b=> bookingFilter==="upcoming" ? b.status!=="completed" : b.status==="completed").map(b=>`
+      <button class="card" style="display:block;text-align:left;width:100%" data-nav="push:missionTracking:${b.id}">
+        <div class="between">${statusChip(b.status)}<span class="muted" style="font-size:11.5px">${b.date}</span></div>
+        <div style="font-weight:850;font-size:14.5px;margin-top:8px;color:var(--navy)">${b.pro}</div>
+        <div class="muted" style="font-size:12px;margin-top:2px">📍 ${b.port} · ${b.time} · ${b.price}€</div>
+      </button>`).join("") || `<p class="muted">Aucune réservation.</p>`}
+  </div>
+`;
+
+/* ---- client: mission tracking ---- */
+SCREENS.missionTracking = (id) => {
+  const b = findBooking(id) || BOOKINGS_CLIENT[0];
+  return `
+    <div class="map-ph">🗺️ Position du port — Saint-Tropez</div>
+    <div class="card" style="margin-top:12px">
+      <div class="row">${avatar(b.pro,44,false)}
+        <div class="grow"><strong style="font-size:13.5px">${b.pro}</strong><div class="muted" style="font-size:11.5px">${ICON.skipper} Skipper professionnel</div></div>
+        <button class="btn-sm btn btn-outline" style="width:auto" data-nav="push:chat">💬</button>
+      </div>
+    </div>
+    <h2 class="section" style="margin-top:18px">Statut de la mission</h2>
+    <div class="timeline">
+      <div class="t-item done"><div class="t-title">Réservation confirmée</div><div class="t-sub">11 août, 18:42</div></div>
+      <div class="t-item now"><div class="t-title">En attente du départ</div><div class="t-sub">${b.date}, ${b.time} · Ponton B</div></div>
+      <div class="t-item"><div class="t-title">Mission en cours</div><div class="t-sub">À venir</div></div>
+      <div class="t-item"><div class="t-title">Mission terminée &amp; paiement libéré</div><div class="t-sub">À venir</div></div>
+    </div>
+    <div class="card" style="margin-top:14px">
+      <div class="between" style="font-size:13px"><span class="muted">Port</span><span style="font-weight:800">${b.port}</span></div>
+      <div class="between" style="font-size:13px;margin-top:6px"><span class="muted">Montant</span><span style="font-weight:800">${b.price}€</span></div>
+    </div>
+    <button class="btn btn-outline" style="margin-top:14px">Annuler la réservation</button>
+  `;
+};
+
+/* ---- messages (shared client/pro) ---- */
+SCREENS.c_messages = () => `
+  <div class="stack" style="gap:0">
+    ${CONVERSATIONS.map(c=>`
+      <button class="msg-row" data-nav="push:chat">
+        ${avatar(c.name,44,false)}
+        <div class="grow">
+          <div class="between"><span style="font-weight:850;font-size:13.5px;color:var(--navy)">${c.name}</span><span class="time">${c.time}</span></div>
+          <div class="between"><span class="prev">${c.preview}</span>${c.unread?'<span class="unread"></span>':""}</div>
+        </div>
+      </button>`).join("")}
+  </div>
+`;
+
+SCREENS.chat = () => `
+  <div class="chat-thread">
+    ${CHAT_MESSAGES.map(m=> m.from==="sys" ? `<div class="bubble sys">${m.text}</div>` : `<div class="bubble ${m.from==="me"?"me":"them"}">${m.text}</div>`).join("")}
+  </div>
+  <div class="chat-input-bar"><div class="box">Écrire un message…</div><div class="send">➤</div></div>
+`;
+
+/* ---- client: account ---- */
+SCREENS.c_account = () => `
+  <div class="row" style="margin-bottom:16px">${avatar("Camille Marchand",60,true)}
+    <div><div style="font-weight:900;font-size:16px;color:var(--navy)">Camille Marchand</div><div class="muted" style="font-size:12.5px">camille.marchand@email.com</div></div>
+  </div>
+  <div class="stack" style="gap:0">
+    ${menuItem("🧾","Mes informations")}${menuItem("💳","Moyens de paiement")}${menuItem("🌍","Langue — Français")}
+    ${menuItem("🔔","Notifications")}${menuItem("🛟","Aide &amp; support")}${menuItem("⚓","Devenir prestataire")}
+    ${menuItem("🚪","Se déconnecter", true)}
+  </div>
+`;
+function menuItem(icon,label,danger){ return `<button class="menu-item ${danger?"danger":""}"><span class="mi-icon">${icon}</span><span class="grow">${label}</span><span class="chev muted">›</span></button>`; }
+
+/* =============== PRO SCREENS =============== */
+SCREENS.pro_missions = () => {
+  const filters = [["pending","Demandes"],["confirmed","À venir"],["completed","Historique"]];
+  const list = MISSIONS_PRO.filter(m => missionFilter==="pending" ? m.status==="pending" : missionFilter==="confirmed" ? (m.status==="confirmed"||m.status==="progress") : m.status==="completed");
+  return `
+    <div class="kpi-grid" style="margin-bottom:14px">
+      <div class="kpi-card"><span>Demandes en attente</span><strong>${MISSIONS_PRO.filter(m=>m.status==="pending").length}</strong></div>
+      <div class="kpi-card"><span>Missions ce mois</span><strong>${MISSIONS_PRO.length}</strong></div>
+    </div>
+    <div class="tabs-inline">${filters.map(([k,l])=>`<button class="${missionFilter===k?"active":""}" data-mfilter="${k}">${l}</button>`).join("")}</div>
+    <div class="stack">
+      ${list.map(m=>`
+        <button class="card" style="display:block;text-align:left;width:100%" data-nav="push:missionDetail:${m.id}">
+          <div class="between">${statusChip(m.status)}<span class="muted" style="font-size:11.5px">${m.date}</span></div>
+          <div style="font-weight:850;font-size:14.5px;margin-top:8px;color:var(--navy)">${m.client}</div>
+          <div class="muted" style="font-size:12px;margin-top:2px">📍 ${m.port} · ${m.time} · ${m.price}€</div>
+        </button>`).join("") || `<p class="muted">Aucune mission dans cette catégorie.</p>`}
+    </div>
+  `;
+};
+
+SCREENS.missionDetail = (id) => {
+  const m = findMission(id);
+  let actions = "";
+  if (m.status==="pending") actions = `<button class="btn btn-navy" data-toast="Mission acceptée">Accepter la mission</button><button class="btn btn-danger-outline" style="margin-top:8px" data-toast="Mission refusée">Refuser</button>`;
+  else if (m.status==="confirmed") actions = `<button class="btn btn-navy" data-toast="Mission démarrée">Marquer comme commencée</button>`;
+  else if (m.status==="progress") actions = `<button class="btn btn-outline" data-toast="Photo ajoutée">📷 Ajouter une photo de preuve</button><button class="btn btn-aqua" style="margin-top:8px" data-toast="Mission terminée, paiement en cours">Terminer la mission</button>`;
+  else actions = `<button class="btn btn-outline">Voir le reçu</button>`;
+  return `
+    <div class="row">${avatar(m.client,52,false)}
+      <div class="grow"><strong style="font-size:15px;color:var(--navy)">${m.client}</strong><div class="muted" style="font-size:12px">Client SkipperNow</div></div>
+      ${statusChip(m.status)}
+    </div>
+    <div class="card stack" style="margin-top:14px;gap:8px">
+      <div class="between" style="font-size:13px"><span class="muted">Port</span><span style="font-weight:800">${m.port}</span></div>
+      <div class="between" style="font-size:13px"><span class="muted">Date &amp; heure</span><span style="font-weight:800">${m.date}, ${m.time}</span></div>
+      <div class="between" style="font-size:13px"><span class="muted">Montant</span><span style="font-weight:800">${m.price}€</span></div>
+    </div>
+    <h2 class="section" style="margin-top:16px">Note du client</h2>
+    <p style="font-size:13.5px;line-height:1.6">${m.note}</p>
+    <button class="btn btn-outline" style="margin-top:6px" data-nav="push:chat">💬 Contacter le client</button>
+    <div style="margin-top:14px">${actions}</div>
+  `;
+};
+
+SCREENS.pro_calendar = () => {
+  const dows = ["L","M","M","J","V","S","D"];
+  const days = [];
+  for(let i=1;i<=31;i++){
+    const r = i%9;
+    days.push(r===0?"booked":r===1||r===4?"off":"avail");
+  }
+  const blanks = 2;
+  return `
+    <div class="card">
+      <div class="between"><strong style="font-size:14px;color:var(--navy)">Août 2026</strong><div class="row"><button class="btn-sm btn btn-outline" style="width:auto">‹</button><button class="btn-sm btn btn-outline" style="width:auto">›</button></div></div>
+      <div class="calendar-grid">
+        ${dows.map(d=>`<div class="dow">${d}</div>`).join("")}
+        ${Array(blanks).fill('<div class="day-cell blank"></div>').join("")}
+        ${days.map((s,i)=>`<div class="day-cell ${s}" data-day="${i+1}">${i+1}</div>`).join("")}
+      </div>
+      <div class="legend">
+        <span><i style="background:var(--ok-bg)"></i>Disponible</span>
+        <span><i style="background:var(--navy)"></i>Réservé</span>
+        <span><i style="background:#f1f1ef"></i>Indisponible</span>
+      </div>
+    </div>
+    <p class="muted" style="font-size:12px;margin-top:12px">Touchez un jour pour basculer sa disponibilité.</p>
+    <button class="btn btn-navy" style="margin-top:10px" data-toast="Disponibilités enregistrées">Enregistrer les disponibilités</button>
+  `;
+};
+
+SCREENS.pro_earnings = () => `
+  <div class="card" style="background:linear-gradient(135deg,var(--navy),#0d4551);color:#fff;border:0">
+    <span style="font-size:11px;color:#c7dada;font-weight:800;text-transform:uppercase">Revenus — Août 2026</span>
+    <div style="font-family:var(--display);font-weight:600;font-size:32px;margin-top:4px">1 260 €</div>
+    <span style="font-size:12px;color:var(--brass-light);font-weight:800">▲ +18% vs juillet</span>
+  </div>
+  <h2 class="section" style="margin-top:16px">Activité (7 derniers jours)</h2>
+  <div class="card"><div class="bars">${[40,65,30,80,55,90,70].map(h=>`<div class="bar" style="height:${h}%"></div>`).join("")}</div></div>
+  <h2 class="section" style="margin-top:16px">Prochain versement</h2>
+  <div class="card between"><div><strong style="font-size:15px">340 €</strong><div class="muted" style="font-size:11.5px">Prévu le 16 août 2026</div></div><span class="status confirmed">Programmé</span></div>
+  <h2 class="section" style="margin-top:16px">Historique des versements</h2>
+  <div class="stack">
+    ${[["2 août 2026","210 €","completed"],["19 juillet 2026","180 €","completed"],["5 juillet 2026","220 €","completed"]].map(([d,a,s])=>`
+      <div class="card between"><div><strong style="font-size:13.5px">${a}</strong><div class="muted" style="font-size:11.5px">${d}</div></div>${statusChip(s)}</div>`).join("")}
+  </div>
+`;
+
+SCREENS.pro_account = () => `
+  <div class="row" style="margin-bottom:10px">${avatar("Julien Ferrand",60,true)}
+    <div><div style="font-weight:900;font-size:16px;color:var(--navy)">Julien Ferrand</div>
+    <span class="badge">${ICON.skipper} Skipper</span> <span class="rating">${stars(4.9)} 4.9</span></div>
+  </div>
+  <div class="card">
+    <strong style="font-size:13px">Documents &amp; certifications</strong>
+    <div class="stack" style="margin-top:8px">
+      <div class="between" style="font-size:12.5px"><span>Permis hauturier</span><span class="status confirmed">Vérifié</span></div>
+      <div class="between" style="font-size:12.5px"><span>Assurance professionnelle</span><span class="status confirmed">Vérifié</span></div>
+      <div class="between" style="font-size:12.5px"><span>Pièce d'identité</span><span class="status confirmed">Vérifié</span></div>
+    </div>
+  </div>
+  <div class="stack" style="gap:0;margin-top:10px">
+    ${menuItem("🏦","Coordonnées bancaires")}${menuItem("📄","Mes documents")}${menuItem("🌍","Langue — Français")}
+    ${menuItem("🛟","Aide &amp; support")}${menuItem("🚪","Se déconnecter", true)}
+  </div>
+`;
+
+/* =============== ADMIN SCREENS =============== */
+SCREENS.a_dashboard = () => `
+  <div class="kpi-grid">
+    <div class="kpi-card"><span>Utilisateurs actifs</span><strong>4 812</strong><span class="delta up">▲ +6,2%</span></div>
+    <div class="kpi-card"><span>Missions ce mois</span><strong>1 094</strong><span class="delta up">▲ +11%</span></div>
+    <div class="kpi-card"><span>Volume (GMV)</span><strong>186 K€</strong><span class="delta up">▲ +9%</span></div>
+    <div class="kpi-card"><span>Litiges ouverts</span><strong>${DISPUTES.filter(d=>d.status==="open").length}</strong><span class="delta down">▼ -2</span></div>
+  </div>
+  <h2 class="section" style="margin-top:16px">Volume par semaine</h2>
+  <div class="card"><div class="bars">${[50,70,45,85,60,95,75].map(h=>`<div class="bar" style="height:${h}%"></div>`).join("")}</div></div>
+  <h2 class="section" style="margin-top:16px">Activité récente</h2>
+  <div class="stack">
+    <div class="card" style="font-size:12.5px">🆕 <strong>Camille Dutoit</strong> a créé un profil prestataire — <span class="muted">il y a 12 min</span></div>
+    <div class="card" style="font-size:12.5px">⚖️ Nouveau litige sur la <strong>Mission #4821</strong> — <span class="muted">il y a 1 h</span></div>
+    <div class="card" style="font-size:12.5px">💶 Versement de <strong>340€</strong> effectué à Julien Ferrand — <span class="muted">il y a 3 h</span></div>
+  </div>
+`;
+
+SCREENS.a_users = () => `
+  <div class="searchbar" style="margin-bottom:10px"><span class="ic">🔎</span><input placeholder="Rechercher un utilisateur…"></div>
+  <div class="chip-row">${["Tous","Clients","Skippers","Prestataires"].map((l,i)=>`<span class="chip ${i===0?"active":""}">${l}</span>`).join("")}</div>
+  <div class="stack" style="margin-top:12px;gap:0">
+    ${USERS_ADMIN.map(u=>`
+      <button class="list-row" data-nav="push:userDetail:${u.id}">
+        ${avatar(u.name,40,true)}
+        <div class="grow"><div class="ttl">${u.name}</div><div class="sub">${ICON[u.role]||"👤"} ${u.role} ${u.port!=="—"?"· "+u.port:""}</div></div>
+        ${statusChip(u.status)}
+      </button>`).join("")}
+  </div>
+`;
+
+SCREENS.userDetail = (id) => {
+  const u = findUser(id);
+  return `
+    <div class="row">${avatar(u.name,60,true)}<div><strong style="font-size:16px;color:var(--navy)">${u.name}</strong><div class="muted" style="font-size:12px">${ICON[u.role]||"👤"} ${u.role}</div></div></div>
+    <div class="card stack" style="margin-top:14px;gap:8px">
+      <div class="between" style="font-size:13px"><span class="muted">Statut</span>${statusChip(u.status)}</div>
+      <div class="between" style="font-size:13px"><span class="muted">Port principal</span><span style="font-weight:800">${u.port}</span></div>
+      <div class="between" style="font-size:13px"><span class="muted">Membre depuis</span><span style="font-weight:800">Mars 2025</span></div>
+      <div class="between" style="font-size:13px"><span class="muted">Missions réalisées</span><span style="font-weight:800">27</span></div>
+    </div>
+    <h2 class="section" style="margin-top:16px">Actions</h2>
+    <button class="btn btn-navy" data-toast="Utilisateur validé">✅ Valider le compte</button>
+    <button class="btn btn-outline" style="margin-top:8px" data-nav="push:chat">💬 Contacter</button>
+    <button class="btn btn-danger-outline" style="margin-top:8px" data-toast="Compte suspendu">🚫 Suspendre le compte</button>
+  `;
+};
+
+SCREENS.a_missions = () => `
+  <div class="chip-row">${["Toutes","En attente","Confirmées","En cours","Terminées"].map((l,i)=>`<span class="chip ${i===0?"active":""}">${l}</span>`).join("")}</div>
+  <div class="stack" style="margin-top:12px">
+    ${MISSIONS_PRO.map(m=>`
+      <div class="card">
+        <div class="between">${statusChip(m.status)}<span class="muted" style="font-size:11.5px">${m.date}</span></div>
+        <div style="font-weight:850;font-size:14px;margin-top:8px;color:var(--navy)">${m.client} → Julien Ferrand</div>
+        <div class="muted" style="font-size:12px;margin-top:2px">📍 ${m.port} · ${m.price}€</div>
+      </div>`).join("")}
+  </div>
+`;
+
+SCREENS.a_disputes = () => `
+  <div class="chip-row">${["Ouverts","Résolus","Tous"].map((l,i)=>`<span class="chip ${i===0?"active":""}">${l}</span>`).join("")}</div>
+  <div class="stack" style="margin-top:12px">
+    ${DISPUTES.map(d=>`
+      <button class="card" style="display:block;text-align:left;width:100%" data-nav="push:disputeDetail:${d.id}">
+        <div class="between">${statusChip(d.status)}<span class="muted" style="font-size:11px">${d.mission}</span></div>
+        <div style="font-weight:850;font-size:13.5px;margin-top:8px;color:var(--navy)">${d.parties}</div>
+        <div class="muted" style="font-size:12px;margin-top:2px">${d.reason}</div>
+      </button>`).join("")}
+  </div>
+`;
+
+SCREENS.disputeDetail = (id) => {
+  const d = findDispute(id);
+  return `
+    <div class="between">${statusChip(d.status)}<span class="muted" style="font-size:11.5px">${d.mission}</span></div>
+    <h2 class="section" style="margin-top:10px">${d.parties}</h2>
+    <p style="font-size:13.5px;line-height:1.6"><strong>Motif :</strong> ${d.reason}</p>
+    <div class="card"><strong style="font-size:12.5px">Pièces jointes</strong>
+      <div class="row" style="margin-top:8px;gap:8px">
+        <div class="map-ph" style="flex:1;height:64px;font-size:11px">📷 Photo 1</div>
+        <div class="map-ph" style="flex:1;height:64px;font-size:11px">📷 Photo 2</div>
+      </div>
+    </div>
+    <h2 class="section" style="margin-top:16px">Résolution</h2>
+    <button class="btn btn-outline" data-toast="Client remboursé">↩️ Rembourser le client</button>
+    <button class="btn btn-outline" style="margin-top:8px" data-toast="Professionnel payé">✅ Payer le professionnel</button>
+    <button class="btn btn-navy" style="margin-top:8px" data-toast="Litige clôturé">Clôturer le litige</button>
+  `;
+};
+
+SCREENS.a_settings = () => `
+  <div class="card">
+    <strong style="font-size:13px">Commission plateforme</strong>
+    <div class="field" style="margin-top:10px"><label>Pourcentage prélevé</label><input value="8 %"></div>
+  </div>
+  <div class="card" style="margin-top:10px">
+    <div class="between"><strong style="font-size:13px">Mode maintenance</strong><button class="toggle"></button></div>
+    <p class="muted" style="font-size:11.5px;margin-top:6px">Désactive temporairement les nouvelles réservations.</p>
+  </div>
+  <div class="card" style="margin-top:10px">
+    <div class="between"><strong style="font-size:13px">Ouvrir automatiquement les litiges &gt; 48h</strong><button class="toggle on"></button></div>
+  </div>
+  <h2 class="section" style="margin-top:16px">Ports actifs</h2>
+  <div class="chip-row">${["Saint-Tropez","Cannes","Nice","Portofino","Athènes","La Rochelle"].map(p=>`<span class="chip active">📍 ${p} ✕</span>`).join("")}</div>
+  <button class="btn btn-outline" style="margin-top:10px">＋ Ajouter un port</button>
+  <button class="btn btn-navy" style="margin-top:18px" data-toast="Paramètres enregistrés">Enregistrer les réglages</button>
+`;
+
+/* ---------------- render ---------------- */
+function render(){
+  renderRoleSwitcher();
+  renderHeader();
+  renderTabBar();
+  const { screen, params } = current();
+  const fn = SCREENS[screen];
+  document.getElementById("screenContent").innerHTML = fn ? fn(params) : `<p class="muted">Écran « ${screen} » à venir.</p>`;
+  renderToastOnly();
+}
+function renderToastOnly(){
+  let el = document.getElementById("toastEl");
+  if(!el){
+    el = document.createElement("div");
+    el.id = "toastEl";
+    el.style.cssText = "position:absolute;left:16px;right:16px;bottom:88px;background:var(--navy);color:#fff;padding:11px 14px;border-radius:12px;font-size:12.5px;font-weight:750;text-align:center;box-shadow:0 10px 24px rgba(7,29,50,.3);transition:.2s;z-index:40;pointer-events:none";
+    document.querySelector(".screen").appendChild(el);
+  }
+  if(toast){ el.textContent = toast; el.style.opacity = "1"; el.style.transform="translateY(0)"; }
+  else { el.style.opacity = "0"; el.style.transform="translateY(8px)"; }
+}
+
+/* ---------------- events ---------------- */
+document.addEventListener("click", (e) => {
+  const roleBtn = e.target.closest("[data-role]");
+  if (roleBtn) return setRole(roleBtn.dataset.role);
+
+  const tabBtn = e.target.closest("[data-tab]");
+  if (tabBtn) return setTab(tabBtn.dataset.tab);
+
+  const back = e.target.closest("[data-back]");
+  if (back) return pop();
+
+  const nav = e.target.closest("[data-nav]");
+  if (nav) {
+    const [, screen, param] = nav.dataset.nav.split(":");
+    return push(screen, param);
+  }
+
+  const filter = e.target.closest("[data-filter]");
+  if (filter) { searchFilter = filter.dataset.filter; return render(); }
+
+  const bfilter = e.target.closest("[data-bfilter]");
+  if (bfilter) { bookingFilter = bfilter.dataset.bfilter; return render(); }
+
+  const mfilter = e.target.closest("[data-mfilter]");
+  if (mfilter) { missionFilter = mfilter.dataset.mfilter; return render(); }
+
+  const dateChip = e.target.closest("[data-date]");
+  if (dateChip) { selectedDateIdx = Number(dateChip.dataset.date); return render(); }
+
+  const dayCell = e.target.closest(".day-cell:not(.blank)");
+  if (dayCell) {
+    dayCell.classList.toggle("avail");
+    dayCell.classList.toggle("off");
+    return;
+  }
+
+  const tgl = e.target.closest(".toggle");
+  if (tgl) return tgl.classList.toggle("on");
+
+  const jump = e.target.closest("[data-tab-jump]");
+  if (jump) { const [r,t] = jump.dataset.tabJump.split(":"); role = r; return setTab(t); }
+
+  const toastBtn = e.target.closest("[data-toast]");
+  if (toastBtn) return showToast(toastBtn.dataset.toast);
+});
+
+render();
+</script>
+</body>
+</html>
