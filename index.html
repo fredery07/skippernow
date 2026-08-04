@@ -1625,6 +1625,7 @@ let providerResultsCache = [];
 let boatCache = [];
 let resultsCache = [];
 let adminProfilesCache = [];
+let currentMessagesRoleColumn = null;
 let adminBoatsFilterOwnerId = null;
 let editingBoatId = null;
 let myBoatsCache = [];
@@ -3107,6 +3108,7 @@ function roleLabel(p){
 async function renderMessagesPanel(myRoleColumn){
   const main = document.querySelector("#dashMain");
   main.innerHTML = `<div class="empty-note">${esc(t("dash.loading"))}</div>`;
+  currentMessagesRoleColumn = myRoleColumn;
   const query = myRoleColumn === "both"
     ? db.from("conversations").select("*").or(`client_id.eq.${currentUser.id},skipper_id.eq.${currentUser.id}`).order("created_at",{ascending:false})
     : db.from("conversations").select("*").eq(myRoleColumn, currentUser.id).order("created_at",{ascending:false});
@@ -3126,9 +3128,11 @@ async function renderMessagesPanel(myRoleColumn){
     const p = byId[String(otherId)];
     const unread = unreadByConv[c.id] || 0;
     return `<button type="button" class="request-card" style="width:100%;text-align:left;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px;${unread ? "border-color:var(--aqua);background:var(--mist)" : ""}" data-conversation="${c.client_id}|${c.skipper_id}"><strong>${unread ? "🔵 " : ""}${esc(p?.full_name || "—")}</strong><span style="display:flex;align-items:center;gap:8px"><span class="tag">${esc(roleLabel(p))}</span>${unread ? `<span class="tag" style="background:#c0392b;color:#fff">${unread}</span>` : ""}</span></button>`;
-  }).join("")}</div><div id="conversationThread"></div>`;
+  }).join("")}</div><div id="conversationThread" style="display:none"></div>`;
   main.querySelectorAll("[data-conversation]").forEach(btn=>btn.addEventListener("click", ()=>{
     const [clientId, skipperId] = btn.dataset.conversation.split("|");
+    document.querySelector("#conversationList").style.display = "none";
+    document.querySelector("#conversationThread").style.display = "block";
     openConversationThread(clientId, skipperId);
   }));
 }
@@ -3149,6 +3153,7 @@ async function openConversationThread(clientId, skipperId){
       db.from("messages").update({read_at: new Date().toISOString()}).in("id", unreadIds).then(()=>refreshNotifications());
     }
     thread.innerHTML = `
+      <button type="button" class="back-link" id="backToConversationList" style="margin:0 0 12px">← ${esc(t("common.back"))}</button>
       <div class="request-top" style="margin-bottom:10px">
         <div><h3 style="margin:0">${esc(otherProfile?.full_name || "—")}</h3></div>
         <span class="tag">${esc(roleLabel(otherProfile))}</span>
@@ -3163,6 +3168,7 @@ async function openConversationThread(clientId, skipperId){
       </div>`;
     const scrollBody = document.querySelector("#messageThreadBody");
     if(scrollBody) scrollBody.scrollTop = scrollBody.scrollHeight;
+    document.querySelector("#backToConversationList").addEventListener("click", ()=>renderMessagesPanel(currentMessagesRoleColumn));
     document.querySelector("#messageSendBtn").addEventListener("click", async ()=>{
       const input = document.querySelector("#messageInput");
       const body = sanitizeContactInfo(input.value.trim());
