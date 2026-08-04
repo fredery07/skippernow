@@ -490,12 +490,17 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
     <div class="section-head">
       <div><h2 data-i18n="gallery.title">L'expérience SkipperNow</h2><p data-i18n="gallery.subtitle">Des sorties en mer inoubliables, partout dans le monde</p></div>
     </div>
-    <div class="gallery">
-      <img src="https://images.unsplash.com/photo-1541777594744-addc2de9d110?auto=format&fit=crop&w=900&q=80" alt="Voilier en mer" loading="lazy">
-      <img src="https://images.unsplash.com/photo-1568682057239-760834b6ce63?auto=format&fit=crop&w=900&q=80" alt="Bateau au port" loading="lazy">
-      <img src="https://images.unsplash.com/photo-1517696522815-46a004b80a2d?auto=format&fit=crop&w=900&q=80" alt="Vue aérienne d'une marina" loading="lazy">
-      <img src="https://images.unsplash.com/photo-1615642847532-46622fd5a38e?auto=format&fit=crop&w=900&q=80" alt="Coucher de soleil en mer" loading="lazy">
-    </div>
+    <section class="sea-carousel" id="experienceCarousel">
+      <div class="sea-carousel-track">
+        <div class="sea-slide active" style="background-image:url('https://images.unsplash.com/photo-1541777594744-addc2de9d110?auto=format&fit=crop&w=1600&q=80')"></div>
+        <div class="sea-slide" style="background-image:url('https://images.unsplash.com/photo-1747607469012-af761de59d8a?auto=format&fit=crop&w=1600&q=80')"></div>
+        <div class="sea-slide" style="background-image:url('https://images.unsplash.com/photo-1615642847532-46622fd5a38e?auto=format&fit=crop&w=1600&q=80')"></div>
+        <div class="sea-slide" style="background-image:url('https://images.unsplash.com/photo-1715706107718-4a0cc4f0335c?auto=format&fit=crop&w=1600&q=80')"></div>
+      </div>
+      <div class="sea-carousel-dots">
+        <span class="active"></span><span></span><span></span><span></span>
+      </div>
+    </section>
   </section>
 
   <section class="join">
@@ -1469,9 +1474,9 @@ function providerActivityFilter(activity){
   return [activity];
 }
 
-function startSeaCarousel(){
-  const slides = [...document.querySelectorAll("#seaCarousel .sea-slide")];
-  const dots = [...document.querySelectorAll("#seaCarousel .sea-carousel-dots span")];
+function startSeaCarousel(containerId){
+  const slides = [...document.querySelectorAll("#"+containerId+" .sea-slide")];
+  const dots = [...document.querySelectorAll("#"+containerId+" .sea-carousel-dots span")];
   if(slides.length < 2) return;
   let index = 0;
   setInterval(()=>{
@@ -1482,7 +1487,8 @@ function startSeaCarousel(){
     dots[index]?.classList.add("active");
   }, 4000);
 }
-startSeaCarousel();
+startSeaCarousel("seaCarousel");
+startSeaCarousel("experienceCarousel");
 
 async function loadListings(){
   const chosenDate = dateInput.value;
