@@ -2625,7 +2625,7 @@ async function renderAdminPanel(panel){
     main.innerHTML = missions.length ? missions.map(m=>adminMissionCard(m, byId)).join("") : `<div class="empty-note">${esc(t("dash.noMissions"))}</div>`;
     bindAdminMissionActions("missions");
   }else if(panel === "messages"){
-    await renderMessagesPanel("skipper_id");
+    await renderMessagesPanel("both");
   }else if(panel === "payments"){
     const rows = missions.filter(m => ["paid","transferred","payout_ready","refund_requested","refunded"].includes(m.payment_status));
     main.innerHTML = `<div class="note-box">${esc(t("dash.paymentsNote"))}</div>` + (rows.length ? rows.map(m=>adminMissionCard(m, byId, true)).join("") : `<div class="empty-note">${esc(t("dash.noMissions"))}</div>`);
@@ -3107,17 +3107,25 @@ function roleLabel(p){
 async function renderMessagesPanel(myRoleColumn){
   const main = document.querySelector("#dashMain");
   main.innerHTML = `<div class="empty-note">${esc(t("dash.loading"))}</div>`;
-  const {data: conversations, error} = await db.from("conversations").select("*").eq(myRoleColumn, currentUser.id).order("created_at",{ascending:false});
+  const query = myRoleColumn === "both"
+    ? db.from("conversations").select("*").or(`client_id.eq.${currentUser.id},skipper_id.eq.${currentUser.id}`).order("created_at",{ascending:false})
+    : db.from("conversations").select("*").eq(myRoleColumn, currentUser.id).order("created_at",{ascending:false});
+  const {data: conversations, error} = await query;
   if(error){ main.innerHTML = `<div class="note-box">${esc(error.message)}</div>`; return; }
   const rows = conversations || [];
   if(!rows.length){ main.innerHTML = `<div class="empty-note">${esc(t("dash.noMessages"))}</div>`; return; }
-  const otherIds = rows.map(c => myRoleColumn === "client_id" ? c.skipper_id : c.client_id);
+  const otherIds = rows.map(c => String(c.client_id) === String(currentUser.id) ? c.skipper_id : c.client_id);
   const {data: profiles} = await db.from("profiles").select("id,full_name,role,provider_activity").in("id", otherIds);
   const byId = Object.fromEntries((profiles||[]).map(p=>[String(p.id), p]));
-  main.innerHTML = `<div id="conversationList">${rows.map(c=>{
-    const otherId = myRoleColumn === "client_id" ? c.skipper_id : c.client_id;
+  const {data: unreadRows} = await db.from("messages").select("id,conversation_id").is("read_at", null).neq("sender_id", currentUser.id).in("conversation_id", rows.map(c=>c.id));
+  const unreadByConv = {};
+  (unreadRows||[]).forEach(m => { unreadByConv[m.conversation_id] = (unreadByConv[m.conversation_id]||0) + 1; });
+  const sorted = [...rows].sort((a,b) => (unreadByConv[b.id]?1:0) - (unreadByConv[a.id]?1:0));
+  main.innerHTML = `<div id="conversationList">${sorted.map(c=>{
+    const otherId = String(c.client_id) === String(currentUser.id) ? c.skipper_id : c.client_id;
     const p = byId[String(otherId)];
-    return `<button type="button" class="request-card" style="width:100%;text-align:left;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px" data-conversation="${c.client_id}|${c.skipper_id}"><strong>${esc(p?.full_name || "—")}</strong><span class="tag">${esc(roleLabel(p))}</span></button>`;
+    const unread = unreadByConv[c.id] || 0;
+    return `<button type="button" class="request-card" style="width:100%;text-align:left;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px;${unread ? "border-color:var(--aqua);background:var(--mist)" : ""}" data-conversation="${c.client_id}|${c.skipper_id}"><strong>${unread ? "🔵 " : ""}${esc(p?.full_name || "—")}</strong><span style="display:flex;align-items:center;gap:8px"><span class="tag">${esc(roleLabel(p))}</span>${unread ? `<span class="tag" style="background:#c0392b;color:#fff">${unread}</span>` : ""}</span></button>`;
   }).join("")}</div><div id="conversationThread"></div>`;
   main.querySelectorAll("[data-conversation]").forEach(btn=>btn.addEventListener("click", ()=>{
     const [clientId, skipperId] = btn.dataset.conversation.split("|");
