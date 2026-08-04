@@ -1488,7 +1488,23 @@ function startSeaCarousel(containerId){
     dots[index]?.classList.add("active");
   }, 4000);
 }
+function autoScrollTileRow(containerId){
+  const row = document.querySelector("#"+containerId);
+  if(!row) return;
+  setInterval(()=>{
+    const atEnd = row.scrollLeft + row.clientWidth >= row.scrollWidth - 5;
+    if(atEnd){
+      row.scrollTo({left:0, behavior:"smooth"});
+    }else{
+      const card = row.querySelector(".tile-scroll-card");
+      const step = card ? card.getBoundingClientRect().width + 14 : 200;
+      row.scrollBy({left:step, behavior:"smooth"});
+    }
+  }, 2800);
+}
 startSeaCarousel("seaCarousel");
+autoScrollTileRow("experienceCarousel");
+autoScrollTileRow("portTileRow");
 
 async function loadListings(){
   const chosenDate = dateInput.value;
