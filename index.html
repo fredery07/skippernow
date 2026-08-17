@@ -684,6 +684,24 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
   <div class="dialog"><div id="invoiceContent"></div></div>
 </div>
 
+<div class="modal" id="reviewModal" style="z-index:1200">
+  <div class="dialog">
+    <div class="dialog-top">
+      <div><h2 style="margin:0" data-i18n="dash.leaveReview">Laisser un avis</h2></div>
+      <button class="close" data-close="reviewModal" type="button">×</button>
+    </div>
+    <div class="field">
+      <label data-i18n="dash.reviewRatingLabel">NOTE</label>
+      <div id="reviewStars" style="display:flex;gap:6px;font-size:30px;line-height:1;margin:6px 0">
+        ${[1,2,3,4,5].map(n=>`<button type="button" class="review-star" data-star="${n}" style="border:0;background:transparent;cursor:pointer;color:var(--line);padding:0">★</button>`).join("")}
+      </div>
+    </div>
+    <div class="field"><label data-i18n="dash.reviewCommentLabel">COMMENTAIRE (OPTIONNEL)</label><textarea id="reviewComment" rows="4"></textarea></div>
+    <button class="primary wide" id="submitReviewBtn" data-i18n="dash.reviewSubmit">Envoyer mon avis</button>
+    <p class="ok-text" id="reviewMsg"></p>
+  </div>
+</div>
+
 <div class="modal" id="profileDetailModal" style="z-index:1100">
   <div class="dialog"><div id="profileDetailContent"></div></div>
 </div>
@@ -919,7 +937,7 @@ const I18N = {
     "account.roleSkipper":"Skipper","account.roleSkipperDesc":"Recevoir des demandes de sortie et de convoyage",
     "account.roleProvider":"Prestataire","account.roleProviderDesc":"Nettoyage, quai, chantier ou marin à la journée",
     "account.roleOwner":"Propriétaire","account.roleOwnerDesc":"Mettre mon bateau en location",
-    "account.nameLabel":"PRÉNOM ET NOM","account.namePlaceholder":"Votre nom","account.phoneLabel":"TÉLÉPHONE","account.photoLabel":"PHOTO DE PROFIL","account.photoReminder":"⚠️ Pensez à ajouter une photo de profil : les fiches sans photo inspirent moins confiance et sont moins souvent contactées.","account.diplomaLabel":"DIPLÔME / CERTIFICATION","account.diplomaCurrent":"Voir le document actuel","account.diplomaNote":"Photo ou PDF de votre diplôme (permis, brevet, carte professionnelle...). Utilisé pour la vérification par l'équipe SkipperNow, non affiché publiquement.","account.diplomaTypeLabel":"TYPE DE DIPLÔME / CERTIFICATION (affiché publiquement)","account.diplomaTypePlaceholder":"Ex. Permis côtier, Brevet 200, Carte professionnelle...","account.photoRequiredError":"Une photo de profil est obligatoire pour publier votre fiche.","account.profileCompletion":"Profil complété","card.diplomaBadgePrefix":"Diplôme vérifié :","card.sendMessage":"Envoyer un message",
+    "account.nameLabel":"PRÉNOM ET NOM","account.namePlaceholder":"Votre nom","account.phoneLabel":"TÉLÉPHONE","account.photoLabel":"PHOTO DE PROFIL","account.photoReminder":"⚠️ Pensez à ajouter une photo de profil : les fiches sans photo inspirent moins confiance et sont moins souvent contactées.","account.diplomaLabel":"DIPLÔME / CERTIFICATION","account.diplomaCurrent":"Voir le document actuel","account.diplomaNote":"Photo ou PDF de votre diplôme (permis, brevet, carte professionnelle...). Utilisé pour la vérification par l'équipe SkipperNow, non affiché publiquement.","account.diplomaTypeLabel":"TYPE DE DIPLÔME / CERTIFICATION (affiché publiquement)","account.diplomaTypePlaceholder":"Ex. Permis côtier, Brevet 200, Carte professionnelle...","account.photoRequiredError":"Une photo de profil est obligatoire pour publier votre fiche.","account.profileCompletion":"Profil complété","dash.leaveReview":"Laisser un avis","dash.reviewRatingLabel":"NOTE","dash.reviewCommentLabel":"COMMENTAIRE (OPTIONNEL)","dash.reviewSubmit":"Envoyer mon avis","dash.reviewNeedStars":"Merci de choisir une note.","card.reviewsSingle":"avis","card.reviewsPlural":"avis","card.diplomaBadgePrefix":"Diplôme vérifié :","card.sendMessage":"Envoyer un message",
     "account.experienceLabel":"ANNÉES D'EXPÉRIENCE","account.languagesLabel":"LANGUES PARLÉES","account.languagesPlaceholder":"Ex : Français, English, Español",
     "account.skillsLabel":"COMPÉTENCES / TYPES DE BATEAUX MAÎTRISÉS","account.skillsPlaceholder":"Ex : Voilier, Catamaran, Yacht à moteur, Convoyage",
     "account.travelRadiusLabel":"RAYON DE DÉPLACEMENT","account.priceHalfDayLabel":"TARIF DEMI-JOURNÉE","account.priceHourLabel":"TARIF HORAIRE (optionnel)","account.travelFeeLabel":"FRAIS DE DÉPLACEMENT",
@@ -1080,7 +1098,7 @@ const I18N = {
     "account.roleSkipper":"Skipper","account.roleSkipperDesc":"Receive trip and delivery requests",
     "account.roleProvider":"Service provider","account.roleProviderDesc":"Cleaning, dock, shipyard or day crew",
     "account.roleOwner":"Owner","account.roleOwnerDesc":"List my boat for rent",
-    "account.nameLabel":"FULL NAME","account.namePlaceholder":"Your name","account.phoneLabel":"PHONE","account.photoLabel":"PROFILE PHOTO","account.photoReminder":"⚠️ Remember to add a profile photo: listings without a photo inspire less trust and get fewer contacts.","account.diplomaLabel":"DIPLOMA / CERTIFICATION","account.diplomaCurrent":"View current document","account.diplomaNote":"Photo or PDF of your certification (license, professional card...). Used for verification by the SkipperNow team, not shown publicly.","account.diplomaTypeLabel":"DIPLOMA / CERTIFICATION TYPE (shown publicly)","account.diplomaTypePlaceholder":"E.g. Coastal license, Master 200, Professional card...","account.photoRequiredError":"A profile photo is required to publish your listing.","account.profileCompletion":"Profile completed","card.diplomaBadgePrefix":"Verified diploma:","card.sendMessage":"Send a message",
+    "account.nameLabel":"FULL NAME","account.namePlaceholder":"Your name","account.phoneLabel":"PHONE","account.photoLabel":"PROFILE PHOTO","account.photoReminder":"⚠️ Remember to add a profile photo: listings without a photo inspire less trust and get fewer contacts.","account.diplomaLabel":"DIPLOMA / CERTIFICATION","account.diplomaCurrent":"View current document","account.diplomaNote":"Photo or PDF of your certification (license, professional card...). Used for verification by the SkipperNow team, not shown publicly.","account.diplomaTypeLabel":"DIPLOMA / CERTIFICATION TYPE (shown publicly)","account.diplomaTypePlaceholder":"E.g. Coastal license, Master 200, Professional card...","account.photoRequiredError":"A profile photo is required to publish your listing.","account.profileCompletion":"Profile completed","dash.leaveReview":"Leave a review","dash.reviewRatingLabel":"RATING","dash.reviewCommentLabel":"COMMENT (OPTIONAL)","dash.reviewSubmit":"Submit my review","dash.reviewNeedStars":"Please choose a rating.","card.reviewsSingle":"review","card.reviewsPlural":"reviews","card.diplomaBadgePrefix":"Verified diploma:","card.sendMessage":"Send a message",
     "account.experienceLabel":"YEARS OF EXPERIENCE","account.languagesLabel":"LANGUAGES SPOKEN","account.languagesPlaceholder":"E.g. French, English, Spanish",
     "account.skillsLabel":"SKILLS / BOAT TYPES MASTERED","account.skillsPlaceholder":"E.g. Sailboat, Catamaran, Motor yacht, Delivery",
     "account.travelRadiusLabel":"TRAVEL RADIUS","account.priceHalfDayLabel":"HALF-DAY RATE","account.priceHourLabel":"HOURLY RATE (optional)","account.travelFeeLabel":"TRAVEL FEE",
@@ -1240,7 +1258,7 @@ const I18N = {
     "account.roleSkipper":"Skipper","account.roleSkipperDesc":"Recibir solicitudes de salidas y traslados",
     "account.roleProvider":"Prestador","account.roleProviderDesc":"Limpieza, puerto, astillero o marinero por día",
     "account.roleOwner":"Propietario","account.roleOwnerDesc":"Poner mi barco en alquiler",
-    "account.nameLabel":"NOMBRE COMPLETO","account.namePlaceholder":"Tu nombre","account.phoneLabel":"TELÉFONO","account.photoLabel":"FOTO DE PERFIL","account.photoReminder":"⚠️ No olvides añadir una foto de perfil: los anuncios sin foto generan menos confianza y reciben menos contactos.","account.diplomaLabel":"TÍTULO / CERTIFICACIÓN","account.diplomaCurrent":"Ver documento actual","account.diplomaNote":"Foto o PDF de tu titulación (licencia, tarjeta profesional...). Se usa para la verificación del equipo de SkipperNow, no se muestra públicamente.","account.diplomaTypeLabel":"TIPO DE TÍTULO / CERTIFICACIÓN (visible públicamente)","account.diplomaTypePlaceholder":"Ej. Licencia costera, Patrón 200, Tarjeta profesional...","account.photoRequiredError":"Es obligatoria una foto de perfil para publicar tu ficha.","account.profileCompletion":"Perfil completado","card.diplomaBadgePrefix":"Diploma verificado:","card.sendMessage":"Enviar un mensaje","account.diplomaTypeLabel":"TIPO DE TÍTULO / CERTIFICACIÓN (visible públicamente)","account.diplomaTypePlaceholder":"Ej. Licencia costera, Patrón 200, Tarjeta profesional...","account.photoRequiredError":"Es obligatoria una foto de perfil para publicar tu ficha.","account.profileCompletion":"Perfil completado","card.diplomaBadgePrefix":"Diploma verificado:","card.sendMessage":"Enviar un mensaje","account.diplomaTypeLabel":"TIPO DE TÍTULO / CERTIFICACIÓN (visible públicamente)","account.diplomaTypePlaceholder":"Ej. Licencia costera, Patrón 200, Tarjeta profesional...","account.photoRequiredError":"Es obligatoria una foto de perfil para publicar tu ficha.","account.profileCompletion":"Perfil completado","card.diplomaBadgePrefix":"Diploma verificado:","card.sendMessage":"Enviar un mensaje",
+    "account.nameLabel":"NOMBRE COMPLETO","account.namePlaceholder":"Tu nombre","account.phoneLabel":"TELÉFONO","account.photoLabel":"FOTO DE PERFIL","account.photoReminder":"⚠️ No olvides añadir una foto de perfil: los anuncios sin foto generan menos confianza y reciben menos contactos.","account.diplomaLabel":"TÍTULO / CERTIFICACIÓN","account.diplomaCurrent":"Ver documento actual","account.diplomaNote":"Foto o PDF de tu titulación (licencia, tarjeta profesional...). Se usa para la verificación del equipo de SkipperNow, no se muestra públicamente.","account.diplomaTypeLabel":"TIPO DE TÍTULO / CERTIFICACIÓN (visible públicamente)","account.diplomaTypePlaceholder":"Ej. Licencia costera, Patrón 200, Tarjeta profesional...","account.photoRequiredError":"Es obligatoria una foto de perfil para publicar tu ficha.","account.profileCompletion":"Perfil completado","dash.leaveReview":"Dejar una reseña","dash.reviewRatingLabel":"VALORACIÓN","dash.reviewCommentLabel":"COMENTARIO (OPCIONAL)","dash.reviewSubmit":"Enviar mi reseña","dash.reviewNeedStars":"Elige una valoración, por favor.","card.reviewsSingle":"reseña","card.reviewsPlural":"reseñas","card.diplomaBadgePrefix":"Diploma verificado:","card.sendMessage":"Enviar un mensaje","account.diplomaTypeLabel":"TIPO DE TÍTULO / CERTIFICACIÓN (visible públicamente)","account.diplomaTypePlaceholder":"Ej. Licencia costera, Patrón 200, Tarjeta profesional...","account.photoRequiredError":"Es obligatoria una foto de perfil para publicar tu ficha.","account.profileCompletion":"Perfil completado","dash.leaveReview":"Dejar una reseña","dash.reviewRatingLabel":"VALORACIÓN","dash.reviewCommentLabel":"COMENTARIO (OPCIONAL)","dash.reviewSubmit":"Enviar mi reseña","dash.reviewNeedStars":"Elige una valoración, por favor.","card.reviewsSingle":"reseña","card.reviewsPlural":"reseñas","card.diplomaBadgePrefix":"Diploma verificado:","card.sendMessage":"Enviar un mensaje","account.diplomaTypeLabel":"TIPO DE TÍTULO / CERTIFICACIÓN (visible públicamente)","account.diplomaTypePlaceholder":"Ej. Licencia costera, Patrón 200, Tarjeta profesional...","account.photoRequiredError":"Es obligatoria una foto de perfil para publicar tu ficha.","account.profileCompletion":"Perfil completado","dash.leaveReview":"Dejar una reseña","dash.reviewRatingLabel":"VALORACIÓN","dash.reviewCommentLabel":"COMENTARIO (OPCIONAL)","dash.reviewSubmit":"Enviar mi reseña","dash.reviewNeedStars":"Elige una valoración, por favor.","card.reviewsSingle":"reseña","card.reviewsPlural":"reseñas","card.diplomaBadgePrefix":"Diploma verificado:","card.sendMessage":"Enviar un mensaje",
     "account.experienceLabel":"AÑOS DE EXPERIENCIA","account.languagesLabel":"IDIOMAS HABLADOS","account.languagesPlaceholder":"Ej: Francés, English, Español",
     "account.skillsLabel":"HABILIDADES / TIPOS DE BARCO DOMINADOS","account.skillsPlaceholder":"Ej: Velero, Catamarán, Yate a motor, Traslado",
     "account.travelRadiusLabel":"RADIO DE DESPLAZAMIENTO","account.priceHalfDayLabel":"TARIFA MEDIO DÍA","account.priceHourLabel":"TARIFA POR HORA (opcional)","account.travelFeeLabel":"GASTOS DE DESPLAZAMIENTO",
@@ -1991,7 +2009,7 @@ window.openProfileDetail = function(id, adminView){
       <small style="color:var(--muted);font-weight:800;letter-spacing:.05em;text-transform:uppercase;font-size:11px">${esc(activityLabel(activity))}</small>
       <div class="name-row" style="margin:4px 0 6px"><h2 style="margin:0">${esc(p.full_name||"—")} <span class="verified-badge">✓ ${esc(t("card.verifiedBadge"))}</span>${featuredBadgeHtml(p)}</h2></div>
       <div class="boat-card-port" style="margin-bottom:6px">📍 ${esc(p.home_port||"—")}</div>
-      <div class="meta" style="margin-bottom:14px">★ ${Number(p.rating||5).toFixed(1)} · ${p.experience_years||0} ${esc(t("card.experience"))}${p.languages?" · "+esc(p.languages):""}</div>
+      <div class="meta" style="margin-bottom:14px">★ ${Number(p.rating||5).toFixed(1)}${p.rating_count ? ` (${p.rating_count} ${esc(t(p.rating_count>1 ? "card.reviewsPlural" : "card.reviewsSingle"))})` : ""} · ${p.experience_years||0} ${esc(t("card.experience"))}${p.languages?" · "+esc(p.languages):""}</div>
       <p class="muted" style="line-height:1.6">${esc(p.bio||t("boatDetail.noDescription"))}</p>
       ${p.skills ? `<div style="margin:14px 0"><strong style="font-size:13px">${esc(t("account.skillsLabel"))}</strong><div class="tags" style="margin-top:6px">${p.skills.split(",").map(x=>x.trim()).filter(Boolean).map(x=>`<span class="tag">${esc(x)}</span>`).join("")}</div></div>` : ""}
       ${(p.price_half_day_cents || p.price_hour_cents || p.travel_fee_cents) ? `<div class="muted" style="margin-bottom:10px">
@@ -2440,7 +2458,9 @@ async function renderClientPanel(panel){
   if(panel === "requests"){
     const {data} = await db.from("missions").select("*").eq("client_id", currentUser.id).order("created_at",{ascending:false});
     const rows = data || [];
-    main.innerHTML = rows.length ? rows.map(m=>requestCard(m, "client")).join("") : `<div class="empty-note">${esc(t("dash.noRequests"))}</div>`;
+    const {data: reviewedRows} = await db.from("reviews").select("mission_id").eq("client_id", currentUser.id);
+    const reviewedMissionIds = new Set((reviewedRows||[]).map(r=>String(r.mission_id)));
+    main.innerHTML = rows.length ? rows.map(m=>requestCard(m, "client", reviewedMissionIds)).join("") : `<div class="empty-note">${esc(t("dash.noRequests"))}</div>`;
     bindRequestActions();
   }else if(panel === "messages"){
     await renderMessagesPanel("client_id");
@@ -2958,7 +2978,7 @@ function statusPillClass(status){
   if(["rejected","cancelled"].includes(status)) return "danger";
   return "";
 }
-function requestCard(m, context){
+function requestCard(m, context, reviewedMissionIds){
   const total = Number(m.amount_cents||0) + Number(m.urgent_fee_cents||0);
   const priceText = total ? money(total) : t("booking.priceTbd");
   let actions = "";
@@ -2980,6 +3000,9 @@ function requestCard(m, context){
   }
   if(context === "client" && m.status === "completed" && ["paid","transferred","payout_ready"].includes(m.payment_status)){
     actions += `<button class="small-btn danger" data-request-refund="${m.id}">${esc(t("dash.requestRefund"))}</button>`;
+  }
+  if(context === "client" && m.status === "completed" && (m.skipper_id||m.provider_id) && reviewedMissionIds && !reviewedMissionIds.has(String(m.id))){
+    actions += `<button class="small-btn fill" data-leave-review="${m.id}" data-review-target="${m.skipper_id||m.provider_id}">${esc(t("dash.leaveReview"))}</button>`;
   }
   if((context === "client" || context === "pro") && ["paid","transferred","payout_ready","refund_requested","refunded"].includes(m.payment_status)){
     actions += `<button class="small-btn" data-open-invoice="${m.id}">${esc(t("dash.viewInvoice"))}</button>`;
@@ -3035,6 +3058,9 @@ window.openInvoice = async function(missionId){
   openModal("invoiceModal");
 };
 function bindRequestActions(){
+  document.querySelectorAll("[data-leave-review]").forEach(btn=>btn.addEventListener("click", ()=>{
+    openReviewModal(btn.dataset.leaveReview, btn.dataset.reviewTarget);
+  }));
   document.querySelectorAll("[data-quote]").forEach(btn=>btn.addEventListener("click", async ()=>{
     const amount = prompt(t("dash.proposePrice") + " (€) :");
     if(amount === null) return;
@@ -3099,6 +3125,44 @@ function bindRequestActions(){
     await openConversationThread(clientId, skipperId);
   }));
 }
+let reviewMissionId = null;
+let reviewTargetId = null;
+let reviewSelectedStars = 0;
+function openReviewModal(missionId, targetId){
+  reviewMissionId = missionId;
+  reviewTargetId = targetId;
+  reviewSelectedStars = 0;
+  document.querySelector("#reviewComment").value = "";
+  document.querySelector("#reviewMsg").textContent = "";
+  paintReviewStars();
+  openModal("reviewModal");
+}
+function paintReviewStars(){
+  document.querySelectorAll(".review-star").forEach(s=>{
+    s.style.color = Number(s.dataset.star) <= reviewSelectedStars ? "var(--brass)" : "var(--line)";
+  });
+}
+document.querySelectorAll(".review-star").forEach(s=>s.addEventListener("click", ()=>{
+  reviewSelectedStars = Number(s.dataset.star);
+  paintReviewStars();
+}));
+document.querySelector("#submitReviewBtn").addEventListener("click", async ()=>{
+  const msg = document.querySelector("#reviewMsg");
+  if(!reviewSelectedStars){ msg.style.color = "#b42318"; msg.textContent = t("dash.reviewNeedStars"); return; }
+  const btn = document.querySelector("#submitReviewBtn");
+  btn.disabled = true;
+  const {error} = await db.from("reviews").insert({
+    mission_id: reviewMissionId,
+    client_id: currentUser.id,
+    skipper_id: reviewTargetId,
+    rating: reviewSelectedStars,
+    comment: document.querySelector("#reviewComment").value.trim() || null
+  });
+  btn.disabled = false;
+  if(error){ msg.style.color = "#b42318"; msg.textContent = error.message; return; }
+  closeModal("reviewModal");
+  await renderClientPanel("requests");
+});
 function profileCard(p){
   const badge = p.verified ? "ok" : "";
   return `<article class="request-card">
