@@ -2143,7 +2143,8 @@ document.querySelector("#authSubmit").addEventListener("click", async ()=>{
     full_name: name,
     role: dbRole,
     home_port: portValue,
-    provider_activity: selectedRole === "provider" ? activity : (selectedRole === "skipper" ? "skipper" : null)
+    provider_activity: selectedRole === "provider" ? activity : (selectedRole === "skipper" ? "skipper" : null),
+    lang: currentLang
   };
   const {data, error} = await db.auth.signUp({email, password, options:{data: metadata}});
   if(error){ msg.textContent = error.message; return; }
