@@ -3273,7 +3273,9 @@ async function openConversationThread(clientId, skipperId){
       </div>`;
     const scrollBody = document.querySelector("#messageThreadBody");
     if(scrollBody) scrollBody.scrollTop = scrollBody.scrollHeight;
-    document.querySelectorAll("[data-delete-message]").forEach(btn=>btn.addEventListener("click", async ()=>{
+    document.querySelectorAll("[data-delete-message]").forEach(btn=>btn.addEventListener("click", async (e)=>{
+      e.preventDefault();
+      e.stopPropagation();
       if(!confirm(t("dash.confirmDeleteMessage"))) return;
       const {error: delError} = await db.from("messages").delete().eq("id", btn.dataset.deleteMessage);
       if(delError){ alert(delError.message); return; }
