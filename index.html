@@ -159,6 +159,8 @@ main{padding:52px 0 90px}
 .name-row h3{margin:0;font-size:19px}
 .verified{color:#168b98}
 .verified-badge{display:inline-flex;align-items:center;gap:3px;background:var(--ok-bg);color:var(--ok);font-size:11px;font-weight:900;padding:4px 8px;border-radius:999px;margin-left:6px;vertical-align:middle}
+.ig-badge{display:inline-flex;vertical-align:middle;margin-left:5px}
+.ig-badge svg{display:block}
 .rating{font-weight:800;color:var(--brass);white-space:nowrap}
 .meta{color:var(--muted);font-size:14px;margin:7px 0}
 .tags{display:flex;flex-wrap:wrap;gap:6px}
@@ -1617,7 +1619,7 @@ async function loadListings(){
         <span class="online ${unavailable?"off":""}">● ${unavailable ? esc(t("card.unavailableOn"))+" "+new Date(chosenDate+"T12:00:00").toLocaleDateString(currentLang) : esc(t("card.available"))}</span>
       </div>
       <div class="content">
-        <div class="name-row"><h3>${esc(p.full_name||"—")} <span class="verified-badge">✓ ${esc(t("card.verifiedBadge"))}</span>${featuredBadgeHtml(p)}</h3><span class="rating">★ ${Number(p.rating||5).toFixed(1)}</span></div>
+        <div class="name-row"><h3>${esc(p.full_name||"—")}<span class="ig-badge" title="${esc(t("card.verifiedBadge"))}"><svg width="16" height="16" viewBox="0 0 24 24" role="img" aria-label="${esc(t("card.verifiedBadge"))}"><circle cx="12" cy="12" r="12" fill="#3897f0"/><path d="M9.5 12.8l-2-2-1.4 1.4L9.5 15.6l7.4-7.4-1.4-1.4z" fill="#fff"/></svg></span>${featuredBadgeHtml(p)}</h3><span class="rating">★ ${Number(p.rating||5).toFixed(1)}</span></div>
         <div class="meta">${esc(p.home_port||"—")} · ${p.experience_years ? p.experience_years+" "+esc(t("card.experience")) : esc(t("card.newOnPlatform"))}</div>
         <p class="meta">${esc(p.bio||"")}</p>
         <div class="tags"><span class="tag">${(ACTIVITY_ICON[p.provider_activity]||cfg.icon)} ${esc(activityLabel(p.provider_activity||activeActivity))}</span><span class="tag">${esc(p.languages||"Français")}</span></div>
