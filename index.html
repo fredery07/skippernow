@@ -74,6 +74,7 @@ nav{display:flex;align-items:center;justify-content:space-between;width:100%}
 .secondary-light:hover{background:rgba(255,255,255,.2)}
 .ghost{border:1px solid var(--line);background:#fff;color:var(--navy);border-radius:12px;padding:11px 15px;font-weight:800;cursor:pointer}
 .small-btn{border:1px solid var(--navy);background:#fff;color:var(--navy);border-radius:10px;padding:9px 13px;font-weight:850;cursor:pointer}
+.small-btn.active{background:var(--navy);color:#fff}
 .small-btn.fill{background:var(--navy);color:#fff}
 .small-btn.danger{border-color:#b43b3b;color:#b43b3b}
 .language-select{border:1px solid var(--line);background:#fff;color:var(--navy);border-radius:11px;padding:10px 8px;font-weight:900;cursor:pointer}
@@ -945,7 +946,7 @@ const I18N = {
     "dash.clientEyebrow":"ESPACE CLIENT","dash.clientTitle":"Mes réservations",
     "dash.proEyebrow":"ESPACE PROFESSIONNEL","dash.proTitle":"Mes missions",
     "dash.adminEyebrow":"ADMINISTRATION","dash.adminTitle":"Tableau de bord SkipperNow",
-    "dash.navRequests":"Mes demandes","dash.navBoats":"Mes bateaux","dash.viewUserBoats":"Voir ses bateaux","dash.editBoat":"Modifier l'annonce","dash.boatsOf":"Bateaux de","dash.clearFilter":"Voir tous les bateaux","dash.navProfile":"Mon profil","dash.navAvailability":"Disponibilités","dash.logout":"Se déconnecter","dash.navMessages":"Messages","dash.noMessages":"Aucune conversation pour le moment.","dash.noUnreadMessages":"Aucun nouveau message.","dash.messagePlaceholder":"Écrivez votre message…","dash.send":"Envoyer","dash.loading":"Chargement…","dash.deleteMessage":"Supprimer","dash.confirmDeleteMessage":"Supprimer ce message ?","dash.deleteConversation":"Supprimer la conversation","dash.confirmDeleteConversation":"Supprimer toute cette conversation ? Cette action est irréversible.","dash.navSupport":"Contacter le support","dash.noSupport":"Le support n'est pas disponible pour le moment.","dash.supportIntro":"Une question, un souci ? Écrivez directement à l'équipe SkipperNow.",
+    "dash.navRequests":"Mes demandes","dash.navBoats":"Mes bateaux","dash.viewUserBoats":"Voir ses bateaux","dash.editBoat":"Modifier l'annonce","dash.boatsOf":"Bateaux de","dash.clearFilter":"Voir tous les bateaux","dash.navProfile":"Mon profil","dash.navAvailability":"Disponibilités","dash.logout":"Se déconnecter","dash.navMessages":"Messages","dash.noMessages":"Aucune conversation pour le moment.","dash.noUnreadMessages":"Aucun nouveau message.","dash.messagePlaceholder":"Écrivez votre message…","dash.send":"Envoyer","dash.loading":"Chargement…","dash.deleteMessage":"Supprimer","dash.confirmDeleteMessage":"Supprimer ce message ?","dash.deleteConversation":"Supprimer la conversation","dash.confirmDeleteConversation":"Supprimer toute cette conversation ? Cette action est irréversible.","dash.tabUnread":"Non lus","dash.tabAll":"Tous","dash.navSupport":"Contacter le support","dash.noSupport":"Le support n'est pas disponible pour le moment.","dash.supportIntro":"Une question, un souci ? Écrivez directement à l'équipe SkipperNow.",
     "booking.privacyNote":"Pour votre sécurité, les coordonnées personnelles (téléphone, email) ne sont jamais partagées directement entre client et professionnel.",
     "dash.navOverview":"Vue d'ensemble","dash.navValidations":"Validations","dash.navMissions":"Missions","dash.navUsers":"Utilisateurs","dash.navSettings":"Réglages",
     "dash.noRequests":"Aucune demande pour le moment.","dash.noBoats":"Aucun bateau ajouté pour le moment.","dash.noMissions":"Aucune mission pour le moment.",
@@ -1106,7 +1107,7 @@ const I18N = {
     "dash.clientEyebrow":"CLIENT AREA","dash.clientTitle":"My bookings",
     "dash.proEyebrow":"PROFESSIONAL AREA","dash.proTitle":"My jobs",
     "dash.adminEyebrow":"ADMINISTRATION","dash.adminTitle":"SkipperNow dashboard",
-    "dash.navRequests":"My requests","dash.navBoats":"My boats","dash.viewUserBoats":"View their boats","dash.editBoat":"Edit listing","dash.boatsOf":"Boats owned by","dash.clearFilter":"View all boats","dash.navProfile":"My profile","dash.navAvailability":"Availability","dash.logout":"Log out","dash.navMessages":"Messages","dash.noMessages":"No conversations yet.","dash.noUnreadMessages":"No new messages.","dash.messagePlaceholder":"Write your message…","dash.send":"Send","dash.loading":"Loading…","dash.deleteMessage":"Delete","dash.confirmDeleteMessage":"Delete this message?","dash.deleteConversation":"Delete conversation","dash.confirmDeleteConversation":"Delete this whole conversation? This cannot be undone.","dash.navSupport":"Contact support","dash.noSupport":"Support is not available right now.","dash.supportIntro":"A question or an issue? Message the SkipperNow team directly.",
+    "dash.navRequests":"My requests","dash.navBoats":"My boats","dash.viewUserBoats":"View their boats","dash.editBoat":"Edit listing","dash.boatsOf":"Boats owned by","dash.clearFilter":"View all boats","dash.navProfile":"My profile","dash.navAvailability":"Availability","dash.logout":"Log out","dash.navMessages":"Messages","dash.noMessages":"No conversations yet.","dash.noUnreadMessages":"No new messages.","dash.messagePlaceholder":"Write your message…","dash.send":"Send","dash.loading":"Loading…","dash.deleteMessage":"Delete","dash.confirmDeleteMessage":"Delete this message?","dash.deleteConversation":"Delete conversation","dash.confirmDeleteConversation":"Delete this whole conversation? This cannot be undone.","dash.tabUnread":"Unread","dash.tabAll":"All","dash.navSupport":"Contact support","dash.noSupport":"Support is not available right now.","dash.supportIntro":"A question or an issue? Message the SkipperNow team directly.",
     "booking.privacyNote":"For your safety, personal contact details (phone, email) are never shared directly between client and professional.",
     "dash.navOverview":"Overview","dash.navValidations":"Approvals","dash.navMissions":"Jobs","dash.navUsers":"Users","dash.navSettings":"Settings",
     "dash.noRequests":"No requests yet.","dash.noBoats":"No boats added yet.","dash.noMissions":"No jobs yet.",
@@ -1266,7 +1267,7 @@ const I18N = {
     "dash.clientEyebrow":"ESPACIO CLIENTE","dash.clientTitle":"Mis reservas",
     "dash.proEyebrow":"ESPACIO PROFESIONAL","dash.proTitle":"Mis servicios",
     "dash.adminEyebrow":"ADMINISTRACIÓN","dash.adminTitle":"Panel de SkipperNow",
-    "dash.navRequests":"Mis solicitudes","dash.navBoats":"Mis barcos","dash.viewUserBoats":"Ver sus barcos","dash.editBoat":"Editar anuncio","dash.boatsOf":"Barcos de","dash.clearFilter":"Ver todos los barcos","dash.navProfile":"Mi perfil","dash.navAvailability":"Disponibilidad","dash.logout":"Cerrar sesión","dash.navMessages":"Mensajes","dash.noMessages":"Todavía no hay conversaciones.","dash.noUnreadMessages":"No hay mensajes nuevos.","dash.messagePlaceholder":"Escribe tu mensaje…","dash.send":"Enviar","dash.loading":"Cargando…","dash.deleteMessage":"Eliminar","dash.confirmDeleteMessage":"¿Eliminar este mensaje?","dash.deleteConversation":"Eliminar conversación","dash.confirmDeleteConversation":"¿Eliminar toda esta conversación? Esta acción no se puede deshacer.","dash.navSupport":"Contactar con soporte","dash.noSupport":"El soporte no está disponible en este momento.","dash.supportIntro":"¿Una pregunta o un problema? Escribe directamente al equipo de SkipperNow.",
+    "dash.navRequests":"Mis solicitudes","dash.navBoats":"Mis barcos","dash.viewUserBoats":"Ver sus barcos","dash.editBoat":"Editar anuncio","dash.boatsOf":"Barcos de","dash.clearFilter":"Ver todos los barcos","dash.navProfile":"Mi perfil","dash.navAvailability":"Disponibilidad","dash.logout":"Cerrar sesión","dash.navMessages":"Mensajes","dash.noMessages":"Todavía no hay conversaciones.","dash.noUnreadMessages":"No hay mensajes nuevos.","dash.messagePlaceholder":"Escribe tu mensaje…","dash.send":"Enviar","dash.loading":"Cargando…","dash.deleteMessage":"Eliminar","dash.confirmDeleteMessage":"¿Eliminar este mensaje?","dash.deleteConversation":"Eliminar conversación","dash.confirmDeleteConversation":"¿Eliminar toda esta conversación? Esta acción no se puede deshacer.","dash.tabUnread":"No leídos","dash.tabAll":"Todos","dash.navSupport":"Contactar con soporte","dash.noSupport":"El soporte no está disponible en este momento.","dash.supportIntro":"¿Una pregunta o un problema? Escribe directamente al equipo de SkipperNow.",
     "booking.privacyNote":"Por tu seguridad, los datos personales (teléfono, email) nunca se comparten directamente entre cliente y profesional.",
     "dash.navOverview":"Resumen","dash.navValidations":"Validaciones","dash.navMissions":"Servicios","dash.navUsers":"Usuarios","dash.navSettings":"Ajustes",
     "dash.noRequests":"Todavía no hay solicitudes.","dash.noBoats":"Todavía no hay barcos añadidos.","dash.noMissions":"Todavía no hay servicios.",
@@ -1702,6 +1703,12 @@ let boatCache = [];
 let resultsCache = [];
 let adminProfilesCache = [];
 let currentMessagesRoleColumn = null;
+let currentMessagesFilterMode = "unread";
+function bindMessagesFilterTabs(main, myRoleColumn){
+  main.querySelectorAll("[data-messages-filter]").forEach(btn=>btn.addEventListener("click", ()=>{
+    renderMessagesPanel(myRoleColumn, btn.dataset.messagesFilter);
+  }));
+}
 let adminBoatsFilterOwnerId = null;
 let editingBoatId = null;
 let myBoatsCache = [];
