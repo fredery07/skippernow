@@ -1998,11 +1998,27 @@ window.openProfileDetail = function(id, adminView){
       ${adminView ? ""
         : (currentUser && String(p.id)===String(currentUser.id))
           ? `<div class="note-box" style="margin-top:18px">${esc(t("boatDetail.ownListing"))}</div>`
-          : `<button class="primary wide" style="margin-top:18px" onclick="closeModal('profileDetailModal');openBookingFor('${p.id}','${esc(String(p.full_name||"").replace(/'/g,"\\'"))}','${esc(String(p.home_port||"").replace(/'/g,"\\'"))}','${activity}')">${esc(t("boatDetail.request"))}</button>`}
+          : `<div style="display:flex;gap:10px;margin-top:18px;flex-wrap:wrap">
+              <button class="primary wide" style="flex:1;min-width:160px" onclick="closeModal('profileDetailModal');openBookingFor('${p.id}','${esc(String(p.full_name||"").replace(/'/g,"\\'"))}','${esc(String(p.home_port||"").replace(/'/g,"\\'"))}','${activity}')">${esc(t("boatDetail.request"))}</button>
+              <button class="ghost wide" style="flex:1;min-width:160px" onclick="messageProfile('${p.id}')">${esc(t("card.sendMessage"))}</button>
+            </div>`}
     </div>`;
   openModal("profileDetailModal");
 };
 window.closeModal = closeModal;
+window.messageProfile = async function(targetId){
+  closeModal("profileDetailModal");
+  if(!currentUser){ openAccountModal("login"); return; }
+  await openDashboard();
+  const roleCol = currentProfile?.role === "admin" ? "both" : ["skipper","provider"].includes(currentProfile?.role) ? "skipper_id" : "client_id";
+  await renderMessagesPanel(roleCol);
+  document.querySelectorAll(".dash-side button").forEach(b=>b.classList.toggle("active", b.dataset.panel==="messages"));
+  const list = document.querySelector("#conversationList");
+  const thread = document.querySelector("#conversationThread");
+  if(list) list.style.display = "none";
+  if(thread) thread.style.display = "block";
+  await openConversationThread(currentUser.id, targetId);
+};
 
 let authMode = "create";
 let selectedRole = "client";
