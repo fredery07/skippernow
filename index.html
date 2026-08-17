@@ -3269,16 +3269,10 @@ async function openConversationThread(clientId, skipperId){
       </div>
       <div style="display:flex;gap:8px">
         <input id="messageInput" placeholder="${esc(t("dash.messagePlaceholder"))}" style="flex:1;border:1px solid var(--line);border-radius:12px;padding:11px">
-        <button class="primary" id="messageSendBtn">${esc(t("dash.send"))}</button> id="messageSendBtn">${esc(t("dash.send"))}</button>
+        <button class="primary" id="messageSendBtn">${esc(t("dash.send"))}</button>
       </div>`;
     const scrollBody = document.querySelector("#messageThreadBody");
     if(scrollBody) scrollBody.scrollTop = scrollBody.scrollHeight;
-    document.querySelectorAll("[data-delete-message]").forEach(btn=>btn.addEventListener("click", async ()=>{
-      if(!confirm(t("dash.confirmDeleteMessage"))) return;
-      const {error: delError} = await db.from("messages").delete().eq("id", btn.dataset.deleteMessage);
-      if(delError){ alert(delError.message); return; }
-      await openConversationThread(clientId, skipperId);
-    }));
     document.querySelectorAll("[data-delete-message]").forEach(btn=>btn.addEventListener("click", async ()=>{
       if(!confirm(t("dash.confirmDeleteMessage"))) return;
       const {error: delError} = await db.from("messages").delete().eq("id", btn.dataset.deleteMessage);
