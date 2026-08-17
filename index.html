@@ -4,9 +4,48 @@
 <meta charset="utf-8">
 <meta name="google" content="notranslate">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SkipperNow — Votre skipper, au bon port, au bon moment</title>
-<meta name="description" content="Trouvez un skipper, un prestataire nautique ou un bateau à louer dans n'importe quel port du monde, même à la dernière minute.">
+<title>SkipperNow | Skipper, location de bateau & services nautiques</title>
+<meta name="description" content="Trouvez un skipper professionnel, louez un bateau ou trouvez un prestataire nautique avec SkipperNow. Recherche simple, profils vérifiés et paiement sécurisé.">
+<link rel="canonical" href="https://skippernow.fr/">
+<meta name="robots" content="index,follow">
 <link rel="icon" href="skippernow-icon.svg">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SkipperNow">
+<meta property="og:title" content="SkipperNow | Skipper, location de bateau & services nautiques">
+<meta property="og:description" content="Trouvez un skipper professionnel, louez un bateau ou trouvez un prestataire nautique avec SkipperNow. Recherche simple, profils vérifiés et paiement sécurisé.">
+<meta property="og:url" content="https://skippernow.fr/">
+<meta property="og:image" content="https://skippernow.fr/skippernow-icon.svg">
+<meta property="og:locale" content="fr_FR">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="SkipperNow | Skipper, location de bateau & services nautiques">
+<meta name="twitter:description" content="Trouvez un skipper professionnel, louez un bateau ou trouvez un prestataire nautique avec SkipperNow. Recherche simple, profils vérifiés et paiement sécurisé.">
+<meta name="twitter:image" content="https://skippernow.fr/skippernow-icon.svg">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "SkipperNow",
+  "url": "https://skippernow.fr/",
+  "logo": "https://skippernow.fr/skippernow-icon.svg",
+  "description": "Plateforme de mise en relation pour trouver un skipper professionnel, louer un bateau ou trouver un prestataire nautique."
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "SkipperNow",
+  "url": "https://skippernow.fr/",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://skippernow.fr/?port={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -183,7 +222,8 @@ main{padding:52px 0 90px}
 
 footer{background:#071d32;color:#d7e9e8;margin-top:0}
 footer .shell{padding:34px 24px}
-.footer-grid{display:grid;grid-template-columns:2fr repeat(3,1fr);gap:24px}
+.footer-grid{display:grid;grid-template-columns:1.6fr repeat(4,1fr);gap:24px}
+.footer-grid a{font-size:13.5px}
 footer h4{margin:0 0 10px;color:#fff}
 footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;background:none;border:0;text-align:left;font:inherit;cursor:pointer;padding:0}
 .footer-bottom{border-top:1px solid rgba(255,255,255,.12);margin-top:22px;padding-top:16px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:13px;color:#9fb5bc}
@@ -508,6 +548,28 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
     </div>
   </section>
 
+  <section class="shell" style="padding:36px 24px 8px" aria-label="Nos destinations">
+    <h2 style="font-family:var(--display);font-size:22px;margin-bottom:14px">Nos destinations sur la Côte d'Azur</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px;font-size:14.5px;line-height:2">
+      <div>
+        <strong style="display:block;margin-bottom:6px;color:var(--navy)">Trouver un skipper</strong>
+        <a href="/skipper-cannes/">Skipper à Cannes</a><br>
+        <a href="/skipper-antibes/">Skipper à Antibes</a><br>
+        <a href="/skipper-nice/">Skipper à Nice</a><br>
+        <a href="/skipper-monaco/">Skipper à Monaco</a><br>
+        <a href="/skipper-saint-tropez/">Skipper à Saint-Tropez</a>
+      </div>
+      <div>
+        <strong style="display:block;margin-bottom:6px;color:var(--navy)">Louer un bateau</strong>
+        <a href="/location-bateau-cannes/">Location de bateau à Cannes</a><br>
+        <a href="/location-bateau-antibes/">Location de bateau à Antibes</a><br>
+        <a href="/location-bateau-nice/">Location de bateau à Nice</a><br>
+        <a href="/location-bateau-monaco/">Location de bateau à Monaco</a><br>
+        <a href="/location-bateau-saint-tropez/">Location de bateau à Saint-Tropez</a>
+      </div>
+    </div>
+  </section>
+
 </main>
 
 <section class="image-band" style="background-image:url('https://images.pexels.com/photos/15822440/pexels-photo-15822440.jpeg?auto=compress&cs=tinysrgb&h=1080&fit=crop&w=1920')" role="img" aria-label="Voilier naviguant dans les eaux turquoise des Florida Keys"></section>
@@ -528,6 +590,19 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
         <h4 data-i18n="footer.pros">Professionnels</h4>
         <a id="footerBecomePro" data-i18n="footer.becomePro">Devenir prestataire</a>
         <a id="footerAddBoat" data-i18n="footer.addBoat">Mettre un bateau en location</a>
+      </div>
+      <div>
+        <h4>Destinations</h4>
+        <a href="/skipper-cannes/">Skipper Cannes</a>
+        <a href="/skipper-antibes/">Skipper Antibes</a>
+        <a href="/skipper-nice/">Skipper Nice</a>
+        <a href="/skipper-monaco/">Skipper Monaco</a>
+        <a href="/skipper-saint-tropez/">Skipper Saint-Tropez</a>
+        <a href="/location-bateau-cannes/">Location bateau Cannes</a>
+        <a href="/location-bateau-antibes/">Location bateau Antibes</a>
+        <a href="/location-bateau-nice/">Location bateau Nice</a>
+        <a href="/location-bateau-monaco/">Location bateau Monaco</a>
+        <a href="/location-bateau-saint-tropez/">Location bateau Saint-Tropez</a>
       </div>
       <div>
         <h4 data-i18n="footer.infoTitle">Informations</h4>
@@ -551,7 +626,7 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
       <div><small data-i18n="legal.eyebrow">INFORMATIONS LÉGALES</small><h2 id="legalTitle">—</h2></div>
       <button class="close" data-close="legalModal" type="button">×</button>
     </div>
-    <div class="note-box" data-i18n="legal.disclaimer" style="margin-bottom:14px">⚠️ Ces textes sont des modèles génériques fournis à titre indicatif et doivent être vérifiés et complétés par un professionnel du droit avant toute mise en production réelle.</div>
+    
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px" id="legalTabs"></div>
     <div id="legalContent" style="max-height:50vh;overflow:auto;line-height:1.7;font-size:14.5px;white-space:pre-line"></div>
   </div>
@@ -808,7 +883,7 @@ const I18N = {
     "footer.platform":"Plateforme","footer.findSkipper":"Trouver un skipper","footer.findProvider":"Trouver un prestataire","footer.findBoat":"Trouver un bateau",
     "footer.pros":"Professionnels","footer.becomePro":"Devenir prestataire","footer.addBoat":"Mettre un bateau en location",
     "footer.infoTitle":"Informations","footer.about":"À propos","footer.contact":"Contact","footer.terms":"Conditions générales","footer.privacy":"Confidentialité","footer.mentions":"Mentions légales","footer.cookies":"Cookies","footer.rights":"Tous droits réservés.",
-    "legal.eyebrow":"INFORMATIONS LÉGALES","legal.disclaimer":"⚠️ Ces textes sont des modèles génériques fournis à titre indicatif et doivent être vérifiés et complétés par un professionnel du droit avant toute mise en production réelle.",
+    "legal.eyebrow":"INFORMATIONS LÉGALES",
     "legal.mentionsTitle":"Mentions légales","legal.mentionsBody":"Éditeur du site : SkipperNow [forme juridique à compléter], immatriculée sous le n° [SIREN/SIRET à compléter], dont le siège social est situé [adresse à compléter].\n\nDirecteur de la publication : [nom à compléter].\n\nHébergement : [nom et adresse de l'hébergeur à compléter].\n\nContact : [email de contact].\n\nCe document est un modèle et doit être complété avec les informations exactes de la société avant publication.",
     "legal.cguTitle":"Conditions générales d'utilisation","legal.cguBody":"1. Objet — Les présentes conditions régissent l'accès et l'utilisation de la plateforme SkipperNow, mettant en relation clients, skippers, prestataires nautiques et propriétaires de bateaux.\n\n2. Inscription — L'utilisateur garantit l'exactitude des informations fournies lors de la création de son compte.\n\n3. Rôle de SkipperNow — SkipperNow agit en tant qu'intermédiaire technique et n'est pas partie aux prestations conclues entre utilisateurs.\n\n4. Comportement — Chaque utilisateur s'engage à un usage loyal de la plateforme, sans contournement des outils de messagerie ou de paiement intégrés.\n\n5. Responsabilité — SkipperNow ne saurait être tenue responsable de la bonne exécution des prestations entre utilisateurs.\n\n6. Modification — SkipperNow peut modifier les présentes conditions ; les utilisateurs en seront informés.\n\nCe document est un modèle à faire valider par un professionnel du droit.",
     "legal.cgvTitle":"Conditions générales de vente","legal.cgvBody":"1. Prestations concernées — Réservation de skippers, prestations nautiques et locations de bateaux via la plateforme.\n\n2. Prix — Les prix sont fixés librement par les skippers, prestataires et propriétaires, hors commission de service SkipperNow clairement indiquée avant paiement.\n\n3. Paiement — Le paiement est collecté par SkipperNow via son prestataire de paiement (Stripe) et conservé jusqu'à validation de la prestation.\n\n4. Commission — SkipperNow prélève une commission sur chaque transaction, dont le taux est affiché avant confirmation.\n\n5. Facturation — Un reçu récapitulatif est disponible pour chaque prestation payée depuis l'espace utilisateur.\n\nCe document est un modèle à faire valider par un professionnel du droit.",
@@ -841,7 +916,7 @@ const I18N = {
     "account.roleSkipper":"Skipper","account.roleSkipperDesc":"Recevoir des demandes de sortie et de convoyage",
     "account.roleProvider":"Prestataire","account.roleProviderDesc":"Nettoyage, quai, chantier ou marin à la journée",
     "account.roleOwner":"Propriétaire","account.roleOwnerDesc":"Mettre mon bateau en location",
-    "account.nameLabel":"PRÉNOM ET NOM","account.namePlaceholder":"Votre nom","account.phoneLabel":"TÉLÉPHONE","account.photoLabel":"PHOTO DE PROFIL","account.photoReminder":"⚠️ Pensez à ajouter une photo de profil : les fiches sans photo inspirent moins confiance et sont moins souvent contactées.","account.diplomaLabel":"DIPLÔME / CERTIFICATION","account.diplomaCurrent":"Voir le document actuel","account.diplomaNote":"Photo ou PDF de votre diplôme (permis, brevet, carte professionnelle...). Utilisé pour la vérification par l'équipe SkipperNow, non affiché publiquement.",
+    "account.nameLabel":"PRÉNOM ET NOM","account.namePlaceholder":"Votre nom","account.phoneLabel":"TÉLÉPHONE","account.photoLabel":"PHOTO DE PROFIL","account.photoReminder":"⚠️ Pensez à ajouter une photo de profil : les fiches sans photo inspirent moins confiance et sont moins souvent contactées.","account.diplomaLabel":"DIPLÔME / CERTIFICATION","account.diplomaCurrent":"Voir le document actuel","account.diplomaNote":"Photo ou PDF de votre diplôme (permis, brevet, carte professionnelle...). Utilisé pour la vérification par l'équipe SkipperNow, non affiché publiquement.","account.diplomaTypeLabel":"TYPE DE DIPLÔME / CERTIFICATION (affiché publiquement)","account.diplomaTypePlaceholder":"Ex. Permis côtier, Brevet 200, Carte professionnelle...","account.photoRequiredError":"Une photo de profil est obligatoire pour publier votre fiche.","card.diplomaBadgePrefix":"Diplôme vérifié :",
     "account.experienceLabel":"ANNÉES D'EXPÉRIENCE","account.languagesLabel":"LANGUES PARLÉES","account.languagesPlaceholder":"Ex : Français, English, Español",
     "account.skillsLabel":"COMPÉTENCES / TYPES DE BATEAUX MAÎTRISÉS","account.skillsPlaceholder":"Ex : Voilier, Catamaran, Yacht à moteur, Convoyage",
     "account.travelRadiusLabel":"RAYON DE DÉPLACEMENT","account.priceHalfDayLabel":"TARIF DEMI-JOURNÉE","account.priceHourLabel":"TARIF HORAIRE (optionnel)","account.travelFeeLabel":"FRAIS DE DÉPLACEMENT",
@@ -969,7 +1044,7 @@ const I18N = {
     "footer.platform":"Platform","footer.findSkipper":"Find a skipper","footer.findProvider":"Find a service provider","footer.findBoat":"Find a boat",
     "footer.pros":"Professionals","footer.becomePro":"Become a service provider","footer.addBoat":"List a boat for rent",
     "footer.infoTitle":"Information","footer.about":"About","footer.contact":"Contact","footer.terms":"Terms of service","footer.privacy":"Privacy","footer.mentions":"Legal notice","footer.cookies":"Cookies","footer.rights":"All rights reserved.",
-    "legal.eyebrow":"LEGAL INFORMATION","legal.disclaimer":"⚠️ These texts are generic templates provided for guidance only and must be reviewed and completed by a legal professional before real production use.",
+    "legal.eyebrow":"LEGAL INFORMATION",
     "legal.mentionsTitle":"Legal notice","legal.mentionsBody":"Publisher: SkipperNow [legal form to complete], registered under no. [registration number to complete], with registered office at [address to complete].\n\nPublication director: [name to complete].\n\nHosting: [host name and address to complete].\n\nContact: [contact email].\n\nThis document is a template and must be completed with the company's exact information before publication.",
     "legal.cguTitle":"Terms of service","legal.cguBody":"1. Purpose — These terms govern access to and use of the SkipperNow platform, connecting clients, skippers, marine service providers and boat owners.\n\n2. Registration — Users guarantee the accuracy of the information provided when creating their account.\n\n3. SkipperNow's role — SkipperNow acts as a technical intermediary and is not a party to the services agreed between users.\n\n4. Conduct — Each user commits to fair use of the platform, without bypassing the built-in messaging or payment tools.\n\n5. Liability — SkipperNow cannot be held liable for the proper execution of services between users.\n\n6. Changes — SkipperNow may amend these terms; users will be notified.\n\nThis document is a template to be validated by a legal professional.",
     "legal.cgvTitle":"Terms of sale","legal.cgvBody":"1. Services covered — Booking of skippers, marine services and boat rentals via the platform.\n\n2. Pricing — Prices are freely set by skippers, providers and owners, excluding the SkipperNow service commission, clearly shown before payment.\n\n3. Payment — Payment is collected by SkipperNow via its payment provider (Stripe) and held until the service is validated.\n\n4. Commission — SkipperNow charges a commission on each transaction, with the rate shown before confirmation.\n\n5. Billing — A summary receipt is available for each paid service from the user area.\n\nThis document is a template to be validated by a legal professional.",
@@ -1002,7 +1077,7 @@ const I18N = {
     "account.roleSkipper":"Skipper","account.roleSkipperDesc":"Receive trip and delivery requests",
     "account.roleProvider":"Service provider","account.roleProviderDesc":"Cleaning, dock, shipyard or day crew",
     "account.roleOwner":"Owner","account.roleOwnerDesc":"List my boat for rent",
-    "account.nameLabel":"FULL NAME","account.namePlaceholder":"Your name","account.phoneLabel":"PHONE","account.photoLabel":"PROFILE PHOTO","account.photoReminder":"⚠️ Remember to add a profile photo: listings without a photo inspire less trust and get fewer contacts.","account.diplomaLabel":"DIPLOMA / CERTIFICATION","account.diplomaCurrent":"View current document","account.diplomaNote":"Photo or PDF of your certification (license, professional card...). Used for verification by the SkipperNow team, not shown publicly.",
+    "account.nameLabel":"FULL NAME","account.namePlaceholder":"Your name","account.phoneLabel":"PHONE","account.photoLabel":"PROFILE PHOTO","account.photoReminder":"⚠️ Remember to add a profile photo: listings without a photo inspire less trust and get fewer contacts.","account.diplomaLabel":"DIPLOMA / CERTIFICATION","account.diplomaCurrent":"View current document","account.diplomaNote":"Photo or PDF of your certification (license, professional card...). Used for verification by the SkipperNow team, not shown publicly.","account.diplomaTypeLabel":"DIPLOMA / CERTIFICATION TYPE (shown publicly)","account.diplomaTypePlaceholder":"E.g. Coastal license, Master 200, Professional card...","account.photoRequiredError":"A profile photo is required to publish your listing.","card.diplomaBadgePrefix":"Verified diploma:",
     "account.experienceLabel":"YEARS OF EXPERIENCE","account.languagesLabel":"LANGUAGES SPOKEN","account.languagesPlaceholder":"E.g. French, English, Spanish",
     "account.skillsLabel":"SKILLS / BOAT TYPES MASTERED","account.skillsPlaceholder":"E.g. Sailboat, Catamaran, Motor yacht, Delivery",
     "account.travelRadiusLabel":"TRAVEL RADIUS","account.priceHalfDayLabel":"HALF-DAY RATE","account.priceHourLabel":"HOURLY RATE (optional)","account.travelFeeLabel":"TRAVEL FEE",
@@ -1129,7 +1204,7 @@ const I18N = {
     "footer.platform":"Plataforma","footer.findSkipper":"Buscar un skipper","footer.findProvider":"Encontrar un prestador de servicios","footer.findBoat":"Buscar un barco",
     "footer.pros":"Profesionales","footer.becomePro":"Ser prestador","footer.addBoat":"Poner un barco en alquiler",
     "footer.infoTitle":"Información","footer.about":"Acerca de","footer.contact":"Contacto","footer.terms":"Términos y condiciones","footer.privacy":"Privacidad","footer.mentions":"Aviso legal","footer.cookies":"Cookies","footer.rights":"Todos los derechos reservados.",
-    "legal.eyebrow":"INFORMACIÓN LEGAL","legal.disclaimer":"⚠️ Estos textos son modelos genéricos proporcionados a título indicativo y deben ser revisados y completados por un profesional del derecho antes de su uso real.",
+    "legal.eyebrow":"INFORMACIÓN LEGAL",
     "legal.mentionsTitle":"Aviso legal","legal.mentionsBody":"Editor del sitio: SkipperNow [forma jurídica por completar], registrada con el n.º [número de registro por completar], con domicilio social en [dirección por completar].\n\nDirector de publicación: [nombre por completar].\n\nAlojamiento: [nombre y dirección del proveedor de hosting por completar].\n\nContacto: [correo de contacto].\n\nEste documento es un modelo y debe completarse con la información exacta de la empresa antes de su publicación.",
     "legal.cguTitle":"Términos y condiciones de uso","legal.cguBody":"1. Objeto — Estas condiciones regulan el acceso y uso de la plataforma SkipperNow, que conecta a clientes, skippers, prestadores náuticos y propietarios de barcos.\n\n2. Registro — El usuario garantiza la exactitud de la información proporcionada al crear su cuenta.\n\n3. Papel de SkipperNow — SkipperNow actúa como intermediario técnico y no es parte de los servicios acordados entre usuarios.\n\n4. Comportamiento — Cada usuario se compromete a un uso leal de la plataforma, sin eludir las herramientas de mensajería o pago integradas.\n\n5. Responsabilidad — SkipperNow no puede ser considerada responsable de la correcta ejecución de los servicios entre usuarios.\n\n6. Modificaciones — SkipperNow puede modificar estas condiciones; se informará a los usuarios.\n\nEste documento es un modelo que debe validar un profesional del derecho.",
     "legal.cgvTitle":"Condiciones generales de venta","legal.cgvBody":"1. Servicios cubiertos — Reserva de skippers, servicios náuticos y alquiler de barcos a través de la plataforma.\n\n2. Precios — Los precios los fijan libremente los skippers, prestadores y propietarios, sin incluir la comisión de servicio de SkipperNow, mostrada claramente antes del pago.\n\n3. Pago — El pago lo recauda SkipperNow a través de su proveedor de pagos (Stripe) y se retiene hasta la validación del servicio.\n\n4. Comisión — SkipperNow cobra una comisión en cada transacción, cuyo porcentaje se muestra antes de la confirmación.\n\n5. Facturación — Hay disponible un recibo resumen para cada servicio pagado desde el área de usuario.\n\nEste documento es un modelo que debe validar un profesional del derecho.",
@@ -1162,7 +1237,7 @@ const I18N = {
     "account.roleSkipper":"Skipper","account.roleSkipperDesc":"Recibir solicitudes de salidas y traslados",
     "account.roleProvider":"Prestador","account.roleProviderDesc":"Limpieza, puerto, astillero o marinero por día",
     "account.roleOwner":"Propietario","account.roleOwnerDesc":"Poner mi barco en alquiler",
-    "account.nameLabel":"NOMBRE COMPLETO","account.namePlaceholder":"Tu nombre","account.phoneLabel":"TELÉFONO","account.photoLabel":"FOTO DE PERFIL","account.photoReminder":"⚠️ No olvides añadir una foto de perfil: los anuncios sin foto generan menos confianza y reciben menos contactos.","account.diplomaLabel":"TÍTULO / CERTIFICACIÓN","account.diplomaCurrent":"Ver documento actual","account.diplomaNote":"Foto o PDF de tu titulación (licencia, tarjeta profesional...). Se usa para la verificación del equipo de SkipperNow, no se muestra públicamente.",
+    "account.nameLabel":"NOMBRE COMPLETO","account.namePlaceholder":"Tu nombre","account.phoneLabel":"TELÉFONO","account.photoLabel":"FOTO DE PERFIL","account.photoReminder":"⚠️ No olvides añadir una foto de perfil: los anuncios sin foto generan menos confianza y reciben menos contactos.","account.diplomaLabel":"TÍTULO / CERTIFICACIÓN","account.diplomaCurrent":"Ver documento actual","account.diplomaNote":"Foto o PDF de tu titulación (licencia, tarjeta profesional...). Se usa para la verificación del equipo de SkipperNow, no se muestra públicamente.","account.diplomaTypeLabel":"TIPO DE TÍTULO / CERTIFICACIÓN (visible públicamente)","account.diplomaTypePlaceholder":"Ej. Licencia costera, Patrón 200, Tarjeta profesional...","account.photoRequiredError":"Es obligatoria una foto de perfil para publicar tu ficha.","card.diplomaBadgePrefix":"Diploma verificado:","account.diplomaTypeLabel":"TIPO DE TÍTULO / CERTIFICACIÓN (visible públicamente)","account.diplomaTypePlaceholder":"Ej. Licencia costera, Patrón 200, Tarjeta profesional...","account.photoRequiredError":"Es obligatoria una foto de perfil para publicar tu ficha.","card.diplomaBadgePrefix":"Diploma verificado:","account.diplomaTypeLabel":"TIPO DE TÍTULO / CERTIFICACIÓN (visible públicamente)","account.diplomaTypePlaceholder":"Ej. Licencia costera, Patrón 200, Tarjeta profesional...","account.photoRequiredError":"Es obligatoria una foto de perfil para publicar tu ficha.","card.diplomaBadgePrefix":"Diploma verificado:",
     "account.experienceLabel":"AÑOS DE EXPERIENCIA","account.languagesLabel":"IDIOMAS HABLADOS","account.languagesPlaceholder":"Ej: Francés, English, Español",
     "account.skillsLabel":"HABILIDADES / TIPOS DE BARCO DOMINADOS","account.skillsPlaceholder":"Ej: Velero, Catamarán, Yate a motor, Traslado",
     "account.travelRadiusLabel":"RADIO DE DESPLAZAMIENTO","account.priceHalfDayLabel":"TARIFA MEDIO DÍA","account.priceHourLabel":"TARIFA POR HORA (opcional)","account.travelFeeLabel":"GASTOS DE DESPLAZAMIENTO",
@@ -1916,6 +1991,7 @@ window.openProfileDetail = function(id, adminView){
         ${p.travel_fee_cents ? `${esc(t("account.travelFeeLabel"))}: <strong>${money(p.travel_fee_cents)}</strong>` : ""}
       </div>` : ""}
       <div class="note-box" style="margin-top:14px">${p.price_from_cents ? `${esc(t("card.priceFrom"))} <strong>${money(p.price_from_cents)}</strong> — ${esc(t("card.priceNote"))}` : esc(t("card.priceOnRequest"))}</div>
+      ${p.diploma_type ? `<div class="tag" style="display:inline-block;margin-top:10px">🎓 ${esc(t("card.diplomaBadgePrefix"))} ${esc(p.diploma_type)}</div>` : ""}
       ${adminView && p.diploma_url ? `<div class="muted" style="margin-top:10px"><a href="${esc(p.diploma_url)}" target="_blank">${esc(t("account.diplomaCurrent"))}</a></div>` : ""}
       ${adminView ? ""
         : (currentUser && String(p.id)===String(currentUser.id))
@@ -3210,6 +3286,7 @@ function profileForm(profile, payout, forcePayout){
       <input id="profileDiplomaInput" type="file" accept="image/*,.pdf">
       <div class="muted" style="margin-top:4px;font-size:12.5px">${esc(t("account.diplomaNote"))}</div>
     </div>
+    <div class="field"><label>${esc(t("account.diplomaTypeLabel"))}</label><input id="profileDiplomaType" placeholder="${esc(t("account.diplomaTypePlaceholder"))}" value="${esc(profile?.diploma_type||"")}"></div>
     <div class="field"><label>${esc(t("account.siretLabel"))}</label><input id="profileSiret" value="${esc(profile?.siret||"")}"></div>
     <div class="field"><label>${esc(t("account.insuranceLabel"))}</label><input id="profileInsurance" placeholder="${esc(t("account.insurancePlaceholder"))}" value="${esc(profile?.insurance_info||"")}"></div>` : ""}
     ${showPayout ? `
@@ -3226,6 +3303,14 @@ function bindProfileForm(){
     const btn = document.querySelector("#saveProfileBtn");
     const msg = document.querySelector("#profileMsg");
     btn.disabled = true;
+    const needsPhoto = ["skipper","provider"].includes(currentProfile?.role);
+    const photoFileEarly = document.querySelector("#profilePhotoInput")?.files[0];
+    if(needsPhoto && !photoFileEarly && !currentProfile?.profile_photo_url){
+      msg.style.color = "#b42318";
+      msg.textContent = t("account.photoRequiredError");
+      btn.disabled = false;
+      return;
+    }
     const priceInput = document.querySelector("#profilePriceFrom");
     const patch = {
       full_name: document.querySelector("#profileName").value.trim(),
@@ -3245,6 +3330,8 @@ function bindProfileForm(){
     if(siretInput) patch.siret = siretInput.value.trim();
     const insuranceInput = document.querySelector("#profileInsurance");
     if(insuranceInput) patch.insurance_info = insuranceInput.value.trim();
+    const diplomaTypeInput = document.querySelector("#profileDiplomaType");
+    if(diplomaTypeInput) patch.diploma_type = diplomaTypeInput.value.trim();
     const priceHalfInput = document.querySelector("#profilePriceHalf");
     if(priceHalfInput){
       const half = Number(priceHalfInput.value);
@@ -3393,6 +3480,7 @@ function startHeroCarousel(){
     activeActivity = urlActivity;
     document.querySelectorAll("#listingTabs button").forEach(b=>b.classList.toggle("active", b.dataset.activity===urlActivity));
   }
+  if(urlActivity === "boat_rental"){ openBoatFinder(urlPort||""); }
   updateSeoMeta();
   const {data:{session}} = await db.auth.getSession();
   currentUser = session?.user || null;
