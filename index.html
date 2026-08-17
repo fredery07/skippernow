@@ -3209,31 +3209,41 @@ function roleLabel(p){
   if(p.role === "admin") return "Admin";
   return "";
 }
-async function renderMessagesPanel(myRoleColumn){
+async function renderMessagesPanel(myRoleColumn, filterMode){
   const main = document.querySelector("#dashMain");
   main.innerHTML = `<div class="empty-note">${esc(t("dash.loading"))}</div>`;
   currentMessagesRoleColumn = myRoleColumn;
+  const mode = filterMode || currentMessagesFilterMode || "unread";
+  currentMessagesFilterMode = mode;
   const query = myRoleColumn === "both"
     ? db.from("conversations").select("*").or(`client_id.eq.${currentUser.id},skipper_id.eq.${currentUser.id}`).order("created_at",{ascending:false})
     : db.from("conversations").select("*").eq(myRoleColumn, currentUser.id).order("created_at",{ascending:false});
   const {data: conversations, error} = await query;
   if(error){ main.innerHTML = `<div class="note-box">${esc(error.message)}</div>`; return; }
   const rows = conversations || [];
-  if(!rows.length){ main.innerHTML = `<div class="empty-note">${esc(t("dash.noMessages"))}</div>`; return; }
+  const tabsHtml = `<div style="display:flex;gap:8px;margin-bottom:12px">
+    <button type="button" class="small-btn${mode==="unread" ? " active" : ""}" data-messages-filter="unread">${esc(t("dash.tabUnread"))}</button>
+    <button type="button" class="small-btn${mode==="all" ? " active" : ""}" data-messages-filter="all">${esc(t("dash.tabAll"))}</button>
+  </div>`;
+  if(!rows.length){ main.innerHTML = tabsHtml + `<div class="empty-note">${esc(t("dash.noMessages"))}</div>`; bindMessagesFilterTabs(main, myRoleColumn); return; }
   const otherIds = rows.map(c => String(c.client_id) === String(currentUser.id) ? c.skipper_id : c.client_id);
   const {data: profiles} = await db.from("profiles").select("id,full_name,role,provider_activity").in("id", otherIds);
   const byId = Object.fromEntries((profiles||[]).map(p=>[String(p.id), p]));
   const {data: unreadRows} = await db.from("messages").select("id,conversation_id").is("read_at", null).neq("sender_id", currentUser.id).in("conversation_id", rows.map(c=>c.id));
   const unreadByConv = {};
   (unreadRows||[]).forEach(m => { unreadByConv[m.conversation_id] = (unreadByConv[m.conversation_id]||0) + 1; });
-  const sorted = rows.filter(c => unreadByConv[c.id] > 0);
-  if(!sorted.length){ main.innerHTML = `<div class="empty-note">${esc(t("dash.noUnreadMessages"))}</div>`; return; }
-  main.innerHTML = `<div id="conversationList">${sorted.map(c=>{
+  const sorted = mode === "unread" ? rows.filter(c => unreadByConv[c.id] > 0) : rows;
+  if(!sorted.length){ main.innerHTML = tabsHtml + `<div class="empty-note">${esc(mode==="unread" ? t("dash.noUnreadMessages") : t("dash.noMessages"))}</div>`; bindMessagesFilterTabs(main, myRoleColumn); return; }
+  main.innerHTML = tabsHtml + `<div id="conversationList">${sorted.map(c=>{
     const otherId = String(c.client_id) === String(currentUser.id) ? c.skipper_id : c.client_id;
     const p = byId[String(otherId)];
     const unread = unreadByConv[c.id] || 0;
-    return `<button type="button" class="request-card" style="width:100%;text-align:left;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px;${unread ? "border-color:var(--aqua);background:var(--mist)" : ""}" data-conversation="${c.client_id}|${c.skipper_id}"><strong>${unread ? "🔵 " : ""}${esc(p?.full_name || "—")}</strong><span style="display:flex;align-items:center;gap:8px"><span class="tag">${esc(roleLabel(p))}</span>${unread ? `<span class="tag" style="background:#c0392b;color:#fff">${unread}</span>` : ""}</span></button>`;
+    return `<div style="display:flex;align-items:stretch;gap:6px">
+      <button type="button" class="request-card" style="flex:1;text-align:left;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px;${unread ? "border-color:var(--aqua);background:var(--mist)" : ""}" data-conversation="${c.client_id}|${c.skipper_id}"><strong>${unread ? "🔵 " : ""}${esc(p?.full_name || "—")}</strong><span style="display:flex;align-items:center;gap:8px"><span class="tag">${esc(roleLabel(p))}</span>${unread ? `<span class="tag" style="background:#c0392b;color:#fff">${unread}</span>` : ""}</span></button>
+      <button type="button" class="small-btn danger" data-delete-conversation="${c.id}" title="${esc(t("dash.deleteConversation"))}" style="flex:0 0 auto">🗑</button>
+    </div>`;
   }).join("")}</div><div id="conversationThread" style="display:none"></div>`;
+  bindMessagesFilterTabs(main, myRoleColumn);
   main.querySelectorAll("[data-conversation]").forEach(btn=>btn.addEventListener("click", ()=>{
     const [clientId, skipperId] = btn.dataset.conversation.split("|");
     document.querySelector("#conversationList").style.display = "none";
