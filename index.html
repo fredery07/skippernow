@@ -924,7 +924,7 @@ const I18N = {
     "account.travelRadiusLabel":"RAYON DE DÉPLACEMENT","account.priceHalfDayLabel":"TARIF DEMI-JOURNÉE","account.priceHourLabel":"TARIF HORAIRE (optionnel)","account.travelFeeLabel":"FRAIS DE DÉPLACEMENT",
     "account.siretLabel":"SIRET / N° D'ENTREPRISE","account.insuranceLabel":"ASSURANCE PROFESSIONNELLE","account.insurancePlaceholder":"Assureur et n° de police",
     "account.emailLabel":"EMAIL","account.passwordLabel":"MOT DE PASSE","account.passwordPlaceholder":"8 caractères minimum",
-    "account.portLabel":"PORT PRINCIPAL — VILLE, PAYS","account.portPlaceholder":"Ex. Port Vauban, Antibes, France","account.zoneLabel":"VILLE / ZONE D'INTERVENTION","account.zonePlaceholder":"Ex. Antibes, Cannes, Golfe-Juan…",
+    "account.portLabel":"PORT PRINCIPAL — VILLE, PAYS","account.portPlaceholder":"Ex. Port Vauban, Antibes, France","account.zoneLabel":"VILLE / ZONE D'INTERVENTION","account.zonePlaceholder":"Ex. Antibes, Cannes, Golfe-Juan…","account.portHelp":"Choisissez une suggestion dans la liste pour que votre ville soit bien reconnue.",
     "account.activityLabel":"ACTIVITÉ PROPOSÉE","account.createSubmit":"Créer mon compte","account.loginSubmit":"Se connecter","account.forgot":"Mot de passe oublié ?",
     "account.errMissing":"Complétez les champs et utilisez au moins 8 caractères pour le mot de passe.",
     "account.errName":"Indiquez votre nom.","account.errPort":"Indiquez votre port principal.",
@@ -1085,7 +1085,7 @@ const I18N = {
     "account.travelRadiusLabel":"TRAVEL RADIUS","account.priceHalfDayLabel":"HALF-DAY RATE","account.priceHourLabel":"HOURLY RATE (optional)","account.travelFeeLabel":"TRAVEL FEE",
     "account.siretLabel":"BUSINESS REGISTRATION NUMBER","account.insuranceLabel":"PROFESSIONAL INSURANCE","account.insurancePlaceholder":"Insurer and policy number",
     "account.emailLabel":"EMAIL","account.passwordLabel":"PASSWORD","account.passwordPlaceholder":"At least 8 characters",
-    "account.portLabel":"HOME PORT — CITY, COUNTRY","account.portPlaceholder":"E.g. Port Vauban, Antibes, France","account.zoneLabel":"CITY / SERVICE AREA","account.zonePlaceholder":"E.g. Antibes, Cannes, Golfe-Juan…",
+    "account.portLabel":"HOME PORT — CITY, COUNTRY","account.portPlaceholder":"E.g. Port Vauban, Antibes, France","account.zoneLabel":"CITY / SERVICE AREA","account.zonePlaceholder":"E.g. Antibes, Cannes, Golfe-Juan…","account.portHelp":"Pick a suggestion from the list so your city is properly recognised.",
     "account.activityLabel":"SERVICE OFFERED","account.createSubmit":"Create my account","account.loginSubmit":"Log in","account.forgot":"Forgot password?",
     "account.errMissing":"Fill in all fields and use at least 8 characters for the password.",
     "account.errName":"Please enter your name.","account.errPort":"Please enter your home port.",
@@ -1245,7 +1245,7 @@ const I18N = {
     "account.travelRadiusLabel":"RADIO DE DESPLAZAMIENTO","account.priceHalfDayLabel":"TARIFA MEDIO DÍA","account.priceHourLabel":"TARIFA POR HORA (opcional)","account.travelFeeLabel":"GASTOS DE DESPLAZAMIENTO",
     "account.siretLabel":"NÚMERO DE EMPRESA","account.insuranceLabel":"SEGURO PROFESIONAL","account.insurancePlaceholder":"Aseguradora y n.º de póliza",
     "account.emailLabel":"EMAIL","account.passwordLabel":"CONTRASEÑA","account.passwordPlaceholder":"Mínimo 8 caracteres",
-    "account.portLabel":"PUERTO BASE — CIUDAD, PAÍS","account.portPlaceholder":"Ej. Port Vauban, Antibes, Francia","account.zoneLabel":"CIUDAD / ZONA DE ACTUACIÓN","account.zonePlaceholder":"Ej. Antibes, Cannes, Golfe-Juan…",
+    "account.portLabel":"PUERTO BASE — CIUDAD, PAÍS","account.portPlaceholder":"Ej. Port Vauban, Antibes, Francia","account.zoneLabel":"CIUDAD / ZONA DE ACTUACIÓN","account.zonePlaceholder":"Ej. Antibes, Cannes, Golfe-Juan…","account.portHelp":"Elige una sugerencia de la lista para que tu ciudad se reconozca correctamente.",
     "account.activityLabel":"SERVICIO OFRECIDO","account.createSubmit":"Crear mi cuenta","account.loginSubmit":"Iniciar sesión","account.forgot":"¿Olvidaste tu contraseña?",
     "account.errMissing":"Completa los campos y usa al menos 8 caracteres para la contraseña.",
     "account.errName":"Indica tu nombre.","account.errPort":"Indica tu puerto principal.",
@@ -3272,7 +3272,10 @@ function profileForm(profile, payout, forcePayout){
       </div>
     </div>
     <div class="field"><label>${esc(t("account.nameLabel"))}</label><input id="profileName" value="${esc(profile?.full_name||"")}"></div>
-    <div class="field"><label>${esc(profile?.role === "provider" ? t("account.zoneLabel") : t("account.portLabel"))}</label><input id="profilePort" value="${esc(profile?.home_port||"")}"></div>
+    <div class="field" style="position:relative"><label>${esc(profile?.role === "provider" ? t("account.zoneLabel") : t("account.portLabel"))}</label><input id="profilePort" autocomplete="off" value="${esc(profile?.home_port||"")}">
+      <div id="profilePortSuggestions" class="port-suggestions"></div>
+      <div class="muted" style="margin-top:4px;font-size:12px">${esc(t("account.portHelp"))}</div>
+    </div>
     <div class="field"><label>${esc(t("account.phoneLabel"))}</label><input id="profilePhone" value="${esc(profile?.phone||"")}"></div>
     ${isPro ? `<div class="field"><label>${esc(t("account.experienceLabel"))}</label><input id="profileExperience" type="number" min="0" step="1" value="${profile?.experience_years??""}"></div>
     <div class="field"><label>${esc(t("account.languagesLabel"))}</label><input id="profileLanguages" placeholder="${esc(t("account.languagesPlaceholder"))}" value="${esc(profile?.languages||"")}"></div>
@@ -3300,7 +3303,39 @@ function profileForm(profile, payout, forcePayout){
     <button class="primary wide" id="saveProfileBtn">${esc(t("dash.saveSettings"))}</button>
     <p class="ok-text" id="profileMsg"></p>`;
 }
+let profilePortSearchTimer;
+function bindProfilePortAutocomplete(){
+  const input = document.querySelector("#profilePort");
+  const box = document.querySelector("#profilePortSuggestions");
+  if(!input || !box || input.dataset.bound) return;
+  input.dataset.bound = "1";
+  const render = (items)=>{
+    box.innerHTML = items.map((x,i)=>`<button type="button" class="port-option" data-i="${i}"><strong>${esc(x.name)}</strong><small>${esc(x.place)}</small></button>`).join("");
+    box.classList.toggle("open", items.length>0);
+    [...box.querySelectorAll(".port-option")].forEach((btn,i)=>btn.onclick=()=>{
+      input.value = items[i].place && items[i].place !== items[i].name ? `${items[i].name}, ${items[i].place}` : items[i].name;
+      box.classList.remove("open");
+    });
+  };
+  const search = async (q)=>{
+    const local = localPortMatches(q);
+    if(q.length < 3){ render(local); return; }
+    try{
+      const url = "https://nominatim.openstreetmap.org/search?format=jsonv2&limit=8&q=" + encodeURIComponent(q + " port marina");
+      const res = await fetch(url,{headers:{"Accept-Language":currentLang}});
+      const data = await res.json();
+      const remote = data.map(x=>({name:(x.name||x.display_name.split(",")[0]),place:x.display_name}));
+      const seen = new Set();
+      const merged = [...local, ...remote].filter(x=>{const k=(x.name+"|"+x.place).toLowerCase();if(seen.has(k))return false;seen.add(k);return true}).slice(0,10);
+      render(merged);
+    }catch(_e){ render(local); }
+  };
+  input.addEventListener("focus", ()=>{ if(!input.value) render(POPULAR_PORTS.slice(0,8).map(x=>({name:x[0],place:x[1]}))); });
+  input.addEventListener("input", ()=>{ clearTimeout(profilePortSearchTimer); profilePortSearchTimer = setTimeout(()=>search(input.value.trim()),300); });
+  document.addEventListener("click", e=>{ if(!e.target.closest("#profilePortSuggestions") && e.target.id!=="profilePort") box.classList.remove("open"); });
+}
 function bindProfileForm(){
+  bindProfilePortAutocomplete();
   document.querySelector("#saveProfileBtn").addEventListener("click", async ()=>{
     const btn = document.querySelector("#saveProfileBtn");
     const msg = document.querySelector("#profileMsg");
