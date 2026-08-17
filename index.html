@@ -3155,6 +3155,10 @@ function bindProfileActions(){
     const targetId = btn.dataset.messageUser;
     document.querySelectorAll(".dash-side button").forEach(b=>b.classList.toggle("active", b.dataset.panel==="messages"));
     await renderAdminPanel("messages");
+    const list = document.querySelector("#conversationList");
+    const thread = document.querySelector("#conversationThread");
+    if(list) list.style.display = "none";
+    if(thread) thread.style.display = "block";
     await openConversationThread(targetId, currentUser.id);
   }));
   document.querySelectorAll("[data-view-profile]").forEach(btn=>btn.addEventListener("click", ()=>{
