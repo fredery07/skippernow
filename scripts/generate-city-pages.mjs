@@ -50,7 +50,7 @@ async function fetchTable(table, params) {
       Authorization: `Bearer ${SUPABASE_ANON_KEY}`
     }
   });
-  if (!res.ok) throw new Error(`Supabase ${table} fetch failed: ${${res.status}} ${await res.text()}`);
+  if (!res.ok) throw new Error(`Supabase ${table} fetch failed: ${res.status} ${await res.text()}`);
   return res.json();
 }
 
