@@ -888,7 +888,7 @@ const I18N = {
     "card.experience":"an(s) d'expérience","card.newOnPlatform":"Nouveau sur SkipperNow","card.priceOnRequest":"Sur demande","card.priceNote":"tarif confirmé avant réservation","card.priceFrom":"À partir de","card.verifiedBadge":"Vérifié",
     "card.superSkipperBadge":"Super Skipper","card.recommendedProviderBadge":"Prestataire recommandé",
     "boatDetail.verifiedBadge":"Bateau vérifié",
-    "dash.verifyBoat":"Vérifier le bateau","dash.unverifyBoat":"Retirer la vérification","dash.markFeatured":"Mettre en avant","dash.unfeature":"Retirer la mise en avant",
+    "dash.verifyBoat":"Vérifier le bateau","dash.unverifyBoat":"Retirer la vérification","dash.boatVerifyChecklist":"Avant de vérifier ce bateau, confirmez avoir contrôlé :\n\n✓ Les photos sont réelles et récentes\n✓ L'assurance du bateau est à jour\n✓ Les informations (modèle, année, capacité) sont cohérentes\n\nCliquez sur OK pour valider la vérification.","dash.markFeatured":"Mettre en avant","dash.unfeature":"Retirer la mise en avant",
     "stats.missions":"missions réalisées","stats.pros":"professionnels vérifiés","stats.rating":"note moyenne","launch.banner":"Plateforme en lancement — les premiers professionnels inscrits bénéficient d'une visibilité prioritaire.","seaCarousel.caption":"Vos plus belles sorties en mer commencent ici",
     "card.available":"Disponible","card.unavailable":"Indisponible","card.unavailableOn":"Indisponible le","card.viewProfile":"Voir le profil",
     "how.title":"Comment ça marche ?",
@@ -1049,7 +1049,7 @@ const I18N = {
     "card.experience":"year(s) of experience","card.newOnPlatform":"New on SkipperNow","card.priceOnRequest":"On request","card.priceNote":"price confirmed before booking","card.priceFrom":"From","card.verifiedBadge":"Verified",
     "card.superSkipperBadge":"Super Skipper","card.recommendedProviderBadge":"Recommended provider",
     "boatDetail.verifiedBadge":"Verified boat",
-    "dash.verifyBoat":"Verify boat","dash.unverifyBoat":"Remove verification","dash.markFeatured":"Feature","dash.unfeature":"Remove feature",
+    "dash.verifyBoat":"Verify boat","dash.unverifyBoat":"Remove verification","dash.boatVerifyChecklist":"Before verifying this boat, confirm you have checked:\n\n✓ Photos are real and recent\n✓ The boat's insurance is up to date\n✓ Details (model, year, capacity) are consistent\n\nClick OK to confirm verification.","dash.markFeatured":"Feature","dash.unfeature":"Remove feature",
     "stats.missions":"jobs completed","stats.pros":"verified professionals","stats.rating":"average rating","launch.banner":"Platform launching now — early professionals get priority visibility.","seaCarousel.caption":"Your best days at sea start here",
     "card.available":"Available","card.unavailable":"Unavailable","card.unavailableOn":"Unavailable on","card.viewProfile":"View profile",
     "how.title":"How does it work?",
@@ -1209,7 +1209,7 @@ const I18N = {
     "card.experience":"año(s) de experiencia","card.newOnPlatform":"Nuevo en SkipperNow","card.priceOnRequest":"A consultar","card.priceNote":"precio confirmado antes de la reserva","card.priceFrom":"Desde","card.verifiedBadge":"Verificado",
     "card.superSkipperBadge":"Super Skipper","card.recommendedProviderBadge":"Prestador recomendado",
     "boatDetail.verifiedBadge":"Barco verificado",
-    "dash.verifyBoat":"Verificar barco","dash.unverifyBoat":"Quitar verificación","dash.markFeatured":"Destacar","dash.unfeature":"Quitar destacado",
+    "dash.verifyBoat":"Verificar barco","dash.unverifyBoat":"Quitar verificación","dash.boatVerifyChecklist":"Antes de verificar este barco, confirma que has comprobado:\n\n✓ Las fotos son reales y recientes\n✓ El seguro del barco está en vigor\n✓ Los datos (modelo, año, capacidad) son coherentes\n\nHaz clic en OK para confirmar la verificación.","dash.markFeatured":"Destacar","dash.unfeature":"Quitar destacado",
     "stats.missions":"servicios realizados","stats.pros":"profesionales verificados","stats.rating":"valoración media","launch.banner":"Plataforma en lanzamiento — los primeros profesionales inscritos obtienen visibilidad prioritaria.","seaCarousel.caption":"Tus mejores salidas al mar empiezan aquí",
     "card.available":"Disponible","card.unavailable":"No disponible","card.unavailableOn":"No disponible el","card.viewProfile":"Ver perfil",
     "how.title":"¿Cómo funciona?",
@@ -1387,6 +1387,9 @@ function featuredBadgeHtml(p){
   if(!p?.featured) return "";
   const key = p.role === "skipper" ? "card.superSkipperBadge" : "card.recommendedProviderBadge";
   return ` <span class="verified-badge" style="background:#fff4d6;color:#8a6d1a">⭐ ${esc(t(key))}</span>`;
+}
+function verifiedBoatBadgeHtml(){
+  return ` <span class="ig-badge" title="${esc(t("boatDetail.verifiedBadge"))}"><svg width="16" height="16" viewBox="0 0 24 24" role="img" aria-label="${esc(t("boatDetail.verifiedBadge"))}"><circle cx="12" cy="12" r="12" fill="#3897f0"/><path d="M9.5 12.8l-2-2-1.4 1.4L9.5 15.6l7.4-7.4-1.4-1.4z" fill="#fff"/></svg></span>`;
 }
 
 const TAB_CONFIG = {
@@ -1824,7 +1827,7 @@ function boatListCardHtml(b){
     </div>
     <div class="boat-list-body">
       <div class="boat-list-top">
-        <h3 style="margin:0">${esc(normalizeBoatTitle(b))}${b.verified ? ` <span class="verified-badge">✓ ${esc(t("boatDetail.verifiedBadge"))}</span>` : ""}</h3>
+        <h3 style="margin:0">${esc(normalizeBoatTitle(b))}${b.verified ? verifiedBoatBadgeHtml() : ""}</h3>
       </div>
       <div class="boat-card-port">📍 ${esc(normalizePlaceLabel(b.home_port))}</div>
       ${b.description ? `<p class="boat-list-desc">${esc(b.description)}</p>` : ""}
@@ -1851,7 +1854,7 @@ function boatCardHtml(b){
       <span class="boat-card-price">${priceLabel}</span>
     </div>
     <div class="boat-card-body">
-      <h3>${esc(normalizeBoatTitle(b))}${b.verified ? ` <span class="verified-badge">✓ ${esc(t("boatDetail.verifiedBadge"))}</span>` : ""}</h3>
+      <h3>${esc(normalizeBoatTitle(b))}${b.verified ? verifiedBoatBadgeHtml() : ""}</h3>
       <div class="boat-card-port">📍 ${esc(normalizePlaceLabel(b.home_port))}</div>
       ${specsLine ? `<div class="boat-card-specs-line">${specsLine}</div>` : ""}
     </div>
@@ -1956,7 +1959,7 @@ window.openBoatDetail = async function(id){
     </div>
     <div style="padding-top:18px">
       <small style="color:var(--muted);font-weight:800;letter-spacing:.05em;text-transform:uppercase;font-size:11px">${esc(t("boatFinder.eyebrow"))}</small>
-      <h2 style="margin:4px 0 6px">${esc(boat.name||"Bateau")}${boat.verified ? ` <span class="verified-badge">✓ ${esc(t("boatDetail.verifiedBadge"))}</span>` : ""}</h2>
+      <h2 style="margin:4px 0 6px">${esc(boat.name||"Bateau")}${boat.verified ? verifiedBoatBadgeHtml() : ""}</h2>
       <div class="boat-card-port" style="margin-bottom:12px">📍 ${esc(boat.home_port||"—")}</div>
       ${boatSpecsLine(boat) ? `<div class="boat-card-specs-line" style="margin-bottom:18px;font-size:14px">${boatSpecsLine(boat)}</div>` : ""}
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px">
@@ -2933,7 +2936,7 @@ function adminBoatCard(b, byId){
     <div class="request-top">
       ${photo ? `<img src="${esc(photo)}" style="width:88px;height:88px;object-fit:cover;border-radius:12px;flex-shrink:0" onclick="window.open('${esc(photo)}','_blank')">` : `<div style="width:88px;height:88px;border-radius:12px;background:var(--mist);display:grid;place-items:center;font-size:28px;flex-shrink:0">⛵</div>`}
       <div>
-        <h3>${esc(b.name||"—")}${b.verified ? ` <span class="verified-badge">✓ ${esc(t("boatDetail.verifiedBadge"))}</span>` : ""}</h3>
+        <h3>${esc(b.name||"—")}${b.verified ? verifiedBoatBadgeHtml() : ""}</h3>
         <div class="muted">${esc(b.model||"")}${b.boat_type?" · "+esc(boatTypeLabel(b.boat_type)):""} · ${esc(b.home_port||"—")}</div>
         <div class="muted">${b.length_m?b.length_m+" m · ":""}${b.capacity?b.capacity+" pers. · ":""}${b.cabins!=null?b.cabins+" cabines · ":""}${b.year_built?b.year_built:""}</div>
         <div class="muted">${esc(t("dash.owner"))}: ${esc(owner?.full_name||"—")} · ${esc(owner?.contact_email||owner?.email||"—")}${b.skipper_included?` · ${esc(t("boatDetail.skipperIncluded"))}`:""}</div>
@@ -2964,6 +2967,7 @@ function bindAdminBoatActions(){
     }catch(err){ alert(err.message); btn.disabled = false; }
   }));
   document.querySelectorAll("[data-verify-boat]").forEach(btn=>btn.addEventListener("click", async ()=>{
+    if(!confirm(t("dash.boatVerifyChecklist"))) return;
     const {error} = await db.from("boats").update({verified:true}).eq("id", btn.dataset.verifyBoat);
     if(error) alert(error.message); else renderAdminPanel("boats");
   }));
