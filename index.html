@@ -48,13 +48,14 @@
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
   --navy:#071d32;--blue:#0d6672;--aqua:#39d1c5;--mist:#eef8f7;--ink:#102b3f;
   --muted:#647784;--line:#dce8e9;--shadow:0 18px 55px rgba(7,29,50,.13);
   --ok:#057554;--ok-bg:#dcf8ef;--warn:#8a5a00;--warn-bg:#fff0cf;--danger:#a22e2e;--danger-bg:#ffe6e6;
   --brass:#b6883a;--brass-light:#e4c581;--paper:#faf7ef;--display:'Fraunces',Georgia,serif;
+  --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
 }
 *{box-sizing:border-box}
 body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--paper)}
@@ -275,6 +276,27 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
 .tile-scroll-card::after{content:"";position:absolute;left:0;right:0;bottom:0;height:56%;background:linear-gradient(0deg,rgba(7,29,50,.72) 0%,rgba(7,29,50,0) 100%)}
 .tile-scroll-card span{position:absolute;left:16px;bottom:14px;z-index:2;color:#fff;font-weight:800;font-size:17px;text-shadow:0 2px 8px rgba(0,0,0,.2)}
 @media(max-width:640px){.tile-scroll-card{flex:0 0 150px;height:190px}.tile-scroll-card span{font-size:15px;left:12px;bottom:10px}}
+
+.logbook{margin-top:56px}
+.logbook-head{display:flex;justify-content:space-between;align-items:end;gap:14px;flex-wrap:wrap;margin-bottom:22px}
+.logbook-head h2{font-family:var(--display);font-weight:600;font-size:30px;letter-spacing:-.005em;margin:0;color:var(--navy)}
+.logbook-head p{margin:6px 0 0;color:var(--muted)}
+.logbook-total{font-family:var(--mono);font-size:12px;color:var(--brass);text-transform:uppercase;letter-spacing:.06em;white-space:nowrap;padding:8px 14px;border:1px dashed var(--brass-light);border-radius:999px}
+.logbook-strip{display:flex;align-items:stretch;overflow-x:auto;padding:6px 2px 18px;-webkit-overflow-scrolling:touch}
+.logbook-strip::-webkit-scrollbar{height:6px}
+.logbook-strip::-webkit-scrollbar-thumb{background:var(--line);border-radius:6px}
+.logbook-port{flex:0 0 208px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px 20px 18px;position:relative;box-shadow:0 8px 22px rgba(16,43,63,.05)}
+.logbook-port-index{font-family:var(--mono);font-size:10.5px;color:var(--brass);letter-spacing:.08em;text-transform:uppercase}
+.logbook-port-name{font-family:var(--display);font-weight:600;font-size:21px;color:var(--navy);margin:6px 0 3px;line-height:1.15}
+.logbook-port-coords{font-family:var(--mono);font-size:11px;letter-spacing:.02em;color:var(--blue);opacity:.85}
+.logbook-port-desc{font-size:13px;color:var(--muted);margin-top:12px;line-height:1.55;min-height:40px}
+.logbook-port-link{display:inline-flex;align-items:center;gap:5px;margin-top:12px;font-size:12.5px;font-weight:800;color:var(--navy);text-decoration:none}
+.logbook-port-link:hover{color:var(--blue)}
+.logbook-leg{flex:0 0 56px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;padding-top:8px}
+.logbook-leg-line{width:100%;height:0;border-top:2px dashed var(--brass-light);position:relative}
+.logbook-leg-line:after{content:"";position:absolute;right:-3px;top:-4px;width:0;height:0;border-top:4px solid transparent;border-bottom:4px solid transparent;border-left:6px solid var(--brass-light)}
+.logbook-leg-nm{font-family:var(--mono);font-size:10px;color:var(--brass);white-space:nowrap;margin-top:7px;letter-spacing:.02em}
+@media(max-width:640px){.logbook-port{flex:0 0 172px;padding:16px 16px 14px}.logbook-port-name{font-size:18px}.logbook-leg{flex:0 0 34px}.logbook-total{font-size:10.5px;padding:6px 11px}}
 .boat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:18px;margin-top:16px}
 .boat-list{display:flex;flex-direction:column;gap:16px;margin-top:16px}
 .boat-list-card{display:flex;gap:16px;border:1px solid var(--line);border-radius:18px;padding:14px;cursor:pointer;transition:.15s;background:#fff}
@@ -528,18 +550,60 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
     </div>
   </section>
 
-  <section class="gallery-section">
-    <div class="section-head">
-      <div><h2 data-i18n="gallery.title">L'expérience SkipperNow</h2><p data-i18n="gallery.subtitle">Des sorties en mer inoubliables, partout dans le monde</p></div>
+  <section class="logbook shell" aria-label="Carnet de bord des ports">
+    <div class="logbook-head">
+      <div><h2>Carnet de bord</h2><p>La Côte d'Azur, port après port — la route que suivent nos skippers</p></div>
+      <div class="logbook-total">~50&nbsp;nm · Saint-Tropez → Monaco</div>
     </div>
-    <div class="tile-scroll-row" id="experienceCarousel">
-      <button type="button" class="tile-scroll-card" style="background-image:url('https://images.unsplash.com/photo-1753029995957-f973b37fd0e3?auto=format&fit=crop&w=500&q=80')"><span>Maldives</span></button>
-      <button type="button" class="tile-scroll-card" style="background-image:url('https://images.unsplash.com/photo-1652842183703-47c2f7bb8c3c?auto=format&fit=crop&w=500&q=80')"><span>Bora Bora</span></button>
-      <button type="button" class="tile-scroll-card" style="background-image:url('https://images.unsplash.com/photo-1616763866684-b215941fae5e?auto=format&fit=crop&w=500&q=80')"><span>Grèce</span></button>
-      <button type="button" class="tile-scroll-card" style="background-image:url('https://images.unsplash.com/photo-1647857620788-a71c457e7c37?auto=format&fit=crop&w=500&q=80')"><span>Sardaigne</span></button>
-      <button type="button" class="tile-scroll-card" style="background-image:url('https://images.unsplash.com/photo-1672939113816-046a685e8546?auto=format&fit=crop&w=500&q=80')"><span>Ibiza</span></button>
+    <div class="logbook-strip">
+      <div class="logbook-port">
+        <div class="logbook-port-index">Port 01</div>
+        <div class="logbook-port-name">Saint-Tropez</div>
+        <div class="logbook-port-coords">43°16'22"N 6°38'19"E</div>
+        <p class="logbook-port-desc">Golfe emblématique, mouillages prisés et arrivées de yachts toute l'année.</p>
+        <a class="logbook-port-link" href="/skipper-saint-tropez/">Voir les skippers →</a>
+      </div>
+      <div class="logbook-leg"><div class="logbook-leg-line"></div><div class="logbook-leg-nm">26&nbsp;nm</div></div>
+      <div class="logbook-port">
+        <div class="logbook-port-index">Port 02</div>
+        <div class="logbook-port-name">Golfe-Juan</div>
+        <div class="logbook-port-coords">43°33'42"N 7°04'30"E</div>
+        <p class="logbook-port-desc">Vieux-port abrité, point de départ idéal pour les îles de Lérins.</p>
+        <a class="logbook-port-link" href="/skipper-cannes/">Voir les skippers →</a>
+      </div>
+      <div class="logbook-leg"><div class="logbook-leg-line"></div><div class="logbook-leg-nm">3&nbsp;nm</div></div>
+      <div class="logbook-port">
+        <div class="logbook-port-index">Port 03</div>
+        <div class="logbook-port-name">Cannes</div>
+        <div class="logbook-port-coords">43°33'05"N 7°01'03"E</div>
+        <p class="logbook-port-desc">Port de référence de la plateforme — le plus grand vivier de skippers.</p>
+        <a class="logbook-port-link" href="/skipper-cannes/">Voir les skippers →</a>
+      </div>
+      <div class="logbook-leg"><div class="logbook-leg-line"></div><div class="logbook-leg-nm">5&nbsp;nm</div></div>
+      <div class="logbook-port">
+        <div class="logbook-port-index">Port 04</div>
+        <div class="logbook-port-name">Antibes</div>
+        <div class="logbook-port-coords">43°35'07"N 7°07'41"E</div>
+        <p class="logbook-port-desc">Port Vauban, l'un des plus grands ports de plaisance d'Europe.</p>
+        <a class="logbook-port-link" href="/skipper-antibes/">Voir les skippers →</a>
+      </div>
+      <div class="logbook-leg"><div class="logbook-leg-line"></div><div class="logbook-leg-nm">9&nbsp;nm</div></div>
+      <div class="logbook-port">
+        <div class="logbook-port-index">Port 05</div>
+        <div class="logbook-port-name">Nice</div>
+        <div class="logbook-port-coords">43°41'36"N 7°17'04"E</div>
+        <p class="logbook-port-desc">Port Lympia, au pied de la ville, accès direct à la baie des Anges.</p>
+        <a class="logbook-port-link" href="/skipper-nice/">Voir les skippers →</a>
+      </div>
+      <div class="logbook-leg"><div class="logbook-leg-line"></div><div class="logbook-leg-nm">7&nbsp;nm</div></div>
+      <div class="logbook-port">
+        <div class="logbook-port-index">Port 06</div>
+        <div class="logbook-port-name">Monaco</div>
+        <div class="logbook-port-coords">43°44'05"N 7°25'31"E</div>
+        <p class="logbook-port-desc">Port Hercule, escale de prestige au cœur de la Principauté.</p>
+        <a class="logbook-port-link" href="/skipper-monaco/">Voir les skippers →</a>
+      </div>
     </div>
-    </section>
   </section>
 
   <section class="join">
