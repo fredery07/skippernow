@@ -349,15 +349,45 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
 .back-link{display:inline-flex;align-items:center;gap:6px;border:0;background:none;color:var(--blue);font-weight:800;cursor:pointer;padding:8px 0;margin-bottom:14px;font-size:14.5px}
 .back-link:hover{text-decoration:underline}
 
-.dash-shell{display:grid;grid-template-columns:210px 1fr;gap:20px}
-.dash-side{background:var(--navy);color:#fff;border-radius:20px;padding:18px;height:max-content;position:sticky;top:14px}
-.dash-side button{width:100%;text-align:left;border:0;background:transparent;color:#d9e7e8;border-radius:11px;padding:11px 12px;font-weight:800;cursor:pointer;margin:2px 0;font-size:14px}
+.dash-shell{display:grid;grid-template-columns:222px 1fr;gap:20px}
+.dash-side{background:var(--navy);color:#fff;border-radius:20px;padding:16px 14px;height:max-content;position:sticky;top:14px}
+.dash-side-group{margin:14px 0 6px;padding:0 10px;font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.4)}
+.dash-side-group:first-child{margin-top:2px}
+.dash-side button{width:100%;text-align:left;border:0;background:transparent;color:#d9e7e8;border-radius:11px;padding:10px 12px;font-weight:700;cursor:pointer;margin:2px 0;font-size:13.5px;display:flex;align-items:center;gap:10px}
+.dash-side button svg{flex:0 0 auto;opacity:.75}
 .dash-side button.active,.dash-side button:hover{background:rgba(57,209,197,.16);color:#fff}
+.dash-side button.active svg{opacity:1}
+.dash-side button.logout-btn{margin-top:12px;color:#f3b9a6}
 .dash-main{min-width:0}
-.kpi-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:18px}
-.kpi{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px}
-.kpi span{display:block;color:var(--muted);font-size:11px;font-weight:800;text-transform:uppercase}
-.kpi strong{display:block;font-size:26px;margin-top:6px}
+.kpi-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:22px}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;border-left:4px solid var(--line);position:relative}
+.kpi-top{display:flex;align-items:center;justify-content:space-between}
+.kpi span{display:block;color:var(--muted);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.02em}
+.kpi strong{display:block;font-size:26px;margin-top:6px;color:var(--ink)}
+.kpi-icon{width:28px;height:28px;border-radius:9px;display:flex;align-items:center;justify-content:center;background:var(--mist);color:var(--blue);flex:0 0 auto}
+.kpi-trend{font-size:11px;font-weight:800;margin-top:6px;display:flex;align-items:center;gap:4px}
+.kpi--good{border-left-color:#2f9e6b}
+.kpi--good .kpi-icon{background:#e6f6ee;color:#2f9e6b}
+.kpi--good .kpi-trend{color:#2f9e6b}
+.kpi--warn{border-left-color:var(--brass)}
+.kpi--warn .kpi-icon{background:#fbf1de;color:var(--brass)}
+.kpi--warn .kpi-trend{color:var(--brass)}
+.kpi--danger{border-left-color:#c0392b}
+.kpi--danger .kpi-icon{background:#fbe8e5;color:#c0392b}
+.kpi--danger strong{color:#c0392b}
+.kpi--danger .kpi-trend{color:#c0392b}
+.priority-queue{background:#fff;border:1px solid var(--line);border-radius:18px;padding:4px 0;margin-bottom:24px;overflow:hidden}
+.priority-queue-head{display:flex;align-items:center;gap:8px;padding:14px 18px 10px;font-weight:800;font-size:14px;color:var(--navy)}
+.priority-queue-head .count-pill{background:#c0392b;color:#fff;font-size:11px;font-weight:800;border-radius:999px;padding:2px 9px}
+.priority-row{display:flex;align-items:center;gap:12px;padding:12px 18px;border-top:1px solid var(--line)}
+.priority-row .pr-dot{width:8px;height:8px;border-radius:50%;flex:0 0 auto}
+.priority-row .pr-dot.danger{background:#c0392b}
+.priority-row .pr-dot.warn{background:var(--brass)}
+.priority-row .pr-body{flex:1;min-width:0}
+.priority-row .pr-title{font-weight:700;font-size:13.5px;color:var(--ink)}
+.priority-row .pr-sub{font-size:12px;color:var(--muted);margin-top:1px}
+.priority-empty{padding:22px 18px;color:var(--muted);font-size:13.5px;text-align:center}
+.dash-section-title{display:flex;align-items:center;gap:8px;font-weight:800;font-size:15px;color:var(--navy);margin:0 0 12px}
 .panel{display:none}
 .panel.active{display:block}
 .request-card{border:1px solid var(--line);border-radius:16px;padding:15px;margin-bottom:12px;background:#fff}
@@ -1041,6 +1071,7 @@ const I18N = {
     "dash.noRequests":"Aucune demande pour le moment.","dash.noBoats":"Aucun bateau ajouté pour le moment.","dash.noMissions":"Aucune mission pour le moment.",
     "dash.kpiUsers":"Utilisateurs","dash.kpiPending":"À valider","dash.kpiMissions":"Missions","dash.kpiRevenue":"Commission cumulée",
     "dash.navPayments":"Encaissements","dash.navPayouts":"Virements","dash.navRefunds":"Remboursements","dash.navCommissions":"Commissions","dash.navBoatsAdmin":"Bateaux",
+    "dash.groupActivity":"Activité","dash.groupFinance":"Finance","dash.groupAccounts":"Comptes","dash.priorityQueueTitle":"À traiter en priorité","dash.priorityEmpty":"Rien d'urgent — tout est à jour.","dash.priorityValidation":"Profil à valider","dash.priorityDispute":"Litige ouvert","dash.priorityPayout":"Virement à préparer","dash.kpiTrendWeek":"sur 7 jours",
     "dash.navDisputes":"Litiges","dash.noDisputes":"Aucun litige en cours.","dash.resolveDispute":"Marquer comme résolu","dash.disputeOpen":"Litige ouvert","dash.disputeResolved":"Litige résolu",
     "dash.reportProblem":"Signaler un problème","dash.viewInvoice":"Voir la facture",
     "dispute.reasonPrompt":"Décris le problème rencontré",
@@ -1202,6 +1233,7 @@ const I18N = {
     "dash.noRequests":"No requests yet.","dash.noBoats":"No boats added yet.","dash.noMissions":"No jobs yet.",
     "dash.kpiUsers":"Users","dash.kpiPending":"To approve","dash.kpiMissions":"Jobs","dash.kpiRevenue":"Total commission",
     "dash.navPayments":"Payments","dash.navPayouts":"Payouts","dash.navRefunds":"Refunds","dash.navCommissions":"Commissions","dash.navBoatsAdmin":"Boats",
+    "dash.groupActivity":"Activity","dash.groupFinance":"Finance","dash.groupAccounts":"Accounts","dash.priorityQueueTitle":"Needs attention","dash.priorityEmpty":"Nothing urgent — all caught up.","dash.priorityValidation":"Profile to verify","dash.priorityDispute":"Open dispute","dash.priorityPayout":"Payout to prepare","dash.kpiTrendWeek":"last 7 days",
     "dash.navDisputes":"Disputes","dash.noDisputes":"No open disputes.","dash.resolveDispute":"Mark as resolved","dash.disputeOpen":"Dispute open","dash.disputeResolved":"Dispute resolved",
     "dash.reportProblem":"Report a problem","dash.viewInvoice":"View invoice",
     "dispute.reasonPrompt":"Describe the problem",
@@ -1362,6 +1394,7 @@ const I18N = {
     "dash.noRequests":"Todavía no hay solicitudes.","dash.noBoats":"Todavía no hay barcos añadidos.","dash.noMissions":"Todavía no hay servicios.",
     "dash.kpiUsers":"Usuarios","dash.kpiPending":"Por validar","dash.kpiMissions":"Servicios","dash.kpiRevenue":"Comisión acumulada",
     "dash.navPayments":"Cobros","dash.navPayouts":"Transferencias","dash.navRefunds":"Reembolsos","dash.navCommissions":"Comisiones","dash.navBoatsAdmin":"Barcos",
+    "dash.groupActivity":"Actividad","dash.groupFinance":"Finanzas","dash.groupAccounts":"Cuentas","dash.priorityQueueTitle":"Requiere atención","dash.priorityEmpty":"Nada urgente — todo al día.","dash.priorityValidation":"Perfil por validar","dash.priorityDispute":"Disputa abierta","dash.priorityPayout":"Transferencia por preparar","dash.kpiTrendWeek":"últimos 7 días",
     "dash.navDisputes":"Disputas","dash.noDisputes":"No hay disputas abiertas.","dash.resolveDispute":"Marcar como resuelto","dash.disputeOpen":"Disputa abierta","dash.disputeResolved":"Disputa resuelta",
     "dash.reportProblem":"Reportar un problema","dash.viewInvoice":"Ver factura",
     "dispute.reasonPrompt":"Describe el problema",
@@ -2489,11 +2522,31 @@ async function openDashboard(){
   openModal("dashboardModal");
 }
 
+const NAV_ICONS = {
+  overview:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 19h16M8 19V9m4 10V5m4 14v-7"/></svg>',
+  missions:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v5m0 13v-5M4.2 6.2l3.5 3.5m8.6 8.6l3.5 3.5M2 12h5m10 0h5M4.2 17.8l3.5-3.5m8.6-8.6l3.5-3.5"/></svg>',
+  messages:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>',
+  payments:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>',
+  payouts:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>',
+  refunds:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 109-9 9.75 9.75 0 00-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>',
+  disputes:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><path d="M12 9v4M12 17h.01"/></svg>',
+  commissions:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 5L5 19M6.5 9a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM17.5 20a2.5 2.5 0 100-5 2.5 2.5 0 000 5z"/></svg>',
+  users:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>',
+  boats:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20a3 3 0 003 1.5 3 3 0 003-1.5 3 3 0 003 1.5 3 3 0 003-1.5 3 3 0 003 1.5 3 3 0 003-1.5M4 18l-1-6h18l-2 6M6 12V6h9l3 6"/></svg>',
+  requests:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>',
+  support:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
+  profile:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>'
+};
 function dashShell(navItems, activePanel){
+  let lastGroup = null, rows = "";
+  navItems.forEach(n=>{
+    if(n.group && n.group !== lastGroup){ rows += `<div class="dash-side-group">${esc(n.group)}</div>`; lastGroup = n.group; }
+    rows += `<button class="${n.id===activePanel?"active":""}" data-panel="${n.id}">${NAV_ICONS[n.id]||""}<span>${esc(n.label)}</span></button>`;
+  });
   return `<div class="dash-shell">
     <aside class="dash-side">
-      ${navItems.map(n=>`<button class="${n.id===activePanel?"active":""}" data-panel="${n.id}">${esc(n.label)}</button>`).join("")}
-      <button data-panel="__logout">${esc(t("dash.logout"))}</button>
+      ${rows}
+      <button class="logout-btn" data-panel="__logout">${NAV_ICONS.payouts.replace('M12 19V5M5 12l7-7 7 7','M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9')}<span>${esc(t("dash.logout"))}</span></button>
     </aside>
     <div class="dash-main" id="dashMain"></div>
   </div>`;
@@ -2758,16 +2811,16 @@ async function renderProPanel(panel){
 async function renderAdminDashboard(){
   const body = document.querySelector("#dashboardBody");
   body.innerHTML = dashShell([
-    {id:"overview", label:t("dash.navOverview")},
-    {id:"missions", label:t("dash.navMissions")},
-    {id:"messages", label:t("dash.navMessages")},
-    {id:"payments", label:t("dash.navPayments")},
-    {id:"payouts", label:t("dash.navPayouts")},
-    {id:"refunds", label:t("dash.navRefunds")},
-    {id:"disputes", label:t("dash.navDisputes")},
-    {id:"commissions", label:t("dash.navCommissions")},
-    {id:"users", label:t("dash.navUsers")},
-    {id:"boats", label:t("dash.navBoatsAdmin")}
+    {id:"overview", label:t("dash.navOverview"), group:t("dash.groupActivity")},
+    {id:"missions", label:t("dash.navMissions"), group:t("dash.groupActivity")},
+    {id:"messages", label:t("dash.navMessages"), group:t("dash.groupActivity")},
+    {id:"payments", label:t("dash.navPayments"), group:t("dash.groupFinance")},
+    {id:"payouts", label:t("dash.navPayouts"), group:t("dash.groupFinance")},
+    {id:"refunds", label:t("dash.navRefunds"), group:t("dash.groupFinance")},
+    {id:"disputes", label:t("dash.navDisputes"), group:t("dash.groupFinance")},
+    {id:"commissions", label:t("dash.navCommissions"), group:t("dash.groupFinance")},
+    {id:"users", label:t("dash.navUsers"), group:t("dash.groupAccounts")},
+    {id:"boats", label:t("dash.navBoatsAdmin"), group:t("dash.groupAccounts")}
   ], "overview");
   bindDashNav(renderAdminPanel);
   await renderAdminPanel("overview");
@@ -2805,16 +2858,25 @@ async function renderAdminPanel(panel){
   const openDisputes = missions.filter(m => m.dispute_status === "open").length;
 
   if(panel === "overview"){
+    const priorityItems = [
+      ...pending.slice(0,5).map(p=>({type:"validation",level:"warn",title:p.full_name||"—",sub:t("dash.priorityValidation")+" · "+(p.role==="skipper"?t("account.roleSkipper"):t("account.roleProvider")),id:p.id})),
+      ...missions.filter(m=>m.dispute_status==="open").slice(0,5).map(m=>({type:"dispute",level:"danger",title:(byId[m.skipper_id]?.full_name||byId[m.client_id]?.full_name||"—"),sub:t("dash.priorityDispute")+" · "+money(m.amount_cents||0),id:m.id})),
+      ...toPayout.slice(0,5).map(m=>({type:"payout",level:"warn",title:byId[m.skipper_id]?.full_name||"—",sub:t("dash.priorityPayout")+" · "+money(m.amount_cents||0),id:m.id}))
+    ];
     main.innerHTML = `
-      <div class="kpi-grid">
-        <div class="kpi"><span>${esc(t("dash.kpiActiveMissions"))}</span><strong>${activeMissions.length}</strong></div>
-        <div class="kpi"><span>${esc(t("dash.kpiHeldFunds"))}</span><strong>${money(heldFunds)}</strong></div>
-        <div class="kpi"><span>${esc(t("dash.kpiToPayout"))}</span><strong>${toPayout.length}</strong></div>
-        <div class="kpi"><span>${esc(t("dash.kpiPlatformRevenue"))}</span><strong>${money(revenue)}</strong></div>
-        <div class="kpi"><span>${esc(t("dash.kpiNewUsers"))}</span><strong>${newUsers}</strong></div>
-        <div class="kpi"><span>${esc(t("dash.kpiOpenDisputes"))}</span><strong>${openDisputes}</strong></div>
+      <div class="priority-queue">
+        <div class="priority-queue-head">${NAV_ICONS.disputes}${esc(t("dash.priorityQueueTitle"))}${priorityItems.length?`<span class="count-pill">${priorityItems.length}</span>`:""}</div>
+        ${priorityItems.length ? priorityItems.map(it=>`<div class="priority-row"><span class="pr-dot ${it.level}"></span><div class="pr-body"><div class="pr-title">${esc(it.title)}</div><div class="pr-sub">${esc(it.sub)}</div></div></div>`).join("") : `<div class="priority-empty">${esc(t("dash.priorityEmpty"))}</div>`}
       </div>
-      <h3>${esc(t("dash.navValidations"))} (${pending.length})</h3>
+      <div class="kpi-grid">
+        <div class="kpi"><div class="kpi-top"><span>${esc(t("dash.kpiActiveMissions"))}</span><span class="kpi-icon">${NAV_ICONS.missions}</span></div><strong>${activeMissions.length}</strong></div>
+        <div class="kpi"><div class="kpi-top"><span>${esc(t("dash.kpiHeldFunds"))}</span><span class="kpi-icon">${NAV_ICONS.payments}</span></div><strong>${money(heldFunds)}</strong></div>
+        <div class="kpi ${toPayout.length?'kpi--warn':''}"><div class="kpi-top"><span>${esc(t("dash.kpiToPayout"))}</span><span class="kpi-icon">${NAV_ICONS.payouts}</span></div><strong>${toPayout.length}</strong></div>
+        <div class="kpi kpi--good"><div class="kpi-top"><span>${esc(t("dash.kpiPlatformRevenue"))}</span><span class="kpi-icon">${NAV_ICONS.commissions}</span></div><strong>${money(revenue)}</strong></div>
+        <div class="kpi"><div class="kpi-top"><span>${esc(t("dash.kpiNewUsers"))}</span><span class="kpi-icon">${NAV_ICONS.users}</span></div><strong>${newUsers}</strong><div class="kpi-trend">${esc(t("dash.kpiTrendWeek"))}</div></div>
+        <div class="kpi ${openDisputes?'kpi--danger':''}"><div class="kpi-top"><span>${esc(t("dash.kpiOpenDisputes"))}</span><span class="kpi-icon">${NAV_ICONS.disputes}</span></div><strong>${openDisputes}</strong></div>
+      </div>
+      <div class="dash-section-title">${NAV_ICONS.users}${esc(t("dash.navValidations"))} (${pending.length})</div>
       ${pending.length ? pending.map(p=>profileCard(p)).join("") : `<div class="empty-note">—</div>`}`;
     bindProfileActions();
   }else if(panel === "missions"){
