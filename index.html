@@ -389,6 +389,9 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
 .priority-empty{padding:22px 18px;color:var(--muted);font-size:13.5px;text-align:center}
 .dash-section-title{display:flex;align-items:center;gap:8px;font-weight:800;font-size:15px;color:var(--navy);margin:0 0 12px}
 .port-admin-card{display:flex;align-items:center;justify-content:space-between;gap:14px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:8px}
+.port-admin-reorder{display:flex;flex-direction:column;gap:4px;flex:0 0 auto}
+.port-admin-reorder .link{padding:1px 8px;font-size:13px;border:1px solid var(--line);border-radius:8px}
+.port-admin-reorder .link:disabled{opacity:.3;cursor:default}
 .port-admin-card--inactive{opacity:.55}
 .port-admin-name{font-weight:800;font-size:14.5px;color:var(--navy)}
 .port-admin-badge{font-size:10.5px;color:#c0392b;font-weight:800;margin-left:6px}
@@ -402,6 +405,9 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
 .hero-admin-thumb--big{aspect-ratio:16/7;border-radius:12px}
 .hero-admin-body{padding:9px 11px}
 .hero-admin-order{font-family:var(--mono);font-size:10.5px;color:var(--blue)}
+.hero-admin-reorder{display:flex;gap:6px;margin-top:6px}
+.hero-admin-reorder .link{padding:2px 8px;font-size:13px;border:1px solid var(--line);border-radius:8px}
+.hero-admin-reorder .link:disabled{opacity:.3;cursor:default}
 .hero-admin-actions{display:flex;gap:10px;margin-top:6px}
 .hero-admin-actions .link{padding:0;font-size:12px}
 .panel{display:none}
@@ -2957,8 +2963,12 @@ function renderContentPanel(ports){
   const p = editing || {};
   main.innerHTML = `
     <div class="dash-section-title">${NAV_ICONS.content}${esc(t("dash.navContent"))} (${ports.length})</div>
-    ${ports.length ? ports.map(pt=>`
+    ${ports.length ? ports.map((pt,idx)=>`
       <div class="port-admin-card${pt.active?"":" port-admin-card--inactive"}">
+        <div class="port-admin-reorder">
+          <button type="button" class="link" data-move-port="${pt.id}" data-dir="up" ${idx===0?"disabled":""} title="↑">↑</button>
+          <button type="button" class="link" data-move-port="${pt.id}" data-dir="down" ${idx===ports.length-1?"disabled":""} title="↓">↓</button>
+        </div>
         <div class="port-admin-main">
           <div class="port-admin-name">${esc(pt.name)} ${pt.active?"":`<span class="port-admin-badge">${esc(t("dash.contentPortActive"))} ✕</span>`}</div>
           <div class="port-admin-coords">${Number(pt.lat).toFixed(4)}, ${Number(pt.lng).toFixed(4)} · #${pt.order_index}</div>
@@ -2989,6 +2999,19 @@ function renderContentPanel(ports){
     </form>`;
   document.querySelectorAll("[data-edit-port]").forEach(btn=>{
     btn.addEventListener("click", ()=>{ editingPortId = btn.dataset.editPort; renderAdminPanel("content"); });
+  });
+  document.querySelectorAll("[data-move-port]").forEach(btn=>{
+    btn.addEventListener("click", async ()=>{
+      const id = btn.dataset.movePort;
+      const dir = btn.dataset.dir;
+      const idx = ports.findIndex(p=>String(p.id)===String(id));
+      const swapIdx = dir==="up" ? idx-1 : idx+1;
+      if(swapIdx < 0 || swapIdx >= ports.length) return;
+      const a = ports[idx], b = ports[swapIdx];
+      const {error:e1} = await db.from("ports").update({order_index:b.order_index}).eq("id", a.id);
+      const {error:e2} = await db.from("ports").update({order_index:a.order_index}).eq("id", b.id);
+      if(e1||e2) alert((e1||e2).message); else await renderAdminPanel("content");
+    });
   });
   document.querySelectorAll("[data-delete-port]").forEach(btn=>{
     btn.addEventListener("click", async ()=>{
@@ -3026,11 +3049,15 @@ function renderHeroPanel(slides){
   main.innerHTML = `
     <div class="dash-section-title">${NAV_ICONS.hero}${esc(t("dash.navHero"))} (${slides.length})</div>
     <div class="hero-admin-grid">
-      ${slides.length ? slides.map(sl=>`
+      ${slides.length ? slides.map((sl,idx)=>`
         <div class="hero-admin-card${sl.active?"":" hero-admin-card--inactive"}">
           <div class="hero-admin-thumb" style="background-image:url('${esc(sl.image_url)}')"></div>
           <div class="hero-admin-body">
             <div class="hero-admin-order">#${sl.order_index}${sl.active?"":` · ${esc(t("dash.heroActive"))} ✕`}</div>
+            <div class="hero-admin-reorder">
+              <button type="button" class="link" data-move-hero="${sl.id}" data-dir="up" ${idx===0?"disabled":""} title="↑">↑</button>
+              <button type="button" class="link" data-move-hero="${sl.id}" data-dir="down" ${idx===slides.length-1?"disabled":""} title="↓">↓</button>
+            </div>
             <div class="hero-admin-actions">
               <button type="button" class="link" data-edit-hero="${sl.id}">${esc(t("dash.contentEdit"))}</button>
               <button type="button" class="link" style="color:#c0392b" data-delete-hero="${sl.id}">${esc(t("dash.contentDelete"))}</button>
@@ -3061,6 +3088,19 @@ function renderHeroPanel(slides){
     </form>`;
   document.querySelectorAll("[data-edit-hero]").forEach(btn=>{
     btn.addEventListener("click", ()=>{ editingHeroId = btn.dataset.editHero; renderAdminPanel("hero"); });
+  });
+  document.querySelectorAll("[data-move-hero]").forEach(btn=>{
+    btn.addEventListener("click", async ()=>{
+      const id = btn.dataset.moveHero;
+      const dir = btn.dataset.dir;
+      const idx = slides.findIndex(s=>String(s.id)===String(id));
+      const swapIdx = dir==="up" ? idx-1 : idx+1;
+      if(swapIdx < 0 || swapIdx >= slides.length) return;
+      const a = slides[idx], b = slides[swapIdx];
+      const {error:e1} = await db.from("hero_slides").update({order_index:b.order_index}).eq("id", a.id);
+      const {error:e2} = await db.from("hero_slides").update({order_index:a.order_index}).eq("id", b.id);
+      if(e1||e2) alert((e1||e2).message); else await renderAdminPanel("hero");
+    });
   });
   document.querySelectorAll("[data-delete-hero]").forEach(btn=>{
     btn.addEventListener("click", async ()=>{
