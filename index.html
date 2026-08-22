@@ -331,6 +331,7 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
 .join-filler-inner button{width:100%}
 .boat-card-photo .no-photo{position:absolute;inset:0;display:grid;place-items:center;font-size:34px;color:rgba(255,255,255,.85)}
 .boat-card-price{position:absolute;top:12px;right:12px;background:var(--navy);color:var(--brass-light);font-family:var(--mono);font-weight:700;padding:6px 12px;border-radius:999px;font-size:12.5px;letter-spacing:.01em;box-shadow:0 4px 12px rgba(0,0,0,.2)}
+.boat-card-featured{position:absolute;bottom:12px;left:12px;background:var(--brass);color:#fff;font-weight:800;font-size:11.5px;padding:5px 10px;border-radius:999px;box-shadow:0 4px 10px rgba(0,0,0,.2);z-index:2}
 .boat-card-body{padding:16px}
 .boat-card-body h3{margin:0 0 5px;font-family:var(--display);font-weight:600;font-size:18.5px;letter-spacing:-.005em;color:var(--navy)}
 .boat-card-port{display:flex;align-items:center;gap:5px;color:var(--muted);font-size:13px;margin-bottom:11px}
@@ -960,7 +961,7 @@ const I18N = {
     "results.count.skipper.one":"1 skipper","results.count.skipper.other":"{n} skippers",
     "results.count.day_sailor.one":"1 marin à la journée","results.count.day_sailor.other":"{n} marins à la journée",
     "tabs.skippers":"Skippers","tabs.daySailors":"Marins à la journée","tabs.cleaning":"Prestataires",
-    "card.experience":"an(s) d'expérience","card.newOnPlatform":"Nouveau sur SkipperNow","card.priceOnRequest":"Sur demande","card.priceNote":"tarif confirmé avant réservation","card.priceFrom":"À partir de","card.verifiedBadge":"Vérifié",
+    "card.experience":"an(s) d'expérience","card.newOnPlatform":"Nouveau sur SkipperNow","card.priceOnRequest":"Sur demande","card.priceNote":"tarif confirmé avant réservation","card.priceFrom":"À partir de","card.verifiedBadge":"Vérifié","card.featuredBadge":"Mis en avant",
     "card.superSkipperBadge":"Super Skipper","card.recommendedProviderBadge":"Prestataire recommandé",
     "boatDetail.verifiedBadge":"Bateau vérifié",
     "dash.verifyBoat":"Vérifier le bateau","dash.unverifyBoat":"Retirer la vérification","dash.boatVerifyChecklist":"Avant de vérifier ce bateau, confirmez avoir contrôlé :\n\n✓ Les photos sont réelles et récentes\n✓ L'assurance du bateau est à jour\n✓ Les informations (modèle, année, capacité) sont cohérentes\n\nCliquez sur OK pour valider la vérification.","dash.markFeatured":"Mettre en avant","dash.unfeature":"Retirer la mise en avant",
@@ -1048,7 +1049,7 @@ const I18N = {
     "dash.navPayments":"Encaissements","dash.navPayouts":"Virements","dash.navRefunds":"Remboursements","dash.navCommissions":"Commissions","dash.navBoatsAdmin":"Bateaux",
     "dash.groupActivity":"Activité","dash.groupFinance":"Finance","dash.groupAccounts":"Comptes","dash.priorityQueueTitle":"À traiter en priorité","dash.priorityEmpty":"Rien d'urgent — tout est à jour.","dash.priorityValidation":"Profil à valider","dash.priorityDispute":"Litige ouvert","dash.priorityPayout":"Virement à préparer","dash.kpiTrendWeek":"sur 7 jours",
     "dash.groupContent":"Contenu","dash.navContent":"Ports & destinations","dash.contentAddPort":"Ajouter un port","dash.contentPortName":"Nom du port","dash.contentPortLat":"Latitude","dash.contentPortLng":"Longitude","dash.contentPortDesc":"Description","dash.contentPortOrder":"Ordre d'affichage","dash.contentPortActive":"Visible sur le site","dash.contentSave":"Enregistrer","dash.contentDelete":"Supprimer","dash.contentEdit":"Modifier","dash.contentCancel":"Annuler","dash.contentNoPorts":"Aucun port pour l'instant.","dash.contentSaved":"Enregistré.","dash.contentDeleted":"Port supprimé.","dash.contentConfirmDelete":"Supprimer ce port ? Cette action est définitive.",
-    "dash.navHero":"Photos du carrousel","dash.heroAddSlide":"Ajouter une photo","dash.heroImageUrl":"URL de l'image","dash.heroAlt":"Description (accessibilité)","dash.heroOrder":"Ordre d'affichage","dash.heroActive":"Visible sur le site","dash.heroNoSlides":"Aucune photo pour l'instant.","dash.heroPreview":"Aperçu","dash.heroUploadLabel":"Ou envoyer une photo depuis votre ordinateur","dash.heroUploading":"Envoi en cours...","dash.heroUploaded":"Photo envoyée.","dash.navDestinations":"Destinations phares","dash.destAddTile":"Ajouter une destination","dash.destName":"Nom de la destination","dash.destNoTiles":"Aucune destination pour l'instant.",
+    "dash.navHero":"Photos du carrousel","dash.heroAddSlide":"Ajouter une photo","dash.heroImageUrl":"URL de l'image","dash.heroAlt":"Description (accessibilité)","dash.heroOrder":"Ordre d'affichage","dash.heroActive":"Visible sur le site","dash.heroNoSlides":"Aucune photo pour l'instant.","dash.heroPreview":"Aperçu","dash.heroUploadLabel":"Ou envoyer une photo depuis votre ordinateur","dash.heroUploading":"Envoi en cours...","dash.heroUploaded":"Photo envoyée.","dash.navDestinations":"Destinations phares","dash.destAddTile":"Ajouter une destination","dash.destName":"Nom de la destination","dash.destNoTiles":"Aucune destination pour l'instant.","dash.featuredBadge":"Mis en avant","dash.featuredUntil":"Mis en avant jusqu'au","dash.daysLeft":"jours restants","dash.featureFor":"Mettre en avant...","dash.days":"jours","dash.removeFeatured":"Retirer la mise en avant",
     "dash.navDisputes":"Litiges","dash.noDisputes":"Aucun litige en cours.","dash.resolveDispute":"Marquer comme résolu","dash.disputeOpen":"Litige ouvert","dash.disputeResolved":"Litige résolu",
     "dash.reportProblem":"Signaler un problème","dash.viewInvoice":"Voir la facture",
     "dispute.reasonPrompt":"Décris le problème rencontré",
@@ -1125,7 +1126,7 @@ const I18N = {
     "results.count.skipper.one":"1 skipper","results.count.skipper.other":"{n} skippers",
     "results.count.day_sailor.one":"1 day sailor","results.count.day_sailor.other":"{n} day sailors",
     "tabs.skippers":"Skippers","tabs.daySailors":"Day sailors","tabs.cleaning":"Service providers",
-    "card.experience":"year(s) of experience","card.newOnPlatform":"New on SkipperNow","card.priceOnRequest":"On request","card.priceNote":"price confirmed before booking","card.priceFrom":"From","card.verifiedBadge":"Verified",
+    "card.experience":"year(s) of experience","card.newOnPlatform":"New on SkipperNow","card.priceOnRequest":"On request","card.priceNote":"price confirmed before booking","card.priceFrom":"From","card.verifiedBadge":"Verified","card.featuredBadge":"Featured",
     "card.superSkipperBadge":"Super Skipper","card.recommendedProviderBadge":"Recommended provider",
     "boatDetail.verifiedBadge":"Verified boat",
     "dash.verifyBoat":"Verify boat","dash.unverifyBoat":"Remove verification","dash.boatVerifyChecklist":"Before verifying this boat, confirm you have checked:\n\n✓ Photos are real and recent\n✓ The boat's insurance is up to date\n✓ Details (model, year, capacity) are consistent\n\nClick OK to confirm verification.","dash.markFeatured":"Feature","dash.unfeature":"Remove feature",
@@ -1213,7 +1214,7 @@ const I18N = {
     "dash.navPayments":"Payments","dash.navPayouts":"Payouts","dash.navRefunds":"Refunds","dash.navCommissions":"Commissions","dash.navBoatsAdmin":"Boats",
     "dash.groupActivity":"Activity","dash.groupFinance":"Finance","dash.groupAccounts":"Accounts","dash.priorityQueueTitle":"Needs attention","dash.priorityEmpty":"Nothing urgent — all caught up.","dash.priorityValidation":"Profile to verify","dash.priorityDispute":"Open dispute","dash.priorityPayout":"Payout to prepare","dash.kpiTrendWeek":"last 7 days",
     "dash.groupContent":"Content","dash.navContent":"Ports & destinations","dash.contentAddPort":"Add a port","dash.contentPortName":"Port name","dash.contentPortLat":"Latitude","dash.contentPortLng":"Longitude","dash.contentPortDesc":"Description","dash.contentPortOrder":"Display order","dash.contentPortActive":"Visible on site","dash.contentSave":"Save","dash.contentDelete":"Delete","dash.contentEdit":"Edit","dash.contentCancel":"Cancel","dash.contentNoPorts":"No ports yet.","dash.contentSaved":"Saved.","dash.contentDeleted":"Port deleted.","dash.contentConfirmDelete":"Delete this port? This cannot be undone.",
-    "dash.navHero":"Carousel photos","dash.heroAddSlide":"Add a photo","dash.heroImageUrl":"Image URL","dash.heroAlt":"Description (accessibility)","dash.heroOrder":"Display order","dash.heroActive":"Visible on site","dash.heroNoSlides":"No photos yet.","dash.heroPreview":"Preview","dash.heroUploadLabel":"Or upload a photo from your computer","dash.heroUploading":"Uploading...","dash.heroUploaded":"Photo uploaded.","dash.navDestinations":"Featured destinations","dash.destAddTile":"Add a destination","dash.destName":"Destination name","dash.destNoTiles":"No destinations yet.",
+    "dash.navHero":"Carousel photos","dash.heroAddSlide":"Add a photo","dash.heroImageUrl":"Image URL","dash.heroAlt":"Description (accessibility)","dash.heroOrder":"Display order","dash.heroActive":"Visible on site","dash.heroNoSlides":"No photos yet.","dash.heroPreview":"Preview","dash.heroUploadLabel":"Or upload a photo from your computer","dash.heroUploading":"Uploading...","dash.heroUploaded":"Photo uploaded.","dash.navDestinations":"Featured destinations","dash.destAddTile":"Add a destination","dash.destName":"Destination name","dash.destNoTiles":"No destinations yet.","dash.featuredBadge":"Featured","dash.featuredUntil":"Featured until","dash.daysLeft":"days left","dash.featureFor":"Feature for...","dash.days":"days","dash.removeFeatured":"Remove from featured",
     "dash.navDisputes":"Disputes","dash.noDisputes":"No open disputes.","dash.resolveDispute":"Mark as resolved","dash.disputeOpen":"Dispute open","dash.disputeResolved":"Dispute resolved",
     "dash.reportProblem":"Report a problem","dash.viewInvoice":"View invoice",
     "dispute.reasonPrompt":"Describe the problem",
@@ -1289,7 +1290,7 @@ const I18N = {
     "results.count.skipper.one":"1 skipper","results.count.skipper.other":"{n} skippers",
     "results.count.day_sailor.one":"1 marinero por día","results.count.day_sailor.other":"{n} marineros por día",
     "tabs.skippers":"Skippers","tabs.daySailors":"Marineros por día","tabs.cleaning":"Prestadores",
-    "card.experience":"año(s) de experiencia","card.newOnPlatform":"Nuevo en SkipperNow","card.priceOnRequest":"A consultar","card.priceNote":"precio confirmado antes de la reserva","card.priceFrom":"Desde","card.verifiedBadge":"Verificado",
+    "card.experience":"año(s) de experiencia","card.newOnPlatform":"Nuevo en SkipperNow","card.priceOnRequest":"A consultar","card.priceNote":"precio confirmado antes de la reserva","card.priceFrom":"Desde","card.verifiedBadge":"Verificado","card.featuredBadge":"Destacado",
     "card.superSkipperBadge":"Super Skipper","card.recommendedProviderBadge":"Prestador recomendado",
     "boatDetail.verifiedBadge":"Barco verificado",
     "dash.verifyBoat":"Verificar barco","dash.unverifyBoat":"Quitar verificación","dash.boatVerifyChecklist":"Antes de verificar este barco, confirma que has comprobado:\n\n✓ Las fotos son reales y recientes\n✓ El seguro del barco está en vigor\n✓ Los datos (modelo, año, capacidad) son coherentes\n\nHaz clic en OK para confirmar la verificación.","dash.markFeatured":"Destacar","dash.unfeature":"Quitar destacado",
@@ -1377,7 +1378,7 @@ const I18N = {
     "dash.navPayments":"Cobros","dash.navPayouts":"Transferencias","dash.navRefunds":"Reembolsos","dash.navCommissions":"Comisiones","dash.navBoatsAdmin":"Barcos",
     "dash.groupActivity":"Actividad","dash.groupFinance":"Finanzas","dash.groupAccounts":"Cuentas","dash.priorityQueueTitle":"Requiere atención","dash.priorityEmpty":"Nada urgente — todo al día.","dash.priorityValidation":"Perfil por validar","dash.priorityDispute":"Disputa abierta","dash.priorityPayout":"Transferencia por preparar","dash.kpiTrendWeek":"últimos 7 días",
     "dash.groupContent":"Contenido","dash.navContent":"Puertos y destinos","dash.contentAddPort":"Añadir un puerto","dash.contentPortName":"Nombre del puerto","dash.contentPortLat":"Latitud","dash.contentPortLng":"Longitud","dash.contentPortDesc":"Descripción","dash.contentPortOrder":"Orden de visualización","dash.contentPortActive":"Visible en el sitio","dash.contentSave":"Guardar","dash.contentDelete":"Eliminar","dash.contentEdit":"Editar","dash.contentCancel":"Cancelar","dash.contentNoPorts":"Aún no hay puertos.","dash.contentSaved":"Guardado.","dash.contentDeleted":"Puerto eliminado.","dash.contentConfirmDelete":"¿Eliminar este puerto? Esta acción es definitiva.",
-    "dash.navHero":"Fotos del carrusel","dash.heroAddSlide":"Añadir una foto","dash.heroImageUrl":"URL de la imagen","dash.heroAlt":"Descripción (accesibilidad)","dash.heroOrder":"Orden de visualización","dash.heroActive":"Visible en el sitio","dash.heroNoSlides":"Aún no hay fotos.","dash.heroPreview":"Vista previa","dash.heroUploadLabel":"O subir una foto desde tu ordenador","dash.heroUploading":"Subiendo...","dash.heroUploaded":"Foto subida.","dash.navDestinations":"Destinos destacados","dash.destAddTile":"Añadir un destino","dash.destName":"Nombre del destino","dash.destNoTiles":"Aún no hay destinos.",
+    "dash.navHero":"Fotos del carrusel","dash.heroAddSlide":"Añadir una foto","dash.heroImageUrl":"URL de la imagen","dash.heroAlt":"Descripción (accesibilidad)","dash.heroOrder":"Orden de visualización","dash.heroActive":"Visible en el sitio","dash.heroNoSlides":"Aún no hay fotos.","dash.heroPreview":"Vista previa","dash.heroUploadLabel":"O subir una foto desde tu ordenador","dash.heroUploading":"Subiendo...","dash.heroUploaded":"Foto subida.","dash.navDestinations":"Destinos destacados","dash.destAddTile":"Añadir un destino","dash.destName":"Nombre del destino","dash.destNoTiles":"Aún no hay destinos.","dash.featuredBadge":"Destacado","dash.featuredUntil":"Destacado hasta","dash.daysLeft":"días restantes","dash.featureFor":"Destacar durante...","dash.days":"días","dash.removeFeatured":"Quitar destacado",
     "dash.navDisputes":"Disputas","dash.noDisputes":"No hay disputas abiertas.","dash.resolveDispute":"Marcar como resuelto","dash.disputeOpen":"Disputa abierta","dash.disputeResolved":"Disputa resuelta",
     "dash.reportProblem":"Reportar un problema","dash.viewInvoice":"Ver factura",
     "dispute.reasonPrompt":"Describe el problema",
@@ -1932,11 +1933,13 @@ function boatCardHtml(b){
   else if(half) priceLabel = `${esc(t("card.priceFrom"))} ${money(half*100)}${esc(t("boatDetail.perHalfDaySuffix"))}`;
   const photos = (Array.isArray(b.photo_urls) && b.photo_urls.length ? b.photo_urls : (b.photo_url ? [b.photo_url] : []));
   const chips = boatSpecsChips(b);
+  const isFeaturedNow = b.featured && b.featured_until && new Date(b.featured_until) > new Date();
   return `<article class="boat-card" onclick="openBoatDetail('${b.id}')">
     <div class="boat-card-photo" data-carousel="${b.id}">
       ${photos.length ? photos.map((url,i)=>`<div class="boat-photo-slide ${i===0?"active":""}" style="background-image:url('${esc(url)}')"></div>`).join("") : `<div class="no-photo">⛵</div>`}
       ${photos.length > 1 ? `<div class="boat-card-dots">${photos.map((_,i)=>`<span class="${i===0?"active":""}"></span>`).join("")}</div>` : ""}
       <button type="button" class="boat-card-fav" data-favorite-btn="${b.id}" onclick="toggleBoatFavorite('${b.id}', event)">${isFavoriteBoat(b.id) ? "♥" : "♡"}</button>
+      ${isFeaturedNow ? `<span class="boat-card-featured">★ ${esc(t("card.featuredBadge"))}</span>` : ""}
       <span class="boat-card-price">${priceLabel}</span>
     </div>
     <div class="boat-card-body">
@@ -1969,8 +1972,17 @@ function renderHomeBoatStrip(){
   startBoatCardCarousels();
 }
 async function preloadHomeBoats(){
-  const {data} = await db.from("boats").select("*").order("created_at",{ascending:false}).limit(6);
-  boatCache = data || [];
+  const nowIso = new Date().toISOString();
+  const {data:featuredData} = await db.from("boats").select("*").eq("featured", true).gt("featured_until", nowIso).order("featured_until",{ascending:true}).limit(4);
+  const featured = featuredData || [];
+  let list = featured;
+  if(list.length < 4){
+    const {data:recentData} = await db.from("boats").select("*").order("created_at",{ascending:false}).limit(4 + featured.length);
+    const featuredIds = new Set(featured.map(b=>String(b.id)));
+    const recent = (recentData||[]).filter(b=>!featuredIds.has(String(b.id)));
+    list = featured.concat(recent).slice(0,4);
+  }
+  boatCache = list;
   renderHomeBoatStrip();
 }
 let homeProvidersCache = [];
@@ -3371,20 +3383,32 @@ ${!p.verified ? `<button class="small-btn fill" data-approve="${p.id}">${esc(t("
 function adminBoatCard(b, byId){
   const owner = byId[String(b.client_id)];
   const photo = b.photo_url || (Array.isArray(b.photo_urls) && b.photo_urls[0]) || "";
+  const isFeaturedNow = b.featured && b.featured_until && new Date(b.featured_until) > new Date();
+  const daysLeft = isFeaturedNow ? Math.ceil((new Date(b.featured_until) - new Date())/(1000*60*60*24)) : 0;
   return `<article class="request-card">
     <div class="request-top">
       ${photo ? `<img src="${esc(photo)}" style="width:88px;height:88px;object-fit:cover;border-radius:12px;flex-shrink:0" onclick="window.open('${esc(photo)}','_blank')">` : `<div style="width:88px;height:88px;border-radius:12px;background:var(--mist);display:grid;place-items:center;font-size:28px;flex-shrink:0">⛵</div>`}
       <div>
-        <h3>${esc(b.name||"—")}${b.verified ? verifiedBoatBadgeHtml() : ""}</h3>
+        <h3>${esc(b.name||"—")}${b.verified ? verifiedBoatBadgeHtml() : ""}${isFeaturedNow ? ` <span class="verified-badge" style="background:#fff4d6;color:#8a6d1a">★ ${esc(t("dash.featuredBadge"))}</span>` : ""}</h3>
         <div class="muted">${esc(b.model||"")}${b.boat_type?" · "+esc(boatTypeLabel(b.boat_type)):""} · ${esc(b.home_port||"—")}</div>
         <div class="muted">${b.length_m?b.length_m+" m · ":""}${b.capacity?b.capacity+" pers. · ":""}${b.cabins!=null?b.cabins+" cabines · ":""}${b.year_built?b.year_built:""}</div>
         <div class="muted">${esc(t("dash.owner"))}: ${esc(owner?.full_name||"—")} · ${esc(owner?.contact_email||owner?.email||"—")}${b.skipper_included?` · ${esc(t("boatDetail.skipperIncluded"))}`:""}</div>
         ${b.description ? `<div class="muted" style="margin-top:4px">${esc(b.description)}</div>` : ""}
         ${Array.isArray(b.photo_urls) && b.photo_urls.length > 1 ? `<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">${b.photo_urls.map(u=>`<img src="${esc(u)}" style="width:48px;height:48px;object-fit:cover;border-radius:8px;cursor:pointer" onclick="window.open('${esc(u)}','_blank')">`).join("")}</div>` : ""}
+        ${isFeaturedNow ? `<div class="muted" style="margin-top:6px;color:#8a6d1a;font-weight:700">${esc(t("dash.featuredUntil"))} ${new Date(b.featured_until).toLocaleDateString()} (${daysLeft} ${esc(t("dash.daysLeft"))})</div>` : ""}
       </div>
     </div>
     <div class="request-actions">
       ${b.verified ? `<button class="small-btn" data-unverify-boat="${b.id}">${esc(t("dash.unverifyBoat"))}</button>` : `<button class="small-btn fill" data-verify-boat="${b.id}">${esc(t("dash.verifyBoat"))}</button>`}
+      ${isFeaturedNow
+        ? `<button class="small-btn" data-unfeature-boat="${b.id}">${esc(t("dash.removeFeatured"))}</button>`
+        : `<select class="small-btn" data-feature-days="${b.id}" style="cursor:pointer">
+            <option value="">${esc(t("dash.featureFor"))}</option>
+            <option value="3">3 ${esc(t("dash.days"))}</option>
+            <option value="7">7 ${esc(t("dash.days"))}</option>
+            <option value="14">14 ${esc(t("dash.days"))}</option>
+            <option value="30">30 ${esc(t("dash.days"))}</option>
+          </select>`}
       <button class="small-btn danger" data-delete-boat="${b.id}">${esc(t("dash.delete"))}</button>
     </div>
   </article>`;
@@ -3412,6 +3436,17 @@ function bindAdminBoatActions(){
   }));
   document.querySelectorAll("[data-unverify-boat]").forEach(btn=>btn.addEventListener("click", async ()=>{
     const {error} = await db.from("boats").update({verified:false}).eq("id", btn.dataset.unverifyBoat);
+    if(error) alert(error.message); else renderAdminPanel("boats");
+  }));
+  document.querySelectorAll("[data-feature-days]").forEach(sel=>sel.addEventListener("change", async ()=>{
+    const days = Number(sel.value);
+    if(!days) return;
+    const until = new Date(Date.now() + days*24*60*60*1000).toISOString();
+    const {error} = await db.from("boats").update({featured:true, featured_until:until}).eq("id", sel.dataset.featureDays);
+    if(error) alert(error.message); else renderAdminPanel("boats");
+  }));
+  document.querySelectorAll("[data-unfeature-boat]").forEach(btn=>btn.addEventListener("click", async ()=>{
+    const {error} = await db.from("boats").update({featured:false, featured_until:null}).eq("id", btn.dataset.unfeatureBoat);
     if(error) alert(error.message); else renderAdminPanel("boats");
   }));
 }
