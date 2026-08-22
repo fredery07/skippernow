@@ -395,6 +395,15 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
 .port-admin-coords{font-family:var(--mono);font-size:11px;color:var(--blue);margin-top:2px}
 .port-admin-desc{font-size:12.5px;color:var(--muted);margin-top:4px;max-width:520px}
 .port-admin-actions{display:flex;gap:12px;flex:0 0 auto}
+.hero-admin-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-bottom:6px}
+.hero-admin-card{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fff}
+.hero-admin-card--inactive{opacity:.5}
+.hero-admin-thumb{width:100%;aspect-ratio:16/10;background-size:cover;background-position:center;background-color:var(--mist)}
+.hero-admin-thumb--big{aspect-ratio:16/7;border-radius:12px}
+.hero-admin-body{padding:9px 11px}
+.hero-admin-order{font-family:var(--mono);font-size:10.5px;color:var(--blue)}
+.hero-admin-actions{display:flex;gap:10px;margin-top:6px}
+.hero-admin-actions .link{padding:0;font-size:12px}
 .panel{display:none}
 .panel.active{display:block}
 .request-card{border:1px solid var(--line);border-radius:16px;padding:15px;margin-bottom:12px;background:#fff}
@@ -450,11 +459,13 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
 </header>
 
 <section class="hero">
+<div id="heroBgContainer">
   <div class="hero-bg active" style="background-image:url('https://images.unsplash.com/photo-1719813916544-9a0d82f96a53?auto=format&fit=crop&w=1800&q=80')"></div>
   <div class="hero-bg" style="background-image:url('https://images.unsplash.com/photo-1624184780131-189b96898b84?auto=format&fit=crop&w=1800&q=80')"></div>
   <div class="hero-bg" style="background-image:url('https://images.unsplash.com/photo-1688076164054-a3a7667befc3?auto=format&fit=crop&w=1800&q=80')"></div>
   <div class="hero-bg" style="background-image:url('https://images.unsplash.com/photo-1719813916924-68f2cf5cc795?auto=format&fit=crop&w=1800&q=80')"></div>
   <div class="hero-bg" style="background-image:url('https://images.unsplash.com/photo-1562281302-809108fd533c?auto=format&fit=crop&w=1800&q=80')"></div>
+</div>
   <div class="hero-shade"></div>
   <div class="hero-chart" aria-hidden="true">
     <svg viewBox="0 0 1200 620" preserveAspectRatio="xMidYMid slice">
@@ -1033,6 +1044,7 @@ const I18N = {
     "dash.navPayments":"Encaissements","dash.navPayouts":"Virements","dash.navRefunds":"Remboursements","dash.navCommissions":"Commissions","dash.navBoatsAdmin":"Bateaux",
     "dash.groupActivity":"Activité","dash.groupFinance":"Finance","dash.groupAccounts":"Comptes","dash.priorityQueueTitle":"À traiter en priorité","dash.priorityEmpty":"Rien d'urgent — tout est à jour.","dash.priorityValidation":"Profil à valider","dash.priorityDispute":"Litige ouvert","dash.priorityPayout":"Virement à préparer","dash.kpiTrendWeek":"sur 7 jours",
     "dash.groupContent":"Contenu","dash.navContent":"Ports & destinations","dash.contentAddPort":"Ajouter un port","dash.contentPortName":"Nom du port","dash.contentPortLat":"Latitude","dash.contentPortLng":"Longitude","dash.contentPortDesc":"Description","dash.contentPortOrder":"Ordre d'affichage","dash.contentPortActive":"Visible sur le site","dash.contentSave":"Enregistrer","dash.contentDelete":"Supprimer","dash.contentEdit":"Modifier","dash.contentCancel":"Annuler","dash.contentNoPorts":"Aucun port pour l'instant.","dash.contentSaved":"Enregistré.","dash.contentDeleted":"Port supprimé.","dash.contentConfirmDelete":"Supprimer ce port ? Cette action est définitive.",
+    "dash.navHero":"Photos du carrousel","dash.heroAddSlide":"Ajouter une photo","dash.heroImageUrl":"URL de l'image","dash.heroAlt":"Description (accessibilité)","dash.heroOrder":"Ordre d'affichage","dash.heroActive":"Visible sur le site","dash.heroNoSlides":"Aucune photo pour l'instant.","dash.heroPreview":"Aperçu",
     "dash.navDisputes":"Litiges","dash.noDisputes":"Aucun litige en cours.","dash.resolveDispute":"Marquer comme résolu","dash.disputeOpen":"Litige ouvert","dash.disputeResolved":"Litige résolu",
     "dash.reportProblem":"Signaler un problème","dash.viewInvoice":"Voir la facture",
     "dispute.reasonPrompt":"Décris le problème rencontré",
@@ -1197,6 +1209,7 @@ const I18N = {
     "dash.navPayments":"Payments","dash.navPayouts":"Payouts","dash.navRefunds":"Refunds","dash.navCommissions":"Commissions","dash.navBoatsAdmin":"Boats",
     "dash.groupActivity":"Activity","dash.groupFinance":"Finance","dash.groupAccounts":"Accounts","dash.priorityQueueTitle":"Needs attention","dash.priorityEmpty":"Nothing urgent — all caught up.","dash.priorityValidation":"Profile to verify","dash.priorityDispute":"Open dispute","dash.priorityPayout":"Payout to prepare","dash.kpiTrendWeek":"last 7 days",
     "dash.groupContent":"Content","dash.navContent":"Ports & destinations","dash.contentAddPort":"Add a port","dash.contentPortName":"Port name","dash.contentPortLat":"Latitude","dash.contentPortLng":"Longitude","dash.contentPortDesc":"Description","dash.contentPortOrder":"Display order","dash.contentPortActive":"Visible on site","dash.contentSave":"Save","dash.contentDelete":"Delete","dash.contentEdit":"Edit","dash.contentCancel":"Cancel","dash.contentNoPorts":"No ports yet.","dash.contentSaved":"Saved.","dash.contentDeleted":"Port deleted.","dash.contentConfirmDelete":"Delete this port? This cannot be undone.",
+    "dash.navHero":"Carousel photos","dash.heroAddSlide":"Add a photo","dash.heroImageUrl":"Image URL","dash.heroAlt":"Description (accessibility)","dash.heroOrder":"Display order","dash.heroActive":"Visible on site","dash.heroNoSlides":"No photos yet.","dash.heroPreview":"Preview",
     "dash.navDisputes":"Disputes","dash.noDisputes":"No open disputes.","dash.resolveDispute":"Mark as resolved","dash.disputeOpen":"Dispute open","dash.disputeResolved":"Dispute resolved",
     "dash.reportProblem":"Report a problem","dash.viewInvoice":"View invoice",
     "dispute.reasonPrompt":"Describe the problem",
@@ -1360,6 +1373,7 @@ const I18N = {
     "dash.navPayments":"Cobros","dash.navPayouts":"Transferencias","dash.navRefunds":"Reembolsos","dash.navCommissions":"Comisiones","dash.navBoatsAdmin":"Barcos",
     "dash.groupActivity":"Actividad","dash.groupFinance":"Finanzas","dash.groupAccounts":"Cuentas","dash.priorityQueueTitle":"Requiere atención","dash.priorityEmpty":"Nada urgente — todo al día.","dash.priorityValidation":"Perfil por validar","dash.priorityDispute":"Disputa abierta","dash.priorityPayout":"Transferencia por preparar","dash.kpiTrendWeek":"últimos 7 días",
     "dash.groupContent":"Contenido","dash.navContent":"Puertos y destinos","dash.contentAddPort":"Añadir un puerto","dash.contentPortName":"Nombre del puerto","dash.contentPortLat":"Latitud","dash.contentPortLng":"Longitud","dash.contentPortDesc":"Descripción","dash.contentPortOrder":"Orden de visualización","dash.contentPortActive":"Visible en el sitio","dash.contentSave":"Guardar","dash.contentDelete":"Eliminar","dash.contentEdit":"Editar","dash.contentCancel":"Cancelar","dash.contentNoPorts":"Aún no hay puertos.","dash.contentSaved":"Guardado.","dash.contentDeleted":"Puerto eliminado.","dash.contentConfirmDelete":"¿Eliminar este puerto? Esta acción es definitiva.",
+    "dash.navHero":"Fotos del carrusel","dash.heroAddSlide":"Añadir una foto","dash.heroImageUrl":"URL de la imagen","dash.heroAlt":"Descripción (accesibilidad)","dash.heroOrder":"Orden de visualización","dash.heroActive":"Visible en el sitio","dash.heroNoSlides":"Aún no hay fotos.","dash.heroPreview":"Vista previa",
     "dash.navDisputes":"Disputas","dash.noDisputes":"No hay disputas abiertas.","dash.resolveDispute":"Marcar como resuelto","dash.disputeOpen":"Disputa abierta","dash.disputeResolved":"Disputa resuelta",
     "dash.reportProblem":"Reportar un problema","dash.viewInvoice":"Ver factura",
     "dispute.reasonPrompt":"Describe el problema",
@@ -2501,7 +2515,8 @@ const NAV_ICONS = {
   requests:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>',
   support:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
   profile:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>',
-  content:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></svg>'
+  content:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></svg>',
+  hero:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>'
 };
 function dashShell(navItems, activePanel){
   let lastGroup = null, rows = "";
@@ -2787,19 +2802,21 @@ async function renderAdminDashboard(){
     {id:"commissions", label:t("dash.navCommissions"), group:t("dash.groupFinance")},
     {id:"users", label:t("dash.navUsers"), group:t("dash.groupAccounts")},
     {id:"boats", label:t("dash.navBoatsAdmin"), group:t("dash.groupAccounts")},
-    {id:"content", label:t("dash.navContent"), group:t("dash.groupContent")}
+    {id:"content", label:t("dash.navContent"), group:t("dash.groupContent")},
+    {id:"hero", label:t("dash.navHero"), group:t("dash.groupContent")}
   ], "overview");
   bindDashNav(renderAdminPanel);
   await renderAdminPanel("overview");
 }
 async function loadAdminData(){
-  const [{data:profiles},{data:missions},{data:settings},{data:boats},{data:payouts},{data:ports}] = await Promise.all([
+  const [{data:profiles},{data:missions},{data:settings},{data:boats},{data:payouts},{data:ports},{data:heroSlides}] = await Promise.all([
     db.from("profiles").select("*").order("created_at",{ascending:false}),
     db.from("missions").select("*").order("created_at",{ascending:false}),
     db.from("platform_settings").select("*").eq("id",1).maybeSingle(),
     db.from("boats").select("*").order("created_at",{ascending:false}),
     db.from("payout_details").select("*"),
-    db.from("ports").select("*").order("order_index",{ascending:true})
+    db.from("ports").select("*").order("order_index",{ascending:true}),
+    db.from("hero_slides").select("*").order("order_index",{ascending:true})
   ]);
   return {
     profiles: profiles || [],
@@ -2807,14 +2824,15 @@ async function loadAdminData(){
     settings: settings || {first_commission_percent:15, urgent_fee_cents:1900, support_email:""},
     boats: boats || [],
     payoutsById: Object.fromEntries((payouts||[]).map(p=>[String(p.profile_id), p])),
-    ports: ports || []
+    ports: ports || [],
+    heroSlides: heroSlides || []
   };
 }
 function profilesById(list){ return Object.fromEntries(list.map(p=>[String(p.id), p])); }
 
 async function renderAdminPanel(panel){
   const main = document.querySelector("#dashMain");
-  const {profiles, missions, settings, boats, payoutsById, ports} = await loadAdminData();
+  const {profiles, missions, settings, boats, payoutsById, ports, heroSlides} = await loadAdminData();
   adminProfilesCache = profiles;
   const byId = profilesById(profiles);
   const pending = profiles.filter(p => ["skipper","provider"].includes(p.role) && !p.verified);
@@ -2928,6 +2946,8 @@ document.querySelector("#userSearch").addEventListener("input", (e)=>{
     bindAdminBoatActions();
   }else if(panel === "content"){
     renderContentPanel(ports);
+  }else if(panel === "hero"){
+    renderHeroPanel(heroSlides);
   }
 }
 let editingPortId = null;
@@ -2996,6 +3016,79 @@ function renderContentPanel(ports){
       : await db.from("ports").insert(payload);
     if(error){ msg.textContent = error.message; msg.style.color = "#c0392b"; }
     else { msg.textContent = t("dash.contentSaved"); msg.style.color = ""; editingPortId = null; await renderAdminPanel("content"); }
+  });
+}
+let editingHeroId = null;
+function renderHeroPanel(slides){
+  const main = document.querySelector("#dashMain");
+  const editing = editingHeroId ? slides.find(s=>String(s.id)===String(editingHeroId)) : null;
+  const s = editing || {};
+  main.innerHTML = `
+    <div class="dash-section-title">${NAV_ICONS.hero}${esc(t("dash.navHero"))} (${slides.length})</div>
+    <div class="hero-admin-grid">
+      ${slides.length ? slides.map(sl=>`
+        <div class="hero-admin-card${sl.active?"":" hero-admin-card--inactive"}">
+          <div class="hero-admin-thumb" style="background-image:url('${esc(sl.image_url)}')"></div>
+          <div class="hero-admin-body">
+            <div class="hero-admin-order">#${sl.order_index}${sl.active?"":` · ${esc(t("dash.heroActive"))} ✕`}</div>
+            <div class="hero-admin-actions">
+              <button type="button" class="link" data-edit-hero="${sl.id}">${esc(t("dash.contentEdit"))}</button>
+              <button type="button" class="link" style="color:#c0392b" data-delete-hero="${sl.id}">${esc(t("dash.contentDelete"))}</button>
+            </div>
+          </div>
+        </div>`).join("") : `<div class="empty-note">${esc(t("dash.heroNoSlides"))}</div>`}
+    </div>
+    <h3 style="margin-top:24px">${editing ? esc(t("dash.contentEdit")) : esc(t("dash.heroAddSlide"))}</h3>
+    <form id="heroForm" style="margin-top:14px">
+      <div class="field"><label>${esc(t("dash.heroImageUrl"))}</label><input id="heroUrlInput" type="url" required value="${esc(s.image_url||"")}" placeholder="https://..."></div>
+      <div class="field"><label>${esc(t("dash.heroAlt"))}</label><input id="heroAltInput" value="${esc(s.alt_text||"")}"></div>
+      <div id="heroPreviewBox" style="margin:6px 0 14px;${s.image_url?"":"display:none"}">
+        <div class="hero-admin-thumb hero-admin-thumb--big" id="heroPreviewImg" style="background-image:url('${esc(s.image_url||"")}')"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:end">
+        <div class="field"><label>${esc(t("dash.heroOrder"))}</label><input id="heroOrderInput" type="number" value="${s.order_index??slides.length+1}"></div>
+        <label style="display:flex;align-items:center;gap:8px;font-weight:700;font-size:13.5px;padding-bottom:14px"><input id="heroActiveInput" type="checkbox" ${editing ? (s.active?"checked":"") : "checked"}> ${esc(t("dash.heroActive"))}</label>
+      </div>
+      <div style="display:flex;gap:10px">
+        <button class="primary wide" type="submit">${esc(t("dash.contentSave"))}</button>
+        ${editing ? `<button type="button" class="secondary-light" id="cancelHeroEdit">${esc(t("dash.contentCancel"))}</button>` : ""}
+      </div>
+      <p class="ok-text" id="heroFormMsg"></p>
+    </form>`;
+  document.querySelectorAll("[data-edit-hero]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{ editingHeroId = btn.dataset.editHero; renderAdminPanel("hero"); });
+  });
+  document.querySelectorAll("[data-delete-hero]").forEach(btn=>{
+    btn.addEventListener("click", async ()=>{
+      if(!confirm(t("dash.contentConfirmDelete"))) return;
+      const {error} = await db.from("hero_slides").delete().eq("id", btn.dataset.deleteHero);
+      if(error) alert(error.message); else { editingHeroId = null; await renderAdminPanel("hero"); }
+    });
+  });
+  const cancelBtn = document.querySelector("#cancelHeroEdit");
+  if(cancelBtn) cancelBtn.addEventListener("click", ()=>{ editingHeroId = null; renderAdminPanel("hero"); });
+  const urlInput = document.querySelector("#heroUrlInput");
+  urlInput.addEventListener("input", ()=>{
+    const box = document.querySelector("#heroPreviewBox");
+    const img = document.querySelector("#heroPreviewImg");
+    if(urlInput.value.trim()){ box.style.display = ""; img.style.backgroundImage = `url('${urlInput.value.trim()}')`; }
+    else box.style.display = "none";
+  });
+  document.querySelector("#heroForm").addEventListener("submit", async (e)=>{
+    e.preventDefault();
+    const payload = {
+      image_url: document.querySelector("#heroUrlInput").value.trim(),
+      alt_text: document.querySelector("#heroAltInput").value.trim(),
+      order_index: Number(document.querySelector("#heroOrderInput").value)||0,
+      active: document.querySelector("#heroActiveInput").checked,
+      updated_at: new Date().toISOString()
+    };
+    const msg = document.querySelector("#heroFormMsg");
+    const {error} = editingHeroId
+      ? await db.from("hero_slides").update(payload).eq("id", editingHeroId)
+      : await db.from("hero_slides").insert(payload);
+    if(error){ msg.textContent = error.message; msg.style.color = "#c0392b"; }
+    else { msg.textContent = t("dash.contentSaved"); msg.style.color = ""; editingHeroId = null; await renderAdminPanel("hero"); }
   });
 }
 function adminMissionCard(m, byId, showFinance, payoutsById){
@@ -3807,15 +3900,26 @@ function initFaqBot(){
   input.addEventListener("keydown", e=>{ if(e.key === "Enter") send(); });
 }
 
+let heroCarouselTimer = null;
 function startHeroCarousel(){
+  if(heroCarouselTimer) clearInterval(heroCarouselTimer);
   const slides = [...document.querySelectorAll(".hero-bg")];
   if(slides.length < 2) return;
-  let index = 0;
-  setInterval(()=>{
+  let index = slides.findIndex(s=>s.classList.contains("active"));
+  if(index < 0) index = 0;
+  heroCarouselTimer = setInterval(()=>{
     slides[index].classList.remove("active");
     index = (index + 1) % slides.length;
     slides[index].classList.add("active");
   }, 2500);
+}
+async function loadHeroSlides(){
+  const container = document.querySelector("#heroBgContainer");
+  if(!container) return;
+  const {data, error} = await db.from("hero_slides").select("*").eq("active", true).order("order_index",{ascending:true});
+  if(error || !data || !data.length) return;
+  container.innerHTML = data.map((s,i)=>`<div class="hero-bg${i===0?" active":""}" style="background-image:url('${esc(s.image_url)}')" ${s.alt_text?`role="img" aria-label="${esc(s.alt_text)}"`:""}></div>`).join("");
+  startHeroCarousel();
 }
 
 function slugifyPort(name){
@@ -3891,6 +3995,7 @@ async function loadLogbook(){
   await loadListings();
   await loadTrustStats();
   await loadLogbook();
+  await loadHeroSlides();
 })();
 
 db.auth.onAuthStateChange(async (event, session)=>{
