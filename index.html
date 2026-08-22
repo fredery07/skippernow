@@ -388,6 +388,13 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
 .priority-row .pr-sub{font-size:12px;color:var(--muted);margin-top:1px}
 .priority-empty{padding:22px 18px;color:var(--muted);font-size:13.5px;text-align:center}
 .dash-section-title{display:flex;align-items:center;gap:8px;font-weight:800;font-size:15px;color:var(--navy);margin:0 0 12px}
+.port-admin-card{display:flex;align-items:center;justify-content:space-between;gap:14px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:8px}
+.port-admin-card--inactive{opacity:.55}
+.port-admin-name{font-weight:800;font-size:14.5px;color:var(--navy)}
+.port-admin-badge{font-size:10.5px;color:#c0392b;font-weight:800;margin-left:6px}
+.port-admin-coords{font-family:var(--mono);font-size:11px;color:var(--blue);margin-top:2px}
+.port-admin-desc{font-size:12.5px;color:var(--muted);margin-top:4px;max-width:520px}
+.port-admin-actions{display:flex;gap:12px;flex:0 0 auto}
 .panel{display:none}
 .panel.active{display:block}
 .request-card{border:1px solid var(--line);border-radius:16px;padding:15px;margin-bottom:12px;background:#fff}
@@ -580,60 +587,12 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
     </div>
   </section>
 
-  <section class="logbook shell" aria-label="Carnet de bord des ports">
+  <section class="logbook shell" aria-label="Carnet de bord des ports" id="logbookSection">
     <div class="logbook-head">
-      <div><h2>Carnet de bord</h2><p>La Côte d'Azur, port après port — la route que suivent nos skippers</p></div>
-      <div class="logbook-total">~50&nbsp;nm · Saint-Tropez → Monaco</div>
+      <div><h2 data-i18n="logbook.title">Carnet de bord</h2><p data-i18n="logbook.subtitle">La Côte d'Azur, port après port — la route que suivent nos skippers</p></div>
+      <div class="logbook-total" id="logbookTotal"></div>
     </div>
-    <div class="logbook-strip">
-      <div class="logbook-port">
-        <div class="logbook-port-index">Port 01</div>
-        <div class="logbook-port-name">Saint-Tropez</div>
-        <div class="logbook-port-coords">43°16'22"N 6°38'19"E</div>
-        <p class="logbook-port-desc">Golfe emblématique, mouillages prisés et arrivées de yachts toute l'année.</p>
-        <a class="logbook-port-link" href="/skipper-saint-tropez/">Voir les skippers →</a>
-      </div>
-      <div class="logbook-leg"><div class="logbook-leg-line"></div><div class="logbook-leg-nm">26&nbsp;nm</div></div>
-      <div class="logbook-port">
-        <div class="logbook-port-index">Port 02</div>
-        <div class="logbook-port-name">Golfe-Juan</div>
-        <div class="logbook-port-coords">43°33'42"N 7°04'30"E</div>
-        <p class="logbook-port-desc">Vieux-port abrité, point de départ idéal pour les îles de Lérins.</p>
-        <a class="logbook-port-link" href="/skipper-cannes/">Voir les skippers →</a>
-      </div>
-      <div class="logbook-leg"><div class="logbook-leg-line"></div><div class="logbook-leg-nm">3&nbsp;nm</div></div>
-      <div class="logbook-port">
-        <div class="logbook-port-index">Port 03</div>
-        <div class="logbook-port-name">Cannes</div>
-        <div class="logbook-port-coords">43°33'05"N 7°01'03"E</div>
-        <p class="logbook-port-desc">Port de référence de la plateforme — le plus grand vivier de skippers.</p>
-        <a class="logbook-port-link" href="/skipper-cannes/">Voir les skippers →</a>
-      </div>
-      <div class="logbook-leg"><div class="logbook-leg-line"></div><div class="logbook-leg-nm">5&nbsp;nm</div></div>
-      <div class="logbook-port">
-        <div class="logbook-port-index">Port 04</div>
-        <div class="logbook-port-name">Antibes</div>
-        <div class="logbook-port-coords">43°35'07"N 7°07'41"E</div>
-        <p class="logbook-port-desc">Port Vauban, l'un des plus grands ports de plaisance d'Europe.</p>
-        <a class="logbook-port-link" href="/skipper-antibes/">Voir les skippers →</a>
-      </div>
-      <div class="logbook-leg"><div class="logbook-leg-line"></div><div class="logbook-leg-nm">9&nbsp;nm</div></div>
-      <div class="logbook-port">
-        <div class="logbook-port-index">Port 05</div>
-        <div class="logbook-port-name">Nice</div>
-        <div class="logbook-port-coords">43°41'36"N 7°17'04"E</div>
-        <p class="logbook-port-desc">Port Lympia, au pied de la ville, accès direct à la baie des Anges.</p>
-        <a class="logbook-port-link" href="/skipper-nice/">Voir les skippers →</a>
-      </div>
-      <div class="logbook-leg"><div class="logbook-leg-line"></div><div class="logbook-leg-nm">7&nbsp;nm</div></div>
-      <div class="logbook-port">
-        <div class="logbook-port-index">Port 06</div>
-        <div class="logbook-port-name">Monaco</div>
-        <div class="logbook-port-coords">43°44'05"N 7°25'31"E</div>
-        <p class="logbook-port-desc">Port Hercule, escale de prestige au cœur de la Principauté.</p>
-        <a class="logbook-port-link" href="/skipper-monaco/">Voir les skippers →</a>
-      </div>
-    </div>
+    <div class="logbook-strip" id="logbookStrip"></div>
   </section>
 
   <section class="join">
@@ -997,6 +956,7 @@ const I18N = {
     "how.step2Title":"Je réserve","how.step2Text":"Envoyez votre demande. Le professionnel vous propose son prix.",
     "how.step3Title":"Je paie en sécurité","how.step3Text":"Le paiement est sécurisé et libéré après validation de la mission.",
     "gallery.title":"L'expérience SkipperNow","gallery.subtitle":"Des sorties en mer inoubliables, partout dans le monde",
+    "logbook.title":"Carnet de bord","logbook.subtitle":"La Côte d'Azur, port après port — la route que suivent nos skippers","logbook.seeSkippers":"Voir les skippers →","logbook.nm":"nm",
     "join.title":"Rejoindre SkipperNow",
     "join.ownerTitle":"Propriétaire","join.ownerText":"Ajoutez votre bateau et proposez-le à la location.","join.ownerCta":"Ajouter mon bateau",
     "join.skipperTitle":"Skipper","join.skipperText":"Créez votre profil et recevez des demandes de mission.","join.skipperCta":"Devenir skipper",
@@ -1072,6 +1032,7 @@ const I18N = {
     "dash.kpiUsers":"Utilisateurs","dash.kpiPending":"À valider","dash.kpiMissions":"Missions","dash.kpiRevenue":"Commission cumulée",
     "dash.navPayments":"Encaissements","dash.navPayouts":"Virements","dash.navRefunds":"Remboursements","dash.navCommissions":"Commissions","dash.navBoatsAdmin":"Bateaux",
     "dash.groupActivity":"Activité","dash.groupFinance":"Finance","dash.groupAccounts":"Comptes","dash.priorityQueueTitle":"À traiter en priorité","dash.priorityEmpty":"Rien d'urgent — tout est à jour.","dash.priorityValidation":"Profil à valider","dash.priorityDispute":"Litige ouvert","dash.priorityPayout":"Virement à préparer","dash.kpiTrendWeek":"sur 7 jours",
+    "dash.groupContent":"Contenu","dash.navContent":"Ports & destinations","dash.contentAddPort":"Ajouter un port","dash.contentPortName":"Nom du port","dash.contentPortLat":"Latitude","dash.contentPortLng":"Longitude","dash.contentPortDesc":"Description","dash.contentPortOrder":"Ordre d'affichage","dash.contentPortActive":"Visible sur le site","dash.contentSave":"Enregistrer","dash.contentDelete":"Supprimer","dash.contentEdit":"Modifier","dash.contentCancel":"Annuler","dash.contentNoPorts":"Aucun port pour l'instant.","dash.contentSaved":"Enregistré.","dash.contentDeleted":"Port supprimé.","dash.contentConfirmDelete":"Supprimer ce port ? Cette action est définitive.",
     "dash.navDisputes":"Litiges","dash.noDisputes":"Aucun litige en cours.","dash.resolveDispute":"Marquer comme résolu","dash.disputeOpen":"Litige ouvert","dash.disputeResolved":"Litige résolu",
     "dash.reportProblem":"Signaler un problème","dash.viewInvoice":"Voir la facture",
     "dispute.reasonPrompt":"Décris le problème rencontré",
@@ -1159,6 +1120,7 @@ const I18N = {
     "how.step2Title":"I book","how.step2Text":"Send your request. The professional will propose a price.",
     "how.step3Title":"I pay securely","how.step3Text":"Payment is secured and released once the job is approved.",
     "gallery.title":"The SkipperNow experience","gallery.subtitle":"Unforgettable days at sea, anywhere in the world",
+    "logbook.title":"Logbook","logbook.subtitle":"The French Riviera, port by port — the route our skippers follow","logbook.seeSkippers":"See skippers →","logbook.nm":"nm",
     "join.title":"Join SkipperNow",
     "join.ownerTitle":"Owner","join.ownerText":"Add your boat and offer it for rent.","join.ownerCta":"Add my boat",
     "join.skipperTitle":"Skipper","join.skipperText":"Create your profile and receive job requests.","join.skipperCta":"Become a skipper",
@@ -1234,6 +1196,7 @@ const I18N = {
     "dash.kpiUsers":"Users","dash.kpiPending":"To approve","dash.kpiMissions":"Jobs","dash.kpiRevenue":"Total commission",
     "dash.navPayments":"Payments","dash.navPayouts":"Payouts","dash.navRefunds":"Refunds","dash.navCommissions":"Commissions","dash.navBoatsAdmin":"Boats",
     "dash.groupActivity":"Activity","dash.groupFinance":"Finance","dash.groupAccounts":"Accounts","dash.priorityQueueTitle":"Needs attention","dash.priorityEmpty":"Nothing urgent — all caught up.","dash.priorityValidation":"Profile to verify","dash.priorityDispute":"Open dispute","dash.priorityPayout":"Payout to prepare","dash.kpiTrendWeek":"last 7 days",
+    "dash.groupContent":"Content","dash.navContent":"Ports & destinations","dash.contentAddPort":"Add a port","dash.contentPortName":"Port name","dash.contentPortLat":"Latitude","dash.contentPortLng":"Longitude","dash.contentPortDesc":"Description","dash.contentPortOrder":"Display order","dash.contentPortActive":"Visible on site","dash.contentSave":"Save","dash.contentDelete":"Delete","dash.contentEdit":"Edit","dash.contentCancel":"Cancel","dash.contentNoPorts":"No ports yet.","dash.contentSaved":"Saved.","dash.contentDeleted":"Port deleted.","dash.contentConfirmDelete":"Delete this port? This cannot be undone.",
     "dash.navDisputes":"Disputes","dash.noDisputes":"No open disputes.","dash.resolveDispute":"Mark as resolved","dash.disputeOpen":"Dispute open","dash.disputeResolved":"Dispute resolved",
     "dash.reportProblem":"Report a problem","dash.viewInvoice":"View invoice",
     "dispute.reasonPrompt":"Describe the problem",
@@ -1320,6 +1283,7 @@ const I18N = {
     "how.step2Title":"Reservo","how.step2Text":"Envía tu solicitud. El profesional te propondrá un precio.",
     "how.step3Title":"Pago de forma segura","how.step3Text":"El pago está protegido y se libera tras validar el servicio.",
     "gallery.title":"La experiencia SkipperNow","gallery.subtitle":"Salidas al mar inolvidables, en cualquier parte del mundo",
+    "logbook.title":"Cuaderno de bitácora","logbook.subtitle":"La Costa Azul, puerto a puerto — la ruta que siguen nuestros skippers","logbook.seeSkippers":"Ver skippers →","logbook.nm":"nm",
     "join.title":"Únete a SkipperNow",
     "join.ownerTitle":"Propietario","join.ownerText":"Añade tu barco y ofrécelo en alquiler.","join.ownerCta":"Añadir mi barco",
     "join.skipperTitle":"Skipper","join.skipperText":"Crea tu perfil y recibe solicitudes de servicio.","join.skipperCta":"Ser skipper",
@@ -1395,6 +1359,7 @@ const I18N = {
     "dash.kpiUsers":"Usuarios","dash.kpiPending":"Por validar","dash.kpiMissions":"Servicios","dash.kpiRevenue":"Comisión acumulada",
     "dash.navPayments":"Cobros","dash.navPayouts":"Transferencias","dash.navRefunds":"Reembolsos","dash.navCommissions":"Comisiones","dash.navBoatsAdmin":"Barcos",
     "dash.groupActivity":"Actividad","dash.groupFinance":"Finanzas","dash.groupAccounts":"Cuentas","dash.priorityQueueTitle":"Requiere atención","dash.priorityEmpty":"Nada urgente — todo al día.","dash.priorityValidation":"Perfil por validar","dash.priorityDispute":"Disputa abierta","dash.priorityPayout":"Transferencia por preparar","dash.kpiTrendWeek":"últimos 7 días",
+    "dash.groupContent":"Contenido","dash.navContent":"Puertos y destinos","dash.contentAddPort":"Añadir un puerto","dash.contentPortName":"Nombre del puerto","dash.contentPortLat":"Latitud","dash.contentPortLng":"Longitud","dash.contentPortDesc":"Descripción","dash.contentPortOrder":"Orden de visualización","dash.contentPortActive":"Visible en el sitio","dash.contentSave":"Guardar","dash.contentDelete":"Eliminar","dash.contentEdit":"Editar","dash.contentCancel":"Cancelar","dash.contentNoPorts":"Aún no hay puertos.","dash.contentSaved":"Guardado.","dash.contentDeleted":"Puerto eliminado.","dash.contentConfirmDelete":"¿Eliminar este puerto? Esta acción es definitiva.",
     "dash.navDisputes":"Disputas","dash.noDisputes":"No hay disputas abiertas.","dash.resolveDispute":"Marcar como resuelto","dash.disputeOpen":"Disputa abierta","dash.disputeResolved":"Disputa resuelta",
     "dash.reportProblem":"Reportar un problema","dash.viewInvoice":"Ver factura",
     "dispute.reasonPrompt":"Describe el problema",
@@ -2535,7 +2500,8 @@ const NAV_ICONS = {
   boats:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20a3 3 0 003 1.5 3 3 0 003-1.5 3 3 0 003 1.5 3 3 0 003-1.5 3 3 0 003 1.5 3 3 0 003-1.5M4 18l-1-6h18l-2 6M6 12V6h9l3 6"/></svg>',
   requests:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>',
   support:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
-  profile:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>'
+  profile:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>',
+  content:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></svg>'
 };
 function dashShell(navItems, activePanel){
   let lastGroup = null, rows = "";
@@ -2820,32 +2786,35 @@ async function renderAdminDashboard(){
     {id:"disputes", label:t("dash.navDisputes"), group:t("dash.groupFinance")},
     {id:"commissions", label:t("dash.navCommissions"), group:t("dash.groupFinance")},
     {id:"users", label:t("dash.navUsers"), group:t("dash.groupAccounts")},
-    {id:"boats", label:t("dash.navBoatsAdmin"), group:t("dash.groupAccounts")}
+    {id:"boats", label:t("dash.navBoatsAdmin"), group:t("dash.groupAccounts")},
+    {id:"content", label:t("dash.navContent"), group:t("dash.groupContent")}
   ], "overview");
   bindDashNav(renderAdminPanel);
   await renderAdminPanel("overview");
 }
 async function loadAdminData(){
-  const [{data:profiles},{data:missions},{data:settings},{data:boats},{data:payouts}] = await Promise.all([
+  const [{data:profiles},{data:missions},{data:settings},{data:boats},{data:payouts},{data:ports}] = await Promise.all([
     db.from("profiles").select("*").order("created_at",{ascending:false}),
     db.from("missions").select("*").order("created_at",{ascending:false}),
     db.from("platform_settings").select("*").eq("id",1).maybeSingle(),
     db.from("boats").select("*").order("created_at",{ascending:false}),
-    db.from("payout_details").select("*")
+    db.from("payout_details").select("*"),
+    db.from("ports").select("*").order("order_index",{ascending:true})
   ]);
   return {
     profiles: profiles || [],
     missions: missions || [],
     settings: settings || {first_commission_percent:15, urgent_fee_cents:1900, support_email:""},
     boats: boats || [],
-    payoutsById: Object.fromEntries((payouts||[]).map(p=>[String(p.profile_id), p]))
+    payoutsById: Object.fromEntries((payouts||[]).map(p=>[String(p.profile_id), p])),
+    ports: ports || []
   };
 }
 function profilesById(list){ return Object.fromEntries(list.map(p=>[String(p.id), p])); }
 
 async function renderAdminPanel(panel){
   const main = document.querySelector("#dashMain");
-  const {profiles, missions, settings, boats, payoutsById} = await loadAdminData();
+  const {profiles, missions, settings, boats, payoutsById, ports} = await loadAdminData();
   adminProfilesCache = profiles;
   const byId = profilesById(profiles);
   const pending = profiles.filter(p => ["skipper","provider"].includes(p.role) && !p.verified);
@@ -2957,7 +2926,77 @@ document.querySelector("#userSearch").addEventListener("input", (e)=>{
     const clearBtn = document.querySelector("#clearBoatsFilter");
     if(clearBtn) clearBtn.addEventListener("click", (e)=>{ e.preventDefault(); adminBoatsFilterOwnerId = null; renderAdminPanel("boats"); });
     bindAdminBoatActions();
+  }else if(panel === "content"){
+    renderContentPanel(ports);
   }
+}
+let editingPortId = null;
+function renderContentPanel(ports){
+  const main = document.querySelector("#dashMain");
+  const editing = editingPortId ? ports.find(p=>String(p.id)===String(editingPortId)) : null;
+  const p = editing || {};
+  main.innerHTML = `
+    <div class="dash-section-title">${NAV_ICONS.content}${esc(t("dash.navContent"))} (${ports.length})</div>
+    ${ports.length ? ports.map(pt=>`
+      <div class="port-admin-card${pt.active?"":" port-admin-card--inactive"}">
+        <div class="port-admin-main">
+          <div class="port-admin-name">${esc(pt.name)} ${pt.active?"":`<span class="port-admin-badge">${esc(t("dash.contentPortActive"))} ✕</span>`}</div>
+          <div class="port-admin-coords">${Number(pt.lat).toFixed(4)}, ${Number(pt.lng).toFixed(4)} · #${pt.order_index}</div>
+          ${pt.description ? `<div class="port-admin-desc">${esc(pt.description)}</div>` : ""}
+        </div>
+        <div class="port-admin-actions">
+          <button type="button" class="link" data-edit-port="${pt.id}">${esc(t("dash.contentEdit"))}</button>
+          <button type="button" class="link" style="color:#c0392b" data-delete-port="${pt.id}">${esc(t("dash.contentDelete"))}</button>
+        </div>
+      </div>`).join("") : `<div class="empty-note">${esc(t("dash.contentNoPorts"))}</div>`}
+    <h3 style="margin-top:24px">${editing ? esc(t("dash.contentEdit")) : esc(t("dash.contentAddPort"))}</h3>
+    <form id="portForm" style="margin-top:14px">
+      <div class="field"><label>${esc(t("dash.contentPortName"))}</label><input id="portNameInput" required value="${esc(p.name||"")}"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="field"><label>${esc(t("dash.contentPortLat"))}</label><input id="portLatInput" type="number" step="0.0001" required value="${p.lat??""}"></div>
+        <div class="field"><label>${esc(t("dash.contentPortLng"))}</label><input id="portLngInput" type="number" step="0.0001" required value="${p.lng??""}"></div>
+      </div>
+      <div class="field"><label>${esc(t("dash.contentPortDesc"))}</label><textarea id="portDescInput" rows="2">${esc(p.description||"")}</textarea></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:end">
+        <div class="field"><label>${esc(t("dash.contentPortOrder"))}</label><input id="portOrderInput" type="number" value="${p.order_index??ports.length+1}"></div>
+        <label style="display:flex;align-items:center;gap:8px;font-weight:700;font-size:13.5px;padding-bottom:14px"><input id="portActiveInput" type="checkbox" ${editing ? (p.active?"checked":"") : "checked"}> ${esc(t("dash.contentPortActive"))}</label>
+      </div>
+      <div style="display:flex;gap:10px">
+        <button class="primary wide" type="submit">${esc(t("dash.contentSave"))}</button>
+        ${editing ? `<button type="button" class="secondary-light" id="cancelPortEdit">${esc(t("dash.contentCancel"))}</button>` : ""}
+      </div>
+      <p class="ok-text" id="portFormMsg"></p>
+    </form>`;
+  document.querySelectorAll("[data-edit-port]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{ editingPortId = btn.dataset.editPort; renderAdminPanel("content"); });
+  });
+  document.querySelectorAll("[data-delete-port]").forEach(btn=>{
+    btn.addEventListener("click", async ()=>{
+      if(!confirm(t("dash.contentConfirmDelete"))) return;
+      const {error} = await db.from("ports").delete().eq("id", btn.dataset.deletePort);
+      if(error) alert(error.message); else { editingPortId = null; await renderAdminPanel("content"); }
+    });
+  });
+  const cancelBtn = document.querySelector("#cancelPortEdit");
+  if(cancelBtn) cancelBtn.addEventListener("click", ()=>{ editingPortId = null; renderAdminPanel("content"); });
+  document.querySelector("#portForm").addEventListener("submit", async (e)=>{
+    e.preventDefault();
+    const payload = {
+      name: document.querySelector("#portNameInput").value.trim(),
+      lat: Number(document.querySelector("#portLatInput").value),
+      lng: Number(document.querySelector("#portLngInput").value),
+      description: document.querySelector("#portDescInput").value.trim(),
+      order_index: Number(document.querySelector("#portOrderInput").value)||0,
+      active: document.querySelector("#portActiveInput").checked,
+      updated_at: new Date().toISOString()
+    };
+    const msg = document.querySelector("#portFormMsg");
+    const {error} = editingPortId
+      ? await db.from("ports").update(payload).eq("id", editingPortId)
+      : await db.from("ports").insert(payload);
+    if(error){ msg.textContent = error.message; msg.style.color = "#c0392b"; }
+    else { msg.textContent = t("dash.contentSaved"); msg.style.color = ""; editingPortId = null; await renderAdminPanel("content"); }
+  });
 }
 function adminMissionCard(m, byId, showFinance, payoutsById){
   const client = byId[String(m.client_id)];
@@ -3779,6 +3818,57 @@ function startHeroCarousel(){
   }, 2500);
 }
 
+function slugifyPort(name){
+  return (name||"").toLowerCase()
+    .normalize("NFD").replace(/[\u0300-\u036f]/g,"")
+    .replace(/[^a-z0-9]+/g,"-").replace(/(^-|-$)/g,"");
+}
+function nmDistance(lat1, lng1, lat2, lng2){
+  const toRad = d => d * Math.PI / 180;
+  const dLat = toRad(lat2-lat1), dLng = toRad(lng2-lng1);
+  const avgLatCos = Math.cos(toRad((lat1+lat2)/2));
+  const latNm = dLat * 3440.065;
+  const lngNm = dLng * avgLatCos * 3440.065;
+  return Math.sqrt(latNm*latNm + lngNm*lngNm);
+}
+function ddToDms(deg, isLat){
+  const dir = isLat ? (deg>=0?"N":"S") : (deg>=0?"E":"W");
+  const abs = Math.abs(deg);
+  const d = Math.floor(abs);
+  const mFull = (abs-d)*60;
+  const m = Math.floor(mFull);
+  const s = Math.round((mFull-m)*60);
+  return `${d}°${String(m).padStart(2,"0")}'${String(s).padStart(2,"0")}"${dir}`;
+}
+async function loadLogbook(){
+  const section = document.querySelector("#logbookSection");
+  if(!section) return;
+  const {data, error} = await db.from("ports").select("*").eq("active", true).order("order_index",{ascending:true});
+  const ports = (data && !error) ? data : [];
+  if(!ports.length){ section.style.display = "none"; return; }
+  const strip = document.querySelector("#logbookStrip");
+  const totalEl = document.querySelector("#logbookTotal");
+  let totalNm = 0;
+  let html = "";
+  ports.forEach((p, i)=>{
+    html += `<div class="logbook-port">
+      <div class="logbook-port-index">Port ${String(i+1).padStart(2,"0")}</div>
+      <div class="logbook-port-name">${esc(p.name)}</div>
+      <div class="logbook-port-coords">${ddToDms(p.lat,true)} ${ddToDms(p.lng,false)}</div>
+      ${p.description ? `<p class="logbook-port-desc">${esc(p.description)}</p>` : ""}
+      <a class="logbook-port-link" href="/skipper-${slugifyPort(p.name)}/">${esc(t("logbook.seeSkippers"))}</a>
+    </div>`;
+    if(i < ports.length-1){
+      const next = ports[i+1];
+      const leg = nmDistance(p.lat, p.lng, next.lat, next.lng);
+      totalNm += leg;
+      html += `<div class="logbook-leg"><div class="logbook-leg-line"></div><div class="logbook-leg-nm">${Math.round(leg)}&nbsp;${esc(t("logbook.nm"))}</div></div>`;
+    }
+  });
+  strip.innerHTML = html;
+  totalEl.textContent = `~${Math.round(totalNm)}\u00A0${t("logbook.nm").toUpperCase()} · ${ports[0].name.toUpperCase()} → ${ports[ports.length-1].name.toUpperCase()}`;
+}
+
 (async function init(){
   applyStaticTranslations();
   startHeroCarousel();
@@ -3800,6 +3890,7 @@ function startHeroCarousel(){
   await preloadHomeBoats();
   await loadListings();
   await loadTrustStats();
+  await loadLogbook();
 })();
 
 db.auth.onAuthStateChange(async (event, session)=>{
