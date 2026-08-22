@@ -298,6 +298,10 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
 .logbook-leg-nm{font-family:var(--mono);font-size:10px;color:var(--brass);white-space:nowrap;margin-top:7px;letter-spacing:.02em}
 @media(max-width:640px){.logbook-port{flex:0 0 172px;padding:16px 16px 14px}.logbook-port-name{font-size:18px}.logbook-leg{flex:0 0 34px}.logbook-total{font-size:10.5px;padding:6px 11px}}
 .boat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:18px;margin-top:16px}
+.boat-grid--single{grid-template-columns:1fr}
+.boat-grid--single .boat-card{display:grid;grid-template-columns:1.1fr 1fr}
+.boat-grid--single .boat-card-photo{height:100%;min-height:220px}
+@media(max-width:640px){.boat-grid--single .boat-card{grid-template-columns:1fr}}
 .boat-list{display:flex;flex-direction:column;gap:16px;margin-top:16px}
 .boat-list-card{display:flex;gap:16px;border:1px solid var(--line);border-radius:18px;padding:14px;cursor:pointer;transition:.15s;background:#fff}
 .boat-list-card:hover{border-color:var(--aqua);box-shadow:0 10px 26px rgba(16,43,63,.08)}
@@ -310,6 +314,7 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
 .boat-card{background:#fff;border:1px solid var(--line);border-radius:20px;overflow:hidden;box-shadow:0 8px 24px rgba(16,43,63,.07);cursor:pointer;transition:.2s}
 .boat-card:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
 .boat-card-photo{height:170px;background:linear-gradient(135deg,#173b51,#3f9c9a);background-size:cover;background-position:center;position:relative}
+.boat-card-photo::after{content:"";position:absolute;left:0;right:0;bottom:0;height:46%;background:linear-gradient(0deg,rgba(7,29,50,.55) 0%,rgba(7,29,50,0) 100%);pointer-events:none}
 .provider-spotlight{height:190px;border-radius:16px;background:linear-gradient(135deg,#173b51,#3f9c9a);background-size:cover;background-position:center;position:relative;transition:opacity .25s ease}
 .provider-spotlight-badge{position:absolute;top:12px;left:12px;background:rgba(255,255,255,.94);color:var(--ok);font-weight:800;font-size:12px;padding:5px 10px;border-radius:20px;box-shadow:0 4px 10px rgba(0,0,0,.15)}
 .provider-spotlight-rating{position:absolute;bottom:12px;right:12px;background:rgba(7,29,50,.72);color:#ffce54;font-weight:800;font-size:13px;padding:5px 10px;border-radius:20px}
@@ -325,13 +330,14 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
 .join-filler-inner p{margin:0 0 14px}
 .join-filler-inner button{width:100%}
 .boat-card-photo .no-photo{position:absolute;inset:0;display:grid;place-items:center;font-size:34px;color:rgba(255,255,255,.85)}
-.boat-card-price{position:absolute;top:12px;right:12px;background:#fff;color:var(--navy);font-weight:900;padding:6px 12px;border-radius:999px;font-size:13px;box-shadow:0 4px 12px rgba(0,0,0,.18)}
+.boat-card-price{position:absolute;top:12px;right:12px;background:var(--navy);color:var(--brass-light);font-family:var(--mono);font-weight:700;padding:6px 12px;border-radius:999px;font-size:12.5px;letter-spacing:.01em;box-shadow:0 4px 12px rgba(0,0,0,.2)}
 .boat-card-body{padding:16px}
-.boat-card-body h3{margin:0 0 4px;font-size:17px;letter-spacing:-.01em}
-.boat-card-port{display:flex;align-items:center;gap:5px;color:var(--muted);font-size:13px;margin-bottom:10px}
-.boat-card-specs{display:flex;gap:8px;flex-wrap:wrap}
-.boat-card-specs span{background:var(--mist);color:var(--blue);font-size:12px;font-weight:750;padding:5px 9px;border-radius:8px}
-.boat-card-specs-line{color:var(--muted);font-size:12.5px;line-height:1.4}
+.boat-card-body h3{margin:0 0 5px;font-family:var(--display);font-weight:600;font-size:18.5px;letter-spacing:-.005em;color:var(--navy)}
+.boat-card-port{display:flex;align-items:center;gap:5px;color:var(--muted);font-size:13px;margin-bottom:11px}
+.boat-card-specs{display:flex;gap:6px;flex-wrap:wrap}
+.boat-card-specs span{background:var(--mist);color:var(--blue);font-size:11.5px;font-weight:750;padding:4px 9px;border-radius:999px}
+.boat-card-specs-line{display:flex;gap:6px;flex-wrap:wrap}
+.boat-card-specs-line .spec-chip{background:var(--mist);color:var(--blue);font-size:11.5px;font-weight:750;padding:4px 9px;border-radius:999px;white-space:nowrap}
 .boat-card-fav{position:absolute;top:12px;left:12px;background:rgba(255,255,255,.92);border:0;width:32px;height:32px;border-radius:50%;font-size:16px;color:#c0392b;cursor:pointer;display:grid;place-items:center;box-shadow:0 4px 10px rgba(0,0,0,.15)}
 .boat-photo-slide{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity .5s ease}
 .boat-photo-slide.active{opacity:1}
@@ -1478,7 +1484,7 @@ function featuredBadgeHtml(p){
   return ` <span class="verified-badge" style="background:#fff4d6;color:#8a6d1a">⭐ ${esc(t(key))}</span>`;
 }
 function verifiedBoatBadgeHtml(){
-  return ` <span class="ig-badge" title="${esc(t("boatDetail.verifiedBadge"))}"><svg width="16" height="16" viewBox="0 0 24 24" role="img" aria-label="${esc(t("boatDetail.verifiedBadge"))}"><circle cx="12" cy="12" r="12" fill="#3897f0"/><path d="M9.5 12.8l-2-2-1.4 1.4L9.5 15.6l7.4-7.4-1.4-1.4z" fill="#fff"/></svg></span>`;
+  return ` <span class="verified-badge" title="${esc(t("boatDetail.verifiedBadge"))}">✓ ${esc(t("boatDetail.verifiedBadge"))}</span>`;
 }
 
 const TAB_CONFIG = {
@@ -1865,7 +1871,7 @@ function boatTypeLabel(type){
   const key = type === "motorboat" ? "boatDetail.typeMotorboat" : type === "rib" ? "boatDetail.typeRib" : type === "catamaran" ? "boatDetail.typeCatamaran" : "boatDetail.typeSailboat";
   return t(key);
 }
-function boatSpecsLine(b){
+function boatSpecsChips(b){
   const parts = [];
   if(b.brand) parts.push(esc(b.brand));
   if(b.boat_type) parts.push(boatTypeLabel(b.boat_type));
@@ -1875,7 +1881,10 @@ function boatSpecsLine(b){
   if(b.berths) parts.push(`${b.berths} ${esc(t("boatDetail.berths"))}`);
   if(b.year_built) parts.push(String(b.year_built));
   if(b.length_m) parts.push(`${esc(b.length_m)} m`);
-  return parts.join(" · ");
+  return parts;
+}
+function boatSpecsLine(b){
+  return boatSpecsChips(b).join(" · ");
 }
 function isFavoriteBoat(id){
   try{ return JSON.parse(localStorage.getItem("skippernow-boat-favorites")||"[]").includes(String(id)); }catch(_e){ return false; }
@@ -1934,7 +1943,7 @@ function boatCardHtml(b){
   if(day) priceLabel = `${esc(t("card.priceFrom"))} ${money(day*100)}${esc(t("boatDetail.perDaySuffix"))}`;
   else if(half) priceLabel = `${esc(t("card.priceFrom"))} ${money(half*100)}${esc(t("boatDetail.perHalfDaySuffix"))}`;
   const photos = (Array.isArray(b.photo_urls) && b.photo_urls.length ? b.photo_urls : (b.photo_url ? [b.photo_url] : []));
-  const specsLine = boatSpecsLine(b);
+  const chips = boatSpecsChips(b);
   return `<article class="boat-card" onclick="openBoatDetail('${b.id}')">
     <div class="boat-card-photo" data-carousel="${b.id}">
       ${photos.length ? photos.map((url,i)=>`<div class="boat-photo-slide ${i===0?"active":""}" style="background-image:url('${esc(url)}')"></div>`).join("") : `<div class="no-photo">⛵</div>`}
@@ -1945,7 +1954,7 @@ function boatCardHtml(b){
     <div class="boat-card-body">
       <h3>${esc(normalizeBoatTitle(b))}${b.verified ? verifiedBoatBadgeHtml() : ""}</h3>
       <div class="boat-card-port">📍 ${esc(normalizePlaceLabel(b.home_port))}</div>
-      ${specsLine ? `<div class="boat-card-specs-line">${specsLine}</div>` : ""}
+      ${chips.length ? `<div class="boat-card-specs-line">${chips.map(c=>`<span class="spec-chip">${c}</span>`).join("")}</div>` : ""}
     </div>
   </article>`;
 }
@@ -1968,7 +1977,7 @@ function startBoatCardCarousels(){
 function renderHomeBoatStrip(){
   const box = document.querySelector("#homeBoatStrip");
   const list = boatCache.slice(0,4);
-  box.innerHTML = list.length ? `<div class="boat-grid">${list.map(b=>boatCardHtml(b)).join("")}</div>` : `<div class="empty-note">${esc(t("rental.empty"))}</div>`;
+  box.innerHTML = list.length ? `<div class="boat-grid${list.length===1?" boat-grid--single":""}">${list.map(b=>boatCardHtml(b)).join("")}</div>` : `<div class="empty-note">${esc(t("rental.empty"))}</div>`;
   startBoatCardCarousels();
 }
 async function preloadHomeBoats(){
