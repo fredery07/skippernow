@@ -395,6 +395,23 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
 .priority-row .pr-sub{font-size:12px;color:var(--muted);margin-top:1px}
 .priority-empty{padding:22px 18px;color:var(--muted);font-size:13.5px;text-align:center}
 .dash-section-title{display:flex;align-items:center;gap:8px;font-weight:800;font-size:15px;color:var(--navy);margin:0 0 12px}
+.activity-head{display:flex;justify-content:space-between;align-items:end;gap:14px;flex-wrap:wrap;margin-bottom:6px}
+.activity-head h2{font-family:var(--display);font-weight:600;font-size:28px;letter-spacing:-.005em;margin:0;color:var(--navy)}
+.activity-head p{margin:6px 0 0;color:var(--muted)}
+.activity-filter{font-family:var(--mono);font-size:11.5px;color:var(--blue);background:var(--mist);padding:6px 13px;border-radius:999px;display:none;align-items:center;gap:8px}
+.activity-filter button{border:0;background:none;color:var(--blue);font-weight:800;cursor:pointer;font-size:13px;padding:0;line-height:1}
+.activity-row{display:flex;gap:16px;overflow-x:auto;padding:18px 2px 10px;-webkit-overflow-scrolling:touch}
+.activity-row::-webkit-scrollbar{height:6px}
+.activity-row::-webkit-scrollbar-thumb{background:var(--line);border-radius:6px}
+.activity-card{flex:0 0 280px;border-radius:20px;overflow:hidden;background:#fff;border:1px solid var(--line);box-shadow:0 8px 22px rgba(16,43,63,.06);cursor:pointer;transition:.2s}
+.activity-card:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(16,43,63,.15)}
+.activity-card-photo{height:170px;background-size:cover;background-position:center;position:relative}
+.activity-card-port{position:absolute;top:12px;left:12px;background:rgba(7,29,50,.72);color:var(--brass-light);font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.03em;padding:5px 10px;border-radius:999px;text-transform:uppercase}
+.activity-card-body{padding:16px}
+.activity-card-body h3{font-family:var(--display);font-weight:600;font-size:16.5px;color:var(--navy);margin:0 0 6px;line-height:1.25}
+.activity-card-body p{font-size:12.5px;color:var(--muted);line-height:1.5;margin:0 0 12px}
+.activity-card-cta{font-size:12.5px;font-weight:800;color:var(--blue)}
+@media(max-width:640px){.activity-card{flex:0 0 230px}.activity-card-photo{height:140px}}
 .port-admin-card{display:flex;align-items:center;justify-content:space-between;gap:14px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:8px}
 .port-admin-reorder{display:flex;flex-direction:column;gap:4px;flex:0 0 auto}
 .port-admin-reorder .link{padding:1px 8px;font-size:13px;border:1px solid var(--line);border-radius:8px}
@@ -618,6 +635,14 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
       <div class="join-card"><h3 data-i18n="join.skipperTitle">Skipper</h3><p data-i18n="join.skipperText">Créez votre profil et recevez des demandes de mission.</p><button class="secondary-light" data-role="skipper" data-i18n="join.skipperCta">Devenir skipper</button></div>
       <div class="join-card"><h3 data-i18n="join.providerTitle">Prestataire</h3><p data-i18n="join.providerText">Nettoyage, services à quai, chantier ou marin à la journée.</p><button class="secondary-light" data-role="provider" data-i18n="join.providerCta">Devenir prestataire</button></div>
     </div>
+  </section>
+
+  <section class="shell" style="margin-top:44px" aria-label="Idées de sorties en mer">
+    <div class="activity-head">
+      <div><h2 data-i18n="activities.title">Idées de sorties en mer</h2><p data-i18n="activities.subtitle">Inspirez-vous, port par port</p></div>
+      <div class="activity-filter" id="activityFilterBadge"><span id="activityFilterLabel"></span><button type="button" id="activityFilterClear">✕</button></div>
+    </div>
+    <div class="activity-row" id="activityRow"></div>
   </section>
 
   <section class="shell" style="padding:36px 24px 8px" aria-label="Nos destinations">
@@ -972,7 +997,7 @@ const I18N = {
     "how.step2Title":"Je réserve","how.step2Text":"Envoyez votre demande. Le professionnel vous propose son prix.",
     "how.step3Title":"Je paie en sécurité","how.step3Text":"Le paiement est sécurisé et libéré après validation de la mission.",
     "gallery.title":"L'expérience SkipperNow","gallery.subtitle":"Des sorties en mer inoubliables, partout dans le monde",
-    "logbook.title":"Carnet de bord","logbook.subtitle":"La Côte d'Azur, port après port — la route que suivent nos skippers","logbook.seeSkippers":"Voir les skippers →","logbook.nm":"nm",
+    "logbook.title":"Carnet de bord","logbook.subtitle":"La Côte d'Azur, port après port — la route que suivent nos skippers","logbook.seeSkippers":"Voir les skippers →","logbook.nm":"nm","activities.title":"Idées de sorties en mer","activities.subtitle":"Inspirez-vous, port par port","activities.discover":"Découvrir →","activities.filterShowing":"Sorties à","activities.reserve":"Trouver un skipper →",
     "join.title":"Rejoindre SkipperNow",
     "join.ownerTitle":"Propriétaire","join.ownerText":"Ajoutez votre bateau et proposez-le à la location.","join.ownerCta":"Ajouter mon bateau",
     "join.skipperTitle":"Skipper","join.skipperText":"Créez votre profil et recevez des demandes de mission.","join.skipperCta":"Devenir skipper",
@@ -1049,7 +1074,7 @@ const I18N = {
     "dash.navPayments":"Encaissements","dash.navPayouts":"Virements","dash.navRefunds":"Remboursements","dash.navCommissions":"Commissions","dash.navBoatsAdmin":"Bateaux",
     "dash.groupActivity":"Activité","dash.groupFinance":"Finance","dash.groupAccounts":"Comptes","dash.priorityQueueTitle":"À traiter en priorité","dash.priorityEmpty":"Rien d'urgent — tout est à jour.","dash.priorityValidation":"Profil à valider","dash.priorityDispute":"Litige ouvert","dash.priorityPayout":"Virement à préparer","dash.kpiTrendWeek":"sur 7 jours",
     "dash.groupContent":"Contenu","dash.navContent":"Ports & destinations","dash.contentAddPort":"Ajouter un port","dash.contentPortName":"Nom du port","dash.contentPortLat":"Latitude","dash.contentPortLng":"Longitude","dash.contentPortDesc":"Description","dash.contentPortOrder":"Ordre d'affichage","dash.contentPortActive":"Visible sur le site","dash.contentSave":"Enregistrer","dash.contentDelete":"Supprimer","dash.contentEdit":"Modifier","dash.contentCancel":"Annuler","dash.contentNoPorts":"Aucun port pour l'instant.","dash.contentSaved":"Enregistré.","dash.contentDeleted":"Port supprimé.","dash.contentConfirmDelete":"Supprimer ce port ? Cette action est définitive.",
-    "dash.navHero":"Photos du carrousel","dash.heroAddSlide":"Ajouter une photo","dash.heroImageUrl":"URL de l'image","dash.heroAlt":"Description (accessibilité)","dash.heroOrder":"Ordre d'affichage","dash.heroActive":"Visible sur le site","dash.heroNoSlides":"Aucune photo pour l'instant.","dash.heroPreview":"Aperçu","dash.heroUploadLabel":"Ou envoyer une photo depuis votre ordinateur","dash.heroUploading":"Envoi en cours...","dash.heroUploaded":"Photo envoyée.","dash.navDestinations":"Destinations phares","dash.destAddTile":"Ajouter une destination","dash.destName":"Nom de la destination","dash.destNoTiles":"Aucune destination pour l'instant.","dash.featuredBadge":"Mis en avant","dash.featuredUntil":"Mis en avant jusqu'au","dash.daysLeft":"jours restants","dash.featureFor":"Mettre en avant...","dash.days":"jours","dash.removeFeatured":"Retirer la mise en avant",
+    "dash.navHero":"Photos du carrousel","dash.heroAddSlide":"Ajouter une photo","dash.heroImageUrl":"URL de l'image","dash.heroAlt":"Description (accessibilité)","dash.heroOrder":"Ordre d'affichage","dash.heroActive":"Visible sur le site","dash.heroNoSlides":"Aucune photo pour l'instant.","dash.heroPreview":"Aperçu","dash.heroUploadLabel":"Ou envoyer une photo depuis votre ordinateur","dash.heroUploading":"Envoi en cours...","dash.heroUploaded":"Photo envoyée.","dash.navDestinations":"Destinations phares","dash.destAddTile":"Ajouter une destination","dash.destName":"Nom de la destination","dash.destNoTiles":"Aucune destination pour l'instant.","dash.navActivities":"Idées de sorties","dash.actAddTile":"Ajouter une sortie","dash.actPortName":"Port concerné","dash.actTitle":"Titre de la sortie","dash.actDesc":"Description","dash.actNoTiles":"Aucune sortie pour l'instant.","dash.featuredBadge":"Mis en avant","dash.featuredUntil":"Mis en avant jusqu'au","dash.daysLeft":"jours restants","dash.featureFor":"Mettre en avant...","dash.days":"jours","dash.removeFeatured":"Retirer la mise en avant",
     "dash.navDisputes":"Litiges","dash.noDisputes":"Aucun litige en cours.","dash.resolveDispute":"Marquer comme résolu","dash.disputeOpen":"Litige ouvert","dash.disputeResolved":"Litige résolu",
     "dash.reportProblem":"Signaler un problème","dash.viewInvoice":"Voir la facture",
     "dispute.reasonPrompt":"Décris le problème rencontré",
@@ -1137,7 +1162,7 @@ const I18N = {
     "how.step2Title":"I book","how.step2Text":"Send your request. The professional will propose a price.",
     "how.step3Title":"I pay securely","how.step3Text":"Payment is secured and released once the job is approved.",
     "gallery.title":"The SkipperNow experience","gallery.subtitle":"Unforgettable days at sea, anywhere in the world",
-    "logbook.title":"Logbook","logbook.subtitle":"The French Riviera, port by port — the route our skippers follow","logbook.seeSkippers":"See skippers →","logbook.nm":"nm",
+    "logbook.title":"Logbook","logbook.subtitle":"The French Riviera, port by port — the route our skippers follow","logbook.seeSkippers":"See skippers →","logbook.nm":"nm","activities.title":"Ideas for days at sea","activities.subtitle":"Get inspired, port by port","activities.discover":"Discover →","activities.filterShowing":"Outings in","activities.reserve":"Find a skipper →",
     "join.title":"Join SkipperNow",
     "join.ownerTitle":"Owner","join.ownerText":"Add your boat and offer it for rent.","join.ownerCta":"Add my boat",
     "join.skipperTitle":"Skipper","join.skipperText":"Create your profile and receive job requests.","join.skipperCta":"Become a skipper",
@@ -1214,7 +1239,7 @@ const I18N = {
     "dash.navPayments":"Payments","dash.navPayouts":"Payouts","dash.navRefunds":"Refunds","dash.navCommissions":"Commissions","dash.navBoatsAdmin":"Boats",
     "dash.groupActivity":"Activity","dash.groupFinance":"Finance","dash.groupAccounts":"Accounts","dash.priorityQueueTitle":"Needs attention","dash.priorityEmpty":"Nothing urgent — all caught up.","dash.priorityValidation":"Profile to verify","dash.priorityDispute":"Open dispute","dash.priorityPayout":"Payout to prepare","dash.kpiTrendWeek":"last 7 days",
     "dash.groupContent":"Content","dash.navContent":"Ports & destinations","dash.contentAddPort":"Add a port","dash.contentPortName":"Port name","dash.contentPortLat":"Latitude","dash.contentPortLng":"Longitude","dash.contentPortDesc":"Description","dash.contentPortOrder":"Display order","dash.contentPortActive":"Visible on site","dash.contentSave":"Save","dash.contentDelete":"Delete","dash.contentEdit":"Edit","dash.contentCancel":"Cancel","dash.contentNoPorts":"No ports yet.","dash.contentSaved":"Saved.","dash.contentDeleted":"Port deleted.","dash.contentConfirmDelete":"Delete this port? This cannot be undone.",
-    "dash.navHero":"Carousel photos","dash.heroAddSlide":"Add a photo","dash.heroImageUrl":"Image URL","dash.heroAlt":"Description (accessibility)","dash.heroOrder":"Display order","dash.heroActive":"Visible on site","dash.heroNoSlides":"No photos yet.","dash.heroPreview":"Preview","dash.heroUploadLabel":"Or upload a photo from your computer","dash.heroUploading":"Uploading...","dash.heroUploaded":"Photo uploaded.","dash.navDestinations":"Featured destinations","dash.destAddTile":"Add a destination","dash.destName":"Destination name","dash.destNoTiles":"No destinations yet.","dash.featuredBadge":"Featured","dash.featuredUntil":"Featured until","dash.daysLeft":"days left","dash.featureFor":"Feature for...","dash.days":"days","dash.removeFeatured":"Remove from featured",
+    "dash.navHero":"Carousel photos","dash.heroAddSlide":"Add a photo","dash.heroImageUrl":"Image URL","dash.heroAlt":"Description (accessibility)","dash.heroOrder":"Display order","dash.heroActive":"Visible on site","dash.heroNoSlides":"No photos yet.","dash.heroPreview":"Preview","dash.heroUploadLabel":"Or upload a photo from your computer","dash.heroUploading":"Uploading...","dash.heroUploaded":"Photo uploaded.","dash.navDestinations":"Featured destinations","dash.destAddTile":"Add a destination","dash.destName":"Destination name","dash.destNoTiles":"No destinations yet.","dash.navActivities":"Outing ideas","dash.actAddTile":"Add an outing","dash.actPortName":"Related port","dash.actTitle":"Outing title","dash.actDesc":"Description","dash.actNoTiles":"No outings yet.","dash.featuredBadge":"Featured","dash.featuredUntil":"Featured until","dash.daysLeft":"days left","dash.featureFor":"Feature for...","dash.days":"days","dash.removeFeatured":"Remove from featured",
     "dash.navDisputes":"Disputes","dash.noDisputes":"No open disputes.","dash.resolveDispute":"Mark as resolved","dash.disputeOpen":"Dispute open","dash.disputeResolved":"Dispute resolved",
     "dash.reportProblem":"Report a problem","dash.viewInvoice":"View invoice",
     "dispute.reasonPrompt":"Describe the problem",
@@ -1301,7 +1326,7 @@ const I18N = {
     "how.step2Title":"Reservo","how.step2Text":"Envía tu solicitud. El profesional te propondrá un precio.",
     "how.step3Title":"Pago de forma segura","how.step3Text":"El pago está protegido y se libera tras validar el servicio.",
     "gallery.title":"La experiencia SkipperNow","gallery.subtitle":"Salidas al mar inolvidables, en cualquier parte del mundo",
-    "logbook.title":"Cuaderno de bitácora","logbook.subtitle":"La Costa Azul, puerto a puerto — la ruta que siguen nuestros skippers","logbook.seeSkippers":"Ver skippers →","logbook.nm":"nm",
+    "logbook.title":"Cuaderno de bitácora","logbook.subtitle":"La Costa Azul, puerto a puerto — la ruta que siguen nuestros skippers","logbook.seeSkippers":"Ver skippers →","logbook.nm":"nm","activities.title":"Ideas de salidas al mar","activities.subtitle":"Inspírate, puerto a puerto","activities.discover":"Descubrir →","activities.filterShowing":"Salidas en","activities.reserve":"Buscar skipper →",
     "join.title":"Únete a SkipperNow",
     "join.ownerTitle":"Propietario","join.ownerText":"Añade tu barco y ofrécelo en alquiler.","join.ownerCta":"Añadir mi barco",
     "join.skipperTitle":"Skipper","join.skipperText":"Crea tu perfil y recibe solicitudes de servicio.","join.skipperCta":"Ser skipper",
@@ -1378,7 +1403,7 @@ const I18N = {
     "dash.navPayments":"Cobros","dash.navPayouts":"Transferencias","dash.navRefunds":"Reembolsos","dash.navCommissions":"Comisiones","dash.navBoatsAdmin":"Barcos",
     "dash.groupActivity":"Actividad","dash.groupFinance":"Finanzas","dash.groupAccounts":"Cuentas","dash.priorityQueueTitle":"Requiere atención","dash.priorityEmpty":"Nada urgente — todo al día.","dash.priorityValidation":"Perfil por validar","dash.priorityDispute":"Disputa abierta","dash.priorityPayout":"Transferencia por preparar","dash.kpiTrendWeek":"últimos 7 días",
     "dash.groupContent":"Contenido","dash.navContent":"Puertos y destinos","dash.contentAddPort":"Añadir un puerto","dash.contentPortName":"Nombre del puerto","dash.contentPortLat":"Latitud","dash.contentPortLng":"Longitud","dash.contentPortDesc":"Descripción","dash.contentPortOrder":"Orden de visualización","dash.contentPortActive":"Visible en el sitio","dash.contentSave":"Guardar","dash.contentDelete":"Eliminar","dash.contentEdit":"Editar","dash.contentCancel":"Cancelar","dash.contentNoPorts":"Aún no hay puertos.","dash.contentSaved":"Guardado.","dash.contentDeleted":"Puerto eliminado.","dash.contentConfirmDelete":"¿Eliminar este puerto? Esta acción es definitiva.",
-    "dash.navHero":"Fotos del carrusel","dash.heroAddSlide":"Añadir una foto","dash.heroImageUrl":"URL de la imagen","dash.heroAlt":"Descripción (accesibilidad)","dash.heroOrder":"Orden de visualización","dash.heroActive":"Visible en el sitio","dash.heroNoSlides":"Aún no hay fotos.","dash.heroPreview":"Vista previa","dash.heroUploadLabel":"O subir una foto desde tu ordenador","dash.heroUploading":"Subiendo...","dash.heroUploaded":"Foto subida.","dash.navDestinations":"Destinos destacados","dash.destAddTile":"Añadir un destino","dash.destName":"Nombre del destino","dash.destNoTiles":"Aún no hay destinos.","dash.featuredBadge":"Destacado","dash.featuredUntil":"Destacado hasta","dash.daysLeft":"días restantes","dash.featureFor":"Destacar durante...","dash.days":"días","dash.removeFeatured":"Quitar destacado",
+    "dash.navHero":"Fotos del carrusel","dash.heroAddSlide":"Añadir una foto","dash.heroImageUrl":"URL de la imagen","dash.heroAlt":"Descripción (accesibilidad)","dash.heroOrder":"Orden de visualización","dash.heroActive":"Visible en el sitio","dash.heroNoSlides":"Aún no hay fotos.","dash.heroPreview":"Vista previa","dash.heroUploadLabel":"O subir una foto desde tu ordenador","dash.heroUploading":"Subiendo...","dash.heroUploaded":"Foto subida.","dash.navDestinations":"Destinos destacados","dash.destAddTile":"Añadir un destino","dash.destName":"Nombre del destino","dash.destNoTiles":"Aún no hay destinos.","dash.navActivities":"Ideas de salidas","dash.actAddTile":"Añadir una salida","dash.actPortName":"Puerto relacionado","dash.actTitle":"Título de la salida","dash.actDesc":"Descripción","dash.actNoTiles":"Aún no hay salidas.","dash.featuredBadge":"Destacado","dash.featuredUntil":"Destacado hasta","dash.daysLeft":"días restantes","dash.featureFor":"Destacar durante...","dash.days":"días","dash.removeFeatured":"Quitar destacado",
     "dash.navDisputes":"Disputas","dash.noDisputes":"No hay disputas abiertas.","dash.resolveDispute":"Marcar como resuelto","dash.disputeOpen":"Disputa abierta","dash.disputeResolved":"Disputa resuelta",
     "dash.reportProblem":"Reportar un problema","dash.viewInvoice":"Ver factura",
     "dispute.reasonPrompt":"Describe el problema",
@@ -1621,6 +1646,7 @@ document.querySelectorAll("#portChips button").forEach(chip=>{
     portInput.value = chip.dataset.port;
     switchActivityTab("skipper");
     updateSeoMeta();
+    if(typeof highlightPortActivities === "function") highlightPortActivities(chip.dataset.port);
     document.querySelector("main").scrollIntoView({behavior:"smooth"});
   });
 });
@@ -2532,7 +2558,8 @@ const NAV_ICONS = {
   profile:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>',
   content:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></svg>',
   hero:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>',
-  destinations:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 6v16l7-4 8 4 7-4V2l-7 4-8-4-7 4z"/><path d="M8 2v16M16 6v16"/></svg>'
+  destinations:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 6v16l7-4 8 4 7-4V2l-7 4-8-4-7 4z"/><path d="M8 2v16M16 6v16"/></svg>',
+  activities:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h5l2-8 4 16 2-8h7"/></svg>'
 };
 function dashShell(navItems, activePanel){
   let lastGroup = null, rows = "";
@@ -2820,13 +2847,14 @@ async function renderAdminDashboard(){
     {id:"boats", label:t("dash.navBoatsAdmin"), group:t("dash.groupAccounts")},
     {id:"content", label:t("dash.navContent"), group:t("dash.groupContent")},
     {id:"hero", label:t("dash.navHero"), group:t("dash.groupContent")},
-    {id:"destinations", label:t("dash.navDestinations"), group:t("dash.groupContent")}
+    {id:"destinations", label:t("dash.navDestinations"), group:t("dash.groupContent")},
+    {id:"activities", label:t("dash.navActivities"), group:t("dash.groupContent")}
   ], "overview");
   bindDashNav(renderAdminPanel);
   await renderAdminPanel("overview");
 }
 async function loadAdminData(){
-  const [{data:profiles},{data:missions},{data:settings},{data:boats},{data:payouts},{data:ports},{data:heroSlides},{data:destTiles}] = await Promise.all([
+  const [{data:profiles},{data:missions},{data:settings},{data:boats},{data:payouts},{data:ports},{data:heroSlides},{data:destTiles},{data:activities}] = await Promise.all([
     db.from("profiles").select("*").order("created_at",{ascending:false}),
     db.from("missions").select("*").order("created_at",{ascending:false}),
     db.from("platform_settings").select("*").eq("id",1).maybeSingle(),
@@ -2834,7 +2862,8 @@ async function loadAdminData(){
     db.from("payout_details").select("*"),
     db.from("ports").select("*").order("order_index",{ascending:true}),
     db.from("hero_slides").select("*").order("order_index",{ascending:true}),
-    db.from("destination_tiles").select("*").order("order_index",{ascending:true})
+    db.from("destination_tiles").select("*").order("order_index",{ascending:true}),
+    db.from("port_activities").select("*").order("order_index",{ascending:true})
   ]);
   return {
     profiles: profiles || [],
@@ -2844,14 +2873,15 @@ async function loadAdminData(){
     payoutsById: Object.fromEntries((payouts||[]).map(p=>[String(p.profile_id), p])),
     ports: ports || [],
     heroSlides: heroSlides || [],
-    destTiles: destTiles || []
+    destTiles: destTiles || [],
+    activities: activities || []
   };
 }
 function profilesById(list){ return Object.fromEntries(list.map(p=>[String(p.id), p])); }
 
 async function renderAdminPanel(panel){
   const main = document.querySelector("#dashMain");
-  const {profiles, missions, settings, boats, payoutsById, ports, heroSlides, destTiles} = await loadAdminData();
+  const {profiles, missions, settings, boats, payoutsById, ports, heroSlides, destTiles, activities} = await loadAdminData();
   adminProfilesCache = profiles;
   const byId = profilesById(profiles);
   const pending = profiles.filter(p => ["skipper","provider"].includes(p.role) && !p.verified);
@@ -2969,6 +2999,8 @@ document.querySelector("#userSearch").addEventListener("input", (e)=>{
     renderHeroPanel(heroSlides);
   }else if(panel === "destinations"){
     renderDestinationsPanel(destTiles);
+  }else if(panel === "activities"){
+    renderActivitiesPanel(activities);
   }
 }
 let editingPortId = null;
@@ -3277,6 +3309,121 @@ function renderDestinationsPanel(tiles){
     else { msg.textContent = t("dash.contentSaved"); msg.style.color = ""; editingDestId = null; await renderAdminPanel("destinations"); }
   });
 }
+let editingActId = null;
+function renderActivitiesPanel(tiles){
+  const main = document.querySelector("#dashMain");
+  const editing = editingActId ? tiles.find(s=>String(s.id)===String(editingActId)) : null;
+  const s = editing || {};
+  main.innerHTML = `
+    <div class="dash-section-title">${NAV_ICONS.activities}${esc(t("dash.navActivities"))} (${tiles.length})</div>
+    <div class="hero-admin-grid">
+      ${tiles.length ? tiles.map((sl,idx)=>`
+        <div class="hero-admin-card${sl.active?"":" hero-admin-card--inactive"}">
+          <div class="hero-admin-thumb" style="background-image:url('${esc(sl.image_url)}')"></div>
+          <div class="hero-admin-body">
+            <div class="hero-admin-order" style="font-family:inherit;font-weight:800;color:var(--navy)">${esc(sl.title)}</div>
+            <div class="hero-admin-order">${esc(sl.port_name)} · #${sl.order_index}${sl.active?"":` · ${esc(t("dash.heroActive"))} ✕`}</div>
+            <div class="hero-admin-reorder">
+              <button type="button" class="link" data-move-act="${sl.id}" data-dir="up" ${idx===0?"disabled":""} title="↑">↑</button>
+              <button type="button" class="link" data-move-act="${sl.id}" data-dir="down" ${idx===tiles.length-1?"disabled":""} title="↓">↓</button>
+            </div>
+            <div class="hero-admin-actions">
+              <button type="button" class="link" data-edit-act="${sl.id}">${esc(t("dash.contentEdit"))}</button>
+              <button type="button" class="link" style="color:#c0392b" data-delete-act="${sl.id}">${esc(t("dash.contentDelete"))}</button>
+            </div>
+          </div>
+        </div>`).join("") : `<div class="empty-note">${esc(t("dash.actNoTiles"))}</div>`}
+    </div>
+    <h3 style="margin-top:24px">${editing ? esc(t("dash.contentEdit")) : esc(t("dash.actAddTile"))}</h3>
+    <form id="actForm" style="margin-top:14px">
+      <div class="field"><label>${esc(t("dash.actPortName"))}</label><input id="actPortInput" required value="${esc(s.port_name||"")}" placeholder="Ex. Cannes"></div>
+      <div class="field"><label>${esc(t("dash.actTitle"))}</label><input id="actTitleInput" required value="${esc(s.title||"")}"></div>
+      <div class="field"><label>${esc(t("dash.actDesc"))}</label><textarea id="actDescInput" rows="2">${esc(s.description||"")}</textarea></div>
+      <div class="field"><label>${esc(t("dash.heroUploadLabel"))}</label>
+        <input id="actFileInput" type="file" accept="image/*">
+        <div id="actUploadStatus" class="muted" style="font-size:12px;margin-top:4px"></div>
+      </div>
+      <div class="field"><label>${esc(t("dash.heroImageUrl"))}</label><input id="actUrlInput" type="url" required value="${esc(s.image_url||"")}" placeholder="https://..."></div>
+      <div id="actPreviewBox" style="margin:6px 0 14px;${s.image_url?"":"display:none"}">
+        <div class="hero-admin-thumb hero-admin-thumb--big" id="actPreviewImg" style="background-image:url('${esc(s.image_url||"")}')"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:end">
+        <div class="field"><label>${esc(t("dash.heroOrder"))}</label><input id="actOrderInput" type="number" value="${s.order_index??tiles.length+1}"></div>
+        <label style="display:flex;align-items:center;gap:8px;font-weight:700;font-size:13.5px;padding-bottom:14px"><input id="actActiveInput" type="checkbox" ${editing ? (s.active?"checked":"") : "checked"}> ${esc(t("dash.heroActive"))}</label>
+      </div>
+      <div style="display:flex;gap:10px">
+        <button class="primary wide" type="submit">${esc(t("dash.contentSave"))}</button>
+        ${editing ? `<button type="button" class="secondary-light" id="cancelActEdit">${esc(t("dash.contentCancel"))}</button>` : ""}
+      </div>
+      <p class="ok-text" id="actFormMsg"></p>
+    </form>`;
+  document.querySelectorAll("[data-edit-act]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{ editingActId = btn.dataset.editAct; renderAdminPanel("activities"); });
+  });
+  document.querySelectorAll("[data-move-act]").forEach(btn=>{
+    btn.addEventListener("click", async ()=>{
+      const id = btn.dataset.moveAct;
+      const dir = btn.dataset.dir;
+      const idx = tiles.findIndex(s=>String(s.id)===String(id));
+      const swapIdx = dir==="up" ? idx-1 : idx+1;
+      if(swapIdx < 0 || swapIdx >= tiles.length) return;
+      const a = tiles[idx], b = tiles[swapIdx];
+      const {error:e1} = await db.from("port_activities").update({order_index:b.order_index}).eq("id", a.id);
+      const {error:e2} = await db.from("port_activities").update({order_index:a.order_index}).eq("id", b.id);
+      if(e1||e2) alert((e1||e2).message); else await renderAdminPanel("activities");
+    });
+  });
+  document.querySelectorAll("[data-delete-act]").forEach(btn=>{
+    btn.addEventListener("click", async ()=>{
+      if(!confirm(t("dash.contentConfirmDelete"))) return;
+      const {error} = await db.from("port_activities").delete().eq("id", btn.dataset.deleteAct);
+      if(error) alert(error.message); else { editingActId = null; await renderAdminPanel("activities"); }
+    });
+  });
+  const cancelBtn = document.querySelector("#cancelActEdit");
+  if(cancelBtn) cancelBtn.addEventListener("click", ()=>{ editingActId = null; renderAdminPanel("activities"); });
+  const fileInput = document.querySelector("#actFileInput");
+  const uploadStatus = document.querySelector("#actUploadStatus");
+  fileInput.addEventListener("change", async ()=>{
+    const file = fileInput.files[0];
+    if(!file) return;
+    uploadStatus.textContent = t("dash.heroUploading");
+    const ext = (file.name.split(".").pop()||"jpg").toLowerCase();
+    const path = `activities/${Date.now()}-${Math.random().toString(36).slice(2,8)}.${ext}`;
+    const {error} = await db.storage.from("site-media").upload(path, file, {cacheControl:"3600", upsert:false});
+    if(error){ uploadStatus.textContent = error.message; uploadStatus.style.color = "#c0392b"; return; }
+    const {data} = db.storage.from("site-media").getPublicUrl(path);
+    document.querySelector("#actUrlInput").value = data.publicUrl;
+    document.querySelector("#actUrlInput").dispatchEvent(new Event("input"));
+    uploadStatus.textContent = t("dash.heroUploaded");
+    uploadStatus.style.color = "";
+  });
+  const urlInput = document.querySelector("#actUrlInput");
+  urlInput.addEventListener("input", ()=>{
+    const box = document.querySelector("#actPreviewBox");
+    const img = document.querySelector("#actPreviewImg");
+    if(urlInput.value.trim()){ box.style.display = ""; img.style.backgroundImage = `url('${urlInput.value.trim()}')`; }
+    else box.style.display = "none";
+  });
+  document.querySelector("#actForm").addEventListener("submit", async (e)=>{
+    e.preventDefault();
+    const payload = {
+      port_name: document.querySelector("#actPortInput").value.trim(),
+      title: document.querySelector("#actTitleInput").value.trim(),
+      description: document.querySelector("#actDescInput").value.trim(),
+      image_url: document.querySelector("#actUrlInput").value.trim(),
+      order_index: Number(document.querySelector("#actOrderInput").value)||0,
+      active: document.querySelector("#actActiveInput").checked,
+      updated_at: new Date().toISOString()
+    };
+    const msg = document.querySelector("#actFormMsg");
+    const {error} = editingActId
+      ? await db.from("port_activities").update(payload).eq("id", editingActId)
+      : await db.from("port_activities").insert(payload);
+    if(error){ msg.textContent = error.message; msg.style.color = "#c0392b"; }
+    else { msg.textContent = t("dash.contentSaved"); msg.style.color = ""; editingActId = null; await renderAdminPanel("activities"); }
+  });
+}
 function adminMissionCard(m, byId, showFinance, payoutsById){
   const client = byId[String(m.client_id)];
   const pro = byId[String(m.skipper_id)];
@@ -3289,7 +3436,7 @@ function adminMissionCard(m, byId, showFinance, payoutsById){
       <div>
         <h3>${esc(m.port||"—")} · ${esc(m.boat_type||"")}</h3>
         <div class="muted">${m.starts_at ? new Date(m.starts_at).toLocaleDateString(currentLang) : ""}</div>
-        <div class="muted">${esc(t("dash.client"))}: ${esc(client?.full_name || "—")} · ${esc(t("dash.professional"))}: ${esc(pro?.full_name || "—")}</div>
+        <div class="muted">${esc(t("dash.client"))}: ${esc(client?.full_name || "—")}${client?.phone?` · 📞 ${esc(client.phone)}`:""} · ${esc(t("dash.professional"))}: ${esc(pro?.full_name || "—")}${pro?.phone?` · 📞 ${esc(pro.phone)}`:""}</div>
       </div>
       <span class="status-pill ${statusPillClass(m.status)}">${esc(t("status."+(m.status||"pending")))}</span>
     </div>
@@ -3392,7 +3539,7 @@ function adminBoatCard(b, byId){
         <h3>${esc(b.name||"—")}${b.verified ? verifiedBoatBadgeHtml() : ""}${isFeaturedNow ? ` <span class="verified-badge" style="background:#fff4d6;color:#8a6d1a">★ ${esc(t("dash.featuredBadge"))}</span>` : ""}</h3>
         <div class="muted">${esc(b.model||"")}${b.boat_type?" · "+esc(boatTypeLabel(b.boat_type)):""} · ${esc(b.home_port||"—")}</div>
         <div class="muted">${b.length_m?b.length_m+" m · ":""}${b.capacity?b.capacity+" pers. · ":""}${b.cabins!=null?b.cabins+" cabines · ":""}${b.year_built?b.year_built:""}</div>
-        <div class="muted">${esc(t("dash.owner"))}: ${esc(owner?.full_name||"—")} · ${esc(owner?.contact_email||owner?.email||"—")}${b.skipper_included?` · ${esc(t("boatDetail.skipperIncluded"))}`:""}</div>
+        <div class="muted">${esc(t("dash.owner"))}: ${esc(owner?.full_name||"—")} · ${esc(owner?.contact_email||owner?.email||"—")}${owner?.phone?` · 📞 ${esc(owner.phone)}`:""}${b.skipper_included?` · ${esc(t("boatDetail.skipperIncluded"))}`:""}</div>
         ${b.description ? `<div class="muted" style="margin-top:4px">${esc(b.description)}</div>` : ""}
         ${Array.isArray(b.photo_urls) && b.photo_urls.length > 1 ? `<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">${b.photo_urls.map(u=>`<img src="${esc(u)}" style="width:48px;height:48px;object-fit:cover;border-radius:8px;cursor:pointer" onclick="window.open('${esc(u)}','_blank')">`).join("")}</div>` : ""}
         ${isFeaturedNow ? `<div class="muted" style="margin-top:6px;color:#8a6d1a;font-weight:700">${esc(t("dash.featuredUntil"))} ${new Date(b.featured_until).toLocaleDateString()} (${daysLeft} ${esc(t("dash.daysLeft"))})</div>` : ""}
@@ -3646,6 +3793,7 @@ function profileCard(p){
   return `<article class="request-card">
     <div class="request-top">
       <div><h3>${esc(p.full_name||"—")}</h3><div class="muted">${esc(p.role||"")} · ${esc(p.home_port||"—")}${p.provider_activity?" · "+esc(activityLabel(p.provider_activity)):""}</div>
+      <div class="muted">${esc(p.contact_email||p.email||"—")}${p.phone?` · 📞 ${esc(p.phone)}`:""}</div>
       ${p.diploma_url ? `<div class="muted"><a href="${esc(p.diploma_url)}" target="_blank">${esc(t("account.diplomaCurrent"))}</a></div>` : ""}</div>
       <span class="status-pill ${badge}">${p.verified ? "✓" : "—"}</span>
     </div>
@@ -4138,10 +4286,51 @@ async function loadDestinationTiles(){
   if(!tiles.length) return;
   row.innerHTML = tiles.map(tl=>`<button type="button" class="tile-scroll-card" data-port="${esc(tl.name)}" style="background-image:url('${esc(tl.image_url)}')"><span>${esc(tl.name)}</span></button>`).join("");
   row.querySelectorAll(".tile-scroll-card").forEach(tile=>{
-    tile.addEventListener("click", ()=>openBoatFinder(tile.dataset.port));
+    tile.addEventListener("click", ()=>{ openBoatFinder(tile.dataset.port); highlightPortActivities(tile.dataset.port); });
   });
   autoScrollTileRow("portTileRow");
 }
+let portActivitiesCache = [];
+async function loadPortActivities(){
+  const row = document.querySelector("#activityRow");
+  if(!row) return;
+  const {data, error} = await db.from("port_activities").select("*").eq("active", true).order("order_index",{ascending:true});
+  portActivitiesCache = (data && !error) ? data : [];
+  renderPortActivities();
+}
+function renderPortActivities(highlightPort){
+  const row = document.querySelector("#activityRow");
+  if(!row) return;
+  if(!portActivitiesCache.length){ document.querySelector("#activityRow").closest("section").style.display = "none"; return; }
+  let list = portActivitiesCache;
+  const badge = document.querySelector("#activityFilterBadge");
+  const label = document.querySelector("#activityFilterLabel");
+  if(highlightPort){
+    const matches = portActivitiesCache.filter(a=>a.port_name.toLowerCase() === highlightPort.toLowerCase());
+    const others = portActivitiesCache.filter(a=>a.port_name.toLowerCase() !== highlightPort.toLowerCase());
+    list = matches.concat(others);
+    if(matches.length){ badge.style.display = "inline-flex"; label.textContent = `${t("activities.filterShowing")} ${highlightPort}`; }
+    else badge.style.display = "none";
+  }else{
+    badge.style.display = "none";
+  }
+  row.innerHTML = list.map(a=>`<article class="activity-card" data-activity-port="${esc(a.port_name)}">
+    <div class="activity-card-photo" style="background-image:url('${esc(a.image_url)}')"><span class="activity-card-port">${esc(a.port_name)}</span></div>
+    <div class="activity-card-body">
+      <h3>${esc(a.title)}</h3>
+      ${a.description ? `<p>${esc(a.description)}</p>` : ""}
+      <div class="activity-card-cta">${esc(t("activities.reserve"))}</div>
+    </div>
+  </article>`).join("");
+  row.querySelectorAll(".activity-card").forEach(card=>{
+    card.addEventListener("click", ()=>openBoatFinder(card.dataset.activityPort));
+  });
+}
+function highlightPortActivities(port){
+  renderPortActivities(port);
+  document.querySelector("#activityRow")?.scrollTo({left:0, behavior:"smooth"});
+}
+document.querySelector("#activityFilterClear")?.addEventListener("click", ()=>renderPortActivities());
 
 function slugifyPort(name){
   return (name||"").toLowerCase()
@@ -4218,6 +4407,7 @@ async function loadLogbook(){
   await loadLogbook();
   await loadHeroSlides();
   await loadDestinationTiles();
+  await loadPortActivities();
 })();
 
 db.auth.onAuthStateChange(async (event, session)=>{
