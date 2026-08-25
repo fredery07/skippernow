@@ -1097,7 +1097,7 @@ const I18N = {
     "account.errMissing":"Complétez les champs et utilisez au moins 8 caractères pour le mot de passe.",
     "account.errName":"Indiquez votre nom.","account.errPort":"Indiquez votre port principal.",
     "account.loginError":"Email ou mot de passe incorrect. Utilisez « Mot de passe oublié » si besoin.",
-    "error.generic":"Une erreur est survenue. Merci de réessayer.","error.phoneFormat":"Le numéro de téléphone contient des caractères non valides. Retapez-le manuellement (chiffres, espaces, + et - uniquement).","error.duplicate":"Cette information est déjà utilisée par un autre compte.","error.invalidCredentials":"Email ou mot de passe incorrect.","error.emailTaken":"Cet email est déjà associé à un compte.","error.network":"Problème de connexion. Vérifiez votre connexion internet et réessayez.","error.permission":"Vous n'avez pas les droits nécessaires pour effectuer cette action.","error.session":"Votre session a expiré. Merci de vous reconnecter.","error.missingField":"Un champ obligatoire est manquant.",
+    "error.generic":"Une erreur est survenue. Merci de réessayer.","error.phoneFormat":"Le numéro de téléphone contient des caractères non valides. Retapez-le manuellement (chiffres, espaces, + et - uniquement).","error.duplicate":"Cette information est déjà utilisée par un autre compte.","error.invalidCredentials":"Email ou mot de passe incorrect.","error.emailTaken":"Cet email est déjà associé à un compte.","error.network":"Problème de connexion. Vérifiez votre connexion internet et réessayez.","error.permission":"Vous n'avez pas les droits nécessaires pour effectuer cette action.","error.session":"Votre session a expiré. Merci de vous reconnecter.","error.missingField":"Un champ obligatoire est manquant.","action.savedSuccess":"✓ Vos informations ont bien été enregistrées.",
     "account.emailNotConfirmed":"Votre adresse email n'est pas encore confirmée. Ouvrez le message reçu de SkipperNow.",
     "account.signupSuccess":"Compte créé. Vérifiez votre email puis revenez vous connecter.",
     "account.forgotNeedEmail":"Entrez d'abord votre adresse email.","account.forgotSent":"Email envoyé. Vérifiez aussi vos courriers indésirables.",
@@ -1265,7 +1265,7 @@ const I18N = {
     "account.errMissing":"Fill in all fields and use at least 8 characters for the password.",
     "account.errName":"Please enter your name.","account.errPort":"Please enter your home port.",
     "account.loginError":"Incorrect email or password. Use \u201cForgot password\u201d if needed.",
-    "error.generic":"Something went wrong. Please try again.","error.phoneFormat":"The phone number contains invalid characters. Please retype it manually (digits, spaces, + and - only).","error.duplicate":"This information is already used by another account.","error.invalidCredentials":"Incorrect email or password.","error.emailTaken":"This email is already linked to an account.","error.network":"Connection problem. Check your internet connection and try again.","error.permission":"You don't have permission to perform this action.","error.session":"Your session has expired. Please log in again.","error.missingField":"A required field is missing.",
+    "error.generic":"Something went wrong. Please try again.","error.phoneFormat":"The phone number contains invalid characters. Please retype it manually (digits, spaces, + and - only).","error.duplicate":"This information is already used by another account.","error.invalidCredentials":"Incorrect email or password.","error.emailTaken":"This email is already linked to an account.","error.network":"Connection problem. Check your internet connection and try again.","error.permission":"You don't have permission to perform this action.","error.session":"Your session has expired. Please log in again.","error.missingField":"A required field is missing.","action.savedSuccess":"✓ Your information has been saved successfully.",
     "account.emailNotConfirmed":"Your email address is not confirmed yet. Open the message from SkipperNow.",
     "account.signupSuccess":"Account created. Check your email, then come back to log in.",
     "account.forgotNeedEmail":"Enter your email address first.","account.forgotSent":"Email sent. Please also check your spam folder.",
@@ -1432,7 +1432,7 @@ const I18N = {
     "account.errMissing":"Completa los campos y usa al menos 8 caracteres para la contraseña.",
     "account.errName":"Indica tu nombre.","account.errPort":"Indica tu puerto principal.",
     "account.loginError":"Email o contraseña incorrectos. Usa «¿Olvidaste tu contraseña?» si lo necesitas.",
-    "error.generic":"Se produjo un error. Por favor, inténtalo de nuevo.","error.phoneFormat":"El número de teléfono contiene caracteres no válidos. Vuelve a escribirlo manualmente (solo dígitos, espacios, + y -).","error.duplicate":"Esta información ya está siendo usada por otra cuenta.","error.invalidCredentials":"Email o contraseña incorrectos.","error.emailTaken":"Este email ya está asociado a una cuenta.","error.network":"Problema de conexión. Comprueba tu conexión a internet e inténtalo de nuevo.","error.permission":"No tienes permiso para realizar esta acción.","error.session":"Tu sesión ha caducado. Vuelve a iniciar sesión.","error.missingField":"Falta un campo obligatorio.",
+    "error.generic":"Se produjo un error. Por favor, inténtalo de nuevo.","error.phoneFormat":"El número de teléfono contiene caracteres no válidos. Vuelve a escribirlo manualmente (solo dígitos, espacios, + y -).","error.duplicate":"Esta información ya está siendo usada por otra cuenta.","error.invalidCredentials":"Email o contraseña incorrectos.","error.emailTaken":"Este email ya está asociado a una cuenta.","error.network":"Problema de conexión. Comprueba tu conexión a internet e inténtalo de nuevo.","error.permission":"No tienes permiso para realizar esta acción.","error.session":"Tu sesión ha caducado. Vuelve a iniciar sesión.","error.missingField":"Falta un campo obligatorio.","action.savedSuccess":"✓ Tu información se ha guardado correctamente.",
     "account.emailNotConfirmed":"Tu dirección de email todavía no está confirmada. Abre el mensaje de SkipperNow.",
     "account.signupSuccess":"Cuenta creada. Verifica tu email y vuelve para iniciar sesión.",
     "account.forgotNeedEmail":"Indica primero tu dirección de email.","account.forgotSent":"Email enviado. Revisa también la carpeta de spam.",
@@ -3946,7 +3946,7 @@ function bindProfileActions(){
     const msg = document.querySelector(`[data-note-msg="${id}"]`);
     const {error} = await db.from("profiles").update({admin_notes: note}).eq("id", id);
     if(error){ msg.style.color = "#b42318"; msg.textContent = friendlyError(error); }
-    else { msg.style.color = "#08794e"; msg.textContent = t("dash.saveSettings"); }
+    else { msg.style.color = "#08794e"; msg.textContent = t("action.savedSuccess"); }
   }));
   document.querySelectorAll("[data-delete-user]").forEach(btn=>btn.addEventListener("click", async ()=>{
     if(!confirm(t("dash.delete")+" ?")) return;
@@ -4314,7 +4314,7 @@ function bindProfileForm(){
     }
     await loadProfile();
     msg.style.color = "#08794e";
-    msg.textContent = t("dash.saveSettings");
+    msg.textContent = t("action.savedSuccess");
     btn.disabled = false;
   });
 }
