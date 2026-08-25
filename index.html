@@ -1557,7 +1557,7 @@ function sanitizeContactInfo(text){
 
 const money = cents => (Number(cents||0)/100).toLocaleString(currentLang==="en"?"en-GB":currentLang==="es"?"es-ES":"fr-FR",{style:"currency",currency:"EUR"});
 const openModal = id => document.querySelector("#"+id).classList.add("open");
-const closeModal = id => document.querySelector("#"+id).classList.remove("open");
+const closeModal = id => { document.querySelector("#"+id).classList.remove("open"); if(id === "dashboardModal") unsubscribeThreadChannel(); };
 document.querySelectorAll("[data-close]").forEach(btn=>btn.addEventListener("click",()=>closeModal(btn.dataset.close)));
 document.querySelectorAll(".modal").forEach(m=>m.addEventListener("click",e=>{if(e.target===m) m.classList.remove("open")}));
 
@@ -1904,6 +1904,10 @@ let boatCache = [];
 let resultsCache = [];
 let adminProfilesCache = [];
 let currentMessagesRoleColumn = null;
+let currentThreadChannel = null;
+function unsubscribeThreadChannel(){
+  if(currentThreadChannel){ db.removeChannel(currentThreadChannel); currentThreadChannel = null; }
+}
 let currentMessagesFilterMode = "unread";
 function bindMessagesFilterTabs(main, myRoleColumn){
   main.querySelectorAll("[data-messages-filter]").forEach(btn=>btn.addEventListener("click", ()=>{
@@ -2655,12 +2659,14 @@ function bindDashNav(renderFn){
     btn.addEventListener("click", async ()=>{
       if(btn.dataset.panel === "__logout"){ await logout(); return; }
       if(btn.dataset.panel === "boats"){ adminBoatsFilterOwnerId = null; editingBoatId = null; }
+      unsubscribeThreadChannel();
       document.querySelectorAll(".dash-side button").forEach(b=>b.classList.toggle("active", b===btn));
       await renderFn(btn.dataset.panel);
     });
   });
 }
 async function logout(){
+  unsubscribeThreadChannel();
   await db.auth.signOut();
   currentUser = null; currentProfile = null;
   closeModal("dashboardModal");
@@ -4063,6 +4069,7 @@ async function renderMessagesPanel(myRoleColumn, filterMode){
   }));
 }
 async function openConversationThread(clientId, skipperId){
+  unsubscribeThreadChannel();
   const thread = document.querySelector("#conversationThread") || document.querySelector("#dashMain");
   thread.innerHTML = `<div class="empty-note">${esc(t("dash.loading"))}</div>`;
   try{
@@ -4094,6 +4101,24 @@ async function openConversationThread(clientId, skipperId){
       </div>`;
     const scrollBody = document.querySelector("#messageThreadBody");
     if(scrollBody) scrollBody.scrollTop = scrollBody.scrollHeight;
+    currentThreadChannel = db.channel("conversation-"+conversation.id)
+      .on("postgres_changes", {event:"INSERT", schema:"public", table:"messages", filter:`conversation_id=eq.${conversation.id}`}, payload=>{
+        const m = payload.new;
+        const body_ = document.querySelector("#messageThreadBody");
+        if(!body_) return;
+        const mine = String(m.sender_id) === String(currentUser.id);
+        if(!mine){
+          const emptyNote = body_.querySelector(".empty-note");
+          if(emptyNote) emptyNote.remove();
+          const bubble = document.createElement("div");
+          bubble.style.cssText = "align-self:flex-start;max-width:80%;display:flex;align-items:flex-end;gap:6px";
+          bubble.innerHTML = `<div style="background:var(--mist);color:var(--ink);padding:10px 13px;border-radius:14px">${esc(m.body)}</div>`;
+          body_.appendChild(bubble);
+          body_.scrollTop = body_.scrollHeight;
+          db.from("messages").update({read_at: new Date().toISOString()}).eq("id", m.id).then(()=>refreshNotifications());
+        }
+      })
+      .subscribe();
     document.querySelectorAll("[data-delete-message]").forEach(btn=>btn.addEventListener("click", async (e)=>{
       e.preventDefault();
       e.stopPropagation();
@@ -4102,7 +4127,7 @@ async function openConversationThread(clientId, skipperId){
       if(delError){ alert(friendlyError(delError)); return; }
       await openConversationThread(clientId, skipperId);
     }));
-    document.querySelector("#backToConversationList").addEventListener("click", ()=>renderMessagesPanel(currentMessagesRoleColumn));
+    document.querySelector("#backToConversationList").addEventListener("click", ()=>{ unsubscribeThreadChannel(); renderMessagesPanel(currentMessagesRoleColumn); });
     document.querySelector("#messageSendBtn").addEventListener("click", async ()=>{
       const input = document.querySelector("#messageInput");
       const body = sanitizeContactInfo(input.value.trim());
