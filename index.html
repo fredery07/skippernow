@@ -2624,6 +2624,14 @@ async function renderClientPanel(panel){
   }else if(panel === "support"){
     await openSupportThread();
   }else if(panel === "boats"){
+    await renderBoatsManager(main, ()=>renderClientPanel("boats"));
+  }else if(panel === "profile"){
+    const {data: payout} = await db.from("payout_details").select("*").eq("profile_id", currentUser.id).maybeSingle();
+    main.innerHTML = profileForm(currentProfile, payout, true);
+    bindProfileForm();
+  }
+}
+async function renderBoatsManager(main, refreshFn){
     const {data} = await db.from("boats").select("*").eq("client_id", currentUser.id).order("created_at",{ascending:false});
     const rows = data || [];
     myBoatsCache = rows;
@@ -2672,13 +2680,13 @@ async function renderClientPanel(panel){
         <button class="primary wide" type="submit">${editing ? esc(t("dash.saveSettings")) : esc(t("join.ownerCta"))}</button>
         ${editing ? `<button class="small-btn wide" type="button" id="cancelEditBoat" style="margin-top:8px">${esc(t("dash.cancel"))}</button>` : ""}
       </form>`;
-    bindMyBoatActions();
+    bindMyBoatActions(refreshFn);
     document.querySelectorAll("[data-edit-boat]").forEach(btn=>btn.addEventListener("click", ()=>{
       editingBoatId = btn.dataset.editBoat;
-      renderClientPanel("boats");
+      refreshFn();
     }));
     const cancelBtn = document.querySelector("#cancelEditBoat");
-    if(cancelBtn) cancelBtn.addEventListener("click", ()=>{ editingBoatId = null; renderClientPanel("boats"); });
+    if(cancelBtn) cancelBtn.addEventListener("click", ()=>{ editingBoatId = null; refreshFn(); });
     let boatPhotoFiles = [];
     let keptPhotoUrls = editing ? [...(Array.isArray(editing.photo_urls) && editing.photo_urls.length ? editing.photo_urls : (editing.photo_url ? [editing.photo_url] : []))] : [];
     function renderBoatPhotosPreview(){
@@ -2758,13 +2766,8 @@ async function renderClientPanel(panel){
         : await db.from("boats").insert({client_id: currentUser.id, ...payload});
       if(error){ alert(error.message); submitBtn.disabled = false; return; }
       editingBoatId = null;
-      await renderClientPanel("boats");
+      await refreshFn();
     });
-  }else if(panel === "profile"){
-    const {data: payout} = await db.from("payout_details").select("*").eq("profile_id", currentUser.id).maybeSingle();
-    main.innerHTML = profileForm(currentProfile, payout, true);
-    bindProfileForm();
-  }
 }
 
 function myBoatCard(b){
@@ -2781,24 +2784,26 @@ function myBoatCard(b){
     <div class="request-actions"><button class="small-btn" data-edit-boat="${b.id}">${esc(t("dash.editBoat"))}</button><button class="small-btn danger" data-delete-my-boat="${b.id}">${esc(t("dash.delete"))}</button></div>
   </article>`;
 }
-function bindMyBoatActions(){
+function bindMyBoatActions(refreshFn){
   document.querySelectorAll("[data-delete-my-boat]").forEach(btn=>btn.addEventListener("click", async ()=>{
     if(!confirm(t("dash.delete")+" ?")) return;
     const {error} = await db.from("boats").delete().eq("id", btn.dataset.deleteMyBoat);
     if(error){ alert(error.message); return; }
     if(String(editingBoatId)===String(btn.dataset.deleteMyBoat)) editingBoatId = null;
-    renderClientPanel("boats");
+    refreshFn();
   }));
 }
 async function renderProDashboard(){
   const body = document.querySelector("#dashboardBody");
-  body.innerHTML = dashShell([
+  const isBoatRentalPro = currentProfile?.provider_activity === "boat_rental_pro";
+  const navItems = [
     {id:"requests", label:t("dash.navRequests")},
     {id:"messages", label:t("dash.navMessages")},
-    {id:"support", label:t("dash.navSupport")},
-    {id:"profile", label:t("dash.navProfile")},
-    {id:"availability", label:t("dash.navAvailability")}
-  ], "requests");
+    {id:"support", label:t("dash.navSupport")}
+  ];
+  if(isBoatRentalPro) navItems.push({id:"boats", label:t("dash.navBoats")});
+  navItems.push({id:"profile", label:t("dash.navProfile")}, {id:"availability", label:t("dash.navAvailability")});
+  body.innerHTML = dashShell(navItems, "requests");
   bindDashNav(renderProPanel);
   await renderProPanel("requests");
 }
@@ -2833,6 +2838,8 @@ async function renderProPanel(panel){
     await renderMessagesPanel("skipper_id");
   }else if(panel === "support"){
     await openSupportThread();
+  }else if(panel === "boats"){
+    await renderBoatsManager(main, ()=>renderProPanel("boats"));
   }else if(panel === "profile"){
     const {data: payout} = await db.from("payout_details").select("*").eq("profile_id", currentUser.id).maybeSingle();
     main.innerHTML = profileReminder + profileForm(currentProfile, payout);
