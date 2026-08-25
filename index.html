@@ -1097,6 +1097,7 @@ const I18N = {
     "account.errMissing":"Complétez les champs et utilisez au moins 8 caractères pour le mot de passe.",
     "account.errName":"Indiquez votre nom.","account.errPort":"Indiquez votre port principal.",
     "account.loginError":"Email ou mot de passe incorrect. Utilisez « Mot de passe oublié » si besoin.",
+    "error.generic":"Une erreur est survenue. Merci de réessayer.","error.phoneFormat":"Le numéro de téléphone contient des caractères non valides. Retapez-le manuellement (chiffres, espaces, + et - uniquement).","error.duplicate":"Cette information est déjà utilisée par un autre compte.","error.invalidCredentials":"Email ou mot de passe incorrect.","error.emailTaken":"Cet email est déjà associé à un compte.","error.network":"Problème de connexion. Vérifiez votre connexion internet et réessayez.","error.permission":"Vous n'avez pas les droits nécessaires pour effectuer cette action.","error.session":"Votre session a expiré. Merci de vous reconnecter.","error.missingField":"Un champ obligatoire est manquant.",
     "account.emailNotConfirmed":"Votre adresse email n'est pas encore confirmée. Ouvrez le message reçu de SkipperNow.",
     "account.signupSuccess":"Compte créé. Vérifiez votre email puis revenez vous connecter.",
     "account.forgotNeedEmail":"Entrez d'abord votre adresse email.","account.forgotSent":"Email envoyé. Vérifiez aussi vos courriers indésirables.",
@@ -1264,6 +1265,7 @@ const I18N = {
     "account.errMissing":"Fill in all fields and use at least 8 characters for the password.",
     "account.errName":"Please enter your name.","account.errPort":"Please enter your home port.",
     "account.loginError":"Incorrect email or password. Use \u201cForgot password\u201d if needed.",
+    "error.generic":"Something went wrong. Please try again.","error.phoneFormat":"The phone number contains invalid characters. Please retype it manually (digits, spaces, + and - only).","error.duplicate":"This information is already used by another account.","error.invalidCredentials":"Incorrect email or password.","error.emailTaken":"This email is already linked to an account.","error.network":"Connection problem. Check your internet connection and try again.","error.permission":"You don't have permission to perform this action.","error.session":"Your session has expired. Please log in again.","error.missingField":"A required field is missing.",
     "account.emailNotConfirmed":"Your email address is not confirmed yet. Open the message from SkipperNow.",
     "account.signupSuccess":"Account created. Check your email, then come back to log in.",
     "account.forgotNeedEmail":"Enter your email address first.","account.forgotSent":"Email sent. Please also check your spam folder.",
@@ -1430,6 +1432,7 @@ const I18N = {
     "account.errMissing":"Completa los campos y usa al menos 8 caracteres para la contraseña.",
     "account.errName":"Indica tu nombre.","account.errPort":"Indica tu puerto principal.",
     "account.loginError":"Email o contraseña incorrectos. Usa «¿Olvidaste tu contraseña?» si lo necesitas.",
+    "error.generic":"Se produjo un error. Por favor, inténtalo de nuevo.","error.phoneFormat":"El número de teléfono contiene caracteres no válidos. Vuelve a escribirlo manualmente (solo dígitos, espacios, + y -).","error.duplicate":"Esta información ya está siendo usada por otra cuenta.","error.invalidCredentials":"Email o contraseña incorrectos.","error.emailTaken":"Este email ya está asociado a una cuenta.","error.network":"Problema de conexión. Comprueba tu conexión a internet e inténtalo de nuevo.","error.permission":"No tienes permiso para realizar esta acción.","error.session":"Tu sesión ha caducado. Vuelve a iniciar sesión.","error.missingField":"Falta un campo obligatorio.",
     "account.emailNotConfirmed":"Tu dirección de email todavía no está confirmada. Abre el mensaje de SkipperNow.",
     "account.signupSuccess":"Cuenta creada. Verifica tu email y vuelve para iniciar sesión.",
     "account.forgotNeedEmail":"Indica primero tu dirección de email.","account.forgotSent":"Email enviado. Revisa también la carpeta de spam.",
@@ -1504,6 +1507,20 @@ function t(key, vars){
 }
 function pluralKey(base, n){ return base + "." + (n === 1 ? "one" : "other"); }
 function tCount(base, n){ return t(pluralKey(base, n), {n}); }
+function friendlyError(err){
+  const raw = (err && err.message) ? String(err.message) : String(err || "");
+  const low = raw.toLowerCase();
+  if(low.includes("check constraint") && low.includes("phone")) return t("error.phoneFormat");
+  if(low.includes("duplicate key") || low.includes("already exists") || low.includes("unique constraint")) return t("error.duplicate");
+  if(low.includes("invalid login credentials")) return t("error.invalidCredentials");
+  if(low.includes("email not confirmed")) return t("account.emailNotConfirmed");
+  if(low.includes("already registered")) return t("error.emailTaken");
+  if(low.includes("failed to fetch") || low.includes("network")) return t("error.network");
+  if(low.includes("row-level security") || low.includes("permission denied") || low.includes("rls")) return t("error.permission");
+  if(low.includes("jwt") || low.includes("session")) return t("error.session");
+  if(low.includes("null value") || low.includes("not-null constraint")) return t("error.missingField");
+  return t("error.generic");
+}
 
 function applyStaticTranslations(){
   document.documentElement.lang = currentLang;
@@ -1855,7 +1872,7 @@ async function showProviderResults(activity){
   let profileQuery = db.from("profiles").select("*").eq("verified", true).eq("available", true).in("role",["skipper","provider"]);
   profileQuery = activity === "skipper" ? profileQuery.or("provider_activity.is.null,provider_activity.eq.skipper") : profileQuery.in("provider_activity", activityFilter);
   const {data, error} = await profileQuery;
-  if(error){ box.querySelector(".empty-note").textContent = error.message; return; }
+  if(error){ box.querySelector(".empty-note").textContent = friendlyError(error); return; }
   providerResultsCache = data || [];
   box.innerHTML = `<h3>${heading}</h3>
     <input id="providerPortFilter" type="search" name="q_port_providers" autocomplete="off" data-lpignore="true" data-1p-ignore="true" data-form-type="other" placeholder="${esc(t("search.portPlaceholder"))}" value="${esc(portInput.value)}" style="width:100%;margin:12px 0 16px;padding:11px 14px;border:1px solid var(--line);border-radius:12px">
@@ -1909,7 +1926,7 @@ async function openBoatFinder(presetPort, presetType){
   else if(portInput.value.trim()) finderPort.value = portInput.value.trim();
   if(presetType) document.querySelector("#boatFinderTypeInput").value = presetType;
   const {data, error} = await db.from("boats").select("*").order("created_at",{ascending:false});
-  if(error){ box.innerHTML = `<div class="empty-note">${esc(error.message)}</div>`; return; }
+  if(error){ box.innerHTML = `<div class="empty-note">${esc(friendlyError(error))}</div>`; return; }
   boatCache = data || [];
   renderBoatResults();
   if(!finderPort.dataset.bound){
@@ -2343,7 +2360,7 @@ document.querySelector("#authSubmit").addEventListener("click", async ()=>{
     lang: currentLang
   };
   const {data, error} = await db.auth.signUp({email, password, options:{data: metadata}});
-  if(error){ msg.textContent = error.message; return; }
+  if(error){ msg.textContent = friendlyError(error); return; }
   if(!data.session){ msg.style.color = "#08794e"; msg.textContent = t("account.signupSuccess"); return; }
   currentUser = data.user;
   await loadProfile();
@@ -2504,7 +2521,7 @@ document.querySelector("#bookingSubmit").addEventListener("click", async ()=>{
   for(const file of photoFiles){
     const path = `${currentUser.id}/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.\-_]/g,"_")}`;
     const {error: uploadError} = await db.storage.from("mission-photos").upload(path, file);
-    if(uploadError){ msg.style.color = "#b42318"; msg.textContent = uploadError.message; return; }
+    if(uploadError){ msg.style.color = "#b42318"; msg.textContent = friendlyError(uploadError); return; }
     const {data: pub} = db.storage.from("mission-photos").getPublicUrl(path);
     photoUrls.push(pub.publicUrl);
   }
@@ -2524,7 +2541,7 @@ document.querySelector("#bookingSubmit").addEventListener("click", async ()=>{
     status: "pending",
     payment_status: "unpaid"
   });
-  if(error){ msg.style.color = "#b42318"; msg.textContent = error.message; return; }
+  if(error){ msg.style.color = "#b42318"; msg.textContent = friendlyError(error); return; }
   document.querySelector("#bookingForm").style.display = "none";
   document.querySelector("#bookingSuccess").style.display = "block";
 });
@@ -2556,7 +2573,7 @@ window.openPaymentFor = async function(missionId, amountCents){
     paymentElement.mount("#paymentElementWrap");
     document.querySelector("#paymentSubmit").style.display = "block";
   }catch(err){
-    document.querySelector("#paymentElementWrap").innerHTML = `<div class="note-box">${esc(err.message)}</div>`;
+    document.querySelector("#paymentElementWrap").innerHTML = `<div class="note-box">${esc(friendlyError(err))}</div>`;
   }
 };
 document.querySelector("#paymentSubmit").addEventListener("click", async ()=>{
@@ -2565,7 +2582,7 @@ document.querySelector("#paymentSubmit").addEventListener("click", async ()=>{
   msg.textContent = "";
   submitBtn.disabled = true;
   const {error, paymentIntent} = await stripeClient.confirmPayment({elements: paymentElementsInstance, redirect: "if_required"});
-  if(error){ msg.textContent = error.message; submitBtn.disabled = false; return; }
+  if(error){ msg.textContent = friendlyError(error); submitBtn.disabled = false; return; }
   try{
     const {data:{session}} = await db.auth.getSession();
     const res = await fetch(SUPABASE_URL + "/functions/v1/clever-processor", {
@@ -2577,7 +2594,7 @@ document.querySelector("#paymentSubmit").addEventListener("click", async ()=>{
     closeModal("paymentModal");
     openDashboard();
   }catch(err){
-    msg.textContent = err.message;
+    msg.textContent = friendlyError(err);
   }finally{
     submitBtn.disabled = false;
   }
@@ -2779,7 +2796,7 @@ async function renderBoatsManager(main, refreshFn){
       for(const file of photoFiles){
         const path = `${currentUser.id}/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.\-_]/g,"_")}`;
         const {error: uploadError} = await db.storage.from("mission-photos").upload(path, file);
-        if(uploadError){ alert(uploadError.message); submitBtn.disabled = false; return; }
+        if(uploadError){ alert(friendlyError(uploadError)); submitBtn.disabled = false; return; }
         const {data: pub} = db.storage.from("mission-photos").getPublicUrl(path);
         newUrls.push(pub.publicUrl);
       }
@@ -2817,7 +2834,7 @@ async function renderBoatsManager(main, refreshFn){
       const {error} = editing
         ? await db.from("boats").update(payload).eq("id", editing.id)
         : await db.from("boats").insert({client_id: currentUser.id, ...payload});
-      if(error){ alert(error.message); submitBtn.disabled = false; return; }
+      if(error){ alert(friendlyError(error)); submitBtn.disabled = false; return; }
       editingBoatId = null;
       await refreshFn();
     });
@@ -2841,7 +2858,7 @@ function bindMyBoatActions(refreshFn){
   document.querySelectorAll("[data-delete-my-boat]").forEach(btn=>btn.addEventListener("click", async ()=>{
     if(!confirm(t("dash.delete")+" ?")) return;
     const {error} = await db.from("boats").delete().eq("id", btn.dataset.deleteMyBoat);
-    if(error){ alert(error.message); return; }
+    if(error){ alert(friendlyError(error)); return; }
     if(String(editingBoatId)===String(btn.dataset.deleteMyBoat)) editingBoatId = null;
     refreshFn();
   }));
@@ -3144,14 +3161,14 @@ function renderContentPanel(ports){
       const a = ports[idx], b = ports[swapIdx];
       const {error:e1} = await db.from("ports").update({order_index:b.order_index}).eq("id", a.id);
       const {error:e2} = await db.from("ports").update({order_index:a.order_index}).eq("id", b.id);
-      if(e1||e2) alert((e1||e2).message); else await renderAdminPanel("content");
+      if(e1||e2) alert(friendlyError(e1||e2)); else await renderAdminPanel("content");
     });
   });
   document.querySelectorAll("[data-delete-port]").forEach(btn=>{
     btn.addEventListener("click", async ()=>{
       if(!confirm(t("dash.contentConfirmDelete"))) return;
       const {error} = await db.from("ports").delete().eq("id", btn.dataset.deletePort);
-      if(error) alert(error.message); else { editingPortId = null; await renderAdminPanel("content"); }
+      if(error) alert(friendlyError(error)); else { editingPortId = null; await renderAdminPanel("content"); }
     });
   });
   const cancelBtn = document.querySelector("#cancelPortEdit");
@@ -3171,7 +3188,7 @@ function renderContentPanel(ports){
     const {error} = editingPortId
       ? await db.from("ports").update(payload).eq("id", editingPortId)
       : await db.from("ports").insert(payload);
-    if(error){ msg.textContent = error.message; msg.style.color = "#c0392b"; }
+    if(error){ msg.textContent = friendlyError(error); msg.style.color = "#c0392b"; }
     else { msg.textContent = t("dash.contentSaved"); msg.style.color = ""; editingPortId = null; await renderAdminPanel("content"); }
   });
 }
@@ -3233,14 +3250,14 @@ function renderHeroPanel(slides){
       const a = slides[idx], b = slides[swapIdx];
       const {error:e1} = await db.from("hero_slides").update({order_index:b.order_index}).eq("id", a.id);
       const {error:e2} = await db.from("hero_slides").update({order_index:a.order_index}).eq("id", b.id);
-      if(e1||e2) alert((e1||e2).message); else await renderAdminPanel("hero");
+      if(e1||e2) alert(friendlyError(e1||e2)); else await renderAdminPanel("hero");
     });
   });
   document.querySelectorAll("[data-delete-hero]").forEach(btn=>{
     btn.addEventListener("click", async ()=>{
       if(!confirm(t("dash.contentConfirmDelete"))) return;
       const {error} = await db.from("hero_slides").delete().eq("id", btn.dataset.deleteHero);
-      if(error) alert(error.message); else { editingHeroId = null; await renderAdminPanel("hero"); }
+      if(error) alert(friendlyError(error)); else { editingHeroId = null; await renderAdminPanel("hero"); }
     });
   });
   const cancelBtn = document.querySelector("#cancelHeroEdit");
@@ -3254,7 +3271,7 @@ function renderHeroPanel(slides){
     const ext = (file.name.split(".").pop()||"jpg").toLowerCase();
     const path = `hero/${Date.now()}-${Math.random().toString(36).slice(2,8)}.${ext}`;
     const {error} = await db.storage.from("site-media").upload(path, file, {cacheControl:"3600", upsert:false});
-    if(error){ uploadStatus.textContent = error.message; uploadStatus.style.color = "#c0392b"; return; }
+    if(error){ uploadStatus.textContent = friendlyError(error); uploadStatus.style.color = "#c0392b"; return; }
     const {data} = db.storage.from("site-media").getPublicUrl(path);
     document.querySelector("#heroUrlInput").value = data.publicUrl;
     document.querySelector("#heroUrlInput").dispatchEvent(new Event("input"));
@@ -3281,7 +3298,7 @@ function renderHeroPanel(slides){
     const {error} = editingHeroId
       ? await db.from("hero_slides").update(payload).eq("id", editingHeroId)
       : await db.from("hero_slides").insert(payload);
-    if(error){ msg.textContent = error.message; msg.style.color = "#c0392b"; }
+    if(error){ msg.textContent = friendlyError(error); msg.style.color = "#c0392b"; }
     else { msg.textContent = t("dash.contentSaved"); msg.style.color = ""; editingHeroId = null; await renderAdminPanel("hero"); }
   });
 }
@@ -3344,14 +3361,14 @@ function renderDestinationsPanel(tiles){
       const a = tiles[idx], b = tiles[swapIdx];
       const {error:e1} = await db.from("destination_tiles").update({order_index:b.order_index}).eq("id", a.id);
       const {error:e2} = await db.from("destination_tiles").update({order_index:a.order_index}).eq("id", b.id);
-      if(e1||e2) alert((e1||e2).message); else await renderAdminPanel("destinations");
+      if(e1||e2) alert(friendlyError(e1||e2)); else await renderAdminPanel("destinations");
     });
   });
   document.querySelectorAll("[data-delete-dest]").forEach(btn=>{
     btn.addEventListener("click", async ()=>{
       if(!confirm(t("dash.contentConfirmDelete"))) return;
       const {error} = await db.from("destination_tiles").delete().eq("id", btn.dataset.deleteDest);
-      if(error) alert(error.message); else { editingDestId = null; await renderAdminPanel("destinations"); }
+      if(error) alert(friendlyError(error)); else { editingDestId = null; await renderAdminPanel("destinations"); }
     });
   });
   const cancelBtn = document.querySelector("#cancelDestEdit");
@@ -3365,7 +3382,7 @@ function renderDestinationsPanel(tiles){
     const ext = (file.name.split(".").pop()||"jpg").toLowerCase();
     const path = `destinations/${Date.now()}-${Math.random().toString(36).slice(2,8)}.${ext}`;
     const {error} = await db.storage.from("site-media").upload(path, file, {cacheControl:"3600", upsert:false});
-    if(error){ uploadStatus.textContent = error.message; uploadStatus.style.color = "#c0392b"; return; }
+    if(error){ uploadStatus.textContent = friendlyError(error); uploadStatus.style.color = "#c0392b"; return; }
     const {data} = db.storage.from("site-media").getPublicUrl(path);
     document.querySelector("#destUrlInput").value = data.publicUrl;
     document.querySelector("#destUrlInput").dispatchEvent(new Event("input"));
@@ -3392,7 +3409,7 @@ function renderDestinationsPanel(tiles){
     const {error} = editingDestId
       ? await db.from("destination_tiles").update(payload).eq("id", editingDestId)
       : await db.from("destination_tiles").insert(payload);
-    if(error){ msg.textContent = error.message; msg.style.color = "#c0392b"; }
+    if(error){ msg.textContent = friendlyError(error); msg.style.color = "#c0392b"; }
     else { msg.textContent = t("dash.contentSaved"); msg.style.color = ""; editingDestId = null; await renderAdminPanel("destinations"); }
   });
 }
@@ -3457,14 +3474,14 @@ function renderActivitiesPanel(tiles){
       const a = tiles[idx], b = tiles[swapIdx];
       const {error:e1} = await db.from("port_activities").update({order_index:b.order_index}).eq("id", a.id);
       const {error:e2} = await db.from("port_activities").update({order_index:a.order_index}).eq("id", b.id);
-      if(e1||e2) alert((e1||e2).message); else await renderAdminPanel("activities");
+      if(e1||e2) alert(friendlyError(e1||e2)); else await renderAdminPanel("activities");
     });
   });
   document.querySelectorAll("[data-delete-act]").forEach(btn=>{
     btn.addEventListener("click", async ()=>{
       if(!confirm(t("dash.contentConfirmDelete"))) return;
       const {error} = await db.from("port_activities").delete().eq("id", btn.dataset.deleteAct);
-      if(error) alert(error.message); else { editingActId = null; await renderAdminPanel("activities"); }
+      if(error) alert(friendlyError(error)); else { editingActId = null; await renderAdminPanel("activities"); }
     });
   });
   const cancelBtn = document.querySelector("#cancelActEdit");
@@ -3478,7 +3495,7 @@ function renderActivitiesPanel(tiles){
     const ext = (file.name.split(".").pop()||"jpg").toLowerCase();
     const path = `activities/${Date.now()}-${Math.random().toString(36).slice(2,8)}.${ext}`;
     const {error} = await db.storage.from("site-media").upload(path, file, {cacheControl:"3600", upsert:false});
-    if(error){ uploadStatus.textContent = error.message; uploadStatus.style.color = "#c0392b"; return; }
+    if(error){ uploadStatus.textContent = friendlyError(error); uploadStatus.style.color = "#c0392b"; return; }
     const {data} = db.storage.from("site-media").getPublicUrl(path);
     document.querySelector("#actUrlInput").value = data.publicUrl;
     document.querySelector("#actUrlInput").dispatchEvent(new Event("input"));
@@ -3507,7 +3524,7 @@ function renderActivitiesPanel(tiles){
     const {error} = editingActId
       ? await db.from("port_activities").update(payload).eq("id", editingActId)
       : await db.from("port_activities").insert(payload);
-    if(error){ msg.textContent = error.message; msg.style.color = "#c0392b"; }
+    if(error){ msg.textContent = friendlyError(error); msg.style.color = "#c0392b"; }
     else { msg.textContent = t("dash.contentSaved"); msg.style.color = ""; editingActId = null; await renderAdminPanel("activities"); }
   });
 }
@@ -3545,17 +3562,17 @@ function adminMissionCard(m, byId, showFinance, payoutsById){
 function bindAdminMissionActions(panel){
   document.querySelectorAll("[data-status-select]").forEach(sel=>sel.addEventListener("change", async ()=>{
     const {error} = await db.from("missions").update({status: sel.value}).eq("id", sel.dataset.statusSelect);
-    if(error) alert(error.message); else renderAdminPanel(panel);
+    if(error) alert(friendlyError(error)); else renderAdminPanel(panel);
   }));
   document.querySelectorAll("[data-delete-mission]").forEach(btn=>btn.addEventListener("click", async ()=>{
     if(!confirm(t("dash.delete")+" ?")) return;
     const {error} = await db.from("missions").delete().eq("id", btn.dataset.deleteMission);
-    if(error) alert(error.message); else renderAdminPanel(panel);
+    if(error) alert(friendlyError(error)); else renderAdminPanel(panel);
   }));
   document.querySelectorAll("[data-mark-paid]").forEach(btn=>btn.addEventListener("click", async ()=>{
     if(!confirm(t("dash.markPaidOut")+" ?")) return;
     const {error} = await db.from("missions").update({payment_status:"transferred"}).eq("id", btn.dataset.markPaid);
-    if(error) alert(error.message); else renderAdminPanel(panel);
+    if(error) alert(friendlyError(error)); else renderAdminPanel(panel);
   }));
   document.querySelectorAll("[data-approve-refund]").forEach(btn=>btn.addEventListener("click", async ()=>{
     if(!confirm(t("dash.approveRefund")+" ?")) return;
@@ -3569,12 +3586,12 @@ function bindAdminMissionActions(panel){
   }));
   document.querySelectorAll("[data-reject-refund]").forEach(btn=>btn.addEventListener("click", async ()=>{
     const {error} = await db.from("missions").update({payment_status:"refund_rejected"}).eq("id", btn.dataset.rejectRefund);
-    if(error) alert(error.message); else renderAdminPanel(panel);
+    if(error) alert(friendlyError(error)); else renderAdminPanel(panel);
   }));
   document.querySelectorAll("[data-resolve-dispute]").forEach(btn=>btn.addEventListener("click", async ()=>{
     if(!confirm(t("dash.resolveDispute")+" ?")) return;
     const {error} = await db.from("missions").update({dispute_status:"resolved", dispute_resolved_at: new Date().toISOString()}).eq("id", btn.dataset.resolveDispute);
-    if(error) alert(error.message); else renderAdminPanel(panel);
+    if(error) alert(friendlyError(error)); else renderAdminPanel(panel);
   }));
 }
 function adminUserCard(p, missions, defaultCommission){
@@ -3661,27 +3678,27 @@ function bindAdminBoatActions(){
       const j = await res.json();
       if(!res.ok || !j.ok){ alert(j.error || "Erreur"); btn.disabled = false; return; }
       renderAdminPanel("boats");
-    }catch(err){ alert(err.message); btn.disabled = false; }
+    }catch(err){ alert(friendlyError(err)); btn.disabled = false; }
   }));
   document.querySelectorAll("[data-verify-boat]").forEach(btn=>btn.addEventListener("click", async ()=>{
     if(!confirm(t("dash.boatVerifyChecklist"))) return;
     const {error} = await db.from("boats").update({verified:true}).eq("id", btn.dataset.verifyBoat);
-    if(error) alert(error.message); else renderAdminPanel("boats");
+    if(error) alert(friendlyError(error)); else renderAdminPanel("boats");
   }));
   document.querySelectorAll("[data-unverify-boat]").forEach(btn=>btn.addEventListener("click", async ()=>{
     const {error} = await db.from("boats").update({verified:false}).eq("id", btn.dataset.unverifyBoat);
-    if(error) alert(error.message); else renderAdminPanel("boats");
+    if(error) alert(friendlyError(error)); else renderAdminPanel("boats");
   }));
   document.querySelectorAll("[data-feature-days]").forEach(sel=>sel.addEventListener("change", async ()=>{
     const days = Number(sel.value);
     if(!days) return;
     const until = new Date(Date.now() + days*24*60*60*1000).toISOString();
     const {error} = await db.from("boats").update({featured:true, featured_until:until}).eq("id", sel.dataset.featureDays);
-    if(error) alert(error.message); else renderAdminPanel("boats");
+    if(error) alert(friendlyError(error)); else renderAdminPanel("boats");
   }));
   document.querySelectorAll("[data-unfeature-boat]").forEach(btn=>btn.addEventListener("click", async ()=>{
     const {error} = await db.from("boats").update({featured:false, featured_until:null}).eq("id", btn.dataset.unfeatureBoat);
-    if(error) alert(error.message); else renderAdminPanel("boats");
+    if(error) alert(friendlyError(error)); else renderAdminPanel("boats");
   }));
 }
 
@@ -3786,28 +3803,28 @@ function bindRequestActions(){
       platform_fee_cents: Math.round(euros*100*rate),
       status: "quoted"
     }).eq("id", btn.dataset.quote);
-    if(error) alert(error.message); else openDashboard();
+    if(error) alert(friendlyError(error)); else openDashboard();
   }));
   document.querySelectorAll("[data-accept-quote]").forEach(btn=>btn.addEventListener("click", async ()=>{
     const {error} = await db.from("missions").update({status:"accepted"}).eq("id", btn.dataset.acceptQuote).eq("client_id", currentUser.id);
-    if(error) alert(error.message); else openDashboard();
+    if(error) alert(friendlyError(error)); else openDashboard();
   }));
   document.querySelectorAll("[data-reject-quote]").forEach(btn=>btn.addEventListener("click", async ()=>{
     const {error} = await db.from("missions").update({status:"rejected"}).eq("id", btn.dataset.rejectQuote).eq("client_id", currentUser.id);
-    if(error) alert(error.message); else openDashboard();
+    if(error) alert(friendlyError(error)); else openDashboard();
   }));
   document.querySelectorAll("[data-complete]").forEach(btn=>btn.addEventListener("click", async ()=>{
     const {error} = await db.from("missions").update({status:"awaiting_validation"}).eq("id", btn.dataset.complete).eq("skipper_id", currentUser.id);
-    if(error) alert(error.message); else openDashboard();
+    if(error) alert(friendlyError(error)); else openDashboard();
   }));
   document.querySelectorAll("[data-validate]").forEach(btn=>btn.addEventListener("click", async ()=>{
     const {error} = await db.from("missions").update({status:"completed"}).eq("id", btn.dataset.validate).eq("client_id", currentUser.id);
-    if(error) alert(error.message); else openDashboard();
+    if(error) alert(friendlyError(error)); else openDashboard();
   }));
   document.querySelectorAll("[data-cancel]").forEach(btn=>btn.addEventListener("click", async ()=>{
     if(!confirm(t("dash.cancel")+" ?")) return;
     const {error} = await db.from("missions").update({status:"cancelled"}).eq("id", btn.dataset.cancel);
-    if(error) alert(error.message); else openDashboard();
+    if(error) alert(friendlyError(error)); else openDashboard();
   }));
   document.querySelectorAll("[data-pay-mission]").forEach(btn=>btn.addEventListener("click", ()=>{
     openPaymentFor(btn.dataset.payMission, Number(btn.dataset.payAmount));
@@ -3815,7 +3832,7 @@ function bindRequestActions(){
   document.querySelectorAll("[data-request-refund]").forEach(btn=>btn.addEventListener("click", async ()=>{
     if(!confirm(t("dash.requestRefund")+" ?")) return;
     const {error} = await db.from("missions").update({payment_status:"refund_requested"}).eq("id", btn.dataset.requestRefund).eq("client_id", currentUser.id);
-    if(error) alert(error.message); else openDashboard();
+    if(error) alert(friendlyError(error)); else openDashboard();
   }));
   document.querySelectorAll("[data-open-invoice]").forEach(btn=>btn.addEventListener("click", ()=>openInvoice(btn.dataset.openInvoice)));
   document.querySelectorAll("[data-open-dispute]").forEach(btn=>btn.addEventListener("click", async ()=>{
@@ -3827,7 +3844,7 @@ function bindRequestActions(){
       dispute_opened_by: currentUser.id,
       dispute_opened_at: new Date().toISOString()
     }).eq("id", btn.dataset.openDispute);
-    if(error) alert(error.message); else openDashboard();
+    if(error) alert(friendlyError(error)); else openDashboard();
   }));
   document.querySelectorAll("[data-open-chat]").forEach(btn=>btn.addEventListener("click", async ()=>{
     const [clientId, skipperId] = btn.dataset.openChat.split("|");
@@ -3871,7 +3888,7 @@ document.querySelector("#submitReviewBtn").addEventListener("click", async ()=>{
     comment: document.querySelector("#reviewComment").value.trim() || null
   });
   btn.disabled = false;
-  if(error){ msg.style.color = "#b42318"; msg.textContent = error.message; return; }
+  if(error){ msg.style.color = "#b42318"; msg.textContent = friendlyError(error); return; }
   closeModal("reviewModal");
   await renderClientPanel("requests");
 });
@@ -3902,33 +3919,33 @@ function profileCard(p){
 function bindProfileActions(){
   document.querySelectorAll("[data-approve]").forEach(btn=>btn.addEventListener("click", async ()=>{
     const {error} = await db.from("profiles").update({verified:true, available:true}).eq("id", btn.dataset.approve);
-    if(error) alert(error.message); else openDashboard();
+    if(error) alert(friendlyError(error)); else openDashboard();
   }));
   document.querySelectorAll("[data-suspend]").forEach(btn=>btn.addEventListener("click", async ()=>{
     if(!confirm(t("dash.suspend")+" ?")) return;
     const {error} = await db.from("profiles").update({verified:false, available:false, suspended:true}).eq("id", btn.dataset.suspend);
-    if(error) alert(error.message); else openDashboard();
+    if(error) alert(friendlyError(error)); else openDashboard();
   }));
   document.querySelectorAll("[data-reject-doc]").forEach(btn=>btn.addEventListener("click", async ()=>{
     const reason = prompt(t("dash.rejectDocument") + " — " + t("dispute.reasonPrompt"));
     if(reason === null || !reason.trim()) return;
     const {error} = await db.from("profiles").update({verified:false, document_rejection_reason: reason.trim()}).eq("id", btn.dataset.rejectDoc);
-    if(error) alert(error.message); else openDashboard();
+    if(error) alert(friendlyError(error)); else openDashboard();
   }));
   document.querySelectorAll("[data-feature]").forEach(btn=>btn.addEventListener("click", async ()=>{
     const {error} = await db.from("profiles").update({featured:true}).eq("id", btn.dataset.feature);
-    if(error) alert(error.message); else openDashboard();
+    if(error) alert(friendlyError(error)); else openDashboard();
   }));
   document.querySelectorAll("[data-unfeature]").forEach(btn=>btn.addEventListener("click", async ()=>{
     const {error} = await db.from("profiles").update({featured:false}).eq("id", btn.dataset.unfeature);
-    if(error) alert(error.message); else openDashboard();
+    if(error) alert(friendlyError(error)); else openDashboard();
   }));
   document.querySelectorAll("[data-save-note]").forEach(btn=>btn.addEventListener("click", async ()=>{
     const id = btn.dataset.saveNote;
     const note = document.querySelector(`[data-note-input="${id}"]`).value.trim();
     const msg = document.querySelector(`[data-note-msg="${id}"]`);
     const {error} = await db.from("profiles").update({admin_notes: note}).eq("id", id);
-    if(error){ msg.style.color = "#b42318"; msg.textContent = error.message; }
+    if(error){ msg.style.color = "#b42318"; msg.textContent = friendlyError(error); }
     else { msg.style.color = "#08794e"; msg.textContent = t("dash.saveSettings"); }
   }));
   document.querySelectorAll("[data-delete-user]").forEach(btn=>btn.addEventListener("click", async ()=>{
@@ -3944,7 +3961,7 @@ function bindProfileActions(){
       const j = await res.json();
       if(!res.ok || !j.ok){ alert(j.error || "Erreur"); btn.disabled = false; return; }
       openDashboard();
-    }catch(err){ alert(err.message); btn.disabled = false; }
+    }catch(err){ alert(friendlyError(err)); btn.disabled = false; }
   }));
   document.querySelectorAll("[data-message-user]").forEach(btn=>btn.addEventListener("click", async ()=>{
     const targetId = btn.dataset.messageUser;
@@ -4007,7 +4024,7 @@ async function renderMessagesPanel(myRoleColumn, filterMode){
     ? db.from("conversations").select("*").or(`client_id.eq.${currentUser.id},skipper_id.eq.${currentUser.id}`).order("created_at",{ascending:false})
     : db.from("conversations").select("*").eq(myRoleColumn, currentUser.id).order("created_at",{ascending:false});
   const {data: conversations, error} = await query;
-  if(error){ main.innerHTML = `<div class="note-box">${esc(error.message)}</div>`; return; }
+  if(error){ main.innerHTML = `<div class="note-box">${esc(friendlyError(error))}</div>`; return; }
   const rows = conversations || [];
   const tabsHtml = `<div style="display:flex;gap:8px;margin-bottom:12px">
     <button type="button" class="small-btn${mode==="unread" ? " active" : ""}" data-messages-filter="unread">${esc(t("dash.tabUnread"))}</button>
@@ -4042,7 +4059,7 @@ async function renderMessagesPanel(myRoleColumn, filterMode){
     e.stopPropagation();
     if(!confirm(t("dash.confirmDeleteConversation"))) return;
     const {error: delConvError} = await db.from("conversations").delete().eq("id", btn.dataset.deleteConversation);
-    if(delConvError){ alert(delConvError.message); return; }
+    if(delConvError){ alert(friendlyError(delConvError)); return; }
     await renderMessagesPanel(myRoleColumn);
   }));
 }
@@ -4083,7 +4100,7 @@ async function openConversationThread(clientId, skipperId){
       e.stopPropagation();
       if(!confirm(t("dash.confirmDeleteMessage"))) return;
       const {error: delError} = await db.from("messages").delete().eq("id", btn.dataset.deleteMessage);
-      if(delError){ alert(delError.message); return; }
+      if(delError){ alert(friendlyError(delError)); return; }
       await openConversationThread(clientId, skipperId);
     }));
     document.querySelector("#backToConversationList").addEventListener("click", ()=>renderMessagesPanel(currentMessagesRoleColumn));
@@ -4092,7 +4109,7 @@ async function openConversationThread(clientId, skipperId){
       const body = sanitizeContactInfo(input.value.trim());
       if(!body) return;
       const {error: sendError} = await db.from("messages").insert({conversation_id: conversation.id, sender_id: currentUser.id, body});
-      if(sendError){ alert(sendError.message); return; }
+      if(sendError){ alert(friendlyError(sendError)); return; }
       if(otherProfile?.contact_email){
         fetch(SUPABASE_URL + "/functions/v1/notify-new-message", {
           method: "POST",
@@ -4110,7 +4127,7 @@ async function openConversationThread(clientId, skipperId){
       await openConversationThread(clientId, skipperId);
     });
   }catch(err){
-    thread.innerHTML = `<div class="note-box">${esc(err.message)}</div>`;
+    thread.innerHTML = `<div class="note-box">${esc(friendlyError(err))}</div>`;
   }
 }
 
@@ -4268,14 +4285,14 @@ function bindProfileForm(){
     if(photoFile){
       const path = `${currentUser.id}/avatar-${Date.now()}-${photoFile.name.replace(/[^a-zA-Z0-9.\-_]/g,"_")}`;
       const {error: upErr} = await db.storage.from("mission-photos").upload(path, photoFile);
-      if(upErr){ msg.style.color = "#b42318"; msg.textContent = upErr.message; btn.disabled = false; return; }
+      if(upErr){ msg.style.color = "#b42318"; msg.textContent = friendlyError(upErr); btn.disabled = false; return; }
       patch.profile_photo_url = db.storage.from("mission-photos").getPublicUrl(path).data.publicUrl;
     }
     const diplomaFile = document.querySelector("#profileDiplomaInput")?.files[0];
     if(diplomaFile){
       const path = `${currentUser.id}/diploma-${Date.now()}-${diplomaFile.name.replace(/[^a-zA-Z0-9.\-_]/g,"_")}`;
       const {error: upErr} = await db.storage.from("mission-photos").upload(path, diplomaFile);
-      if(upErr){ msg.style.color = "#b42318"; msg.textContent = upErr.message; btn.disabled = false; return; }
+      if(upErr){ msg.style.color = "#b42318"; msg.textContent = friendlyError(upErr); btn.disabled = false; return; }
       patch.diploma_url = db.storage.from("mission-photos").getPublicUrl(path).data.publicUrl;
     }
     if(priceInput){
@@ -4283,7 +4300,7 @@ function bindProfileForm(){
       patch.price_from_cents = Number.isFinite(euros) && euros > 0 ? Math.round(euros*100) : null;
     }
     const {error} = await db.from("profiles").update(patch).eq("id", currentUser.id);
-    if(error){ msg.style.color = "#b42318"; msg.textContent = error.message; btn.disabled = false; return; }
+    if(error){ msg.style.color = "#b42318"; msg.textContent = friendlyError(error); btn.disabled = false; return; }
     const ibanInput = document.querySelector("#profileIban");
     if(ibanInput){
       const {error: payoutError} = await db.from("payout_details").upsert({
@@ -4293,7 +4310,7 @@ function bindProfileForm(){
         bic: document.querySelector("#profileBic").value.trim(),
         updated_at: new Date().toISOString()
       });
-      if(payoutError){ msg.style.color = "#b42318"; msg.textContent = payoutError.message; btn.disabled = false; return; }
+      if(payoutError){ msg.style.color = "#b42318"; msg.textContent = friendlyError(payoutError); btn.disabled = false; return; }
     }
     await loadProfile();
     msg.style.color = "#08794e";
