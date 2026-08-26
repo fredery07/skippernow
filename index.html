@@ -752,6 +752,7 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
       <button class="provider-service" data-activity="shipyard" type="button"><span class="provider-icon">🛠️</span><b data-i18n="activity.shipyard">Chantier et entretien</b><span class="desc" data-i18n="activity.shipyardDesc">Antifouling, peinture, petites réparations, mise à l'eau.</span></button>
       <button class="provider-service" data-activity="day_sailor" type="button"><span class="provider-icon">👷</span><b data-i18n="activity.daySailor">Marin à la journée</b><span class="desc" data-i18n="activity.daySailorDesc">Aide à bord, manutention, convoyage court.</span></button>
       <button class="provider-service" data-activity="skipper" type="button"><span class="provider-icon">🧭</span><b data-i18n="activity.skipper">Skipper professionnel</b><span class="desc" data-i18n="activity.skipperDesc">Sortie, location, convoyage et prise en main du bateau.</span></button>
+      <button class="provider-service" data-activity="provisioning" type="button"><span class="provider-icon">🛒</span><b data-i18n="activity.provisioning">Courses & avitaillement à bord</b><span class="desc" data-i18n="activity.provisioningDesc">Courses alimentaires, boissons, glace et produits du quotidien livrés directement au bateau.</span></button>
     </div>
     <div id="providerResults" style="display:none"></div>
   </div>
@@ -848,6 +849,7 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
         <option value="shipyard" data-i18n="activity.shipyard">Chantier et entretien</option>
         <option value="day_sailor" data-i18n="activity.daySailor">Marin à la journée</option>
         <option value="boat_rental_pro" data-i18n="activity.boatRentalPro">Loueur de bateaux</option>
+        <option value="provisioning" data-i18n="activity.provisioning">Courses & avitaillement à bord</option>
       </select>
     </div>
     <p class="error-text" id="authMessage"></p>
@@ -1066,6 +1068,10 @@ const I18N = {
     "activity.daySailor":"Marin à la journée","activity.daySailorDesc":"Aide à bord, manutention, convoyage court.",
     "activity.skipper":"Skipper professionnel","activity.skipperDesc":"Sortie, location, convoyage et prise en main du bateau.",
     "activity.boatRentalPro":"Loueur de bateaux","activity.boatRentalProDesc":"Location de bateaux, y compris pour le compte de propriétaires tiers.",
+    "activity.provisioning":"Courses & avitaillement à bord","activity.provisioningDesc":"Courses alimentaires, boissons, glace et produits du quotidien livrés directement au bateau.",
+    "providerModal.subIntro":"Choisissez la catégorie qui correspond à votre besoin.",
+    "sub.provisioning.groceries":"Alimentation & courses","sub.provisioning.drinks":"Boissons","sub.provisioning.ice":"Glace","sub.provisioning.breakfast":"Petit-déjeuner","sub.provisioning.hygiene":"Produits d'hygiène","sub.provisioning.everyday":"Produits du quotidien","sub.provisioning.custom":"Commande personnalisée",
+    "booking.provisioningPlaceholder":"Ex. 3 packs d'eau, 2 bouteilles de jus, sodas, café… précisez votre besoin en {sub}, le port et l'heure de livraison souhaitée.",
     "results.noProvider":"Aucun prestataire disponible pour ce service pour le moment.",
     "boatFinder.eyebrow":"LOCATION DE BATEAUX","boatFinder.title":"Bateaux disponibles","boatFinder.empty":"Aucun bateau ne correspond à votre recherche.","boatFinder.allTypes":"Tous les types","boatFinder.minCapacity":"Capacité min.",
     "boatDetail.model":"Modèle","boatDetail.port":"Port d'attache","boatDetail.length":"Longueur","boatDetail.halfDay":"Demi-journée","boatDetail.fullDay":"Journée",
@@ -1234,6 +1240,10 @@ const I18N = {
     "activity.daySailor":"Day sailor","activity.daySailorDesc":"Hands-on help, handling, short delivery trips.",
     "activity.skipper":"Professional skipper","activity.skipperDesc":"Trips, rentals, deliveries and boat familiarisation.",
     "activity.boatRentalPro":"Boat rental provider","activity.boatRentalProDesc":"Boat rentals, including boats owned by third parties.",
+    "activity.provisioning":"Groceries & Onboard Provisioning","activity.provisioningDesc":"Groceries, drinks, ice and everyday essentials delivered directly to the boat.",
+    "providerModal.subIntro":"Choose the category that matches your need.",
+    "sub.provisioning.groceries":"Groceries & Food","sub.provisioning.drinks":"Drinks","sub.provisioning.ice":"Ice","sub.provisioning.breakfast":"Breakfast","sub.provisioning.hygiene":"Hygiene Products","sub.provisioning.everyday":"Everyday Essentials","sub.provisioning.custom":"Custom Request",
+    "booking.provisioningPlaceholder":"E.g. 3 packs of water, 2 juice bottles, sodas, coffee… specify your need for {sub}, the port and preferred delivery time.",
     "results.noProvider":"No service provider available for this service yet.",
     "boatFinder.eyebrow":"BOAT RENTALS","boatFinder.title":"Available boats","boatFinder.empty":"No boats match your search.","boatFinder.allTypes":"All types","boatFinder.minCapacity":"Min. capacity",
     "boatDetail.model":"Model","boatDetail.port":"Home port","boatDetail.length":"Length","boatDetail.halfDay":"Half day","boatDetail.fullDay":"Full day",
@@ -1401,6 +1411,10 @@ const I18N = {
     "activity.daySailor":"Marinero por día","activity.daySailorDesc":"Ayuda a bordo, manipulación, traslados cortos.",
     "activity.skipper":"Skipper profesional","activity.skipperDesc":"Salidas, alquiler, traslados y familiarización con el barco.",
     "activity.boatRentalPro":"Empresa de alquiler de barcos","activity.boatRentalProDesc":"Alquiler de barcos, incluidos los de propietarios terceros.",
+    "activity.provisioning":"Compras y avituallamiento a bordo","activity.provisioningDesc":"Alimentos, bebidas, hielo y productos del día a día entregados directamente al barco.",
+    "providerModal.subIntro":"Elige la categoría que corresponde a tu necesidad.",
+    "sub.provisioning.groceries":"Alimentación y compras","sub.provisioning.drinks":"Bebidas","sub.provisioning.ice":"Hielo","sub.provisioning.breakfast":"Desayuno","sub.provisioning.hygiene":"Productos de higiene","sub.provisioning.everyday":"Productos de uso diario","sub.provisioning.custom":"Pedido personalizado",
+    "booking.provisioningPlaceholder":"Ej. 3 packs de agua, 2 botellas de zumo, refrescos, café… indica tu necesidad de {sub}, el puerto y la hora de entrega deseada.",
     "results.noProvider":"Todavía no hay prestadores disponibles para este servicio.",
     "boatFinder.eyebrow":"ALQUILER DE BARCOS","boatFinder.title":"Barcos disponibles","boatFinder.empty":"Ningún barco coincide con tu búsqueda.","boatFinder.allTypes":"Todos los tipos","boatFinder.minCapacity":"Capacidad mín.",
     "boatDetail.model":"Modelo","boatDetail.port":"Puerto base","boatDetail.length":"Eslora","boatDetail.halfDay":"Medio día","boatDetail.fullDay":"Día completo",
@@ -1561,7 +1575,7 @@ const closeModal = id => { document.querySelector("#"+id).classList.remove("open
 document.querySelectorAll("[data-close]").forEach(btn=>btn.addEventListener("click",()=>closeModal(btn.dataset.close)));
 document.querySelectorAll(".modal").forEach(m=>m.addEventListener("click",e=>{if(e.target===m) m.classList.remove("open")}));
 
-const ACTIVITY_LABEL_KEY = {skipper:"activity.skipper",cleaning:"activity.cleaning",dock_service:"activity.cleaning",shipyard:"activity.shipyard",day_sailor:"activity.daySailor",boat_rental_pro:"activity.boatRentalPro"};
+const ACTIVITY_LABEL_KEY = {skipper:"activity.skipper",cleaning:"activity.cleaning",dock_service:"activity.cleaning",shipyard:"activity.shipyard",day_sailor:"activity.daySailor",boat_rental_pro:"activity.boatRentalPro",provisioning:"activity.provisioning"};
 function activityLabel(activity){ return t(ACTIVITY_LABEL_KEY[activity] || "activity.cleaning"); }
 function featuredBadgeHtml(p){
   if(!p?.featured) return "";
@@ -1850,22 +1864,59 @@ document.querySelector("#heroProviders").addEventListener("click", ()=>{
   openModal("providerModal");
 });
 document.querySelectorAll(".provider-service").forEach(btn=>{
-  btn.addEventListener("click", ()=>showProviderResults(btn.dataset.activity));
+  btn.addEventListener("click", ()=>{
+    if(PROVIDER_SUBCATEGORIES[btn.dataset.activity]) showProviderSubcategories(btn.dataset.activity);
+    else showProviderResults(btn.dataset.activity);
+  });
 });
-document.querySelector("#providerModalBack").addEventListener("click", ()=>showProviderCategories());
+document.querySelector("#providerModalBack").addEventListener("click", ()=>{
+  if(providerBackTarget && providerBackTarget.type === "subcategories") showProviderSubcategories(providerBackTarget.activity);
+  else showProviderCategories();
+});
 function showProviderCategories(){
   document.querySelector("#providerGrid").style.display = "grid";
   document.querySelector("#providerResults").style.display = "none";
   document.querySelector("#providerModalIntro").style.display = "block";
   document.querySelector("#providerModalBack").style.display = "none";
+  providerBackTarget = null;
 }
-async function showProviderResults(activity){
+const PROVIDER_SUBCATEGORIES = {
+  provisioning: [
+    {key:"groceries", icon:"🥖", labelKey:"sub.provisioning.groceries"},
+    {key:"drinks", icon:"🥤", labelKey:"sub.provisioning.drinks"},
+    {key:"ice", icon:"🧊", labelKey:"sub.provisioning.ice"},
+    {key:"breakfast", icon:"🥐", labelKey:"sub.provisioning.breakfast"},
+    {key:"hygiene", icon:"🧴", labelKey:"sub.provisioning.hygiene"},
+    {key:"everyday", icon:"🧺", labelKey:"sub.provisioning.everyday"},
+    {key:"custom", icon:"✏️", labelKey:"sub.provisioning.custom"}
+  ]
+};
+let providerBackTarget = null;
+let currentProviderSubcategory = null;
+function showProviderSubcategories(activity){
   document.querySelector("#providerGrid").style.display = "none";
   document.querySelector("#providerModalIntro").style.display = "none";
   document.querySelector("#providerModalBack").style.display = "inline-flex";
+  providerBackTarget = null;
   const box = document.querySelector("#providerResults");
   box.style.display = "block";
-  const heading = activity === "all_providers" ? esc(t("tabs.cleaning")) : esc(activityLabel(activity));
+  const subs = PROVIDER_SUBCATEGORIES[activity] || [];
+  box.innerHTML = `<h3>${esc(activityLabel(activity))}</h3><p class="muted">${esc(t("providerModal.subIntro"))}</p>
+    <div class="provider-grid">${subs.map(sub=>`<button class="provider-service" type="button" data-sub-key="${esc(sub.key)}"><span class="provider-icon">${sub.icon}</span><b>${esc(t(sub.labelKey))}</b></button>`).join("")}</div>`;
+  box.querySelectorAll("[data-sub-key]").forEach(btn=>btn.addEventListener("click", ()=>{
+    providerBackTarget = {type:"subcategories", activity};
+    showProviderResults(activity, btn.dataset.subKey);
+  }));
+}
+async function showProviderResults(activity, subcategory){
+  document.querySelector("#providerGrid").style.display = "none";
+  document.querySelector("#providerModalIntro").style.display = "none";
+  document.querySelector("#providerModalBack").style.display = "inline-flex";
+  currentProviderSubcategory = subcategory || null;
+  const box = document.querySelector("#providerResults");
+  box.style.display = "block";
+  const subDef = subcategory && (PROVIDER_SUBCATEGORIES[activity]||[]).find(s=>s.key===subcategory);
+  const heading = activity === "all_providers" ? esc(t("tabs.cleaning")) : esc(activityLabel(activity)) + (subDef ? " – " + esc(t(subDef.labelKey)) : "");
   box.innerHTML = `<h3>${heading}</h3><div class="empty-note">…</div>`;
   const activityFilter = providerActivityFilter(activity);
   let profileQuery = db.from("profiles").select("*").eq("verified", true).eq("available", true).in("role",["skipper","provider"]);
@@ -2120,7 +2171,7 @@ function renderHomeProvidersStrip(){
     }, 3400);
   }
 }
-const ACTIVITY_ICON = {skipper:"⚓",cleaning:"🧽",dock_service:"🧽",shipyard:"🛠️",day_sailor:"👷",boat_rental_pro:"🚤"};
+const ACTIVITY_ICON = {skipper:"⚓",cleaning:"🧽",dock_service:"🧽",shipyard:"🛠️",day_sailor:"👷",boat_rental_pro:"🚤",provisioning:"🛒"};
 function renderProviderSpotlight(){
   const p = homeProvidersCache[homeProvidersIndex];
   if(!p) return;
@@ -2222,7 +2273,7 @@ window.openProfileDetail = function(id, adminView){
         : (currentUser && String(p.id)===String(currentUser.id))
           ? `<div class="note-box" style="margin-top:18px">${esc(t("boatDetail.ownListing"))}</div>`
           : `<div style="display:flex;gap:10px;margin-top:18px;flex-wrap:wrap">
-              <button class="primary wide" style="flex:1;min-width:160px" onclick="closeModal('profileDetailModal');openBookingFor('${p.id}','${esc(String(p.full_name||"").replace(/'/g,"\\'"))}','${esc(String(p.home_port||"").replace(/'/g,"\\'"))}','${activity}')">${esc(t("boatDetail.request"))}</button>
+              <button class="primary wide" style="flex:1;min-width:160px" onclick="closeModal('profileDetailModal');openBookingFor('${p.id}','${esc(String(p.full_name||"").replace(/'/g,"\\'"))}','${esc(String(p.home_port||"").replace(/'/g,"\\'"))}','${activity}','${esc(currentProviderSubcategory||"")}')">${esc(t("boatDetail.request"))}</button>
               <button class="ghost wide" style="flex:1;min-width:160px" onclick="messageProfile('${p.id}')">${esc(t("card.sendMessage"))}</button>
             </div>`}
     </div>`;
@@ -2470,12 +2521,12 @@ document.addEventListener("click", (e)=>{
 });
 setInterval(()=>{ if(currentUser) refreshNotifications(); }, 45000);
 
-window.openBookingFor = function(targetId, name, homePort, activity){
+window.openBookingFor = function(targetId, name, homePort, activity, subcategory){
   if(currentUser && targetId && String(targetId) === String(currentUser.id)){
     alert(t("boatDetail.ownListing"));
     return;
   }
-  bookingContext = {targetId, name, homePort, activity};
+  bookingContext = {targetId, name, homePort, activity, subcategory};
   document.querySelector("#bookingTargetName").textContent = name || t("booking.defaultTarget");
   document.querySelector("#bookingSummaryPort").textContent = homePort || portInput.value || "—";
   document.querySelector("#bookingSummaryPrice").textContent = t("booking.priceTbd");
@@ -2483,11 +2534,19 @@ window.openBookingFor = function(targetId, name, homePort, activity){
   document.querySelector("#bookingSuccess").style.display = "none";
   document.querySelector("#bookingMessage").textContent = "";
   const isBoatRental = activity === "boat_rental";
+  const isSupply = activity === "provisioning";
   document.querySelector("#bookingBoatField").style.display = isBoatRental ? "none" : "block";
   const detailsLabel = document.querySelector("#bookingDetailsLabel");
   const detailsInput = document.querySelector("#bookingDetails");
-  detailsLabel.textContent = isBoatRental ? t("booking.rentalDetailsLabel") : t("booking.detailsLabel");
-  detailsInput.placeholder = isBoatRental ? t("booking.rentalDetailsPlaceholder") : t("booking.detailsPlaceholder");
+  const subDef = subcategory && (PROVIDER_SUBCATEGORIES[activity]||[]).find(s=>s.key===subcategory);
+  const subLabel = subDef ? t(subDef.labelKey) : "";
+  if(isSupply){
+    detailsLabel.textContent = subDef ? `${activityLabel(activity)} – ${subLabel}` : t("booking.detailsLabel");
+    detailsInput.placeholder = t("booking.provisioningPlaceholder", {sub: subLabel || t("sub.provisioning.custom")});
+  }else{
+    detailsLabel.textContent = isBoatRental ? t("booking.rentalDetailsLabel") : t("booking.detailsLabel");
+    detailsInput.placeholder = isBoatRental ? t("booking.rentalDetailsPlaceholder") : t("booking.detailsPlaceholder");
+  }
   detailsInput.value = "";
   document.querySelector("#bookingBoat").value = "";
   document.querySelector("#bookingPhotos").value = "";
