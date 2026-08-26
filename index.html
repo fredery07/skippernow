@@ -1070,7 +1070,7 @@ const I18N = {
     "activity.boatRentalPro":"Loueur de bateaux","activity.boatRentalProDesc":"Location de bateaux, y compris pour le compte de propriétaires tiers.",
     "activity.provisioning":"Courses & avitaillement à bord","activity.provisioningDesc":"Courses alimentaires, boissons, glace et produits du quotidien livrés directement au bateau.",
     "providerModal.subIntro":"Choisissez la catégorie qui correspond à votre besoin.",
-    "sub.provisioning.groceries":"Alimentation & courses","sub.provisioning.drinks":"Boissons","sub.provisioning.ice":"Glace","sub.provisioning.breakfast":"Petit-déjeuner","sub.provisioning.hygiene":"Produits d'hygiène","sub.provisioning.everyday":"Produits du quotidien","sub.provisioning.custom":"Commande personnalisée",
+    "sub.provisioning.freshProduce":"Fruits & légumes frais","sub.provisioning.groceries":"Épicerie & produits secs","sub.provisioning.drinks":"Boissons","sub.provisioning.ice":"Glace","sub.provisioning.breakfast":"Petit-déjeuner & viennoiseries","sub.provisioning.hygiene":"Hygiène & entretien","sub.provisioning.custom":"Commande personnalisée",
     "booking.provisioningPlaceholder":"Ex. 3 packs d'eau, 2 bouteilles de jus, sodas, café… précisez votre besoin en {sub}, le port et l'heure de livraison souhaitée.",
     "results.noProvider":"Aucun prestataire disponible pour ce service pour le moment.",
     "boatFinder.eyebrow":"LOCATION DE BATEAUX","boatFinder.title":"Bateaux disponibles","boatFinder.empty":"Aucun bateau ne correspond à votre recherche.","boatFinder.allTypes":"Tous les types","boatFinder.minCapacity":"Capacité min.",
@@ -1242,7 +1242,7 @@ const I18N = {
     "activity.boatRentalPro":"Boat rental provider","activity.boatRentalProDesc":"Boat rentals, including boats owned by third parties.",
     "activity.provisioning":"Groceries & Onboard Provisioning","activity.provisioningDesc":"Groceries, drinks, ice and everyday essentials delivered directly to the boat.",
     "providerModal.subIntro":"Choose the category that matches your need.",
-    "sub.provisioning.groceries":"Groceries & Food","sub.provisioning.drinks":"Drinks","sub.provisioning.ice":"Ice","sub.provisioning.breakfast":"Breakfast","sub.provisioning.hygiene":"Hygiene Products","sub.provisioning.everyday":"Everyday Essentials","sub.provisioning.custom":"Custom Request",
+    "sub.provisioning.freshProduce":"Fresh fruits & vegetables","sub.provisioning.groceries":"Pantry & dry goods","sub.provisioning.drinks":"Drinks","sub.provisioning.ice":"Ice","sub.provisioning.breakfast":"Breakfast & pastries","sub.provisioning.hygiene":"Personal care & cleaning","sub.provisioning.custom":"Custom Request",
     "booking.provisioningPlaceholder":"E.g. 3 packs of water, 2 juice bottles, sodas, coffee… specify your need for {sub}, the port and preferred delivery time.",
     "results.noProvider":"No service provider available for this service yet.",
     "boatFinder.eyebrow":"BOAT RENTALS","boatFinder.title":"Available boats","boatFinder.empty":"No boats match your search.","boatFinder.allTypes":"All types","boatFinder.minCapacity":"Min. capacity",
@@ -1413,7 +1413,7 @@ const I18N = {
     "activity.boatRentalPro":"Empresa de alquiler de barcos","activity.boatRentalProDesc":"Alquiler de barcos, incluidos los de propietarios terceros.",
     "activity.provisioning":"Compras y avituallamiento a bordo","activity.provisioningDesc":"Alimentos, bebidas, hielo y productos del día a día entregados directamente al barco.",
     "providerModal.subIntro":"Elige la categoría que corresponde a tu necesidad.",
-    "sub.provisioning.groceries":"Alimentación y compras","sub.provisioning.drinks":"Bebidas","sub.provisioning.ice":"Hielo","sub.provisioning.breakfast":"Desayuno","sub.provisioning.hygiene":"Productos de higiene","sub.provisioning.everyday":"Productos de uso diario","sub.provisioning.custom":"Pedido personalizado",
+    "sub.provisioning.freshProduce":"Frutas y verduras frescas","sub.provisioning.groceries":"Despensa y productos secos","sub.provisioning.drinks":"Bebidas","sub.provisioning.ice":"Hielo","sub.provisioning.breakfast":"Desayuno y bollería","sub.provisioning.hygiene":"Higiene y limpieza","sub.provisioning.custom":"Pedido personalizado",
     "booking.provisioningPlaceholder":"Ej. 3 packs de agua, 2 botellas de zumo, refrescos, café… indica tu necesidad de {sub}, el puerto y la hora de entrega deseada.",
     "results.noProvider":"Todavía no hay prestadores disponibles para este servicio.",
     "boatFinder.eyebrow":"ALQUILER DE BARCOS","boatFinder.title":"Barcos disponibles","boatFinder.empty":"Ningún barco coincide con tu búsqueda.","boatFinder.allTypes":"Todos los tipos","boatFinder.minCapacity":"Capacidad mín.",
@@ -1882,12 +1882,12 @@ function showProviderCategories(){
 }
 const PROVIDER_SUBCATEGORIES = {
   provisioning: [
+    {key:"fresh_produce", icon:"🥬", labelKey:"sub.provisioning.freshProduce"},
     {key:"groceries", icon:"🥖", labelKey:"sub.provisioning.groceries"},
     {key:"drinks", icon:"🥤", labelKey:"sub.provisioning.drinks"},
     {key:"ice", icon:"🧊", labelKey:"sub.provisioning.ice"},
     {key:"breakfast", icon:"🥐", labelKey:"sub.provisioning.breakfast"},
     {key:"hygiene", icon:"🧴", labelKey:"sub.provisioning.hygiene"},
-    {key:"everyday", icon:"🧺", labelKey:"sub.provisioning.everyday"},
     {key:"custom", icon:"✏️", labelKey:"sub.provisioning.custom"}
   ]
 };
