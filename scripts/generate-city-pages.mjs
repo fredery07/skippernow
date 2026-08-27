@@ -88,4 +88,171 @@ main{padding:48px 0 20px}
 h2{font-family:var(--display);font-size:26px;color:var(--navy);margin:38px 0 12px}
 .card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px}
 .cta-box{background:var(--mist);border-radius:20px;padding:28px;margin:36px 0;text-align:center}
-footer{border-top:1px solid
+footer{border-top:1px solid var(--line);margin-top:48px;padding:28px 0;color:var(--muted);font-size:13.5px}
+footer a{color:var(--muted);margin-right:16px;text-decoration:none}
+`;
+
+function pageHtml({ title, desc, canonical, breadcrumbLabel, h1, intro, ctaHref, ctaLabel, serviceType, cityName }) {
+  return `<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${title}</title>
+<meta name="description" content="${desc}">
+<link rel="canonical" href="${canonical}">
+<meta name="robots" content="index,follow">
+<link rel="icon" href="/skippernow-icon.svg">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SkipperNow">
+<meta property="og:title" content="${title}">
+<meta property="og:description" content="${desc}">
+<meta property="og:url" content="${canonical}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Inter:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>${BASE_CSS}</style>
+<script type="application/ld+json">${JSON.stringify({
+  "@context": "https://schema.org", "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Accueil", item: SITE_URL + "/" },
+    { "@type": "ListItem", position: 2, name: breadcrumbLabel, item: canonical }
+  ]
+})}</script>
+<script type="application/ld+json">${JSON.stringify({
+  "@context": "https://schema.org", "@type": "Service",
+  serviceType, provider: { "@type": "Organization", name: "SkipperNow", url: SITE_URL + "/" },
+  areaServed: { "@type": "City", name: cityName }, url: canonical
+})}</script>
+</head>
+<body>
+<header><nav>
+  <a class="logo" href="/"><span class="mark">⚓</span>SkipperNow</a>
+  <div class="nav-links"><a href="/">Accueil</a><a href="/#destinations">Destinations</a></div>
+</nav></header>
+<section class="hero">
+  <div class="shell">
+    <div class="breadcrumb"><a href="/">Accueil</a> / ${breadcrumbLabel}</div>
+    <span class="eyebrow">${serviceType}</span>
+    <h1>${h1}</h1>
+    <p>${intro}</p>
+    <p style="margin-top:26px"><a class="primary" href="${ctaHref}">${ctaLabel}</a></p>
+  </div>
+</section>
+<main class="shell">
+  <div class="cta-box">
+    <h2>${ctaLabel}</h2>
+    <a class="primary" href="${ctaHref}">${ctaLabel}</a>
+  </div>
+  <p><a href="/">← Retour à la recherche SkipperNow</a></p>
+</main>
+<footer><div class="shell">
+  <a href="/">Accueil</a><a href="/#legal">Mentions légales</a><span>&copy; 2026 SkipperNow.</span>
+</div></footer>
+</body>
+</html>
+`;
+}
+
+function buildSkipperPage(city) {
+  const slug = slugify(city);
+  const canonical = `${SITE_URL}/skipper-${slug}/`;
+  return pageHtml({
+    title: `Skipper à ${city} | Réserver un skipper professionnel – SkipperNow`,
+    desc: `Trouvez et réservez un skipper professionnel à ${city} avec SkipperNow : profils vérifiés, recherche par port et paiement sécurisé.`,
+    canonical,
+    breadcrumbLabel: `Skipper à ${city}`,
+    h1: `Trouver un skipper à ${city}`,
+    intro: `Réservez un skipper professionnel disponible à ${city} pour une sortie en mer, une location avec équipage ou un convoyage, avec profils vérifiés et paiement sécurisé sur SkipperNow.`,
+    ctaHref: `/?port=${encodeURIComponent(city)}&activity=skipper`,
+    ctaLabel: `Voir les skippers à ${city}`,
+    serviceType: "Location de skipper professionnel",
+    cityName: city
+  });
+}
+
+function buildRentalPage(city) {
+  const slug = slugify(city);
+  const canonical = `${SITE_URL}/location-bateau-${slug}/`;
+  return pageHtml({
+    title: `Location de bateau à ${city} | SkipperNow`,
+    desc: `Louez un bateau à ${city} avec SkipperNow : annonces de propriétaires, réservation en ligne et paiement sécurisé avec caution.`,
+    canonical,
+    breadcrumbLabel: `Location de bateau à ${city}`,
+    h1: `Louer un bateau à ${city}`,
+    intro: `Parcourez les bateaux proposés à la location par leurs propriétaires à ${city} et réservez en ligne avec paiement sécurisé et caution définie par chaque propriétaire.`,
+    ctaHref: `/?port=${encodeURIComponent(city)}&activity=boat_rental`,
+    ctaLabel: `Voir les bateaux à ${city}`,
+    serviceType: "Location de bateau",
+    cityName: city
+  });
+}
+
+async function main() {
+  // Ne prendre en compte que les profils/bateaux créés à partir de la mise en
+  // place de l'autocomplétion du port (17 août 2026) : les fiches plus
+  // anciennes ont un champ "port" en texte libre non fiable et doivent être
+  // corrigées manuellement avant d'être incluses.
+  const CUTOFF_DATE = "2026-08-17";
+
+  const profiles = await fetchTable(
+    "profiles",
+    `select=home_port,role,created_at&verified=eq.true&role=in.(skipper,provider)&created_at=gte.${CUTOFF_DATE}`
+  );
+  const boats = await fetchTable("boats", `select=home_port,created_at&created_at=gte.${CUTOFF_DATE}`);
+
+  const skipperCities = new Map(); // slug -> display name
+  for (const p of profiles) {
+    const city = extractCity(p.home_port);
+    if (!city) continue;
+    const slug = slugify(city);
+    if (STATIC_CITIES.has(slug)) continue;
+    if (!skipperCities.has(slug)) skipperCities.set(slug, city);
+  }
+
+  const rentalCities = new Map();
+  for (const b of boats) {
+    const city = extractCity(b.home_port);
+    if (!city) continue;
+    const slug = slugify(city);
+    if (STATIC_CITIES.has(slug)) continue;
+    if (!rentalCities.has(slug)) rentalCities.set(slug, city);
+  }
+
+  let created = 0;
+  for (const [slug, city] of skipperCities) {
+    const dir = path.join(ROOT, `skipper-${slug}`);
+    fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(path.join(dir, "index.html"), buildSkipperPage(city));
+    created++;
+  }
+  for (const [slug, city] of rentalCities) {
+    const dir = path.join(ROOT, `location-bateau-${slug}`);
+    fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(path.join(dir, "index.html"), buildRentalPage(city));
+    created++;
+  }
+
+  // Reconstruit le sitemap : les 5 pages statiques + toutes les pages
+  // dynamiques trouvées ci-dessus.
+  const urls = [`${SITE_URL}/`];
+  for (const c of ["cannes", "antibes", "nice", "monaco", "saint-tropez"]) {
+    urls.push(`${SITE_URL}/skipper-${c}/`, `${SITE_URL}/location-bateau-${c}/`);
+  }
+  for (const slug of skipperCities.keys()) urls.push(`${SITE_URL}/skipper-${slug}/`);
+  for (const slug of rentalCities.keys()) urls.push(`${SITE_URL}/location-bateau-${slug}/`);
+  for (const slug of STATIC_ES_PAGES) urls.push(`${SITE_URL}/${slug}/`);
+
+  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls
+    .map(u => `  <url><loc>${u}</loc><changefreq>weekly</changefreq></url>`)
+    .join("\n")}\n</urlset>\n`;
+  fs.writeFileSync(path.join(ROOT, "sitemap.xml"), sitemap);
+
+  console.log(`Pages skipper générées: ${skipperCities.size}`);
+  console.log(`Pages location-bateau générées: ${rentalCities.size}`);
+  console.log(`Fichiers écrits: ${created + 1} (dont sitemap.xml)`);
+}
+
+main().catch(err => {
+  console.error(err);
+  process.exit(1);
+});
