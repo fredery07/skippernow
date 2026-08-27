@@ -530,6 +530,8 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
       <button type="button" data-port="Nice">Nice</button>
       <button type="button" data-port="Monaco">Monaco</button>
       <button type="button" data-port="Saint-Tropez">Saint-Tropez</button>
+      <button type="button" data-port="Empuriabrava">Empuriabrava</button>
+      <button type="button" data-port="Ibiza">Ibiza</button>
     </div>
   </div>
 </section>
@@ -629,7 +631,7 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
     <div class="logbook-strip" id="logbookStrip"></div>
   </section>
 
-  <section class="join">
+  <section class="join" id="join">
     <h2 data-i18n="join.title">Rejoindre SkipperNow</h2>
     <div class="join-grid">
       <div class="join-card"><h3 data-i18n="join.ownerTitle">Propriétaire</h3><p data-i18n="join.ownerText">Ajoutez votre bateau et proposez-le à la location.</p><button class="secondary-light" data-role="owner" data-i18n="join.ownerCta">Ajouter mon bateau</button></div>
@@ -671,6 +673,30 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
         <a href="/blog/comment-choisir-son-skipper/">Comment choisir son skipper</a><br>
         <a href="/blog/preparer-sa-sortie-en-mer/">Préparer sa sortie en mer</a><br>
         <a href="/blog/">Voir tous les guides</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="shell" style="padding:36px 24px 8px" aria-label="Alquiler de barcos en España">
+    <h2 style="font-family:var(--display);font-size:22px;margin-bottom:14px">🇪🇸 Alquiler de barcos en España</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px;font-size:14.5px;line-height:2">
+      <div>
+        <strong style="display:block;margin-bottom:6px;color:var(--navy)">Costa Brava</strong>
+        <a href="/alquiler-barcos-empuriabrava/">Alquiler de barcos en Empuriabrava</a><br>
+        <a href="/alquiler-barcos-roses/">Alquiler de barcos en Roses</a>
+      </div>
+      <div>
+        <strong style="display:block;margin-bottom:6px;color:var(--navy)">Cataluña</strong>
+        <a href="/alquiler-barcos-barcelona/">Alquiler de barcos en Barcelona</a>
+      </div>
+      <div>
+        <strong style="display:block;margin-bottom:6px;color:var(--navy)">Islas Baleares</strong>
+        <a href="/alquiler-barcos-ibiza/">Alquiler de barcos en Ibiza</a><br>
+        <a href="/alquiler-barcos-palma-de-mallorca/">Alquiler de barcos en Palma de Mallorca</a>
+      </div>
+      <div>
+        <strong style="display:block;margin-bottom:6px;color:var(--navy)">Costa del Sol</strong>
+        <a href="/alquiler-barcos-marbella/">Alquiler de barcos en Marbella</a>
       </div>
     </div>
   </section>
@@ -1597,6 +1623,10 @@ const POPULAR_PORTS = [
   ["Vieux-Port de Golfe-Juan","Golfe-Juan, France",43.5616,7.0750],["Port de Nice","Nice, France",43.6933,7.2844],
   ["Port Hercule","Monaco",43.7346,7.4252],["Port de Saint-Tropez","Saint-Tropez, France",43.2728,6.6386],
   ["Marina Ibiza","Ibiza, Espagne",38.9107,1.4350],["Port de Palma","Palma de Majorque, Espagne",39.5662,2.6388],
+  ["Marina d'Empuriabrava","Empuriabrava, Espagne",42.2486,3.1214],["Port de Roses","Roses, Espagne",42.2622,3.1755],
+  ["Port Olímpic de Barcelona","Barcelone, Espagne",41.3874,2.1974],["Port de Palma de Mallorca","Palma de Majorque, Espagne",39.5662,2.6388],
+  ["Puerto Banús","Marbella, Espagne",36.4848,-4.9526],["Marina de Valencia","Valence, Espagne",39.4459,-0.3187],
+  ["Marina de Alicante","Alicante, Espagne",38.3416,-0.4818],
   ["Port of Miami","Miami, États-Unis",25.7740,-80.1700],["Marina Puerto Bahía","Las Terrenas, République dominicaine",19.1986,-69.4380]
 ];
 const PORT_AREA_GROUPS = [
@@ -4617,6 +4647,8 @@ async function loadLogbook(){
     document.querySelectorAll("#listingTabs button").forEach(b=>b.classList.toggle("active", b.dataset.activity===urlActivity));
   }
   if(urlActivity === "boat_rental"){ openBoatFinder(urlPort||""); }
+  const urlJoin = params.get("join");
+  if(urlJoin === "owner" || urlJoin === "skipper" || urlJoin === "provider"){ openAccountModal("create", urlJoin); }
   updateSeoMeta();
   const {data:{session}} = await db.auth.getSession();
   currentUser = session?.user || null;
