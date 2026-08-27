@@ -1645,12 +1645,16 @@ async function portMatchesNearby(homePort, query, radiusKm){
   if(!qGeo || !hGeo) return false;
   return haversineKm(qGeo, hGeo) <= radiusKm;
 }
-async function filterByPortNearby(items, portFilter, getHomePort, radiusKm){
+async function filterByPortNearby(items, portFilter, getHomePort, defaultRadiusKm, getRadiusKm){
   if(!portFilter.trim()) return items;
   const fast = items.filter(it=>portMatches(getHomePort(it), portFilter));
   const fastIds = new Set(fast);
   const remaining = items.filter(it=>!fastIds.has(it));
-  const checks = await Promise.all(remaining.map(async it=>({it, ok: await portMatchesNearby(getHomePort(it), portFilter, radiusKm)})));
+  const checks = await Promise.all(remaining.map(async it=>{
+    const custom = getRadiusKm ? Number(getRadiusKm(it)) : NaN;
+    const radiusKm = custom > 0 ? custom : defaultRadiusKm;
+    return {it, ok: await portMatchesNearby(getHomePort(it), portFilter, radiusKm)};
+  }));
   return fast.concat(checks.filter(c=>c.ok).map(c=>c.it));
 }
 function updateSeoMeta(){
@@ -1810,7 +1814,7 @@ async function loadListings(){
   ]);
   const blocked = new Set((blocksRes.data||[]).map(x=>x.skipper_id));
   let list = profilesRes.data || [];
-  if(portFilter) list = await filterByPortNearby(list, portFilter, p=>p.home_port, 25);
+  if(portFilter) list = await filterByPortNearby(list, portFilter, p=>p.home_port, 25, p=>p.travel_radius_km);
 
   const box = document.querySelector("#cards");
   if(!box) return;
@@ -1934,7 +1938,7 @@ async function renderProviderResults(activity){
   const listBox = document.querySelector("#providerResultsList");
   if(!listBox) return;
   const portFilter = (document.querySelector("#providerPortFilter")?.value || "").trim().toLowerCase();
-  const list = await filterByPortNearby(providerResultsCache, portFilter, p=>p.home_port, 25);
+  const list = await filterByPortNearby(providerResultsCache, portFilter, p=>p.home_port, 25, p=>p.travel_radius_km);
   resultsCache = resultsCache.concat(list);
   listBox.innerHTML = list.length ? `<div class="result-list">${list.map(p=>`
     <article class="result-card">
