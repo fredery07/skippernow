@@ -30,6 +30,19 @@ const STATIC_ES_PAGES = [
   "alquiler-barcos-marbella"
 ];
 
+// Pages Floride/États-Unis écrites à la main (contenu SEO riche, en anglais) :
+// même protection que les pages Espagne — jamais régénérées ni supprimées,
+// toujours incluses dans le sitemap.
+const STATIC_US_PAGES = [
+  "boat-rental-miami",
+  "boat-rental-miami-beach",
+  "boat-rental-fort-lauderdale",
+  "boat-rental-key-west",
+  "boat-rental-islamorada",
+  "boat-rental-palm-beach",
+  "boat-rental-naples"
+];
+
 function slugify(str) {
   return str
     .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
@@ -241,6 +254,7 @@ async function main() {
   for (const slug of skipperCities.keys()) urls.push(`${SITE_URL}/skipper-${slug}/`);
   for (const slug of rentalCities.keys()) urls.push(`${SITE_URL}/location-bateau-${slug}/`);
   for (const slug of STATIC_ES_PAGES) urls.push(`${SITE_URL}/${slug}/`);
+  for (const slug of STATIC_US_PAGES) urls.push(`${SITE_URL}/${slug}/`);
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls
     .map(u => `  <url><loc>${u}</loc><changefreq>weekly</changefreq></url>`)
