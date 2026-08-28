@@ -43,6 +43,16 @@ const STATIC_US_PAGES = [
   "boat-rental-naples"
 ];
 
+// Pages Bahamas écrites à la main (contenu SEO riche, en anglais) : même
+// protection — jamais régénérées ni supprimées, toujours dans le sitemap.
+const STATIC_BS_PAGES = [
+  "boat-rental-nassau",
+  "boat-rental-exuma",
+  "boat-rental-freeport",
+  "boat-rental-abaco",
+  "boat-rental-bimini"
+];
+
 function slugify(str) {
   return str
     .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
@@ -255,6 +265,7 @@ async function main() {
   for (const slug of rentalCities.keys()) urls.push(`${SITE_URL}/location-bateau-${slug}/`);
   for (const slug of STATIC_ES_PAGES) urls.push(`${SITE_URL}/${slug}/`);
   for (const slug of STATIC_US_PAGES) urls.push(`${SITE_URL}/${slug}/`);
+  for (const slug of STATIC_BS_PAGES) urls.push(`${SITE_URL}/${slug}/`);
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls
     .map(u => `  <url><loc>${u}</loc><changefreq>weekly</changefreq></url>`)
