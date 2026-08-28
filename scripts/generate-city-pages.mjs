@@ -53,6 +53,25 @@ const STATIC_BS_PAGES = [
   "boat-rental-bimini"
 ];
 
+// Pages Porto Rico écrites à la main (contenu SEO riche, en anglais) : même
+// protection — jamais régénérées ni supprimées, toujours dans le sitemap.
+const STATIC_PR_PAGES = [
+  "boat-rental-san-juan",
+  "boat-rental-fajardo",
+  "boat-rental-culebra",
+  "boat-rental-vieques"
+];
+
+// Pages République dominicaine écrites à la main (contenu SEO riche, en
+// espagnol, orienté excursions) : même protection — jamais régénérées ni
+// supprimées, toujours dans le sitemap.
+const STATIC_DO_PAGES = [
+  "excursiones-las-terrenas",
+  "excursiones-samana",
+  "excursiones-punta-cana",
+  "excursiones-puerto-plata"
+];
+
 function slugify(str) {
   return str
     .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
@@ -266,6 +285,8 @@ async function main() {
   for (const slug of STATIC_ES_PAGES) urls.push(`${SITE_URL}/${slug}/`);
   for (const slug of STATIC_US_PAGES) urls.push(`${SITE_URL}/${slug}/`);
   for (const slug of STATIC_BS_PAGES) urls.push(`${SITE_URL}/${slug}/`);
+  for (const slug of STATIC_PR_PAGES) urls.push(`${SITE_URL}/${slug}/`);
+  for (const slug of STATIC_DO_PAGES) urls.push(`${SITE_URL}/${slug}/`);
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls
     .map(u => `  <url><loc>${u}</loc><changefreq>weekly</changefreq></url>`)
