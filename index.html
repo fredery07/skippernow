@@ -846,6 +846,34 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
   </div>
 </div>
 
+<div class="modal" id="excursionFinderModal">
+  <div class="dialog large">
+    <div class="dialog-top">
+      <div><small data-i18n="excFinder.eyebrow">EXCURSIONS</small><h2 data-i18n="excFinder.title">Excursions disponibles</h2></div>
+      <button class="close" data-close="excursionFinderModal" type="button">×</button>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px">
+      <input id="excFinderPortInput" type="search" name="q_port_exc" autocomplete="off" data-lpignore="true" data-1p-ignore="true" data-form-type="other" data-i18n-placeholder="search.portPlaceholder" placeholder="Ex. Cannes, Miami, Ibiza…" style="flex:2;min-width:160px;padding:11px 14px;border:1px solid var(--line);border-radius:12px">
+    </div>
+    <div id="excFinderResults" class="boat-list"></div>
+  </div>
+</div>
+
+<div class="modal" id="excursionRequestModal">
+  <div class="dialog">
+    <div class="dialog-top">
+      <div><h2 data-i18n="dash.requestExcursion">Demander cette excursion</h2></div>
+      <button class="close" data-close="excursionRequestModal" type="button">×</button>
+    </div>
+    <form id="excRequestForm">
+      <div class="field"><label data-i18n="dash.excGuestCount">Nombre de personnes</label><input id="excReqGuests" type="number" min="1" required></div>
+      <div class="field"><label data-i18n="dash.excDateWanted">Date souhaitée</label><input id="excReqDate" type="date" min="${new Date().toISOString().slice(0,10)}" required></div>
+      <button class="primary wide" type="submit" data-i18n="dash.requestExcursion">Demander cette excursion</button>
+      <div id="excRequestMsg" class="muted" style="margin-top:8px"></div>
+    </form>
+  </div>
+</div>
+
 <div class="modal" id="boatDetailModal">
   <div class="dialog"><div id="boatDetailContent"></div></div>
 </div>
@@ -1194,7 +1222,7 @@ const I18N = {
     "dash.navPayments":"Encaissements","dash.navPayouts":"Virements","dash.navRefunds":"Remboursements","dash.navCommissions":"Commissions","dash.navBoatsAdmin":"Bateaux",
     "dash.groupActivity":"Activité","dash.groupFinance":"Finance","dash.groupAccounts":"Comptes","dash.priorityQueueTitle":"À traiter en priorité","dash.priorityEmpty":"Rien d'urgent — tout est à jour.","dash.priorityValidation":"Profil à valider","dash.priorityDispute":"Litige ouvert","dash.priorityPayout":"Virement à préparer","dash.kpiTrendWeek":"sur 7 jours",
     "dash.groupContent":"Contenu","dash.navContent":"Ports & destinations","dash.contentAddPort":"Ajouter un port","dash.contentPortName":"Nom du port","dash.contentPortLat":"Latitude","dash.contentPortLng":"Longitude","dash.contentPortDesc":"Description","dash.contentPortOrder":"Ordre d'affichage","dash.contentPortActive":"Visible sur le site","dash.contentSave":"Enregistrer","dash.contentDelete":"Supprimer","dash.contentEdit":"Modifier","dash.contentCancel":"Annuler","dash.contentNoPorts":"Aucun port pour l'instant.","dash.contentSaved":"Enregistré.","dash.contentDeleted":"Port supprimé.","dash.contentConfirmDelete":"Supprimer ce port ? Cette action est définitive.",
-    "dash.navHero":"Photos du carrousel","dash.heroAddSlide":"Ajouter une photo","dash.heroImageUrl":"URL de l'image","dash.heroAlt":"Description (accessibilité)","dash.heroOrder":"Ordre d'affichage","dash.heroActive":"Visible sur le site","dash.heroNoSlides":"Aucune photo pour l'instant.","dash.heroPreview":"Aperçu","dash.heroUploadLabel":"Ou envoyer une photo depuis votre ordinateur","dash.heroUploading":"Envoi en cours...","dash.heroUploaded":"Photo envoyée.","dash.navDestinations":"Destinations phares","dash.destAddTile":"Ajouter une destination","dash.destName":"Nom de la destination","dash.destNoTiles":"Aucune destination pour l'instant.","dash.navActivities":"Idées de sorties","dash.actAddTile":"Ajouter une sortie","dash.actPortName":"Port concerné","dash.actTitle":"Titre de la sortie","dash.actDesc":"Description","dash.actNoTiles":"Aucune sortie pour l'instant.","dash.reqPhone":"Téléphone manquant","dash.reqDiploma":"Diplôme manquant","dash.reqPhoto":"Photo de profil manquante","dash.reqPhotoLink":"Voir la photo","dash.missingBeforeApproval":"À compléter avant validation","dash.profileIncompleteReminder":"Complétez votre profil pour être visible et recevoir des missions","dash.completeProfile":"Compléter mon profil","dash.featuredBadge":"Mis en avant","dash.featuredUntil":"Mis en avant jusqu'au","dash.daysLeft":"jours restants","dash.featureFor":"Mettre en avant...","dash.days":"jours","dash.removeFeatured":"Retirer la mise en avant",
+    "dash.navHero":"Photos du carrousel","dash.heroAddSlide":"Ajouter une photo","dash.heroImageUrl":"URL de l'image","dash.heroAlt":"Description (accessibilité)","dash.heroOrder":"Ordre d'affichage","dash.heroActive":"Visible sur le site","dash.heroNoSlides":"Aucune photo pour l'instant.","dash.heroPreview":"Aperçu","dash.heroUploadLabel":"Ou envoyer une photo depuis votre ordinateur","dash.heroUploading":"Envoi en cours...","dash.heroUploaded":"Photo envoyée.","dash.navDestinations":"Destinations phares","dash.destAddTile":"Ajouter une destination","dash.destName":"Nom de la destination","dash.destNoTiles":"Aucune destination pour l'instant.","dash.navActivities":"Idées de sorties","dash.actAddTile":"Ajouter une sortie","dash.actPortName":"Port concerné","dash.actTitle":"Titre de la sortie","dash.actDesc":"Description","dash.actNoTiles":"Aucune sortie pour l'instant.","dash.navExcursions":"Mes excursions","dash.excAddTile":"Ajouter une excursion","dash.excTitle":"Titre de l'excursion","dash.excDesc":"Description","dash.excIncluded":"Ce qui est inclus (repas, matériel...)","dash.excPort":"Port de départ","dash.excPrice":"Prix par personne","dash.excDuration":"Durée (heures)","dash.excMaxGuests":"Nombre de places max","dash.excNoTiles":"Aucune excursion pour l'instant.","dash.guests":"personnes","dash.requestExcursion":"Demander cette excursion","dash.excGuestCount":"Nombre de personnes","dash.excDateWanted":"Date souhaitée","dash.excRequestSent":"Votre demande a été envoyée à l'agence.","excFinder.eyebrow":"EXCURSIONS","excFinder.title":"Excursions disponibles","excFinder.empty":"Aucune excursion disponible pour ce port.","excFinder.perPerson":"/ personne","dash.reqPhone":"Téléphone manquant","dash.reqDiploma":"Diplôme manquant","dash.reqPhoto":"Photo de profil manquante","dash.reqPhotoLink":"Voir la photo","dash.missingBeforeApproval":"À compléter avant validation","dash.profileIncompleteReminder":"Complétez votre profil pour être visible et recevoir des missions","dash.completeProfile":"Compléter mon profil","dash.featuredBadge":"Mis en avant","dash.featuredUntil":"Mis en avant jusqu'au","dash.daysLeft":"jours restants","dash.featureFor":"Mettre en avant...","dash.days":"jours","dash.removeFeatured":"Retirer la mise en avant",
     "dash.navDisputes":"Litiges","dash.noDisputes":"Aucun litige en cours.","dash.resolveDispute":"Marquer comme résolu","dash.disputeOpen":"Litige ouvert","dash.disputeResolved":"Litige résolu",
     "dash.reportProblem":"Signaler un problème","dash.viewInvoice":"Voir la facture",
     "dispute.reasonPrompt":"Décris le problème rencontré",
@@ -1366,7 +1394,7 @@ const I18N = {
     "dash.navPayments":"Payments","dash.navPayouts":"Payouts","dash.navRefunds":"Refunds","dash.navCommissions":"Commissions","dash.navBoatsAdmin":"Boats",
     "dash.groupActivity":"Activity","dash.groupFinance":"Finance","dash.groupAccounts":"Accounts","dash.priorityQueueTitle":"Needs attention","dash.priorityEmpty":"Nothing urgent — all caught up.","dash.priorityValidation":"Profile to verify","dash.priorityDispute":"Open dispute","dash.priorityPayout":"Payout to prepare","dash.kpiTrendWeek":"last 7 days",
     "dash.groupContent":"Content","dash.navContent":"Ports & destinations","dash.contentAddPort":"Add a port","dash.contentPortName":"Port name","dash.contentPortLat":"Latitude","dash.contentPortLng":"Longitude","dash.contentPortDesc":"Description","dash.contentPortOrder":"Display order","dash.contentPortActive":"Visible on site","dash.contentSave":"Save","dash.contentDelete":"Delete","dash.contentEdit":"Edit","dash.contentCancel":"Cancel","dash.contentNoPorts":"No ports yet.","dash.contentSaved":"Saved.","dash.contentDeleted":"Port deleted.","dash.contentConfirmDelete":"Delete this port? This cannot be undone.",
-    "dash.navHero":"Carousel photos","dash.heroAddSlide":"Add a photo","dash.heroImageUrl":"Image URL","dash.heroAlt":"Description (accessibility)","dash.heroOrder":"Display order","dash.heroActive":"Visible on site","dash.heroNoSlides":"No photos yet.","dash.heroPreview":"Preview","dash.heroUploadLabel":"Or upload a photo from your computer","dash.heroUploading":"Uploading...","dash.heroUploaded":"Photo uploaded.","dash.navDestinations":"Featured destinations","dash.destAddTile":"Add a destination","dash.destName":"Destination name","dash.destNoTiles":"No destinations yet.","dash.navActivities":"Outing ideas","dash.actAddTile":"Add an outing","dash.actPortName":"Related port","dash.actTitle":"Outing title","dash.actDesc":"Description","dash.actNoTiles":"No outings yet.","dash.reqPhone":"Missing phone number","dash.reqDiploma":"Missing diploma","dash.reqPhoto":"Missing profile photo","dash.reqPhotoLink":"View photo","dash.missingBeforeApproval":"Required before approval","dash.profileIncompleteReminder":"Complete your profile to be visible and receive missions","dash.completeProfile":"Complete my profile","dash.featuredBadge":"Featured","dash.featuredUntil":"Featured until","dash.daysLeft":"days left","dash.featureFor":"Feature for...","dash.days":"days","dash.removeFeatured":"Remove from featured",
+    "dash.navHero":"Carousel photos","dash.heroAddSlide":"Add a photo","dash.heroImageUrl":"Image URL","dash.heroAlt":"Description (accessibility)","dash.heroOrder":"Display order","dash.heroActive":"Visible on site","dash.heroNoSlides":"No photos yet.","dash.heroPreview":"Preview","dash.heroUploadLabel":"Or upload a photo from your computer","dash.heroUploading":"Uploading...","dash.heroUploaded":"Photo uploaded.","dash.navDestinations":"Featured destinations","dash.destAddTile":"Add a destination","dash.destName":"Destination name","dash.destNoTiles":"No destinations yet.","dash.navActivities":"Outing ideas","dash.actAddTile":"Add an outing","dash.actPortName":"Related port","dash.actTitle":"Outing title","dash.actDesc":"Description","dash.actNoTiles":"No outings yet.","dash.navExcursions":"My excursions","dash.excAddTile":"Add an excursion","dash.excTitle":"Excursion title","dash.excDesc":"Description","dash.excIncluded":"What's included (meals, gear...)","dash.excPort":"Departure port","dash.excPrice":"Price per person","dash.excDuration":"Duration (hours)","dash.excMaxGuests":"Max guests","dash.excNoTiles":"No excursions yet.","dash.guests":"guests","dash.requestExcursion":"Request this excursion","dash.excGuestCount":"Number of guests","dash.excDateWanted":"Preferred date","dash.excRequestSent":"Your request has been sent to the agency.","excFinder.eyebrow":"EXCURSIONS","excFinder.title":"Available excursions","excFinder.empty":"No excursion available for this port.","excFinder.perPerson":"/ person","dash.reqPhone":"Missing phone number","dash.reqDiploma":"Missing diploma","dash.reqPhoto":"Missing profile photo","dash.reqPhotoLink":"View photo","dash.missingBeforeApproval":"Required before approval","dash.profileIncompleteReminder":"Complete your profile to be visible and receive missions","dash.completeProfile":"Complete my profile","dash.featuredBadge":"Featured","dash.featuredUntil":"Featured until","dash.daysLeft":"days left","dash.featureFor":"Feature for...","dash.days":"days","dash.removeFeatured":"Remove from featured",
     "dash.navDisputes":"Disputes","dash.noDisputes":"No open disputes.","dash.resolveDispute":"Mark as resolved","dash.disputeOpen":"Dispute open","dash.disputeResolved":"Dispute resolved",
     "dash.reportProblem":"Report a problem","dash.viewInvoice":"View invoice",
     "dispute.reasonPrompt":"Describe the problem",
@@ -1537,7 +1565,7 @@ const I18N = {
     "dash.navPayments":"Cobros","dash.navPayouts":"Transferencias","dash.navRefunds":"Reembolsos","dash.navCommissions":"Comisiones","dash.navBoatsAdmin":"Barcos",
     "dash.groupActivity":"Actividad","dash.groupFinance":"Finanzas","dash.groupAccounts":"Cuentas","dash.priorityQueueTitle":"Requiere atención","dash.priorityEmpty":"Nada urgente — todo al día.","dash.priorityValidation":"Perfil por validar","dash.priorityDispute":"Disputa abierta","dash.priorityPayout":"Transferencia por preparar","dash.kpiTrendWeek":"últimos 7 días",
     "dash.groupContent":"Contenido","dash.navContent":"Puertos y destinos","dash.contentAddPort":"Añadir un puerto","dash.contentPortName":"Nombre del puerto","dash.contentPortLat":"Latitud","dash.contentPortLng":"Longitud","dash.contentPortDesc":"Descripción","dash.contentPortOrder":"Orden de visualización","dash.contentPortActive":"Visible en el sitio","dash.contentSave":"Guardar","dash.contentDelete":"Eliminar","dash.contentEdit":"Editar","dash.contentCancel":"Cancelar","dash.contentNoPorts":"Aún no hay puertos.","dash.contentSaved":"Guardado.","dash.contentDeleted":"Puerto eliminado.","dash.contentConfirmDelete":"¿Eliminar este puerto? Esta acción es definitiva.",
-    "dash.navHero":"Fotos del carrusel","dash.heroAddSlide":"Añadir una foto","dash.heroImageUrl":"URL de la imagen","dash.heroAlt":"Descripción (accesibilidad)","dash.heroOrder":"Orden de visualización","dash.heroActive":"Visible en el sitio","dash.heroNoSlides":"Aún no hay fotos.","dash.heroPreview":"Vista previa","dash.heroUploadLabel":"O subir una foto desde tu ordenador","dash.heroUploading":"Subiendo...","dash.heroUploaded":"Foto subida.","dash.navDestinations":"Destinos destacados","dash.destAddTile":"Añadir un destino","dash.destName":"Nombre del destino","dash.destNoTiles":"Aún no hay destinos.","dash.navActivities":"Ideas de salidas","dash.actAddTile":"Añadir una salida","dash.actPortName":"Puerto relacionado","dash.actTitle":"Título de la salida","dash.actDesc":"Descripción","dash.actNoTiles":"Aún no hay salidas.","dash.reqPhone":"Falta el teléfono","dash.reqDiploma":"Falta el diploma","dash.reqPhoto":"Falta la foto de perfil","dash.reqPhotoLink":"Ver foto","dash.missingBeforeApproval":"Necesario antes de validar","dash.profileIncompleteReminder":"Completa tu perfil para ser visible y recibir misiones","dash.completeProfile":"Completar mi perfil","dash.featuredBadge":"Destacado","dash.featuredUntil":"Destacado hasta","dash.daysLeft":"días restantes","dash.featureFor":"Destacar durante...","dash.days":"días","dash.removeFeatured":"Quitar destacado",
+    "dash.navHero":"Fotos del carrusel","dash.heroAddSlide":"Añadir una foto","dash.heroImageUrl":"URL de la imagen","dash.heroAlt":"Descripción (accesibilidad)","dash.heroOrder":"Orden de visualización","dash.heroActive":"Visible en el sitio","dash.heroNoSlides":"Aún no hay fotos.","dash.heroPreview":"Vista previa","dash.heroUploadLabel":"O subir una foto desde tu ordenador","dash.heroUploading":"Subiendo...","dash.heroUploaded":"Foto subida.","dash.navDestinations":"Destinos destacados","dash.destAddTile":"Añadir un destino","dash.destName":"Nombre del destino","dash.destNoTiles":"Aún no hay destinos.","dash.navActivities":"Ideas de salidas","dash.actAddTile":"Añadir una salida","dash.actPortName":"Puerto relacionado","dash.actTitle":"Título de la salida","dash.actDesc":"Descripción","dash.actNoTiles":"Aún no hay salidas.","dash.navExcursions":"Mis excursiones","dash.excAddTile":"Añadir una excursión","dash.excTitle":"Título de la excursión","dash.excDesc":"Descripción","dash.excIncluded":"Qué incluye (comida, material...)","dash.excPort":"Puerto de salida","dash.excPrice":"Precio por persona","dash.excDuration":"Duración (horas)","dash.excMaxGuests":"Plazas máximas","dash.excNoTiles":"Aún no hay excursiones.","dash.guests":"personas","dash.requestExcursion":"Solicitar esta excursión","dash.excGuestCount":"Número de personas","dash.excDateWanted":"Fecha deseada","dash.excRequestSent":"Tu solicitud ha sido enviada a la agencia.","excFinder.eyebrow":"EXCURSIONES","excFinder.title":"Excursiones disponibles","excFinder.empty":"No hay excursiones disponibles para este puerto.","excFinder.perPerson":"/ persona","dash.reqPhone":"Falta el teléfono","dash.reqDiploma":"Falta el diploma","dash.reqPhoto":"Falta la foto de perfil","dash.reqPhotoLink":"Ver foto","dash.missingBeforeApproval":"Necesario antes de validar","dash.profileIncompleteReminder":"Completa tu perfil para ser visible y recibir misiones","dash.completeProfile":"Completar mi perfil","dash.featuredBadge":"Destacado","dash.featuredUntil":"Destacado hasta","dash.daysLeft":"días restantes","dash.featureFor":"Destacar durante...","dash.days":"días","dash.removeFeatured":"Quitar destacado",
     "dash.navDisputes":"Disputas","dash.noDisputes":"No hay disputas abiertas.","dash.resolveDispute":"Marcar como resuelto","dash.disputeOpen":"Disputa abierta","dash.disputeResolved":"Disputa resuelta",
     "dash.reportProblem":"Reportar un problema","dash.viewInvoice":"Ver factura",
     "dispute.reasonPrompt":"Describe el problema",
@@ -1637,6 +1665,7 @@ function sanitizeContactInfo(text){
 }
 
 const money = cents => (Number(cents||0)/100).toLocaleString(currentLang==="en"?"en-GB":currentLang==="es"?"es-ES":"fr-FR",{style:"currency",currency:"EUR"});
+const moneyC = (cents, currency) => (Number(cents||0)/100).toLocaleString(currentLang==="en"?"en-GB":currentLang==="es"?"es-ES":"fr-FR",{style:"currency",currency:(currency||"eur").toUpperCase()});
 const openModal = id => document.querySelector("#"+id).classList.add("open");
 const closeModal = id => { document.querySelector("#"+id).classList.remove("open"); if(id === "dashboardModal") unsubscribeThreadChannel(); };
 document.querySelectorAll("[data-close]").forEach(btn=>btn.addEventListener("click",()=>closeModal(btn.dataset.close)));
@@ -2087,6 +2116,87 @@ async function renderBoatResults(){
   box.innerHTML = list.length ? list.map(b=>boatListCardHtml(b)).join("") : `<div class="empty-note">${esc(t("boatFinder.empty"))}</div>`;
   startBoatCardCarousels();
 }
+let excursionCache = [];
+let excursionRequestTarget = null;
+async function openExcursionFinder(presetPort){
+  openModal("excursionFinderModal");
+  const box = document.querySelector("#excFinderResults");
+  box.innerHTML = `<div class="empty-note">…</div>`;
+  const finderPort = document.querySelector("#excFinderPortInput");
+  if(presetPort) finderPort.value = presetPort;
+  else if(portInput.value.trim()) finderPort.value = portInput.value.trim();
+  const {data, error} = await db.from("excursions").select("*").eq("active", true).order("created_at",{ascending:false});
+  if(error){ box.innerHTML = `<div class="empty-note">${esc(friendlyError(error))}</div>`; return; }
+  excursionCache = data || [];
+  renderExcursionResults();
+  if(!finderPort.dataset.bound){
+    finderPort.dataset.bound = "1";
+    finderPort.addEventListener("input", renderExcursionResults);
+  }
+}
+async function renderExcursionResults(){
+  const box = document.querySelector("#excFinderResults");
+  const portFilter = (document.querySelector("#excFinderPortInput")?.value || "").trim().toLowerCase();
+  const list = await filterByPortNearby(excursionCache, portFilter, x=>x.port, 25);
+  box.innerHTML = list.length ? list.map(x=>excursionCardHtml(x)).join("") : `<div class="empty-note">${esc(t("excFinder.empty"))}</div>`;
+  box.querySelectorAll("[data-request-exc]").forEach(btn=>btn.addEventListener("click", ()=>openExcursionRequest(btn.dataset.requestExc)));
+}
+function excursionCardHtml(x){
+  const photo = Array.isArray(x.photo_urls) && x.photo_urls[0] ? x.photo_urls[0] : "";
+  return `<article class="boat-card">
+    ${photo ? `<div class="boat-card-photo" style="background-image:url('${esc(photo)}')"></div>` : ""}
+    <div class="boat-card-body">
+      <h3>${esc(x.title)}</h3>
+      <div class="muted">${esc(x.port)} · ${esc(String(x.duration_hours))}h · ${esc(String(x.max_guests))} ${esc(t("dash.guests"))} max</div>
+      <p style="margin:8px 0">${esc(x.description||"")}</p>
+      ${x.included ? `<div class="muted" style="font-size:12.5px">${esc(x.included)}</div>` : ""}
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px">
+        <strong>${moneyC(x.price_cents, x.currency)} <span class="muted" style="font-weight:400">${esc(t("excFinder.perPerson"))}</span></strong>
+        <button class="small-btn fill" data-request-exc="${x.id}">${esc(t("dash.requestExcursion"))}</button>
+      </div>
+    </div>
+  </article>`;
+}
+function openExcursionRequest(excursionId){
+  excursionRequestTarget = excursionCache.find(x=>String(x.id)===String(excursionId));
+  if(!excursionRequestTarget) return;
+  document.querySelector("#excReqGuests").max = excursionRequestTarget.max_guests;
+  document.querySelector("#excRequestMsg").textContent = "";
+  openModal("excursionRequestModal");
+}
+document.querySelector("#excRequestForm")?.addEventListener("submit", async e=>{
+  e.preventDefault();
+  const msg = document.querySelector("#excRequestMsg");
+  if(!currentUser){ msg.style.color = "#b42318"; msg.textContent = t("booking.needAccount") || t("nav.login"); return; }
+  const x = excursionRequestTarget;
+  if(!x) return;
+  const guests = Number(document.querySelector("#excReqGuests").value);
+  const date = document.querySelector("#excReqDate").value;
+  const starts = new Date(date + "T10:00:00");
+  const ends = new Date(starts.getTime() + Number(x.duration_hours)*3600000);
+  const {error} = await db.from("missions").insert({
+    client_id: currentUser.id,
+    provider_id: x.provider_id,
+    excursion_id: x.id,
+    guest_count: guests,
+    port: x.port,
+    boat_type: x.title,
+    description: x.description,
+    photo_urls: x.photo_urls || null,
+    starts_at: starts.toISOString(),
+    ends_at: ends.toISOString(),
+    amount_cents: 0,
+    urgent_fee_cents: 0,
+    platform_fee_cents: 0,
+    currency: x.currency,
+    status: "pending",
+    payment_status: "unpaid"
+  });
+  if(error){ msg.style.color = "#b42318"; msg.textContent = friendlyError(error); return; }
+  msg.style.color = "";
+  msg.textContent = t("dash.excRequestSent");
+  setTimeout(()=>closeModal("excursionRequestModal"), 1400);
+});
 function boatTypeLabel(type){
   const key = type === "motorboat" ? "boatDetail.typeMotorboat" : type === "rib" ? "boatDetail.typeRib" : type === "catamaran" ? "boatDetail.typeCatamaran" : "boatDetail.typeSailboat";
   return t(key);
@@ -2780,7 +2890,8 @@ const NAV_ICONS = {
   content:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></svg>',
   hero:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>',
   destinations:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 6v16l7-4 8 4 7-4V2l-7 4-8-4-7 4z"/><path d="M8 2v16M16 6v16"/></svg>',
-  activities:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h5l2-8 4 16 2-8h7"/></svg>'
+  activities:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h5l2-8 4 16 2-8h7"/></svg>',
+  excursions:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>'
 };
 function dashShell(navItems, activePanel){
   let lastGroup = null, rows = "";
@@ -3013,12 +3124,14 @@ function bindMyBoatActions(refreshFn){
 async function renderProDashboard(){
   const body = document.querySelector("#dashboardBody");
   const isBoatRentalPro = currentProfile?.provider_activity === "boat_rental_pro";
+  const isProvider = currentProfile?.role === "provider";
   const navItems = [
     {id:"requests", label:t("dash.navRequests")},
     {id:"messages", label:t("dash.navMessages")},
     {id:"support", label:t("dash.navSupport")}
   ];
   if(isBoatRentalPro) navItems.push({id:"boats", label:t("dash.navBoats")});
+  if(isProvider) navItems.push({id:"excursions", label:t("dash.navExcursions")});
   navItems.push({id:"profile", label:t("dash.navProfile")}, {id:"availability", label:t("dash.navAvailability")});
   body.innerHTML = dashShell(navItems, "requests");
   bindDashNav(renderProPanel);
@@ -3047,10 +3160,12 @@ async function renderProPanel(panel){
   const profileReminder = profileReminderBannerHtml(currentProfile);
   if(panel === "requests"){
     const {data} = await db.from("missions").select("*").order("created_at",{ascending:false});
-    const rows = (data||[]).filter(m => String(m.skipper_id||"") === String(currentUser.id) || (!m.skipper_id && m.status === "pending"));
+    const rows = (data||[]).filter(m => String(m.skipper_id||"") === String(currentUser.id) || String(m.provider_id||"") === String(currentUser.id) || (!m.skipper_id && !m.provider_id && m.status === "pending"));
     main.innerHTML = profileReminder + (rows.length ? rows.map(m=>requestCard(m,"pro")).join("") : `<div class="empty-note">${esc(t("dash.noMissions"))}</div>`);
     bindRequestActions();
     bindProfileReminderLink();
+  }else if(panel === "excursions"){
+    await renderExcursionsManager(main);
   }else if(panel === "messages"){
     await renderMessagesPanel("skipper_id");
   }else if(panel === "support"){
@@ -3081,6 +3196,111 @@ async function renderProPanel(panel){
       await renderProPanel("availability");
     }));
   }
+}
+
+let editingExcId = null;
+async function renderExcursionsManager(main){
+  const {data: rows} = await db.from("excursions").select("*").eq("provider_id", currentUser.id).order("created_at",{ascending:false});
+  const tiles = rows || [];
+  const editing = editingExcId ? tiles.find(x=>String(x.id)===String(editingExcId)) : null;
+  const s = editing || {};
+  main.innerHTML = `
+    <div class="dash-section-title">${NAV_ICONS.excursions}${esc(t("dash.navExcursions"))} (${tiles.length})</div>
+    <div class="hero-admin-grid">
+      ${tiles.length ? tiles.map(sl=>`
+        <div class="hero-admin-card${sl.active?"":" hero-admin-card--inactive"}">
+          ${Array.isArray(sl.photo_urls) && sl.photo_urls[0] ? `<div class="hero-admin-thumb" style="background-image:url('${esc(sl.photo_urls[0])}')"></div>` : ""}
+          <div class="hero-admin-body">
+            <div class="hero-admin-order" style="font-family:inherit;font-weight:800;color:var(--navy)">${esc(sl.title)}</div>
+            <div class="hero-admin-order">${esc(sl.port)} · ${moneyC(sl.price_cents, sl.currency)} / ${esc(t("dash.guests"))} · ${esc(String(sl.duration_hours))}h${sl.active?"":` · ${esc(t("dash.heroActive"))} ✕`}</div>
+            <div class="hero-admin-actions">
+              <button type="button" class="link" data-edit-exc="${sl.id}">${esc(t("dash.contentEdit"))}</button>
+              <button type="button" class="link" style="color:#c0392b" data-delete-exc="${sl.id}">${esc(t("dash.contentDelete"))}</button>
+            </div>
+          </div>
+        </div>`).join("") : `<div class="empty-note">${esc(t("dash.excNoTiles"))}</div>`}
+    </div>
+    <h3 style="margin-top:24px">${editing ? esc(t("dash.contentEdit")) : esc(t("dash.excAddTile"))}</h3>
+    <form id="excForm" style="margin-top:14px">
+      <div class="field"><label>${esc(t("dash.excPort"))}</label><input id="excPortInput" required value="${esc(s.port||"")}" placeholder="Ex. Fajardo"></div>
+      <div class="field"><label>${esc(t("dash.excTitle"))}</label><input id="excTitleInput" required value="${esc(s.title||"")}"></div>
+      <div class="field"><label>${esc(t("dash.excDesc"))}</label><textarea id="excDescInput" rows="3" required>${esc(s.description||"")}</textarea></div>
+      <div class="field"><label>${esc(t("dash.excIncluded"))}</label><textarea id="excIncludedInput" rows="2">${esc(s.included||"")}</textarea></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="field"><label>${esc(t("dash.excPrice"))}</label><input id="excPriceInput" type="number" min="1" step="0.01" required value="${s.price_cents?(s.price_cents/100):""}"></div>
+        <div class="field"><label>${esc(t("dash.settingsCurrency")||"Devise")}</label>
+          <select id="excCurrencyInput">
+            <option value="eur" ${(s.currency||"eur")==="eur"?"selected":""}>EUR (€)</option>
+            <option value="usd" ${s.currency==="usd"?"selected":""}>USD ($)</option>
+          </select>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="field"><label>${esc(t("dash.excDuration"))}</label><input id="excDurationInput" type="number" min="0.5" step="0.5" required value="${s.duration_hours||""}"></div>
+        <div class="field"><label>${esc(t("dash.excMaxGuests"))}</label><input id="excMaxGuestsInput" type="number" min="1" step="1" required value="${s.max_guests||""}"></div>
+      </div>
+      <div class="field"><label>${esc(t("dash.heroUploadLabel"))}</label>
+        <input id="excFileInput" type="file" accept="image/*">
+        <div id="excUploadStatus" class="muted" style="font-size:12px;margin-top:4px"></div>
+      </div>
+      <div id="excPreviewBox" style="margin:6px 0 14px;${(Array.isArray(s.photo_urls)&&s.photo_urls[0])?"":"display:none"}">
+        <div class="hero-admin-thumb hero-admin-thumb--big" id="excPreviewImg" style="background-image:url('${esc((s.photo_urls&&s.photo_urls[0])||"")}')"></div>
+      </div>
+      <label style="display:flex;align-items:center;gap:8px;font-weight:700;font-size:13.5px;margin-bottom:14px"><input id="excActiveInput" type="checkbox" ${editing ? (s.active?"checked":"") : "checked"}> ${esc(t("dash.heroActive"))}</label>
+      <div style="display:flex;gap:10px">
+        <button class="primary wide" type="submit">${esc(t("dash.contentSave"))}</button>
+        ${editing ? `<button type="button" class="secondary" id="excCancelEdit">${esc(t("dash.contentCancel")||"Annuler")}</button>` : ""}
+      </div>
+      <div id="excFormMsg" class="muted" style="margin-top:8px"></div>
+    </form>`;
+  bindExcursionsForm(s);
+  main.querySelectorAll("[data-edit-exc]").forEach(btn=>btn.addEventListener("click", ()=>{ editingExcId = btn.dataset.editExc; renderExcursionsManager(main); }));
+  main.querySelectorAll("[data-delete-exc]").forEach(btn=>btn.addEventListener("click", async ()=>{
+    if(!confirm(t("dash.contentDelete")+" ?")) return;
+    await db.from("excursions").delete().eq("id", btn.dataset.deleteExc).eq("provider_id", currentUser.id);
+    await renderExcursionsManager(main);
+  }));
+}
+function bindExcursionsForm(current){
+  let uploadedUrl = (current.photo_urls && current.photo_urls[0]) || "";
+  const fileInput = document.querySelector("#excFileInput");
+  fileInput?.addEventListener("change", async ()=>{
+    const file = fileInput.files[0];
+    if(!file) return;
+    const status = document.querySelector("#excUploadStatus");
+    status.textContent = t("dash.heroUploading");
+    const path = `${currentUser.id}/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.\-_]/g,"_")}`;
+    const {error} = await db.storage.from("mission-photos").upload(path, file);
+    if(error){ status.textContent = friendlyError(error); return; }
+    const {data} = db.storage.from("mission-photos").getPublicUrl(path);
+    uploadedUrl = data.publicUrl;
+    status.textContent = t("dash.heroUploaded");
+    const box = document.querySelector("#excPreviewBox"), img = document.querySelector("#excPreviewImg");
+    box.style.display = ""; img.style.backgroundImage = `url('${uploadedUrl}')`;
+  });
+  document.querySelector("#excCancelEdit")?.addEventListener("click", ()=>{ editingExcId = null; renderProPanel("excursions"); });
+  document.querySelector("#excForm").addEventListener("submit", async e=>{
+    e.preventDefault();
+    const msg = document.querySelector("#excFormMsg");
+    const payload = {
+      provider_id: currentUser.id,
+      port: document.querySelector("#excPortInput").value.trim(),
+      title: document.querySelector("#excTitleInput").value.trim(),
+      description: document.querySelector("#excDescInput").value.trim(),
+      included: document.querySelector("#excIncludedInput").value.trim() || null,
+      price_cents: Math.round(Number(document.querySelector("#excPriceInput").value)*100),
+      currency: document.querySelector("#excCurrencyInput").value,
+      duration_hours: Number(document.querySelector("#excDurationInput").value),
+      max_guests: Number(document.querySelector("#excMaxGuestsInput").value),
+      photo_urls: uploadedUrl ? [uploadedUrl] : null,
+      active: document.querySelector("#excActiveInput").checked
+    };
+    const {error} = editingExcId
+      ? await db.from("excursions").update(payload).eq("id", editingExcId).eq("provider_id", currentUser.id)
+      : await db.from("excursions").insert(payload);
+    if(error){ msg.style.color = "#b42318"; msg.textContent = friendlyError(error); }
+    else { msg.textContent = t("dash.contentSaved"); msg.style.color = ""; editingExcId = null; await renderProPanel("excursions"); }
+  });
 }
 
 async function renderAdminDashboard(){
@@ -3858,8 +4078,8 @@ function requestCard(m, context, reviewedMissionIds){
   const total = Number(m.amount_cents||0) + Number(m.urgent_fee_cents||0);
   const priceText = total ? money(total) : t("booking.priceTbd");
   let actions = "";
-  if(context === "pro" && m.status === "pending" && (!m.skipper_id || String(m.skipper_id)===String(currentUser.id))){
-    actions += `<button class="small-btn fill" data-quote="${m.id}">${esc(t("dash.proposePrice"))}</button>`;
+  if(context === "pro" && m.status === "pending" && ((!m.skipper_id && !m.provider_id) || String(m.skipper_id||"")===String(currentUser.id) || String(m.provider_id||"")===String(currentUser.id))){
+    actions += `<button class="small-btn fill" data-quote="${m.id}" data-has-provider="${m.provider_id?"1":""}">${esc(t("dash.proposePrice"))}</button>`;
   }
   if(context === "client" && m.status === "quoted"){
     actions += `<button class="small-btn fill" data-accept-quote="${m.id}">${esc(t("dash.acceptQuote"))}</button>`;
@@ -3903,7 +4123,7 @@ function requestCard(m, context, reviewedMissionIds){
       <span class="status-pill ${statusPillClass(m.status)}">${esc(t("status."+(m.status||"pending")))}</span>
     </div>
     ${Array.isArray(m.photo_urls) && m.photo_urls.length ? `<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">${m.photo_urls.map(u=>`<img src="${esc(u)}" style="width:56px;height:56px;object-fit:cover;border-radius:8px;cursor:pointer" onclick="window.open('${esc(u)}','_blank')">`).join("")}</div>` : ""}
-    <div class="muted" style="margin-top:6px">${priceText}</div>
+    <div class="muted" style="margin-top:6px">${priceText}${m.guest_count ? ` · ${esc(String(m.guest_count))} ${esc(t("dash.guests"))}` : ""}</div>
     <div class="request-actions">${actions}</div>
   </article>`;
 }
@@ -3944,12 +4164,13 @@ function bindRequestActions(){
     if(!Number.isFinite(euros) || euros <= 0) return;
     const {data:settings} = await db.from("platform_settings").select("*").eq("id",1).maybeSingle();
     const rate = Number(settings?.first_commission_percent ?? 15) / 100;
-    const {error} = await db.from("missions").update({
-      skipper_id: currentUser.id,
+    const patch = {
       amount_cents: Math.round(euros*100),
       platform_fee_cents: Math.round(euros*100*rate),
       status: "quoted"
-    }).eq("id", btn.dataset.quote);
+    };
+    if(!btn.dataset.hasProvider) patch.skipper_id = currentUser.id;
+    const {error} = await db.from("missions").update(patch).eq("id", btn.dataset.quote);
     if(error) alert(friendlyError(error)); else openDashboard();
   }));
   document.querySelectorAll("[data-accept-quote]").forEach(btn=>btn.addEventListener("click", async ()=>{
@@ -4696,6 +4917,7 @@ async function loadLogbook(){
     document.querySelectorAll("#listingTabs button").forEach(b=>b.classList.toggle("active", b.dataset.activity===urlActivity));
   }
   if(urlActivity === "boat_rental"){ openBoatFinder(urlPort||""); }
+  if(urlActivity === "excursion"){ openExcursionFinder(urlPort||""); }
   const urlJoin = params.get("join");
   if(urlJoin === "owner" || urlJoin === "skipper" || urlJoin === "provider"){ openAccountModal("create", urlJoin); }
   updateSeoMeta();
