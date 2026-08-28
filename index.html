@@ -774,6 +774,41 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
     </div>
   </section>
 
+  <section class="shell" style="padding:36px 24px 8px" aria-label="Boat rentals in Greece">
+    <h2 style="font-family:var(--display);font-size:22px;margin-bottom:14px">🇬🇷 Boat rentals in Greece</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px;font-size:14.5px;line-height:2">
+      <div>
+        <strong style="display:block;margin-bottom:6px;color:var(--navy)">Saronic &amp; Mainland</strong>
+        <a href="/boat-rental-athens/">Boat rental in Athens</a><br>
+        <a href="/boat-rental-corfu/">Boat rental in Corfu</a>
+      </div>
+      <div>
+        <strong style="display:block;margin-bottom:6px;color:var(--navy)">Cyclades</strong>
+        <a href="/boat-rental-mykonos/">Boat rental in Mykonos</a><br>
+        <a href="/boat-rental-santorini/">Boat rental in Santorini</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="shell" style="padding:36px 24px 8px" aria-label="Noleggio barche in Italia">
+    <h2 style="font-family:var(--display);font-size:22px;margin-bottom:14px">🇮🇹 Noleggio barche in Italia</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px;font-size:14.5px;line-height:2">
+      <div>
+        <strong style="display:block;margin-bottom:6px;color:var(--navy)">Riviera Ligure</strong>
+        <a href="/noleggio-barche-portofino/">Noleggio barche a Portofino</a>
+      </div>
+      <div>
+        <strong style="display:block;margin-bottom:6px;color:var(--navy)">Costiera Amalfitana</strong>
+        <a href="/noleggio-barche-positano/">Noleggio barche a Positano</a><br>
+        <a href="/noleggio-barche-capri/">Noleggio barche a Capri</a>
+      </div>
+      <div>
+        <strong style="display:block;margin-bottom:6px;color:var(--navy)">Sardegna</strong>
+        <a href="/noleggio-barche-costa-smeralda/">Noleggio barche in Costa Smeralda</a>
+      </div>
+    </div>
+  </section>
+
 </main>
 
 <section class="image-band" style="background-image:url('https://images.pexels.com/photos/15822440/pexels-photo-15822440.jpeg?auto=compress&cs=tinysrgb&h=1080&fit=crop&w=1920')" role="img" aria-label="Voilier naviguant dans les eaux turquoise des Florida Keys"></section>
@@ -873,6 +908,11 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
         <option value="catamaran" data-i18n="boatDetail.typeCatamaran">Catamaran</option>
       </select>
       <input id="boatFinderCapacityInput" type="number" min="1" step="1" data-i18n-placeholder="boatFinder.minCapacity" placeholder="Capacité min." style="width:130px;padding:11px 14px;border:1px solid var(--line);border-radius:12px">
+      <select id="boatFinderSkipperInput" style="flex:1;min-width:160px;padding:11px 14px;border:1px solid var(--line);border-radius:12px">
+        <option value="" data-i18n="boatFinder.skipperAny">Avec ou sans skipper</option>
+        <option value="with" data-i18n="boatFinder.skipperWith">Avec skipper</option>
+        <option value="without" data-i18n="boatFinder.skipperWithout">Sans skipper</option>
+      </select>
     </div>
     <div id="boatFinderResults" class="boat-list"></div>
   </div>
@@ -1200,7 +1240,7 @@ const I18N = {
     "sub.provisioning.freshProduce":"Fruits & légumes frais","sub.provisioning.groceries":"Épicerie & produits secs","sub.provisioning.drinks":"Boissons","sub.provisioning.ice":"Glace","sub.provisioning.breakfast":"Petit-déjeuner & viennoiseries","sub.provisioning.hygiene":"Hygiène & entretien","sub.provisioning.custom":"Commande personnalisée",
     "booking.provisioningPlaceholder":"Ex. 3 packs d'eau, 2 bouteilles de jus, sodas, café… précisez votre besoin en {sub}, le port et l'heure de livraison souhaitée.",
     "results.noProvider":"Aucun prestataire disponible pour ce service pour le moment.",
-    "boatFinder.eyebrow":"LOCATION DE BATEAUX","boatFinder.title":"Bateaux disponibles","boatFinder.empty":"Aucun bateau ne correspond à votre recherche.","boatFinder.allTypes":"Tous les types","boatFinder.minCapacity":"Capacité min.",
+    "boatFinder.eyebrow":"LOCATION DE BATEAUX","boatFinder.title":"Bateaux disponibles","boatFinder.empty":"Aucun bateau ne correspond à votre recherche.","boatFinder.allTypes":"Tous les types","boatFinder.minCapacity":"Capacité min.","boatFinder.skipperAny":"Avec ou sans skipper","boatFinder.skipperWith":"Avec skipper","boatFinder.skipperWithout":"Sans skipper",
     "boatDetail.model":"Modèle","boatDetail.port":"Port d'attache","boatDetail.length":"Longueur","boatDetail.halfDay":"Demi-journée","boatDetail.fullDay":"Journée",
     "boatDetail.type":"Type de bateau","boatDetail.typeSailboat":"Voilier","boatDetail.typeMotorboat":"Yacht à moteur","boatDetail.typeRib":"Semi-rigide","boatDetail.typeCatamaran":"Catamaran",
     "boatDetail.capacity":"Capacité (personnes)","boatDetail.pax":"pers.","boatDetail.cabinsField":"Nombre de cabines","boatDetail.cabins":"cabines","boatDetail.cabin":"cabine","boatDetail.year":"Année",
@@ -1372,7 +1412,7 @@ const I18N = {
     "sub.provisioning.freshProduce":"Fresh fruits & vegetables","sub.provisioning.groceries":"Pantry & dry goods","sub.provisioning.drinks":"Drinks","sub.provisioning.ice":"Ice","sub.provisioning.breakfast":"Breakfast & pastries","sub.provisioning.hygiene":"Personal care & cleaning","sub.provisioning.custom":"Custom Request",
     "booking.provisioningPlaceholder":"E.g. 3 packs of water, 2 juice bottles, sodas, coffee… specify your need for {sub}, the port and preferred delivery time.",
     "results.noProvider":"No service provider available for this service yet.",
-    "boatFinder.eyebrow":"BOAT RENTALS","boatFinder.title":"Available boats","boatFinder.empty":"No boats match your search.","boatFinder.allTypes":"All types","boatFinder.minCapacity":"Min. capacity",
+    "boatFinder.eyebrow":"BOAT RENTALS","boatFinder.title":"Available boats","boatFinder.empty":"No boats match your search.","boatFinder.allTypes":"All types","boatFinder.minCapacity":"Min. capacity","boatFinder.skipperAny":"With or without a captain","boatFinder.skipperWith":"With a captain","boatFinder.skipperWithout":"Without a captain",
     "boatDetail.model":"Model","boatDetail.port":"Home port","boatDetail.length":"Length","boatDetail.halfDay":"Half day","boatDetail.fullDay":"Full day",
     "boatDetail.type":"Boat type","boatDetail.typeSailboat":"Sailboat","boatDetail.typeMotorboat":"Motor yacht","boatDetail.typeRib":"RIB / inflatable","boatDetail.typeCatamaran":"Catamaran",
     "boatDetail.capacity":"Capacity (people)","boatDetail.pax":"pax","boatDetail.cabinsField":"Number of cabins","boatDetail.cabins":"cabins","boatDetail.cabin":"cabin","boatDetail.year":"Year",
@@ -1543,7 +1583,7 @@ const I18N = {
     "sub.provisioning.freshProduce":"Frutas y verduras frescas","sub.provisioning.groceries":"Despensa y productos secos","sub.provisioning.drinks":"Bebidas","sub.provisioning.ice":"Hielo","sub.provisioning.breakfast":"Desayuno y bollería","sub.provisioning.hygiene":"Higiene y limpieza","sub.provisioning.custom":"Pedido personalizado",
     "booking.provisioningPlaceholder":"Ej. 3 packs de agua, 2 botellas de zumo, refrescos, café… indica tu necesidad de {sub}, el puerto y la hora de entrega deseada.",
     "results.noProvider":"Todavía no hay prestadores disponibles para este servicio.",
-    "boatFinder.eyebrow":"ALQUILER DE BARCOS","boatFinder.title":"Barcos disponibles","boatFinder.empty":"Ningún barco coincide con tu búsqueda.","boatFinder.allTypes":"Todos los tipos","boatFinder.minCapacity":"Capacidad mín.",
+    "boatFinder.eyebrow":"ALQUILER DE BARCOS","boatFinder.title":"Barcos disponibles","boatFinder.empty":"Ningún barco coincide con tu búsqueda.","boatFinder.allTypes":"Todos los tipos","boatFinder.minCapacity":"Capacidad mín.","boatFinder.skipperAny":"Con o sin patrón","boatFinder.skipperWith":"Con patrón","boatFinder.skipperWithout":"Sin patrón",
     "boatDetail.model":"Modelo","boatDetail.port":"Puerto base","boatDetail.length":"Eslora","boatDetail.halfDay":"Medio día","boatDetail.fullDay":"Día completo",
     "boatDetail.type":"Tipo de barco","boatDetail.typeSailboat":"Velero","boatDetail.typeMotorboat":"Yate a motor","boatDetail.typeRib":"Semirrígida","boatDetail.typeCatamaran":"Catamarán",
     "boatDetail.capacity":"Capacidad (personas)","boatDetail.pax":"pers.","boatDetail.cabinsField":"Número de cabinas","boatDetail.cabins":"cabinas","boatDetail.cabin":"cabina","boatDetail.year":"Año",
@@ -1737,6 +1777,10 @@ const POPULAR_PORTS = [
   ["Marina Puerto Bahía","Las Terrenas, République dominicaine",19.1986,-69.4380],
   ["Puerto de Samaná","Samaná, République dominicaine",19.2033,-69.3316],["Marina Cap Cana","Punta Cana, République dominicaine",18.5028,-68.3818],
   ["Ocean World Marina","Puerto Plata, République dominicaine",19.7616,-70.6427],
+  ["Alimos Marina","Athènes, Grèce",37.9130,23.7080],["Mykonos Marina","Mykonos, Grèce",37.4453,25.3255],
+  ["Vlychada Marina","Santorin, Grèce",36.3373,25.4332],["Corfu Marina","Corfou, Grèce",39.6243,19.9217],
+  ["Marina di Portofino","Portofino, Italie",44.3033,9.2112],["Marina di Positano","Positano, Italie",40.6280,14.4860],
+  ["Marina di Porto Cervo","Porto Cervo, Italie",41.1361,9.5350],["Marina Grande Capri","Capri, Italie",40.5532,14.2371],
   ["Nassau Harbour","Nassau, Bahamas",25.0797,-77.3407],["Georgetown Marina","Exuma, Bahamas",23.5167,-75.7597],
   ["Grand Bahama Marina","Freeport, Bahamas",26.5285,-78.6958],["Marsh Harbour Marina","Marsh Harbour, Bahamas",26.5423,-77.0631],
   ["Bimini Big Game Club","Bimini, Bahamas",25.7229,-79.2986]
@@ -2134,6 +2178,7 @@ async function openBoatFinder(presetPort, presetType){
     finderPort.addEventListener("input", renderBoatResults);
     document.querySelector("#boatFinderTypeInput").addEventListener("change", renderBoatResults);
     document.querySelector("#boatFinderCapacityInput").addEventListener("input", renderBoatResults);
+    document.querySelector("#boatFinderSkipperInput").addEventListener("change", renderBoatResults);
   }
 }
 async function renderBoatResults(){
@@ -2141,10 +2186,13 @@ async function renderBoatResults(){
   const portFilter = (document.querySelector("#boatFinderPortInput")?.value || "").trim().toLowerCase();
   const typeFilter = document.querySelector("#boatFinderTypeInput")?.value || "";
   const capacityFilter = Number(document.querySelector("#boatFinderCapacityInput")?.value) || 0;
+  const skipperFilter = document.querySelector("#boatFinderSkipperInput")?.value || "";
   const byPort = await filterByPortNearby(boatCache, portFilter, b=>b.home_port, 25);
   const list = byPort.filter(b=>{
     if(typeFilter && b.boat_type !== typeFilter) return false;
     if(capacityFilter && Number(b.capacity||0) < capacityFilter) return false;
+    if(skipperFilter === "with" && !b.skipper_included) return false;
+    if(skipperFilter === "without" && b.skipper_included) return false;
     return true;
   });
   box.innerHTML = list.length ? list.map(b=>boatListCardHtml(b)).join("") : `<div class="empty-note">${esc(t("boatFinder.empty"))}</div>`;
