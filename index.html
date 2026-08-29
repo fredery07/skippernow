@@ -589,7 +589,7 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
     <div class="rental-box">
       <span class="pill-link">🌊 <span data-i18n="rental.examplesBadge">BATEAUX DISPONIBLES</span></span>
       <h3 data-i18n="rental.examplesTitle">Dernières annonces</h3>
-      <div id="homeBoatStrip"><div class="empty-note" data-i18n="rental.empty">Aucun bateau publié pour le moment.</div></div>
+      <div id="homeBoatStrip"><div class="empty-note" data-i18n="rental.empty">Aucun bateau publié pour le moment. Soyez le premier propriétaire à proposer le vôtre !</div></div>
       <button class="back-link" id="viewAllBoatsBtn" type="button" style="margin-top:4px;padding:0"><span data-i18n="rental.viewAll">Voir toutes les annonces</span> →</button>
       <button class="owner-cta-link" id="listBoatBtn" type="button">
         <span data-i18n="rental.ctaShort">Vous êtes propriétaire ? Mettre mon bateau en location</span>
@@ -651,7 +651,7 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
   </section>
 
   <section class="shell" style="padding:36px 24px 8px" aria-label="Nos destinations">
-    <h2 style="font-family:var(--display);font-size:22px;margin-bottom:14px">Nos destinations sur la Côte d'Azur</h2>
+    <h2 style="font-family:var(--display);font-size:22px;margin-bottom:14px">🇫🇷 Nos destinations en France — Côte d'Azur</h2>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px;font-size:14.5px;line-height:2">
       <div>
         <strong style="display:block;margin-bottom:6px;color:var(--navy)">Trouver un skipper</strong>
@@ -963,7 +963,11 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
     <div class="field">
       <label data-i18n="dash.reviewRatingLabel">NOTE</label>
       <div id="reviewStars" style="display:flex;gap:6px;font-size:30px;line-height:1;margin:6px 0">
-        ${[1,2,3,4,5].map(n=>`<button type="button" class="review-star" data-star="${n}" style="border:0;background:transparent;cursor:pointer;color:var(--line);padding:0">★</button>`).join("")}
+        <button type="button" class="review-star" data-star="1" style="border:0;background:transparent;cursor:pointer;color:var(--line);padding:0">★</button>
+        <button type="button" class="review-star" data-star="2" style="border:0;background:transparent;cursor:pointer;color:var(--line);padding:0">★</button>
+        <button type="button" class="review-star" data-star="3" style="border:0;background:transparent;cursor:pointer;color:var(--line);padding:0">★</button>
+        <button type="button" class="review-star" data-star="4" style="border:0;background:transparent;cursor:pointer;color:var(--line);padding:0">★</button>
+        <button type="button" class="review-star" data-star="5" style="border:0;background:transparent;cursor:pointer;color:var(--line);padding:0">★</button>
       </div>
     </div>
     <div class="field"><label data-i18n="dash.reviewCommentLabel">COMMENTAIRE (OPTIONNEL)</label><textarea id="reviewComment" rows="4"></textarea></div>
