@@ -1935,9 +1935,11 @@ async function loadTrustStats(){
       db.from("profiles").select("id", {count:"exact", head:true}).eq("verified", true).in("role", ["skipper","provider"]),
       db.from("profiles").select("rating").not("rating", "is", null).gt("rating", 0)
     ]);
-    const hasRealTraction = (missionsCount ?? 0) > 0 || (prosCount ?? 0) > 0;
+    const hasRealTraction = (missionsCount ?? 0) > 0;
     if(!hasRealTraction){
-      // Pas encore assez de data réelle : on garde le message de lancement plutôt que d'afficher des zéros.
+      // Pas encore de mission réellement terminée : on garde le message de
+      // lancement plutôt que d'afficher des stats à zéro ou incomplètes
+      // (le simple fait d'avoir des professionnels inscrits ne suffit pas).
       return;
     }
     document.querySelector("#statMissions").textContent = missionsCount ?? 0;
