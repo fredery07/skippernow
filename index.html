@@ -939,7 +939,7 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
     </div>
     <form id="excRequestForm">
       <div class="field"><label data-i18n="dash.excGuestCount">Nombre de personnes</label><input id="excReqGuests" type="number" min="1" required></div>
-      <div class="field"><label data-i18n="dash.excDateWanted">Date souhaitée</label><input id="excReqDate" type="date" min="${new Date().toISOString().slice(0,10)}" required></div>
+      <div class="field"><label data-i18n="dash.excDateWanted">Date souhaitée</label><input id="excReqDate" type="date" required></div>
       <button class="primary wide" type="submit" data-i18n="dash.requestExcursion">Demander cette excursion</button>
       <div id="excRequestMsg" class="muted" style="margin-top:8px"></div>
     </form>
@@ -2251,6 +2251,10 @@ function openExcursionRequest(excursionId){
   document.querySelector("#excReqGuests").max = excursionRequestTarget.max_guests;
   document.querySelector("#excRequestMsg").textContent = "";
   openModal("excursionRequestModal");
+}
+const excReqDate = document.querySelector("#excReqDate");
+if (excReqDate) {
+  excReqDate.min = new Date().toISOString().slice(0, 10);
 }
 document.querySelector("#excRequestForm")?.addEventListener("submit", async e=>{
   e.preventDefault();
