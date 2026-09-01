@@ -975,6 +975,26 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
   </div>
 </div>
 
+<div class="modal" id="directRequestModal">
+  <div class="dialog">
+    <div class="dialog-top">
+      <div><small data-i18n="directReq.eyebrow">DEMANDE DIRECTE</small><h2 id="directReqProName" data-i18n="directReq.title">Envoyer ma demande</h2></div>
+      <button class="close" data-close="directRequestModal" type="button">×</button>
+    </div>
+    <div id="directReqLoggedOut" style="display:none">
+      <p class="muted" data-i18n="directReq.needAccount">Connectez-vous ou créez un compte pour envoyer votre demande.</p>
+      <button class="primary wide" type="button" id="directReqLoginBtn" data-i18n="nav.login">Se connecter</button>
+    </div>
+    <form id="directReqForm">
+      <div class="field"><label data-i18n="directReq.portLabel">Port de départ</label><input id="directReqPort" type="text" required></div>
+      <div class="field"><label data-i18n="directReq.dateLabel">Date souhaitée</label><input id="directReqDate" type="date"></div>
+      <div class="field"><label data-i18n="directReq.descLabel">Votre demande</label><textarea id="directReqDesc" rows="3" required></textarea></div>
+      <button class="primary wide" type="submit" data-i18n="directReq.submit">Envoyer ma demande</button>
+      <div id="directReqMsg" class="muted" style="margin-top:8px"></div>
+    </form>
+  </div>
+</div>
+
 <div class="modal" id="boatDetailModal">
   <div class="dialog"><div id="boatDetailContent"></div></div>
 </div>
@@ -1327,7 +1347,7 @@ const I18N = {
     "dash.navPayments":"Encaissements","dash.navPayouts":"Virements","dash.navRefunds":"Remboursements","dash.navCommissions":"Commissions","dash.navBoatsAdmin":"Bateaux",
     "dash.groupActivity":"Activité","dash.groupFinance":"Finance","dash.groupAccounts":"Comptes","dash.priorityQueueTitle":"À traiter en priorité","dash.priorityEmpty":"Rien d'urgent — tout est à jour.","dash.priorityValidation":"Profil à valider","dash.priorityDispute":"Litige ouvert","dash.priorityPayout":"Virement à préparer","dash.kpiTrendWeek":"sur 7 jours",
     "dash.groupContent":"Contenu","dash.navContent":"Ports & destinations","dash.contentAddPort":"Ajouter un port","dash.contentPortName":"Nom du port","dash.contentPortLat":"Latitude","dash.contentPortLng":"Longitude","dash.contentPortDesc":"Description","dash.contentPortOrder":"Ordre d'affichage","dash.contentPortActive":"Visible sur le site","dash.contentSave":"Enregistrer","dash.contentDelete":"Supprimer","dash.contentEdit":"Modifier","dash.contentCancel":"Annuler","dash.contentNoPorts":"Aucun port pour l'instant.","dash.contentSaved":"Enregistré.","dash.contentDeleted":"Port supprimé.","dash.contentConfirmDelete":"Supprimer ce port ? Cette action est définitive.",
-    "dash.navHero":"Photos du carrousel","dash.heroAddSlide":"Ajouter une photo","dash.heroImageUrl":"URL de l'image","dash.heroAlt":"Description (accessibilité)","dash.heroOrder":"Ordre d'affichage","dash.heroActive":"Visible sur le site","dash.heroNoSlides":"Aucune photo pour l'instant.","dash.heroPreview":"Aperçu","dash.heroUploadLabel":"Ou envoyer une photo depuis votre ordinateur","dash.heroUploading":"Envoi en cours...","dash.heroUploaded":"Photo envoyée.","dash.navDestinations":"Destinations phares","dash.destAddTile":"Ajouter une destination","dash.destName":"Nom de la destination","dash.destNoTiles":"Aucune destination pour l'instant.","dash.navActivities":"Idées de sorties","dash.actAddTile":"Ajouter une sortie","dash.actPortName":"Port concerné","dash.actTitle":"Titre de la sortie","dash.actDesc":"Description","dash.actNoTiles":"Aucune sortie pour l'instant.","dash.navExcursions":"Mes excursions","dash.excAddTile":"Ajouter une excursion","dash.excTitle":"Titre de l'excursion","dash.excDesc":"Description","dash.excIncluded":"Ce qui est inclus (repas, matériel...)","dash.excPort":"Port de départ","dash.excPrice":"Prix par personne","dash.excDuration":"Durée (heures)","dash.excMaxGuests":"Nombre de places max","dash.excNoTiles":"Aucune excursion pour l'instant.","dash.guests":"personnes","dash.requestExcursion":"Demander cette excursion","dash.excGuestCount":"Nombre de personnes","dash.excDateWanted":"Date souhaitée","dash.excRequestSent":"Votre demande a été envoyée à l'agence.","excFinder.eyebrow":"EXCURSIONS","excFinder.title":"Excursions disponibles","excFinder.empty":"Aucune excursion disponible pour ce port.","excFinder.perPerson":"/ personne","dash.reqPhone":"Téléphone manquant","dash.reqDiploma":"Diplôme manquant","dash.reqPhoto":"Photo de profil manquante","dash.reqPhotoLink":"Voir la photo","dash.missingBeforeApproval":"À compléter avant validation","dash.profileIncompleteReminder":"Complétez votre profil pour être visible et recevoir des missions","dash.completeProfile":"Compléter mon profil","dash.featuredBadge":"Mis en avant","dash.featuredUntil":"Mis en avant jusqu'au","dash.daysLeft":"jours restants","dash.featureFor":"Mettre en avant...","dash.days":"jours","dash.removeFeatured":"Retirer la mise en avant",
+    "dash.navHero":"Photos du carrousel","dash.heroAddSlide":"Ajouter une photo","dash.heroImageUrl":"URL de l'image","dash.heroAlt":"Description (accessibilité)","dash.heroOrder":"Ordre d'affichage","dash.heroActive":"Visible sur le site","dash.heroNoSlides":"Aucune photo pour l'instant.","dash.heroPreview":"Aperçu","dash.heroUploadLabel":"Ou envoyer une photo depuis votre ordinateur","dash.heroUploading":"Envoi en cours...","dash.heroUploaded":"Photo envoyée.","dash.navDestinations":"Destinations phares","dash.destAddTile":"Ajouter une destination","dash.destName":"Nom de la destination","dash.destNoTiles":"Aucune destination pour l'instant.","dash.navActivities":"Idées de sorties","dash.actAddTile":"Ajouter une sortie","dash.actPortName":"Port concerné","dash.actTitle":"Titre de la sortie","dash.actDesc":"Description","dash.actNoTiles":"Aucune sortie pour l'instant.","dash.navExcursions":"Mes excursions","dash.excAddTile":"Ajouter une excursion","dash.excTitle":"Titre de l'excursion","dash.excDesc":"Description","dash.excIncluded":"Ce qui est inclus (repas, matériel...)","dash.excPort":"Port de départ","dash.excPrice":"Prix par personne","dash.excDuration":"Durée (heures)","dash.excMaxGuests":"Nombre de places max","dash.excNoTiles":"Aucune excursion pour l'instant.","dash.guests":"personnes","dash.requestExcursion":"Demander cette excursion","dash.excGuestCount":"Nombre de personnes","dash.excDateWanted":"Date souhaitée","dash.excRequestSent":"Votre demande a été envoyée à l'agence.","dash.navMyLink":"Mon lien direct","directReq.eyebrow":"DEMANDE DIRECTE","directReq.title":"Envoyer ma demande","directReq.needAccount":"Connectez-vous ou créez un compte pour envoyer votre demande.","directReq.portLabel":"Port de départ","directReq.dateLabel":"Date souhaitée","directReq.descLabel":"Votre demande","directReq.submit":"Envoyer ma demande","directReq.sent":"Votre demande a été envoyée.","directReq.requestLabel":"Demande directe","directReq.dashboardExplain":"Partagez ce lien ou ce QR code avec un client que vous connaissez déjà : en un clic, il crée un compte (si besoin) et sa demande vous est directement adressée sur SkipperNow.","directReq.copyLink":"Copier le lien","directReq.copied":"Lien copié !","excFinder.eyebrow":"EXCURSIONS","excFinder.title":"Excursions disponibles","excFinder.empty":"Aucune excursion disponible pour ce port.","excFinder.perPerson":"/ personne","dash.reqPhone":"Téléphone manquant","dash.reqDiploma":"Diplôme manquant","dash.reqPhoto":"Photo de profil manquante","dash.reqPhotoLink":"Voir la photo","dash.missingBeforeApproval":"À compléter avant validation","dash.profileIncompleteReminder":"Complétez votre profil pour être visible et recevoir des missions","dash.completeProfile":"Compléter mon profil","dash.featuredBadge":"Mis en avant","dash.featuredUntil":"Mis en avant jusqu'au","dash.daysLeft":"jours restants","dash.featureFor":"Mettre en avant...","dash.days":"jours","dash.removeFeatured":"Retirer la mise en avant",
     "dash.navDisputes":"Litiges","dash.noDisputes":"Aucun litige en cours.","dash.resolveDispute":"Marquer comme résolu","dash.disputeOpen":"Litige ouvert","dash.disputeResolved":"Litige résolu",
     "dash.reportProblem":"Signaler un problème","dash.viewInvoice":"Voir la facture",
     "dispute.reasonPrompt":"Décris le problème rencontré",
@@ -1499,7 +1519,7 @@ const I18N = {
     "dash.navPayments":"Payments","dash.navPayouts":"Payouts","dash.navRefunds":"Refunds","dash.navCommissions":"Commissions","dash.navBoatsAdmin":"Boats",
     "dash.groupActivity":"Activity","dash.groupFinance":"Finance","dash.groupAccounts":"Accounts","dash.priorityQueueTitle":"Needs attention","dash.priorityEmpty":"Nothing urgent — all caught up.","dash.priorityValidation":"Profile to verify","dash.priorityDispute":"Open dispute","dash.priorityPayout":"Payout to prepare","dash.kpiTrendWeek":"last 7 days",
     "dash.groupContent":"Content","dash.navContent":"Ports & destinations","dash.contentAddPort":"Add a port","dash.contentPortName":"Port name","dash.contentPortLat":"Latitude","dash.contentPortLng":"Longitude","dash.contentPortDesc":"Description","dash.contentPortOrder":"Display order","dash.contentPortActive":"Visible on site","dash.contentSave":"Save","dash.contentDelete":"Delete","dash.contentEdit":"Edit","dash.contentCancel":"Cancel","dash.contentNoPorts":"No ports yet.","dash.contentSaved":"Saved.","dash.contentDeleted":"Port deleted.","dash.contentConfirmDelete":"Delete this port? This cannot be undone.",
-    "dash.navHero":"Carousel photos","dash.heroAddSlide":"Add a photo","dash.heroImageUrl":"Image URL","dash.heroAlt":"Description (accessibility)","dash.heroOrder":"Display order","dash.heroActive":"Visible on site","dash.heroNoSlides":"No photos yet.","dash.heroPreview":"Preview","dash.heroUploadLabel":"Or upload a photo from your computer","dash.heroUploading":"Uploading...","dash.heroUploaded":"Photo uploaded.","dash.navDestinations":"Featured destinations","dash.destAddTile":"Add a destination","dash.destName":"Destination name","dash.destNoTiles":"No destinations yet.","dash.navActivities":"Outing ideas","dash.actAddTile":"Add an outing","dash.actPortName":"Related port","dash.actTitle":"Outing title","dash.actDesc":"Description","dash.actNoTiles":"No outings yet.","dash.navExcursions":"My excursions","dash.excAddTile":"Add an excursion","dash.excTitle":"Excursion title","dash.excDesc":"Description","dash.excIncluded":"What's included (meals, gear...)","dash.excPort":"Departure port","dash.excPrice":"Price per person","dash.excDuration":"Duration (hours)","dash.excMaxGuests":"Max guests","dash.excNoTiles":"No excursions yet.","dash.guests":"guests","dash.requestExcursion":"Request this excursion","dash.excGuestCount":"Number of guests","dash.excDateWanted":"Preferred date","dash.excRequestSent":"Your request has been sent to the agency.","excFinder.eyebrow":"EXCURSIONS","excFinder.title":"Available excursions","excFinder.empty":"No excursion available for this port.","excFinder.perPerson":"/ person","dash.reqPhone":"Missing phone number","dash.reqDiploma":"Missing diploma","dash.reqPhoto":"Missing profile photo","dash.reqPhotoLink":"View photo","dash.missingBeforeApproval":"Required before approval","dash.profileIncompleteReminder":"Complete your profile to be visible and receive missions","dash.completeProfile":"Complete my profile","dash.featuredBadge":"Featured","dash.featuredUntil":"Featured until","dash.daysLeft":"days left","dash.featureFor":"Feature for...","dash.days":"days","dash.removeFeatured":"Remove from featured",
+    "dash.navHero":"Carousel photos","dash.heroAddSlide":"Add a photo","dash.heroImageUrl":"Image URL","dash.heroAlt":"Description (accessibility)","dash.heroOrder":"Display order","dash.heroActive":"Visible on site","dash.heroNoSlides":"No photos yet.","dash.heroPreview":"Preview","dash.heroUploadLabel":"Or upload a photo from your computer","dash.heroUploading":"Uploading...","dash.heroUploaded":"Photo uploaded.","dash.navDestinations":"Featured destinations","dash.destAddTile":"Add a destination","dash.destName":"Destination name","dash.destNoTiles":"No destinations yet.","dash.navActivities":"Outing ideas","dash.actAddTile":"Add an outing","dash.actPortName":"Related port","dash.actTitle":"Outing title","dash.actDesc":"Description","dash.actNoTiles":"No outings yet.","dash.navExcursions":"My excursions","dash.excAddTile":"Add an excursion","dash.excTitle":"Excursion title","dash.excDesc":"Description","dash.excIncluded":"What's included (meals, gear...)","dash.excPort":"Departure port","dash.excPrice":"Price per person","dash.excDuration":"Duration (hours)","dash.excMaxGuests":"Max guests","dash.excNoTiles":"No excursions yet.","dash.guests":"guests","dash.requestExcursion":"Request this excursion","dash.excGuestCount":"Number of guests","dash.excDateWanted":"Preferred date","dash.excRequestSent":"Your request has been sent to the agency.","dash.navMyLink":"My direct link","directReq.eyebrow":"DIRECT REQUEST","directReq.title":"Send my request","directReq.needAccount":"Log in or create an account to send your request.","directReq.portLabel":"Departure port","directReq.dateLabel":"Preferred date","directReq.descLabel":"Your request","directReq.submit":"Send my request","directReq.sent":"Your request has been sent.","directReq.requestLabel":"Direct request","directReq.dashboardExplain":"Share this link or QR code with a client you already know: in one click, they create an account (if needed) and their request is sent straight to you on SkipperNow.","directReq.copyLink":"Copy link","directReq.copied":"Link copied!","excFinder.eyebrow":"EXCURSIONS","excFinder.title":"Available excursions","excFinder.empty":"No excursion available for this port.","excFinder.perPerson":"/ person","dash.reqPhone":"Missing phone number","dash.reqDiploma":"Missing diploma","dash.reqPhoto":"Missing profile photo","dash.reqPhotoLink":"View photo","dash.missingBeforeApproval":"Required before approval","dash.profileIncompleteReminder":"Complete your profile to be visible and receive missions","dash.completeProfile":"Complete my profile","dash.featuredBadge":"Featured","dash.featuredUntil":"Featured until","dash.daysLeft":"days left","dash.featureFor":"Feature for...","dash.days":"days","dash.removeFeatured":"Remove from featured",
     "dash.navDisputes":"Disputes","dash.noDisputes":"No open disputes.","dash.resolveDispute":"Mark as resolved","dash.disputeOpen":"Dispute open","dash.disputeResolved":"Dispute resolved",
     "dash.reportProblem":"Report a problem","dash.viewInvoice":"View invoice",
     "dispute.reasonPrompt":"Describe the problem",
@@ -1670,7 +1690,7 @@ const I18N = {
     "dash.navPayments":"Cobros","dash.navPayouts":"Transferencias","dash.navRefunds":"Reembolsos","dash.navCommissions":"Comisiones","dash.navBoatsAdmin":"Barcos",
     "dash.groupActivity":"Actividad","dash.groupFinance":"Finanzas","dash.groupAccounts":"Cuentas","dash.priorityQueueTitle":"Requiere atención","dash.priorityEmpty":"Nada urgente — todo al día.","dash.priorityValidation":"Perfil por validar","dash.priorityDispute":"Disputa abierta","dash.priorityPayout":"Transferencia por preparar","dash.kpiTrendWeek":"últimos 7 días",
     "dash.groupContent":"Contenido","dash.navContent":"Puertos y destinos","dash.contentAddPort":"Añadir un puerto","dash.contentPortName":"Nombre del puerto","dash.contentPortLat":"Latitud","dash.contentPortLng":"Longitud","dash.contentPortDesc":"Descripción","dash.contentPortOrder":"Orden de visualización","dash.contentPortActive":"Visible en el sitio","dash.contentSave":"Guardar","dash.contentDelete":"Eliminar","dash.contentEdit":"Editar","dash.contentCancel":"Cancelar","dash.contentNoPorts":"Aún no hay puertos.","dash.contentSaved":"Guardado.","dash.contentDeleted":"Puerto eliminado.","dash.contentConfirmDelete":"¿Eliminar este puerto? Esta acción es definitiva.",
-    "dash.navHero":"Fotos del carrusel","dash.heroAddSlide":"Añadir una foto","dash.heroImageUrl":"URL de la imagen","dash.heroAlt":"Descripción (accesibilidad)","dash.heroOrder":"Orden de visualización","dash.heroActive":"Visible en el sitio","dash.heroNoSlides":"Aún no hay fotos.","dash.heroPreview":"Vista previa","dash.heroUploadLabel":"O subir una foto desde tu ordenador","dash.heroUploading":"Subiendo...","dash.heroUploaded":"Foto subida.","dash.navDestinations":"Destinos destacados","dash.destAddTile":"Añadir un destino","dash.destName":"Nombre del destino","dash.destNoTiles":"Aún no hay destinos.","dash.navActivities":"Ideas de salidas","dash.actAddTile":"Añadir una salida","dash.actPortName":"Puerto relacionado","dash.actTitle":"Título de la salida","dash.actDesc":"Descripción","dash.actNoTiles":"Aún no hay salidas.","dash.navExcursions":"Mis excursiones","dash.excAddTile":"Añadir una excursión","dash.excTitle":"Título de la excursión","dash.excDesc":"Descripción","dash.excIncluded":"Qué incluye (comida, material...)","dash.excPort":"Puerto de salida","dash.excPrice":"Precio por persona","dash.excDuration":"Duración (horas)","dash.excMaxGuests":"Plazas máximas","dash.excNoTiles":"Aún no hay excursiones.","dash.guests":"personas","dash.requestExcursion":"Solicitar esta excursión","dash.excGuestCount":"Número de personas","dash.excDateWanted":"Fecha deseada","dash.excRequestSent":"Tu solicitud ha sido enviada a la agencia.","excFinder.eyebrow":"EXCURSIONES","excFinder.title":"Excursiones disponibles","excFinder.empty":"No hay excursiones disponibles para este puerto.","excFinder.perPerson":"/ persona","dash.reqPhone":"Falta el teléfono","dash.reqDiploma":"Falta el diploma","dash.reqPhoto":"Falta la foto de perfil","dash.reqPhotoLink":"Ver foto","dash.missingBeforeApproval":"Necesario antes de validar","dash.profileIncompleteReminder":"Completa tu perfil para ser visible y recibir misiones","dash.completeProfile":"Completar mi perfil","dash.featuredBadge":"Destacado","dash.featuredUntil":"Destacado hasta","dash.daysLeft":"días restantes","dash.featureFor":"Destacar durante...","dash.days":"días","dash.removeFeatured":"Quitar destacado",
+    "dash.navHero":"Fotos del carrusel","dash.heroAddSlide":"Añadir una foto","dash.heroImageUrl":"URL de la imagen","dash.heroAlt":"Descripción (accesibilidad)","dash.heroOrder":"Orden de visualización","dash.heroActive":"Visible en el sitio","dash.heroNoSlides":"Aún no hay fotos.","dash.heroPreview":"Vista previa","dash.heroUploadLabel":"O subir una foto desde tu ordenador","dash.heroUploading":"Subiendo...","dash.heroUploaded":"Foto subida.","dash.navDestinations":"Destinos destacados","dash.destAddTile":"Añadir un destino","dash.destName":"Nombre del destino","dash.destNoTiles":"Aún no hay destinos.","dash.navActivities":"Ideas de salidas","dash.actAddTile":"Añadir una salida","dash.actPortName":"Puerto relacionado","dash.actTitle":"Título de la salida","dash.actDesc":"Descripción","dash.actNoTiles":"Aún no hay salidas.","dash.navExcursions":"Mis excursiones","dash.excAddTile":"Añadir una excursión","dash.excTitle":"Título de la excursión","dash.excDesc":"Descripción","dash.excIncluded":"Qué incluye (comida, material...)","dash.excPort":"Puerto de salida","dash.excPrice":"Precio por persona","dash.excDuration":"Duración (horas)","dash.excMaxGuests":"Plazas máximas","dash.excNoTiles":"Aún no hay excursiones.","dash.guests":"personas","dash.requestExcursion":"Solicitar esta excursión","dash.excGuestCount":"Número de personas","dash.excDateWanted":"Fecha deseada","dash.excRequestSent":"Tu solicitud ha sido enviada a la agencia.","dash.navMyLink":"Mi enlace directo","directReq.eyebrow":"SOLICITUD DIRECTA","directReq.title":"Enviar mi solicitud","directReq.needAccount":"Inicia sesión o crea una cuenta para enviar tu solicitud.","directReq.portLabel":"Puerto de salida","directReq.dateLabel":"Fecha deseada","directReq.descLabel":"Tu solicitud","directReq.submit":"Enviar mi solicitud","directReq.sent":"Tu solicitud ha sido enviada.","directReq.requestLabel":"Solicitud directa","directReq.dashboardExplain":"Comparte este enlace o código QR con un cliente que ya conoces: en un clic, crea una cuenta (si hace falta) y su solicitud te llega directamente en SkipperNow.","directReq.copyLink":"Copiar enlace","directReq.copied":"¡Enlace copiado!","excFinder.eyebrow":"EXCURSIONES","excFinder.title":"Excursiones disponibles","excFinder.empty":"No hay excursiones disponibles para este puerto.","excFinder.perPerson":"/ persona","dash.reqPhone":"Falta el teléfono","dash.reqDiploma":"Falta el diploma","dash.reqPhoto":"Falta la foto de perfil","dash.reqPhotoLink":"Ver foto","dash.missingBeforeApproval":"Necesario antes de validar","dash.profileIncompleteReminder":"Completa tu perfil para ser visible y recibir misiones","dash.completeProfile":"Completar mi perfil","dash.featuredBadge":"Destacado","dash.featuredUntil":"Destacado hasta","dash.daysLeft":"días restantes","dash.featureFor":"Destacar durante...","dash.days":"días","dash.removeFeatured":"Quitar destacado",
     "dash.navDisputes":"Disputas","dash.noDisputes":"No hay disputas abiertas.","dash.resolveDispute":"Marcar como resuelto","dash.disputeOpen":"Disputa abierta","dash.disputeResolved":"Disputa resuelta",
     "dash.reportProblem":"Reportar un problema","dash.viewInvoice":"Ver factura",
     "dispute.reasonPrompt":"Describe el problema",
@@ -2328,6 +2348,52 @@ document.querySelector("#excRequestForm")?.addEventListener("submit", async e=>{
   msg.style.color = "";
   msg.textContent = t("dash.excRequestSent");
   setTimeout(()=>closeModal("excursionRequestModal"), 1400);
+});
+
+let directRequestTarget = null;
+async function openDirectRequest(proId){
+  const {data: pro, error} = await db.from("profiles").select("id,full_name,role,home_port").eq("id", proId).eq("verified", true).eq("suspended", false).maybeSingle();
+  if(error || !pro) return;
+  directRequestTarget = pro;
+  document.querySelector("#directReqProName").textContent = t("directReq.title") + " — " + (pro.full_name || "");
+  document.querySelector("#directReqPort").value = pro.home_port || "";
+  const loggedOut = document.querySelector("#directReqLoggedOut");
+  const form = document.querySelector("#directReqForm");
+  if(currentUser){ loggedOut.style.display = "none"; form.style.display = ""; }
+  else{ loggedOut.style.display = ""; form.style.display = "none"; }
+  document.querySelector("#directReqMsg").textContent = "";
+  openModal("directRequestModal");
+}
+document.querySelector("#directReqLoginBtn")?.addEventListener("click", ()=>{
+  closeModal("directRequestModal");
+  openAccountModal("login");
+});
+document.querySelector("#directReqForm")?.addEventListener("submit", async e=>{
+  e.preventDefault();
+  const msg = document.querySelector("#directReqMsg");
+  if(!currentUser || !directRequestTarget) return;
+  const pro = directRequestTarget;
+  const port = document.querySelector("#directReqPort").value.trim();
+  const date = document.querySelector("#directReqDate").value;
+  const description = document.querySelector("#directReqDesc").value.trim();
+  const payload = {
+    client_id: currentUser.id,
+    port,
+    boat_type: t("directReq.requestLabel"),
+    description,
+    starts_at: date ? new Date(date + "T10:00:00").toISOString() : null,
+    amount_cents: 0,
+    urgent_fee_cents: 0,
+    platform_fee_cents: 0,
+    status: "pending",
+    payment_status: "unpaid"
+  };
+  if(pro.role === "provider") payload.provider_id = pro.id; else payload.skipper_id = pro.id;
+  const {error} = await db.from("missions").insert(payload);
+  if(error){ msg.style.color = "#b42318"; msg.textContent = friendlyError(error); return; }
+  msg.style.color = "";
+  msg.textContent = t("directReq.sent");
+  setTimeout(()=>closeModal("directRequestModal"), 1400);
 });
 function boatTypeLabel(type){
   const key = type === "motorboat" ? "boatDetail.typeMotorboat" : type === "rib" ? "boatDetail.typeRib" : type === "catamaran" ? "boatDetail.typeCatamaran" : "boatDetail.typeSailboat";
@@ -3264,6 +3330,7 @@ async function renderProDashboard(){
   ];
   if(isBoatRentalPro) navItems.push({id:"boats", label:t("dash.navBoats")});
   if(isProvider) navItems.push({id:"excursions", label:t("dash.navExcursions")});
+  navItems.push({id:"myLink", label:t("dash.navMyLink")});
   navItems.push({id:"profile", label:t("dash.navProfile")}, {id:"availability", label:t("dash.navAvailability")});
   body.innerHTML = dashShell(navItems, "requests");
   bindDashNav(renderProPanel);
@@ -3298,6 +3365,26 @@ async function renderProPanel(panel){
     bindProfileReminderLink();
   }else if(panel === "excursions"){
     await renderExcursionsManager(main);
+  }else if(panel === "myLink"){
+    const link = location.origin + "/?pro=" + currentUser.id;
+    const qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=" + encodeURIComponent(link);
+    main.innerHTML = `
+      <div class="dash-section-title">${esc(t("dash.navMyLink"))}</div>
+      <p class="muted" style="max-width:520px">${esc(t("directReq.dashboardExplain"))}</p>
+      <div class="hero-admin-card" style="max-width:420px;padding:20px;text-align:center">
+        <img src="${qrUrl}" alt="QR code" width="200" height="200" style="border-radius:12px;margin-bottom:14px">
+        <div class="field"><input id="myLinkInput" type="text" readonly value="${esc(link)}" style="text-align:center"></div>
+        <button type="button" class="primary wide" id="myLinkCopyBtn" style="margin-top:10px">${esc(t("directReq.copyLink"))}</button>
+        <div id="myLinkCopyMsg" class="muted" style="margin-top:8px;font-size:12.5px"></div>
+      </div>`;
+    document.querySelector("#myLinkCopyBtn")?.addEventListener("click", async ()=>{
+      try{
+        await navigator.clipboard.writeText(link);
+        document.querySelector("#myLinkCopyMsg").textContent = t("directReq.copied");
+      }catch(_e){
+        document.querySelector("#myLinkInput").select();
+      }
+    });
   }else if(panel === "messages"){
     await renderMessagesPanel("skipper_id");
   }else if(panel === "support"){
@@ -5079,6 +5166,8 @@ async function loadLogbook(){
   currentUser = session?.user || null;
   if(currentUser) await loadProfile();
   refreshAccountButton();
+  const urlPro = params.get("pro");
+  if(urlPro) openDirectRequest(urlPro);
   await preloadHomeBoats();
   await loadListings();
   await loadTrustStats();
@@ -5098,7 +5187,13 @@ db.auth.onAuthStateChange(async (event, session)=>{
     }
     return;
   }
-  if(session?.user){ currentUser = session.user; await loadProfile(); refreshAccountButton(); }
+  if(session?.user){
+    currentUser = session.user;
+    await loadProfile();
+    refreshAccountButton();
+    const urlPro = new URLSearchParams(location.search).get("pro");
+    if(urlPro) openDirectRequest(urlPro);
+  }
 });
 </script>
 </body>
