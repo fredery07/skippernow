@@ -124,6 +124,14 @@ nav{display:flex;align-items:center;justify-content:space-between;width:100%}
 .launch-banner{display:flex;align-items:center;justify-content:center;gap:10px;text-align:center;margin:22px 0 10px;background:var(--navy);border-radius:20px;padding:16px 24px;box-shadow:0 14px 34px rgba(7,29,50,.22);color:var(--brass-light);font-weight:700;font-size:14px}
 .launch-banner-icon{font-size:16px}
 @media(max-width:640px){.launch-banner{padding:14px 16px;font-size:12.5px}}
+.quick-request-bar{display:flex;align-items:center;justify-content:space-between;gap:20px;margin:14px 0 10px;padding:20px 24px;border:1px solid #b9e9e4;border-radius:20px;background:linear-gradient(135deg,#eafaf8,#fff);box-shadow:0 10px 28px rgba(16,43,63,.06)}
+.quick-request-copy strong{display:block;color:var(--navy);font-size:17px;margin-bottom:4px}
+.quick-request-copy span{display:block;color:var(--muted);font-size:13.5px;line-height:1.45}
+.quick-request-bar .primary{flex:0 0 auto;white-space:nowrap;padding:12px 18px}
+.quick-request-card{background:linear-gradient(145deg,var(--navy),#0d6672);border-style:solid;color:#fff}
+.quick-request-card p{color:#d9eeec}
+.quick-request-card .small-btn{background:var(--aqua);color:var(--navy)}
+@media(max-width:640px){.quick-request-bar{align-items:stretch;flex-direction:column;padding:18px}.quick-request-bar .primary{width:100%}}
 .trust-process{margin-top:36px}
 .trust-process-head{text-align:center;max-width:680px;margin:0 auto 20px}
 .trust-process-head h2{font-family:var(--display);font-weight:600;font-size:28px;margin:0 0 7px;color:var(--navy)}
@@ -605,6 +613,13 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
     <div class="trust-stat"><strong id="statMissions">—</strong><span data-i18n="stats.missions">missions réalisées</span></div>
     <div class="trust-stat"><strong id="statPros">—</strong><span data-i18n="stats.pros">professionnels vérifiés</span></div>
     <div class="trust-stat"><strong id="statRating">—</strong><span data-i18n="stats.rating">note moyenne</span></div>
+  </div>
+  <div class="quick-request-bar">
+    <div class="quick-request-copy">
+      <strong data-i18n="quickRequest.title">Vous ne trouvez pas exactement ce qu'il vous faut ?</strong>
+      <span data-i18n="quickRequest.subtitle">Déposez une demande : les professionnels disponibles pourront vous répondre avec leur tarif.</span>
+    </div>
+    <button class="primary" id="quickRequestBtn" type="button" data-i18n="quickRequest.cta">Déposer une demande gratuite</button>
   </div>
 </div>
 
@@ -1298,6 +1313,7 @@ const I18N = {
     "dash.verifyBoat":"Vérifier le bateau","dash.unverifyBoat":"Retirer la vérification","dash.boatVerifyChecklist":"Avant de vérifier ce bateau, confirmez avoir contrôlé :\n\n✓ Les photos sont réelles et récentes\n✓ L'assurance du bateau est à jour\n✓ Les informations (modèle, année, capacité) sont cohérentes\n\nCliquez sur OK pour valider la vérification.","dash.markFeatured":"Mettre en avant","dash.unfeature":"Retirer la mise en avant",
     "stats.missions":"missions réalisées","stats.pros":"professionnels vérifiés","stats.rating":"note moyenne","launch.banner":"Lancement prioritaire sur la Côte d'Azur : Cannes, Antibes, Nice, Monaco et Saint-Tropez.","seaCarousel.caption":"Vos plus belles sorties en mer commencent ici",
     "trustProcess.title":"Une réservation plus sûre, étape par étape","trustProcess.subtitle":"Des règles claires pour protéger les clients comme les professionnels.","trustProcess.verifyTitle":"Profils contrôlés","trustProcess.verifyText":"Les profils professionnels sont examinés avant d'être affichés comme vérifiés.","trustProcess.quoteTitle":"Prix accepté avant paiement","trustProcess.quoteText":"Le professionnel propose son tarif et vous choisissez avant de payer.","trustProcess.contactTitle":"Coordonnées protégées","trustProcess.contactText":"Les échanges restent sur SkipperNow pour limiter les contournements et les abus.",
+    "quickRequest.title":"Vous ne trouvez pas exactement ce qu'il vous faut ?","quickRequest.subtitle":"Déposez une demande : les professionnels disponibles pourront vous répondre avec leur tarif.","quickRequest.cta":"Déposer une demande gratuite","quickRequest.openTitle":"Demande ouverte aux professionnels","quickRequest.cardText":"Aucun profil ne correspond ? Envoyez votre besoin aux professionnels disponibles.",
     "card.available":"Disponible","card.unavailable":"Indisponible","card.unavailableOn":"Indisponible le","card.viewProfile":"Voir le profil",
     "how.title":"Comment ça marche ?",
     "how.step1Title":"Trouvez","how.step1Text":"Choisissez un skipper, un bateau, un service ou une expérience.",
@@ -1471,6 +1487,7 @@ const I18N = {
     "dash.verifyBoat":"Verify boat","dash.unverifyBoat":"Remove verification","dash.boatVerifyChecklist":"Before verifying this boat, confirm you have checked:\n\n✓ Photos are real and recent\n✓ The boat's insurance is up to date\n✓ Details (model, year, capacity) are consistent\n\nClick OK to confirm verification.","dash.markFeatured":"Feature","dash.unfeature":"Remove feature",
     "stats.missions":"jobs completed","stats.pros":"verified professionals","stats.rating":"average rating","launch.banner":"Priority launch on the French Riviera: Cannes, Antibes, Nice, Monaco and Saint-Tropez.","seaCarousel.caption":"Your best days at sea start here",
     "trustProcess.title":"A safer booking, step by step","trustProcess.subtitle":"Clear rules that protect clients and professionals alike.","trustProcess.verifyTitle":"Profiles reviewed","trustProcess.verifyText":"Professional profiles are reviewed before appearing as verified.","trustProcess.quoteTitle":"Approve the price before paying","trustProcess.quoteText":"The professional proposes a price and you decide before payment.","trustProcess.contactTitle":"Contact details protected","trustProcess.contactText":"Conversations stay on SkipperNow to reduce circumvention and abuse.",
+    "quickRequest.title":"Can't find exactly what you need?","quickRequest.subtitle":"Post a request and available professionals can reply with their price.","quickRequest.cta":"Post a free request","quickRequest.openTitle":"Open request to professionals","quickRequest.cardText":"No matching profile? Send your request to available professionals.",
     "card.available":"Available","card.unavailable":"Unavailable","card.unavailableOn":"Unavailable on","card.viewProfile":"View profile",
     "how.title":"How does it work?",
     "how.step1Title":"Find","how.step1Text":"Choose a skipper, boat, service or experience.",
@@ -1643,6 +1660,7 @@ const I18N = {
     "dash.verifyBoat":"Verificar barco","dash.unverifyBoat":"Quitar verificación","dash.boatVerifyChecklist":"Antes de verificar este barco, confirma que has comprobado:\n\n✓ Las fotos son reales y recientes\n✓ El seguro del barco está en vigor\n✓ Los datos (modelo, año, capacidad) son coherentes\n\nHaz clic en OK para confirmar la verificación.","dash.markFeatured":"Destacar","dash.unfeature":"Quitar destacado",
     "stats.missions":"servicios realizados","stats.pros":"profesionales verificados","stats.rating":"valoración media","launch.banner":"Lanzamiento prioritario en la Costa Azul: Cannes, Antibes, Niza, Mónaco y Saint-Tropez.","seaCarousel.caption":"Tus mejores salidas al mar empiezan aquí",
     "trustProcess.title":"Una reserva más segura, paso a paso","trustProcess.subtitle":"Reglas claras para proteger tanto a clientes como a profesionales.","trustProcess.verifyTitle":"Perfiles revisados","trustProcess.verifyText":"Los perfiles profesionales se revisan antes de aparecer como verificados.","trustProcess.quoteTitle":"Acepta el precio antes de pagar","trustProcess.quoteText":"El profesional propone su precio y tú decides antes del pago.","trustProcess.contactTitle":"Datos de contacto protegidos","trustProcess.contactText":"Las conversaciones permanecen en SkipperNow para reducir abusos y acuerdos externos.",
+    "quickRequest.title":"¿No encuentras exactamente lo que necesitas?","quickRequest.subtitle":"Publica una solicitud y los profesionales disponibles podrán responder con su precio.","quickRequest.cta":"Publicar una solicitud gratis","quickRequest.openTitle":"Solicitud abierta a profesionales","quickRequest.cardText":"¿Ningún perfil coincide? Envía tu necesidad a los profesionales disponibles.",
     "card.available":"Disponible","card.unavailable":"No disponible","card.unavailableOn":"No disponible el","card.viewProfile":"Ver perfil",
     "how.title":"¿Cómo funciona?",
     "how.step1Title":"Encuentra","how.step1Text":"Elige un skipper, un barco, un servicio o una experiencia.",
@@ -2124,7 +2142,13 @@ async function loadListings(){
       <p>${esc(t("results.compactJoin." + activeActivity))}</p>
       <button class="small-btn fill" type="button" data-role="${cfg.ctaRole}">${esc(t(cfg.ctaLabelKey))}</button>
     </article>`;
-  box.innerHTML = list.map((p,i)=>{
+  const quickRequestCard = `
+    <article class="card compact-join-card quick-request-card">
+      <div class="compact-join-icon">📣</div>
+      <p>${esc(t("quickRequest.cardText"))}</p>
+      <button class="small-btn fill" type="button" data-quick-request>${esc(t("quickRequest.cta"))}</button>
+    </article>`;
+  const profileCards = list.map((p,i)=>{
     const unavailable = blocked.has(p.id);
     const bg = p.profile_photo_url ? `style="background-image:url('${esc(p.profile_photo_url)}')"` : "";
     return `<article class="card">
@@ -2143,8 +2167,10 @@ async function loadListings(){
         </div>
       </div>
     </article>`;
-  }).join("") + compactJoinCard;
+  }).join("");
+  box.innerHTML = (list.length ? profileCards : quickRequestCard) + compactJoinCard;
   box.querySelector(".compact-join-card [data-role]")?.addEventListener("click", (e)=>openAccountModal("create", e.currentTarget.dataset.role));
+  box.querySelector("[data-quick-request]")?.addEventListener("click", openQuickRequest);
 }
 
 document.querySelector("#searchForm").addEventListener("submit", e=>{
@@ -2161,6 +2187,7 @@ document.querySelector("#heroProviders").addEventListener("click", ()=>{
   showProviderCategories();
   openModal("providerModal");
 });
+document.querySelector("#quickRequestBtn")?.addEventListener("click", openQuickRequest);
 document.querySelectorAll(".provider-service").forEach(btn=>{
   btn.addEventListener("click", ()=>{
     if(PROVIDER_SUBCATEGORIES[btn.dataset.activity]) showProviderSubcategories(btn.dataset.activity);
@@ -2850,7 +2877,8 @@ document.querySelector("#authSubmit").addEventListener("click", async ()=>{
     await loadProfile();
     closeModal("accountModal");
     refreshAccountButton();
-    openDashboard();
+    if(sessionStorage.getItem("skippernow-quick-request")) openQuickRequest();
+    else openDashboard();
     return;
   }
 
@@ -2872,7 +2900,8 @@ document.querySelector("#authSubmit").addEventListener("click", async ()=>{
   await loadProfile();
   closeModal("accountModal");
   refreshAccountButton();
-  openDashboard();
+  if(sessionStorage.getItem("skippernow-quick-request")) openQuickRequest();
+  else openDashboard();
 });
 
 document.querySelector("#forgotPasswordBtn").addEventListener("click", async ()=>{
@@ -3005,6 +3034,31 @@ window.openBookingFor = function(targetId, name, homePort, activity, subcategory
   document.querySelector("#bookingPhotosPreview").innerHTML = "";
   openModal("bookingModal");
 };
+function openQuickRequest(){
+  let saved = null;
+  try{ saved = JSON.parse(sessionStorage.getItem("skippernow-quick-request") || "null"); }catch(_e){}
+  const draft = saved || {
+    activity: activeActivity,
+    port: portInput.value.trim(),
+    date: dateInput.value,
+    duration: document.querySelector("#durationInput").value
+  };
+  if(!currentUser){
+    sessionStorage.setItem("skippernow-quick-request", JSON.stringify(draft));
+    openAccountModal("create", "client");
+    return;
+  }
+  if(currentProfile && !["client","admin"].includes(currentProfile.role)){
+    alert(t("booking.needClient"));
+    return;
+  }
+  if(draft.port) portInput.value = draft.port;
+  if(draft.date) dateInput.value = draft.date;
+  if(draft.duration) document.querySelector("#durationInput").value = draft.duration;
+  activeActivity = TAB_CONFIG[draft.activity] ? draft.activity : "skipper";
+  sessionStorage.removeItem("skippernow-quick-request");
+  window.openBookingFor(null, t("quickRequest.openTitle"), draft.port || portInput.value, activeActivity);
+}
 document.querySelector("#bookingPhotos").addEventListener("change", (e)=>{
   const preview = document.querySelector("#bookingPhotosPreview");
   preview.innerHTML = "";
@@ -5257,6 +5311,7 @@ async function loadLogbook(){
   await loadHeroSlides();
   await loadDestinationTiles();
   await loadPortActivities();
+  if(currentUser && sessionStorage.getItem("skippernow-quick-request")) openQuickRequest();
 })();
 
 db.auth.onAuthStateChange(async (event, session)=>{
