@@ -124,6 +124,21 @@ nav{display:flex;align-items:center;justify-content:space-between;width:100%}
 .launch-banner{display:flex;align-items:center;justify-content:center;gap:10px;text-align:center;margin:22px 0 10px;background:var(--navy);border-radius:20px;padding:16px 24px;box-shadow:0 14px 34px rgba(7,29,50,.22);color:var(--brass-light);font-weight:700;font-size:14px}
 .launch-banner-icon{font-size:16px}
 @media(max-width:640px){.launch-banner{padding:14px 16px;font-size:12.5px}}
+.trust-process{margin-top:36px}
+.trust-process-head{text-align:center;max-width:680px;margin:0 auto 20px}
+.trust-process-head h2{font-family:var(--display);font-weight:600;font-size:28px;margin:0 0 7px;color:var(--navy)}
+.trust-process-head p{margin:0;color:var(--muted);line-height:1.55}
+.trust-process-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.trust-process-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:0 8px 24px rgba(16,43,63,.05)}
+.trust-process-icon{width:42px;height:42px;border-radius:13px;background:var(--mist);display:grid;place-items:center;font-size:20px;margin-bottom:12px}
+.trust-process-card strong{display:block;color:var(--navy);font-size:15px;margin-bottom:5px}
+.trust-process-card span{display:block;color:var(--muted);font-size:13.5px;line-height:1.5}
+.home-pros{margin-top:36px;background:linear-gradient(135deg,#f4fbfa,#fff);border:1px solid var(--line);border-radius:22px;padding:24px}
+.home-pros-head{display:flex;align-items:end;justify-content:space-between;gap:14px;margin-bottom:16px}
+.home-pros-head h2{font-family:var(--display);font-weight:600;font-size:26px;color:var(--navy);margin:0}
+.home-pros-head p{margin:5px 0 0;color:var(--muted)}
+.home-pros-content{max-width:520px}
+@media(max-width:640px){.trust-process-grid{grid-template-columns:1fr}.home-pros{padding:18px}.home-pros-head{align-items:flex-start;flex-direction:column}}
 .sea-carousel{position:relative;border-radius:24px;overflow:hidden;height:420px;box-shadow:0 20px 50px rgba(16,43,63,.14)}
 .sea-carousel-track{position:absolute;inset:0}
 .sea-slide{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity 1.2s ease}
@@ -620,6 +635,17 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
     </div>
   </section>
 
+  <section class="home-pros" id="homeProvidersSection" style="display:none">
+    <div class="home-pros-head">
+      <div>
+        <h2 data-i18n="providersShowcase.title">Professionnels vérifiés disponibles</h2>
+        <p data-i18n="providersShowcase.subtitle">Découvrez uniquement les profils réellement validés par SkipperNow.</p>
+      </div>
+      <button class="ghost" id="homeProsViewAll" type="button" data-i18n="providersShowcase.viewAll">Voir les professionnels</button>
+    </div>
+    <div class="home-pros-content" id="homeProvidersStrip"></div>
+  </section>
+
 
   <section class="tile-browse" style="margin-top:44px">
     <h2 data-i18n="browseByPort.title">Nos destinations phares</h2>
@@ -632,6 +658,18 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
       <article class="step"><b>1</b><h4 data-i18n="how.step1Title">Trouvez</h4><p data-i18n="how.step1Text">Choisissez un skipper, un bateau, un service ou une expérience.</p></article>
       <article class="step"><b>2</b><h4 data-i18n="how.step2Title">Réservez</h4><p data-i18n="how.step2Text">Envoyez votre demande et échangez avec le professionnel.</p></article>
       <article class="step"><b>3</b><h4 data-i18n="how.step3Title">Profitez</h4><p data-i18n="how.step3Text">Paiement sécurisé et service réalisé en toute simplicité.</p></article>
+    </div>
+  </section>
+
+  <section class="trust-process" aria-labelledby="trustProcessTitle">
+    <div class="trust-process-head">
+      <h2 id="trustProcessTitle" data-i18n="trustProcess.title">Une réservation plus sûre, étape par étape</h2>
+      <p data-i18n="trustProcess.subtitle">Des règles claires pour protéger les clients comme les professionnels.</p>
+    </div>
+    <div class="trust-process-grid">
+      <article class="trust-process-card"><div class="trust-process-icon">✓</div><strong data-i18n="trustProcess.verifyTitle">Profils contrôlés</strong><span data-i18n="trustProcess.verifyText">Les profils professionnels sont examinés avant d'être affichés comme vérifiés.</span></article>
+      <article class="trust-process-card"><div class="trust-process-icon">€</div><strong data-i18n="trustProcess.quoteTitle">Prix accepté avant paiement</strong><span data-i18n="trustProcess.quoteText">Le professionnel propose son tarif et vous choisissez avant de payer.</span></article>
+      <article class="trust-process-card"><div class="trust-process-icon">🔒</div><strong data-i18n="trustProcess.contactTitle">Coordonnées protégées</strong><span data-i18n="trustProcess.contactText">Les échanges restent sur SkipperNow pour limiter les contournements et les abus.</span></article>
     </div>
   </section>
 
@@ -1233,7 +1271,7 @@ const I18N = {
     "search.portLabel":"PORT DE DÉPART — MONDE ENTIER","search.portPlaceholder":"Ex. Cannes, Miami, Ibiza…",
     "search.dateLabel":"DATE","search.durationLabel":"DURÉE","search.submit":"Rechercher",
     "duration.half":"Demi-journée","duration.day":"Journée","duration.multi":"Plusieurs jours",
-    "rental.badge":"LOCATION DE BATEAUX","rental.title":"Mettre mon bateau en location","providersShowcase.badge":"PRESTATAIRES INSCRITS","providersShowcase.title":"Nos professionnels vérifiés","providersShowcase.empty":"Aucun prestataire inscrit pour le moment.",
+    "rental.badge":"LOCATION DE BATEAUX","rental.title":"Mettre mon bateau en location","providersShowcase.badge":"PRESTATAIRES INSCRITS","providersShowcase.title":"Professionnels vérifiés disponibles","providersShowcase.subtitle":"Découvrez uniquement les profils réellement validés par SkipperNow.","providersShowcase.viewAll":"Voir les professionnels","providersShowcase.empty":"Aucun prestataire inscrit pour le moment.",
     "categories.badge":"CATÉGORIES","categories.title":"De quoi avez-vous besoin ?","categories.skipperDesc":"Sortie, location, convoyage et prise en main du bateau.","categories.daySailorDesc":"Aide à bord, manutention, convoyage court.","categories.providersDesc":"Nettoyage, entretien, mécanique, avitaillement et services à quai.","categories.boatRentalTitle":"Location de bateau","categories.boatRentalDesc":"Trouvez le bateau adapté à votre destination.","categories.experienceTitle":"Expériences en mer","categories.experienceDesc":"Excursions, sorties et expériences nautiques.","browseByType.title":"Le bateau idéal pour chacune de vos envies","browseByPort.title":"Nos destinations phares","boatType.motor":"Moteur","boatType.sailboat":"Voilier","boatType.rib":"Semi-rigide","boatType.catamaran":"Catamaran",
     "results.compactJoin.skipper":"Vous êtes skipper dans cette zone ? Rejoignez SkipperNow et recevez vos premières demandes.",
     "results.compactJoin.day_sailor":"Vous proposez de l'aide à bord dans cette zone ? Rejoignez SkipperNow et recevez vos premières demandes.",
@@ -1258,7 +1296,8 @@ const I18N = {
     "card.superSkipperBadge":"Super Skipper","card.recommendedProviderBadge":"Prestataire recommandé",
     "boatDetail.verifiedBadge":"Bateau vérifié",
     "dash.verifyBoat":"Vérifier le bateau","dash.unverifyBoat":"Retirer la vérification","dash.boatVerifyChecklist":"Avant de vérifier ce bateau, confirmez avoir contrôlé :\n\n✓ Les photos sont réelles et récentes\n✓ L'assurance du bateau est à jour\n✓ Les informations (modèle, année, capacité) sont cohérentes\n\nCliquez sur OK pour valider la vérification.","dash.markFeatured":"Mettre en avant","dash.unfeature":"Retirer la mise en avant",
-    "stats.missions":"missions réalisées","stats.pros":"professionnels vérifiés","stats.rating":"note moyenne","launch.banner":"Rejoignez les premiers professionnels SkipperNow et bénéficiez d'une visibilité prioritaire.","seaCarousel.caption":"Vos plus belles sorties en mer commencent ici",
+    "stats.missions":"missions réalisées","stats.pros":"professionnels vérifiés","stats.rating":"note moyenne","launch.banner":"Lancement prioritaire sur la Côte d'Azur : Cannes, Antibes, Nice, Monaco et Saint-Tropez.","seaCarousel.caption":"Vos plus belles sorties en mer commencent ici",
+    "trustProcess.title":"Une réservation plus sûre, étape par étape","trustProcess.subtitle":"Des règles claires pour protéger les clients comme les professionnels.","trustProcess.verifyTitle":"Profils contrôlés","trustProcess.verifyText":"Les profils professionnels sont examinés avant d'être affichés comme vérifiés.","trustProcess.quoteTitle":"Prix accepté avant paiement","trustProcess.quoteText":"Le professionnel propose son tarif et vous choisissez avant de payer.","trustProcess.contactTitle":"Coordonnées protégées","trustProcess.contactText":"Les échanges restent sur SkipperNow pour limiter les contournements et les abus.",
     "card.available":"Disponible","card.unavailable":"Indisponible","card.unavailableOn":"Indisponible le","card.viewProfile":"Voir le profil",
     "how.title":"Comment ça marche ?",
     "how.step1Title":"Trouvez","how.step1Text":"Choisissez un skipper, un bateau, un service ou une expérience.",
@@ -1342,7 +1381,7 @@ const I18N = {
     "dash.adminEyebrow":"ADMINISTRATION","dash.adminTitle":"Tableau de bord SkipperNow",
     "dash.navRequests":"Mes demandes","dash.navBoats":"Mes bateaux","dash.viewUserBoats":"Voir ses bateaux","dash.editBoat":"Modifier l'annonce","dash.boatsOf":"Bateaux de","dash.clearFilter":"Voir tous les bateaux","dash.navProfile":"Mon profil","dash.navAvailability":"Disponibilités","dash.logout":"Se déconnecter","dash.navMessages":"Messages","dash.noMessages":"Aucune conversation pour le moment.","dash.noUnreadMessages":"Aucun nouveau message.","dash.messagePlaceholder":"Écrivez votre message…","dash.send":"Envoyer","dash.loading":"Chargement…","dash.deleteMessage":"Supprimer","dash.confirmDeleteMessage":"Supprimer ce message ?","dash.deleteConversation":"Supprimer la conversation","dash.confirmDeleteConversation":"Supprimer toute cette conversation ? Cette action est irréversible.","dash.tabUnread":"Non lus","dash.tabAll":"Tous","dash.navSupport":"Contacter le support","dash.noSupport":"Le support n'est pas disponible pour le moment.","dash.supportIntro":"Une question, un souci ? Écrivez directement à l'équipe SkipperNow.",
     "booking.privacyNote":"Pour votre sécurité, les coordonnées personnelles (téléphone, email) ne sont jamais partagées directement entre client et professionnel.",
-    "dash.navOverview":"Vue d'ensemble","dash.navTraffic":"Statistiques","dash.kpiVisitorsToday":"Visiteurs aujourd'hui","dash.kpiVisitors7d":"Visiteurs (7 j)","dash.kpiVisitors30d":"Visiteurs (30 j)","dash.kpiVisitorsYear":"Visiteurs (1 an)","dash.topPagesTitle":"Pages consultées (30 derniers jours)","dash.noViewsYet":"Aucune visite enregistrée pour l'instant.","dash.navValidations":"Validations","dash.navMissions":"Missions","dash.navUsers":"Utilisateurs","dash.navSettings":"Réglages",
+    "dash.navOverview":"Vue d'ensemble","dash.navTraffic":"Statistiques","dash.kpiVisitorsToday":"Visiteurs aujourd'hui","dash.kpiVisitors7d":"Visiteurs (7 j)","dash.kpiVisitors30d":"Visiteurs (30 j)","dash.kpiVisitorsYear":"Visiteurs (1 an)","dash.performance30d":"Résultats des 30 derniers jours","dash.kpiAccounts30d":"Nouveaux comptes","dash.kpiRequests30d":"Demandes envoyées","dash.kpiCompleted30d":"Missions terminées","dash.kpiConversion30d":"Visiteurs devenus membres","dash.topPagesTitle":"Pages consultées (30 derniers jours)","dash.noViewsYet":"Aucune visite enregistrée pour l'instant.","dash.navValidations":"Validations","dash.navMissions":"Missions","dash.navUsers":"Utilisateurs","dash.navSettings":"Réglages",
     "dash.noRequests":"Aucune demande pour le moment.","dash.noBoats":"Aucun bateau ajouté pour le moment.","dash.noMissions":"Aucune mission pour le moment.",
     "dash.kpiUsers":"Utilisateurs","dash.kpiPending":"À valider","dash.kpiMissions":"Missions","dash.kpiRevenue":"Commission cumulée",
     "dash.navPayments":"Encaissements","dash.navPayouts":"Virements","dash.navRefunds":"Remboursements","dash.navCommissions":"Commissions","dash.navBoatsAdmin":"Bateaux",
@@ -1405,7 +1444,7 @@ const I18N = {
     "search.portLabel":"DEPARTURE PORT — WORLDWIDE","search.portPlaceholder":"E.g. Cannes, Miami, Ibiza…",
     "search.dateLabel":"DATE","search.durationLabel":"DURATION","search.submit":"Search",
     "duration.half":"Half day","duration.day":"Full day","duration.multi":"Several days",
-    "rental.badge":"BOAT RENTALS","rental.title":"List my boat for rent","providersShowcase.badge":"REGISTERED PROVIDERS","providersShowcase.title":"Our verified professionals","providersShowcase.empty":"No provider registered yet.",
+    "rental.badge":"BOAT RENTALS","rental.title":"List my boat for rent","providersShowcase.badge":"REGISTERED PROVIDERS","providersShowcase.title":"Verified professionals available","providersShowcase.subtitle":"Discover only profiles genuinely approved by SkipperNow.","providersShowcase.viewAll":"View professionals","providersShowcase.empty":"No provider registered yet.",
     "categories.badge":"CATEGORIES","categories.title":"What do you need?","categories.skipperDesc":"Trips, rentals, deliveries and boat familiarisation.","categories.daySailorDesc":"Hands-on help, handling, short delivery trips.","categories.providersDesc":"Cleaning, maintenance, mechanics, provisioning and dockside services.","categories.boatRentalTitle":"Boat Rental","categories.boatRentalDesc":"Find the right boat for your destination.","categories.experienceTitle":"Experiences on the Water","categories.experienceDesc":"Excursions, trips and unforgettable experiences on the water.","browseByType.title":"The ideal boat for every occasion","browseByPort.title":"Our flagship destinations","boatType.motor":"Motorboat","boatType.sailboat":"Sailboat","boatType.rib":"RIB","boatType.catamaran":"Catamaran",
     "results.compactJoin.skipper":"Are you a skipper in this area? Join SkipperNow and get your first requests.",
     "results.compactJoin.day_sailor":"Do you offer help on board in this area? Join SkipperNow and get your first requests.",
@@ -1430,7 +1469,8 @@ const I18N = {
     "card.superSkipperBadge":"Super Skipper","card.recommendedProviderBadge":"Recommended provider",
     "boatDetail.verifiedBadge":"Verified boat",
     "dash.verifyBoat":"Verify boat","dash.unverifyBoat":"Remove verification","dash.boatVerifyChecklist":"Before verifying this boat, confirm you have checked:\n\n✓ Photos are real and recent\n✓ The boat's insurance is up to date\n✓ Details (model, year, capacity) are consistent\n\nClick OK to confirm verification.","dash.markFeatured":"Feature","dash.unfeature":"Remove feature",
-    "stats.missions":"jobs completed","stats.pros":"verified professionals","stats.rating":"average rating","launch.banner":"Join the first SkipperNow professionals and benefit from priority visibility.","seaCarousel.caption":"Your best days at sea start here",
+    "stats.missions":"jobs completed","stats.pros":"verified professionals","stats.rating":"average rating","launch.banner":"Priority launch on the French Riviera: Cannes, Antibes, Nice, Monaco and Saint-Tropez.","seaCarousel.caption":"Your best days at sea start here",
+    "trustProcess.title":"A safer booking, step by step","trustProcess.subtitle":"Clear rules that protect clients and professionals alike.","trustProcess.verifyTitle":"Profiles reviewed","trustProcess.verifyText":"Professional profiles are reviewed before appearing as verified.","trustProcess.quoteTitle":"Approve the price before paying","trustProcess.quoteText":"The professional proposes a price and you decide before payment.","trustProcess.contactTitle":"Contact details protected","trustProcess.contactText":"Conversations stay on SkipperNow to reduce circumvention and abuse.",
     "card.available":"Available","card.unavailable":"Unavailable","card.unavailableOn":"Unavailable on","card.viewProfile":"View profile",
     "how.title":"How does it work?",
     "how.step1Title":"Find","how.step1Text":"Choose a skipper, boat, service or experience.",
@@ -1514,7 +1554,7 @@ const I18N = {
     "dash.adminEyebrow":"ADMINISTRATION","dash.adminTitle":"SkipperNow dashboard",
     "dash.navRequests":"My requests","dash.navBoats":"My boats","dash.viewUserBoats":"View their boats","dash.editBoat":"Edit listing","dash.boatsOf":"Boats owned by","dash.clearFilter":"View all boats","dash.navProfile":"My profile","dash.navAvailability":"Availability","dash.logout":"Log out","dash.navMessages":"Messages","dash.noMessages":"No conversations yet.","dash.noUnreadMessages":"No new messages.","dash.messagePlaceholder":"Write your message…","dash.send":"Send","dash.loading":"Loading…","dash.deleteMessage":"Delete","dash.confirmDeleteMessage":"Delete this message?","dash.deleteConversation":"Delete conversation","dash.confirmDeleteConversation":"Delete this whole conversation? This cannot be undone.","dash.tabUnread":"Unread","dash.tabAll":"All","dash.navSupport":"Contact support","dash.noSupport":"Support is not available right now.","dash.supportIntro":"A question or an issue? Message the SkipperNow team directly.",
     "booking.privacyNote":"For your safety, personal contact details (phone, email) are never shared directly between client and professional.",
-    "dash.navOverview":"Overview","dash.navTraffic":"Analytics","dash.kpiVisitorsToday":"Visitors today","dash.kpiVisitors7d":"Visitors (7d)","dash.kpiVisitors30d":"Visitors (30d)","dash.kpiVisitorsYear":"Visitors (1 year)","dash.topPagesTitle":"Pages visited (last 30 days)","dash.noViewsYet":"No visits recorded yet.","dash.navValidations":"Approvals","dash.navMissions":"Jobs","dash.navUsers":"Users","dash.navSettings":"Settings",
+    "dash.navOverview":"Overview","dash.navTraffic":"Analytics","dash.kpiVisitorsToday":"Visitors today","dash.kpiVisitors7d":"Visitors (7d)","dash.kpiVisitors30d":"Visitors (30d)","dash.kpiVisitorsYear":"Visitors (1 year)","dash.performance30d":"Results for the last 30 days","dash.kpiAccounts30d":"New accounts","dash.kpiRequests30d":"Requests sent","dash.kpiCompleted30d":"Completed jobs","dash.kpiConversion30d":"Visitors who joined","dash.topPagesTitle":"Pages visited (last 30 days)","dash.noViewsYet":"No visits recorded yet.","dash.navValidations":"Approvals","dash.navMissions":"Jobs","dash.navUsers":"Users","dash.navSettings":"Settings",
     "dash.noRequests":"No requests yet.","dash.noBoats":"No boats added yet.","dash.noMissions":"No jobs yet.",
     "dash.kpiUsers":"Users","dash.kpiPending":"To approve","dash.kpiMissions":"Jobs","dash.kpiRevenue":"Total commission",
     "dash.navPayments":"Payments","dash.navPayouts":"Payouts","dash.navRefunds":"Refunds","dash.navCommissions":"Commissions","dash.navBoatsAdmin":"Boats",
@@ -1576,7 +1616,7 @@ const I18N = {
     "search.portLabel":"PUERTO DE SALIDA — TODO EL MUNDO","search.portPlaceholder":"Ej. Cannes, Miami, Ibiza…",
     "search.dateLabel":"FECHA","search.durationLabel":"DURACIÓN","search.submit":"Buscar",
     "duration.half":"Medio día","duration.day":"Día completo","duration.multi":"Varios días",
-    "rental.badge":"ALQUILER DE BARCOS","rental.title":"Poner mi barco en alquiler","providersShowcase.badge":"PRESTADORES REGISTRADOS","providersShowcase.title":"Nuestros profesionales verificados","providersShowcase.empty":"Todavía no hay ningún prestador registrado.",
+    "rental.badge":"ALQUILER DE BARCOS","rental.title":"Poner mi barco en alquiler","providersShowcase.badge":"PRESTADORES REGISTRADOS","providersShowcase.title":"Profesionales verificados disponibles","providersShowcase.subtitle":"Descubre únicamente perfiles realmente validados por SkipperNow.","providersShowcase.viewAll":"Ver profesionales","providersShowcase.empty":"Todavía no hay ningún prestador registrado.",
     "categories.badge":"CATEGORÍAS","categories.title":"¿Qué necesitas?","categories.skipperDesc":"Salidas, alquiler, traslados y familiarización con el barco.","categories.daySailorDesc":"Ayuda a bordo, manipulación, traslados cortos.","categories.providersDesc":"Limpieza, mantenimiento, mecánica, avituallamiento y servicios en el muelle.","categories.boatRentalTitle":"Alquiler de barco","categories.boatRentalDesc":"Encuentra el barco ideal para tu destino.","categories.experienceTitle":"Experiencias en el mar","categories.experienceDesc":"Excursiones, salidas y experiencias inolvidables en el mar.","browseByType.title":"El barco ideal para cada ocasión","browseByPort.title":"Nuestros destinos estrella","boatType.motor":"Motor","boatType.sailboat":"Velero","boatType.rib":"Semirrígida","boatType.catamaran":"Catamarán",
     "results.compactJoin.skipper":"¿Eres skipper en esta zona? Únete a SkipperNow y recibe tus primeras solicitudes.",
     "results.compactJoin.day_sailor":"¿Ofreces ayuda a bordo en esta zona? Únete a SkipperNow y recibe tus primeras solicitudes.",
@@ -1601,7 +1641,8 @@ const I18N = {
     "card.superSkipperBadge":"Super Skipper","card.recommendedProviderBadge":"Prestador recomendado",
     "boatDetail.verifiedBadge":"Barco verificado",
     "dash.verifyBoat":"Verificar barco","dash.unverifyBoat":"Quitar verificación","dash.boatVerifyChecklist":"Antes de verificar este barco, confirma que has comprobado:\n\n✓ Las fotos son reales y recientes\n✓ El seguro del barco está en vigor\n✓ Los datos (modelo, año, capacidad) son coherentes\n\nHaz clic en OK para confirmar la verificación.","dash.markFeatured":"Destacar","dash.unfeature":"Quitar destacado",
-    "stats.missions":"servicios realizados","stats.pros":"profesionales verificados","stats.rating":"valoración media","launch.banner":"Únete a los primeros profesionales de SkipperNow y obtén visibilidad prioritaria.","seaCarousel.caption":"Tus mejores salidas al mar empiezan aquí",
+    "stats.missions":"servicios realizados","stats.pros":"profesionales verificados","stats.rating":"valoración media","launch.banner":"Lanzamiento prioritario en la Costa Azul: Cannes, Antibes, Niza, Mónaco y Saint-Tropez.","seaCarousel.caption":"Tus mejores salidas al mar empiezan aquí",
+    "trustProcess.title":"Una reserva más segura, paso a paso","trustProcess.subtitle":"Reglas claras para proteger tanto a clientes como a profesionales.","trustProcess.verifyTitle":"Perfiles revisados","trustProcess.verifyText":"Los perfiles profesionales se revisan antes de aparecer como verificados.","trustProcess.quoteTitle":"Acepta el precio antes de pagar","trustProcess.quoteText":"El profesional propone su precio y tú decides antes del pago.","trustProcess.contactTitle":"Datos de contacto protegidos","trustProcess.contactText":"Las conversaciones permanecen en SkipperNow para reducir abusos y acuerdos externos.",
     "card.available":"Disponible","card.unavailable":"No disponible","card.unavailableOn":"No disponible el","card.viewProfile":"Ver perfil",
     "how.title":"¿Cómo funciona?",
     "how.step1Title":"Encuentra","how.step1Text":"Elige un skipper, un barco, un servicio o una experiencia.",
@@ -1685,7 +1726,7 @@ const I18N = {
     "dash.adminEyebrow":"ADMINISTRACIÓN","dash.adminTitle":"Panel de SkipperNow",
     "dash.navRequests":"Mis solicitudes","dash.navBoats":"Mis barcos","dash.viewUserBoats":"Ver sus barcos","dash.editBoat":"Editar anuncio","dash.boatsOf":"Barcos de","dash.clearFilter":"Ver todos los barcos","dash.navProfile":"Mi perfil","dash.navAvailability":"Disponibilidad","dash.logout":"Cerrar sesión","dash.navMessages":"Mensajes","dash.noMessages":"Todavía no hay conversaciones.","dash.noUnreadMessages":"No hay mensajes nuevos.","dash.messagePlaceholder":"Escribe tu mensaje…","dash.send":"Enviar","dash.loading":"Cargando…","dash.deleteMessage":"Eliminar","dash.confirmDeleteMessage":"¿Eliminar este mensaje?","dash.deleteConversation":"Eliminar conversación","dash.confirmDeleteConversation":"¿Eliminar toda esta conversación? Esta acción no se puede deshacer.","dash.tabUnread":"No leídos","dash.tabAll":"Todos","dash.navSupport":"Contactar con soporte","dash.noSupport":"El soporte no está disponible en este momento.","dash.supportIntro":"¿Una pregunta o un problema? Escribe directamente al equipo de SkipperNow.",
     "booking.privacyNote":"Por tu seguridad, los datos personales (teléfono, email) nunca se comparten directamente entre cliente y profesional.",
-    "dash.navOverview":"Resumen","dash.navTraffic":"Estadísticas","dash.kpiVisitorsToday":"Visitantes hoy","dash.kpiVisitors7d":"Visitantes (7 d)","dash.kpiVisitors30d":"Visitantes (30 d)","dash.kpiVisitorsYear":"Visitantes (1 año)","dash.topPagesTitle":"Páginas visitadas (últimos 30 días)","dash.noViewsYet":"Todavía no hay visitas registradas.","dash.navValidations":"Validaciones","dash.navMissions":"Servicios","dash.navUsers":"Usuarios","dash.navSettings":"Ajustes",
+    "dash.navOverview":"Resumen","dash.navTraffic":"Estadísticas","dash.kpiVisitorsToday":"Visitantes hoy","dash.kpiVisitors7d":"Visitantes (7 d)","dash.kpiVisitors30d":"Visitantes (30 d)","dash.kpiVisitorsYear":"Visitantes (1 año)","dash.performance30d":"Resultados de los últimos 30 días","dash.kpiAccounts30d":"Nuevas cuentas","dash.kpiRequests30d":"Solicitudes enviadas","dash.kpiCompleted30d":"Servicios completados","dash.kpiConversion30d":"Visitantes registrados","dash.topPagesTitle":"Páginas visitadas (últimos 30 días)","dash.noViewsYet":"Todavía no hay visitas registradas.","dash.navValidations":"Validaciones","dash.navMissions":"Servicios","dash.navUsers":"Usuarios","dash.navSettings":"Ajustes",
     "dash.noRequests":"Todavía no hay solicitudes.","dash.noBoats":"Todavía no hay barcos añadidos.","dash.noMissions":"Todavía no hay servicios.",
     "dash.kpiUsers":"Usuarios","dash.kpiPending":"Por validar","dash.kpiMissions":"Servicios","dash.kpiRevenue":"Comisión acumulada",
     "dash.navPayments":"Cobros","dash.navPayouts":"Transferencias","dash.navRefunds":"Reembolsos","dash.navCommissions":"Comisiones","dash.navBoatsAdmin":"Barcos",
@@ -1738,6 +1779,11 @@ function t(key, vars){
   let text = (I18N[currentLang] && I18N[currentLang][key]) ?? I18N.fr[key] ?? key;
   if(vars) for(const k in vars) text = text.replace("{"+k+"}", vars[k]);
   return text;
+}
+
+function profileRatingText(profile){
+  const rating = Number(profile?.rating || 0);
+  return rating > 0 ? `★ ${rating.toFixed(1)}` : t("card.newOnPlatform");
 }
 function pluralKey(base, n){ return base + "." + (n === 1 ? "one" : "other"); }
 function tCount(base, n){ return t(pluralKey(base, n), {n}); }
@@ -2087,7 +2133,7 @@ async function loadListings(){
         <span class="online ${unavailable?"off":""}">● ${unavailable ? esc(t("card.unavailableOn"))+" "+new Date(chosenDate+"T12:00:00").toLocaleDateString(currentLang) : esc(t("card.available"))}</span>
       </div>
       <div class="content">
-        <div class="name-row"><h3>${esc(p.full_name||"—")}<span class="ig-badge" title="${esc(t("card.verifiedBadge"))}"><svg width="16" height="16" viewBox="0 0 24 24" role="img" aria-label="${esc(t("card.verifiedBadge"))}"><circle cx="12" cy="12" r="12" fill="#3897f0"/><path d="M9.5 12.8l-2-2-1.4 1.4L9.5 15.6l7.4-7.4-1.4-1.4z" fill="#fff"/></svg></span>${featuredBadgeHtml(p)}</h3><span class="rating">★ ${Number(p.rating||5).toFixed(1)}</span></div>
+        <div class="name-row"><h3>${esc(p.full_name||"—")}<span class="ig-badge" title="${esc(t("card.verifiedBadge"))}"><svg width="16" height="16" viewBox="0 0 24 24" role="img" aria-label="${esc(t("card.verifiedBadge"))}"><circle cx="12" cy="12" r="12" fill="#3897f0"/><path d="M9.5 12.8l-2-2-1.4 1.4L9.5 15.6l7.4-7.4-1.4-1.4z" fill="#fff"/></svg></span>${featuredBadgeHtml(p)}</h3><span class="rating">${esc(profileRatingText(p))}</span></div>
         <div class="meta">${esc(p.home_port||"—")} · ${p.experience_years ? p.experience_years+" "+esc(t("card.experience")) : esc(t("card.newOnPlatform"))}</div>
         <p class="meta">${esc(p.bio||"")}</p>
         <div class="tags"><span class="tag">${(ACTIVITY_ICON[p.provider_activity]||cfg.icon)} ${esc(activityLabel(p.provider_activity||activeActivity))}</span><span class="tag">${esc(p.languages||"Français")}</span></div>
@@ -2194,7 +2240,7 @@ async function renderProviderResults(activity){
       <div>
         <h3>${esc(p.full_name||"—")}</h3>
         <span class="tag">${ACTIVITY_ICON[p.provider_activity]||"⚓"} ${esc(activityLabel(p.provider_activity))}</span>
-        <p><strong>${esc(p.home_port||"—")}</strong> · ★ ${Number(p.rating||5).toFixed(1)}</p>
+        <p><strong>${esc(p.home_port||"—")}</strong> · ${esc(profileRatingText(p))}</p>
         <p>${esc(p.bio||"")}</p>
         <button class="small-btn fill" onclick="openProfileDetail('${p.id}')">${esc(t("card.viewProfile"))}</button>
       </div>
@@ -2538,6 +2584,8 @@ let homeProvidersIndex = 0;
 async function preloadHomeProviders(){
   const {data} = await db.from("profiles").select("*").eq("verified", true).in("role",["skipper","provider"]).order("created_at",{ascending:false}).limit(8);
   homeProvidersCache = data || [];
+  const section = document.querySelector("#homeProvidersSection");
+  if(section) section.style.display = homeProvidersCache.length ? "" : "none";
   renderHomeProvidersStrip();
 }
 function renderHomeProvidersStrip(){
@@ -2584,7 +2632,7 @@ function renderProviderSpotlight(){
   if(!p.profile_photo_url) photo.insertAdjacentHTML("afterbegin", `<div class="ph-icon">${ACTIVITY_ICON[activity]||"⚓"}</div>`);
   document.querySelector("#providerSpotlightName").textContent = p.full_name || "—";
   document.querySelector("#providerSpotlightMeta").textContent = `${activityLabel(activity)} · ${p.home_port||"—"}`;
-  document.querySelector("#providerSpotlightRating").textContent = `★ ${Number(p.rating||5).toFixed(1)}`;
+  document.querySelector("#providerSpotlightRating").textContent = profileRatingText(p);
   const cta = document.querySelector("#providerSpotlightCta");
   if(cta) cta.onclick = ()=>openProfileDetail(p.id);
   const dots = document.querySelector("#providerSpotlightDots");
@@ -2658,7 +2706,7 @@ window.openProfileDetail = function(id, adminView){
       <small style="color:var(--muted);font-weight:800;letter-spacing:.05em;text-transform:uppercase;font-size:11px">${esc(activityLabel(activity))}</small>
       <div class="name-row" style="margin:4px 0 6px"><h2 style="margin:0">${esc(p.full_name||"—")}<span class="ig-badge" title="${esc(t("card.verifiedBadge"))}"><svg width="18" height="18" viewBox="0 0 24 24" role="img" aria-label="${esc(t("card.verifiedBadge"))}"><circle cx="12" cy="12" r="12" fill="#3897f0"/><path d="M9.5 12.8l-2-2-1.4 1.4L9.5 15.6l7.4-7.4-1.4-1.4z" fill="#fff"/></svg></span>${featuredBadgeHtml(p)}</h2></div>
       <div class="boat-card-port" style="margin-bottom:6px">📍 ${esc(p.home_port||"—")}</div>
-      <div class="meta" style="margin-bottom:14px">★ ${Number(p.rating||5).toFixed(1)}${p.rating_count ? ` (${p.rating_count} ${esc(t(p.rating_count>1 ? "card.reviewsPlural" : "card.reviewsSingle"))})` : ""} · ${p.experience_years||0} ${esc(t("card.experience"))}${p.languages?" · "+esc(p.languages):""}</div>
+      <div class="meta" style="margin-bottom:14px">${esc(profileRatingText(p))}${p.rating_count ? ` (${p.rating_count} ${esc(t(p.rating_count>1 ? "card.reviewsPlural" : "card.reviewsSingle"))})` : ""} · ${p.experience_years||0} ${esc(t("card.experience"))}${p.languages?" · "+esc(p.languages):""}</div>
       <p class="muted" style="line-height:1.6">${esc(p.bio||t("boatDetail.noDescription"))}</p>
       ${p.skills ? `<div style="margin:14px 0"><strong style="font-size:13px">${esc(t("account.skillsLabel"))}</strong><div class="tags" style="margin-top:6px">${p.skills.split(",").map(x=>x.trim()).filter(Boolean).map(x=>`<span class="tag">${esc(x)}</span>`).join("")}</div></div>` : ""}
       ${(p.price_half_day_cents || p.price_hour_cents || p.travel_fee_cents) ? `<div class="muted" style="margin-bottom:10px">
@@ -2749,6 +2797,10 @@ document.querySelector("#signupBtn").addEventListener("click", ()=>{
 document.querySelector("#listBoatBtn").addEventListener("click", ()=>{
   if(currentUser && currentProfile){ openDashboard(); return; }
   openAccountModal("create", "owner");
+});
+document.querySelector("#homeProsViewAll")?.addEventListener("click", ()=>{
+  showProviderCategories();
+  openModal("providerModal");
 });
 document.querySelectorAll("[data-role]").forEach(el=>{
   if(el.closest("#roleChoice")) return;
@@ -3629,6 +3681,11 @@ async function renderAdminPanel(panel){
     const in7 = uniqueVisitors(rows.filter(v=>ageInDays(v) < 7));
     const in30 = uniqueVisitors(rows.filter(v=>ageInDays(v) < 30));
     const inYear = uniqueVisitors(rows.filter(v=>ageInDays(v) < 365));
+    const isWithin30Days = value => value && (now - new Date(value).getTime()) < 30*24*60*60*1000;
+    const accounts30 = profiles.filter(p=>isWithin30Days(p.created_at)).length;
+    const requests30 = missions.filter(m=>isWithin30Days(m.created_at)).length;
+    const completed30 = missions.filter(m=>m.status === "completed" && isWithin30Days(m.updated_at || m.created_at)).length;
+    const verifiedPros = profiles.filter(p=>p.verified && ["skipper","provider"].includes(p.role)).length;
     const countsByPath = {};
     for(const v of rows){
       if(ageInDays(v) >= 30) continue;
@@ -3641,6 +3698,13 @@ async function renderAdminPanel(panel){
         <div class="kpi"><div class="kpi-top"><span>${esc(t("dash.kpiVisitors7d"))}</span></div><strong>${in7}</strong></div>
         <div class="kpi"><div class="kpi-top"><span>${esc(t("dash.kpiVisitors30d"))}</span></div><strong>${in30}</strong></div>
         <div class="kpi"><div class="kpi-top"><span>${esc(t("dash.kpiVisitorsYear"))}</span></div><strong>${inYear}</strong></div>
+      </div>
+      <div class="dash-section-title">${esc(t("dash.performance30d"))}</div>
+      <div class="kpi-grid">
+        <div class="kpi"><div class="kpi-top"><span>${esc(t("dash.kpiAccounts30d"))}</span></div><strong>${accounts30}</strong></div>
+        <div class="kpi"><div class="kpi-top"><span>${esc(t("dash.kpiRequests30d"))}</span></div><strong>${requests30}</strong></div>
+        <div class="kpi kpi--good"><div class="kpi-top"><span>${esc(t("dash.kpiCompleted30d"))}</span></div><strong>${completed30}</strong></div>
+        <div class="kpi"><div class="kpi-top"><span>${esc(t("stats.pros"))}</span></div><strong>${verifiedPros}</strong></div>
       </div>
       <div class="dash-section-title">${esc(t("dash.topPagesTitle"))}</div>
       ${topPages.length ? `<div class="traffic-table">${topPages.map(([path,count])=>`<div class="traffic-row"><span class="traffic-path">${esc(path)}</span><span class="traffic-count">${count}</span></div>`).join("")}</div>` : `<div class="empty-note">${esc(t("dash.noViewsYet"))}</div>`}`;
@@ -5186,6 +5250,7 @@ async function loadLogbook(){
   const urlPro = params.get("pro");
   if(urlPro) openDirectRequest(urlPro);
   await preloadHomeBoats();
+  await preloadHomeProviders();
   await loadListings();
   await loadTrustStats();
   await loadLogbook();
