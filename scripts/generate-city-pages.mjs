@@ -184,6 +184,7 @@ function pageHtml({ title, desc, canonical, breadcrumbLabel, h1, intro, ctaHref,
   serviceType, provider: { "@type": "Organization", name: "SkipperNow", url: SITE_URL + "/" },
   areaServed: { "@type": "City", name: cityName }, url: canonical
 })}</script>
+<script src="/analytics.js" defer></script>
 </head>
 <body>
 <header><nav>

@@ -23,7 +23,8 @@ Le site est hébergé sur **GitHub Pages** avec un domaine personnalisé (`skipp
 ## Backend : Supabase
 
 - **URL et clé publique (anon)** sont codées en dur dans `index.html` (lignes ~679-680). C'est normal : la clé publique/anon Supabase est faite pour être exposée côté client, elle est protégée par les policies RLS côté serveur.
-- **Tables utilisées** (à créer/maintenir côté Supabase, schéma non versionné dans ce repo pour l'instant) : `profiles`, `boats`, `missions`, `messages`, `conversations`, `payout_details`, `platform_settings`, `skipper_unavailability`.
+- **Tables utilisées** : `profiles`, `boats`, `missions`, `messages`, `conversations`, `payout_details`, `platform_settings`, `skipper_unavailability`, `page_views`.
+- **Statistiques visiteurs** : `analytics.js` est chargé sur toutes les pages et appelle la fonction Supabase sécurisée `record_page_visit`. La migration correspondante est versionnée dans `supabase/page-analytics.sql`.
 - **Stockage (Storage)** : bucket `mission-photos` pour les preuves de mission.
 - **Authentification** : Supabase Auth (email/mot de passe), avec 4 rôles gérés via la colonne `role` de `profiles` (`client`, `skipper`, `provider`, `admin`) et une colonne `provider_activity` pour distinguer skipper/marin à la journée/prestataire de nettoyage au sein du rôle `provider`.
 
