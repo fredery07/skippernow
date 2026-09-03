@@ -132,6 +132,8 @@ nav{display:flex;align-items:center;justify-content:space-between;width:100%}
 .quick-request-card p{color:#d9eeec}
 .quick-request-card .small-btn{background:var(--aqua);color:var(--navy)}
 @media(max-width:640px){.quick-request-bar{align-items:stretch;flex-direction:column;padding:18px}.quick-request-bar .primary{width:100%}}
+.booking-fields{display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px}
+@media(max-width:640px){.booking-fields{grid-template-columns:1fr}}
 .trust-process{margin-top:36px}
 .trust-process-head{text-align:center;max-width:680px;margin:0 auto 20px}
 .trust-process-head h2{font-family:var(--display);font-weight:600;font-size:28px;margin:0 0 7px;color:var(--navy)}
@@ -1139,11 +1141,28 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
         <button class="close" data-close="bookingModal" type="button">×</button>
       </div>
       <div class="summary">
-        <div class="summary-line"><span data-i18n="booking.port">Port</span><strong id="bookingSummaryPort">—</strong></div>
         <div class="summary-line"><span data-i18n="booking.price">Tarif</span><strong id="bookingSummaryPrice" data-i18n="booking.priceTbd">À définir avec le professionnel</strong></div>
       </div>
+      <div class="booking-fields">
+        <div class="field">
+          <label data-i18n="booking.port">PORT</label>
+          <input id="bookingPort" type="text" data-i18n-placeholder="search.portPlaceholder" placeholder="Ex. Cannes, Miami, Ibiza…" required>
+        </div>
+        <div class="field">
+          <label data-i18n="search.dateLabel">DATE</label>
+          <input id="bookingDate" type="date" required>
+        </div>
+        <div class="field">
+          <label data-i18n="search.durationLabel">DURÉE</label>
+          <select id="bookingDuration">
+            <option value="half" data-i18n="duration.half">Demi-journée</option>
+            <option value="day" data-i18n="duration.day">Journée</option>
+            <option value="multi" data-i18n="duration.multi">Plusieurs jours</option>
+          </select>
+        </div>
+      </div>
       <div class="field" id="bookingBoatField">
-        <label data-i18n="booking.boatLabel">TYPE DE BATEAU</label>
+        <label data-i18n="booking.boatOptionalLabel">TYPE DE BATEAU (OPTIONNEL)</label>
         <input id="bookingBoat" data-i18n-placeholder="booking.boatPlaceholder" placeholder="Ex. Cap Camarat 9.0">
       </div>
       <div class="field">
@@ -1385,13 +1404,13 @@ const I18N = {
     "account.forgotError":"Impossible d'envoyer l'email : ",
     "booking.eyebrowRequest":"DEMANDE DE RÉSERVATION","booking.defaultTarget":"Professionnel sélectionné",
     "booking.port":"Port","booking.price":"Tarif","booking.priceTbd":"À définir avec le professionnel",
-    "booking.nameLabel":"VOTRE NOM","booking.phoneLabel":"TÉLÉPHONE","booking.boatLabel":"TYPE DE BATEAU","booking.boatPlaceholder":"Ex. Cap Camarat 9.0",
+    "booking.nameLabel":"VOTRE NOM","booking.phoneLabel":"TÉLÉPHONE","booking.boatLabel":"TYPE DE BATEAU","booking.boatOptionalLabel":"TYPE DE BATEAU (OPTIONNEL)","booking.boatPlaceholder":"Ex. Cap Camarat 9.0",
     "booking.detailsLabel":"DÉCRIVEZ VOTRE BESOIN","booking.detailsPlaceholder":"Nettoyage, sortie, convoyage, nombre de personnes…","booking.rentalDetailsLabel":"PRÉCISIONS (OPTIONNEL)","booking.rentalDetailsPlaceholder":"Nombre de passagers, horaire souhaité, demandes particulières…","booking.photosLabel":"PHOTOS (OPTIONNEL)",
     "booking.paymentNote":"Le professionnel vous propose un prix. Vous ne payez qu'après avoir accepté son devis.",
     "booking.submit":"Envoyer la demande","booking.successTitle":"Demande envoyée",
     "booking.successText":"Le professionnel peut maintenant consulter votre demande et vous proposer un prix.","booking.successCta":"Voir ma demande",
     "booking.needLogin":"Connectez-vous avant d'envoyer une demande.","booking.needClient":"Un compte client est nécessaire pour envoyer une demande.",
-    "booking.needBoat":"Indiquez le type de bateau.","booking.needDetails":"Décrivez votre besoin en quelques mots.","booking.sending":"Envoi en cours…",
+    "booking.needBoat":"Indiquez le type de bateau.","booking.needPort":"Indiquez le port ou la ville.","booking.needDate":"Choisissez une date.","booking.needDetails":"Décrivez votre besoin en quelques mots.","booking.sending":"Envoi en cours…",
     "dash.clientEyebrow":"ESPACE CLIENT","dash.clientTitle":"Mes réservations",
     "dash.proEyebrow":"ESPACE PROFESSIONNEL","dash.proTitle":"Mes missions",
     "dash.adminEyebrow":"ADMINISTRATION","dash.adminTitle":"Tableau de bord SkipperNow",
@@ -1559,13 +1578,13 @@ const I18N = {
     "account.forgotError":"Could not send the email: ",
     "booking.eyebrowRequest":"BOOKING REQUEST","booking.defaultTarget":"Selected professional",
     "booking.port":"Port","booking.price":"Price","booking.priceTbd":"To be agreed with the professional",
-    "booking.nameLabel":"YOUR NAME","booking.phoneLabel":"PHONE","booking.boatLabel":"BOAT TYPE","booking.boatPlaceholder":"E.g. Cap Camarat 9.0",
+    "booking.nameLabel":"YOUR NAME","booking.phoneLabel":"PHONE","booking.boatLabel":"BOAT TYPE","booking.boatOptionalLabel":"BOAT TYPE (OPTIONAL)","booking.boatPlaceholder":"E.g. Cap Camarat 9.0",
     "booking.detailsLabel":"DESCRIBE YOUR NEED","booking.detailsPlaceholder":"Cleaning, trip, delivery, number of people…","booking.rentalDetailsLabel":"NOTES (OPTIONAL)","booking.rentalDetailsPlaceholder":"Number of passengers, preferred time, special requests…","booking.photosLabel":"PHOTOS (OPTIONAL)",
     "booking.paymentNote":"The professional will propose a price. You only pay after accepting the quote.",
     "booking.submit":"Send request","booking.successTitle":"Request sent",
     "booking.successText":"The professional can now review your request and propose a price.","booking.successCta":"View my request",
     "booking.needLogin":"Log in before sending a request.","booking.needClient":"A client account is required to send a request.",
-    "booking.needBoat":"Please enter the boat type.","booking.needDetails":"Please describe your need briefly.","booking.sending":"Sending…",
+    "booking.needBoat":"Please enter the boat type.","booking.needPort":"Please enter the port or city.","booking.needDate":"Please choose a date.","booking.needDetails":"Please describe your need briefly.","booking.sending":"Sending…",
     "dash.clientEyebrow":"CLIENT AREA","dash.clientTitle":"My bookings",
     "dash.proEyebrow":"PROFESSIONAL AREA","dash.proTitle":"My jobs",
     "dash.adminEyebrow":"ADMINISTRATION","dash.adminTitle":"SkipperNow dashboard",
@@ -1732,13 +1751,13 @@ const I18N = {
     "account.forgotError":"No se pudo enviar el email: ",
     "booking.eyebrowRequest":"SOLICITUD DE RESERVA","booking.defaultTarget":"Profesional seleccionado",
     "booking.port":"Puerto","booking.price":"Precio","booking.priceTbd":"A definir con el profesional",
-    "booking.nameLabel":"TU NOMBRE","booking.phoneLabel":"TELÉFONO","booking.boatLabel":"TIPO DE BARCO","booking.boatPlaceholder":"Ej. Cap Camarat 9.0",
+    "booking.nameLabel":"TU NOMBRE","booking.phoneLabel":"TELÉFONO","booking.boatLabel":"TIPO DE BARCO","booking.boatOptionalLabel":"TIPO DE BARCO (OPCIONAL)","booking.boatPlaceholder":"Ej. Cap Camarat 9.0",
     "booking.detailsLabel":"DESCRIBE TU NECESIDAD","booking.detailsPlaceholder":"Limpieza, salida, traslado, número de personas…","booking.rentalDetailsLabel":"NOTAS (OPCIONAL)","booking.rentalDetailsPlaceholder":"Número de pasajeros, horario preferido, peticiones especiales…","booking.photosLabel":"FOTOS (OPCIONAL)",
     "booking.paymentNote":"El profesional te propondrá un precio. Solo pagas después de aceptar el presupuesto.",
     "booking.submit":"Enviar solicitud","booking.successTitle":"Solicitud enviada",
     "booking.successText":"El profesional ya puede consultar tu solicitud y proponer un precio.","booking.successCta":"Ver mi solicitud",
     "booking.needLogin":"Inicia sesión antes de enviar una solicitud.","booking.needClient":"Se necesita una cuenta de cliente para enviar una solicitud.",
-    "booking.needBoat":"Indica el tipo de barco.","booking.needDetails":"Describe brevemente tu necesidad.","booking.sending":"Enviando…",
+    "booking.needBoat":"Indica el tipo de barco.","booking.needPort":"Indica el puerto o la ciudad.","booking.needDate":"Elige una fecha.","booking.needDetails":"Describe brevemente tu necesidad.","booking.sending":"Enviando…",
     "dash.clientEyebrow":"ESPACIO CLIENTE","dash.clientTitle":"Mis reservas",
     "dash.proEyebrow":"ESPACIO PROFESIONAL","dash.proTitle":"Mis servicios",
     "dash.adminEyebrow":"ADMINISTRACIÓN","dash.adminTitle":"Panel de SkipperNow",
@@ -3009,8 +3028,14 @@ window.openBookingFor = function(targetId, name, homePort, activity, subcategory
   }
   bookingContext = {targetId, name, homePort, activity, subcategory};
   document.querySelector("#bookingTargetName").textContent = name || t("booking.defaultTarget");
-  document.querySelector("#bookingSummaryPort").textContent = homePort || portInput.value || "—";
   document.querySelector("#bookingSummaryPrice").textContent = t("booking.priceTbd");
+  const bookingPort = document.querySelector("#bookingPort");
+  const bookingDate = document.querySelector("#bookingDate");
+  const bookingDuration = document.querySelector("#bookingDuration");
+  bookingPort.value = homePort || portInput.value || "";
+  bookingDate.min = dateInput.min || new Date().toISOString().slice(0,10);
+  bookingDate.value = dateInput.value || bookingDate.min;
+  bookingDuration.value = document.querySelector("#durationInput").value || "day";
   document.querySelector("#bookingForm").style.display = "block";
   document.querySelector("#bookingSuccess").style.display = "none";
   document.querySelector("#bookingMessage").textContent = "";
@@ -3073,14 +3098,17 @@ document.querySelector("#bookingSubmit").addEventListener("click", async ()=>{
   if(!currentProfile || (currentProfile.role !== "client" && currentProfile.role !== "admin")){ msg.textContent = t("booking.needClient"); return; }
   const isBoatRental = bookingContext.activity === "boat_rental";
   const boatType = isBoatRental ? (bookingContext.name || "") : document.querySelector("#bookingBoat").value.trim();
+  const requestedPort = document.querySelector("#bookingPort").value.trim();
+  const requestedDate = document.querySelector("#bookingDate").value;
   const details = sanitizeContactInfo(document.querySelector("#bookingDetails").value.trim());
-  if(!isBoatRental && !boatType){ msg.textContent = t("booking.needBoat"); return; }
-  if(!isBoatRental && !details){ msg.textContent = t("booking.needDetails"); return; }
+  if(!requestedPort){ msg.textContent = t("booking.needPort"); return; }
+  if(!requestedDate){ msg.textContent = t("booking.needDate"); return; }
+  if(!details){ msg.textContent = t("booking.needDetails"); return; }
   msg.style.color = "";
   msg.textContent = t("booking.sending");
 
-  const start = new Date(dateInput.value + "T09:00:00");
-  const durationValue = document.querySelector("#durationInput").value;
+  const start = new Date(requestedDate + "T09:00:00");
+  const durationValue = document.querySelector("#bookingDuration").value;
   const hours = durationValue === "half" ? 4 : durationValue === "multi" ? 24 : 8;
   const end = new Date(start.getTime() + hours*3600000);
 
@@ -3097,7 +3125,7 @@ document.querySelector("#bookingSubmit").addEventListener("click", async ()=>{
   const {error} = await db.from("missions").insert({
     client_id: currentUser.id,
     skipper_id: bookingContext.targetId || null,
-    port: bookingContext.homePort || portInput.value || "",
+    port: requestedPort,
     boat_type: boatType,
     description: details,
     photo_urls: photoUrls.length ? photoUrls : null,
