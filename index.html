@@ -418,6 +418,13 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
 .dash-side button.active svg{opacity:1}
 .dash-side button.logout-btn{margin-top:12px;color:#f3b9a6}
 .dash-main{min-width:0}
+.dash-account{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:20px;align-items:center;padding:24px;margin:0 0 22px;background:linear-gradient(120deg,#edf9f7,#f7fafc);border:1px solid #cfe7e4;border-radius:22px}
+.dash-identity{display:flex;gap:16px;align-items:center;min-width:0}.dash-avatar{width:64px;height:64px;border-radius:18px;object-fit:cover;display:grid;place-items:center;background:var(--navy);color:white;font-size:26px;font-weight:800;flex-shrink:0}
+.dash-identity-text{min-width:0}.dash-account small{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#46616c;font-weight:800}.dash-account h3{margin:5px 0;font-size:23px;overflow-wrap:anywhere}.dash-account-email{font-size:13px;color:#46616c;overflow-wrap:anywhere}.dash-account-tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}.dash-account-tags span{padding:5px 10px;border-radius:8px;background:#fff;border:1px solid #d2e4e4;font-size:12px;font-weight:750;color:var(--navy)}.dash-account-tags .is-ok{color:#136549;background:#e0f5e9}.dash-account-tags .is-pending{color:#895415;background:#fff2d9}.dash-account-tags .is-suspended{color:#992d2d;background:#ffeded}
+.dash-account-progress{min-width:180px;max-width:260px;font-size:12px;color:#46616c}.dash-account-progress strong{display:block;color:var(--navy);font-size:14px;margin:6px 0}.dash-account-progress progress{width:100%;height:9px;accent-color:#28bdb2}.dash-account-progress p{margin:6px 0 0;line-height:1.5}
+.dash-panel-heading{font-size:19px;margin:0 0 16px;color:var(--navy)}
+@media(max-width:700px){.dash-account{grid-template-columns:1fr;padding:17px;gap:14px}.dash-avatar{width:50px;height:50px;border-radius:14px}.dash-account h3{font-size:20px}.dash-account-progress{max-width:none}.dash-side-group{display:none}.dash-side{max-width:100%;min-width:0}.dash-side button{flex-shrink:0}}
+
 .kpi-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:22px}
 .traffic-table{display:flex;flex-direction:column;gap:2px}
 .traffic-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 14px;border-bottom:1px solid var(--line);font-size:14px}
@@ -3362,18 +3369,45 @@ const NAV_ICONS = {
   activities:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h5l2-8 4 16 2-8h7"/></svg>',
   excursions:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>'
 };
+function dashboardAccountHtml(p){
+  if(!p) return "";
+  const copy = ({fr:{current:"Compte connecté",client:"Client",skipper:"Skipper",sailor:"Marin à la journée",provider:"Prestataire",owner:"Propriétaire",admin:"Administrateur",verified:"Profil vérifié",pending:"À valider",suspended:"Profil suspendu",available:"Disponible",unavailable:"Indisponible",progress:"Présentation du profil",hint:"Ce pourcentage décrit les informations renseignées, pas la validation du compte."},en:{current:"Signed-in account",client:"Client",skipper:"Skipper",sailor:"Day sailor",provider:"Service provider",owner:"Boat owner",admin:"Administrator",verified:"Verified profile",pending:"Awaiting verification",suspended:"Suspended profile",available:"Available",unavailable:"Unavailable",progress:"Profile details",hint:"This percentage reflects completed information, not account verification."},es:{current:"Cuenta conectada",client:"Cliente",skipper:"Patrón",sailor:"Marinero por día",provider:"Prestador",owner:"Propietario",admin:"Administrador",verified:"Perfil verificado",pending:"Pendiente de validación",suspended:"Perfil suspendido",available:"Disponible",unavailable:"No disponible",progress:"Información del perfil",hint:"Este porcentaje refleja la información completada, no la validación de la cuenta."}})[currentLang] || null;
+  const c = copy || {current:t("dash.navProfile"),client:t("account.roleClient"),skipper:t("account.roleSkipper"),provider:t("account.roleProvider")};
+  const professional = ["skipper","provider"].includes(p.role);
+  const role = p.role === "skipper" || (p.role === "provider" && p.provider_activity === "skipper") ? c.skipper : p.role === "provider" && p.provider_activity === "day_sailor" ? c.sailor : c[p.role] || p.role;
+  const activity = p.role === "provider" && !["skipper","day_sailor"].includes(p.provider_activity) && p.provider_activity ? activityLabel(p.provider_activity) : "";
+  const name = p.full_name || currentUser?.email || role;
+  const completion = profileCompletionPercent(p);
+  const status = p.suspended ? c.suspended : p.verified ? c.verified : c.pending;
+  const photo = /^https?:\/\//i.test(p.profile_photo_url||"") ? p.profile_photo_url : "";
+  return `<section class="dash-account" aria-label="${esc(c.current)}">
+    <div class="dash-identity">${photo ? `<img class="dash-avatar" src="${esc(photo)}" alt="">` : `<div class="dash-avatar" aria-hidden="true">${esc(name.slice(0,1).toUpperCase())}</div>`}
+      <div class="dash-identity-text"><small>${esc(c.current)}</small><h3>${esc(name)}</h3><div class="dash-account-email">${esc(currentUser?.email || p.contact_email || "")}</div>
+        <div class="dash-account-tags"><span>${esc(role)}</span>${activity ? `<span>${esc(activity)}</span>` : ""}${professional ? `<span class="${p.suspended ? "is-suspended" : p.verified ? "is-ok" : "is-pending"}">${esc(status)}</span>${!p.suspended && p.verified ? `<span>${esc(p.available ? c.available : c.unavailable)}</span>` : ""}` : ""}</div>
+        ${p.home_port ? `<div class="dash-account-email" style="margin-top:8px">${esc(p.home_port)}</div>` : ""}
+      </div></div>
+    ${completion !== null ? `<div class="dash-account-progress"><strong>${esc(c.progress)} · ${completion}%</strong><progress max="100" value="${completion}" aria-label="${esc(c.progress)}"></progress><p>${esc(c.hint)}</p></div>` : ""}
+  </section>`;
+}
+function refreshDashboardIdentity(panel){
+  const identity = document.querySelector("#dashAccountIdentity");
+  if(identity) identity.innerHTML = dashboardAccountHtml(currentProfile);
+  const nav = [...document.querySelectorAll(".dash-side [data-panel]")].find(btn=>btn.dataset.panel === panel);
+  const heading = document.querySelector("#dashPanelHeading");
+  if(nav && heading) heading.textContent = nav.textContent.trim();
+}
 function dashShell(navItems, activePanel){
   let lastGroup = null, rows = "";
   navItems.forEach(n=>{
     if(n.group && n.group !== lastGroup){ rows += `<div class="dash-side-group">${esc(n.group)}</div>`; lastGroup = n.group; }
     rows += `<button class="${n.id===activePanel?"active":""}" data-panel="${n.id}">${NAV_ICONS[n.id]||""}<span>${esc(n.label)}</span></button>`;
   });
-  return `<div class="dash-shell">
+  return `<div id="dashAccountIdentity">${dashboardAccountHtml(currentProfile)}</div><div class="dash-shell">
     <aside class="dash-side">
       ${rows}
       <button class="logout-btn" data-panel="__logout">${NAV_ICONS.payouts.replace('M12 19V5M5 12l7-7 7 7','M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9')}<span>${esc(t("dash.logout"))}</span></button>
     </aside>
-    <div class="dash-main" id="dashMain"></div>
+    <section class="dash-main"><h3 class="dash-panel-heading" id="dashPanelHeading">${esc(navItems.find(n=>n.id===activePanel)?.label || "")}</h3><div id="dashMain"></div></section>
   </div>`;
 }
 function bindDashNav(renderFn){
@@ -3383,6 +3417,8 @@ function bindDashNav(renderFn){
       if(btn.dataset.panel === "boats"){ adminBoatsFilterOwnerId = null; editingBoatId = null; }
       unsubscribeThreadChannel();
       document.querySelectorAll(".dash-side button").forEach(b=>b.classList.toggle("active", b===btn));
+      const heading = document.querySelector("#dashPanelHeading");
+      if(heading) heading.textContent = btn.textContent.trim();
       await renderFn(btn.dataset.panel);
     });
   });
@@ -3408,6 +3444,7 @@ async function renderClientDashboard(){
   await renderClientPanel("requests");
 }
 async function renderClientPanel(panel){
+  refreshDashboardIdentity(panel);
   const main = document.querySelector("#dashMain");
   if(panel === "requests"){
     // Un compte "client" peut aussi être propriétaire de bateau : il doit
@@ -3638,6 +3675,7 @@ function bindProfileReminderLink(){
   });
 }
 async function renderProPanel(panel){
+  refreshDashboardIdentity(panel);
   const main = document.querySelector("#dashMain");
   const profileReminder = profileReminderBannerHtml(currentProfile);
   if(panel === "requests"){
@@ -3854,6 +3892,7 @@ async function loadAdminData(){
 function profilesById(list){ return Object.fromEntries(list.map(p=>[String(p.id), p])); }
 
 async function renderAdminPanel(panel){
+  refreshDashboardIdentity(panel);
   const main = document.querySelector("#dashMain");
   const {profiles, missions, settings, boats, payoutsById, ports, heroSlides, destTiles, activities} = await loadAdminData();
   adminProfilesCache = profiles;
@@ -5248,6 +5287,7 @@ function bindProfileForm(){
       if(payoutError){ msg.style.color = "#b42318"; msg.textContent = friendlyError(payoutError); btn.disabled = false; return; }
     }
     await loadProfile();
+    refreshDashboardIdentity("profile");
     msg.style.color = "#08794e";
     msg.textContent = t("action.savedSuccess");
     btn.disabled = false;
