@@ -298,7 +298,7 @@ async function main() {
   for (const slug of STATIC_BLOG_PAGES) urls.push(`${SITE_URL}/${slug}/`);
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls
-    .map(u => `  <url><loc>${u}</loc><changefreq>weekly</changefreq></url>`)
+    .map(u => `  <url><loc>${u}</loc><lastmod>${new Date().toISOString().slice(0,10)}</lastmod><changefreq>weekly</changefreq></url>`)
     .join("\n")}\n</urlset>\n`;
   fs.writeFileSync(path.join(ROOT, "sitemap.xml"), sitemap);
 
