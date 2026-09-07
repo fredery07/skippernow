@@ -3615,11 +3615,15 @@ async function renderProDashboard(){
   bindDashNav(renderProPanel);
   await renderProPanel("requests");
 }
+function profileNeedsDiploma(profile){
+  return profile?.role === "skipper" ||
+    (profile?.role === "provider" && ["skipper", "day_sailor"].includes(profile.provider_activity));
+}
 function profileReminderBannerHtml(p){
   if(!p || !["skipper","provider"].includes(p.role)) return "";
   const missing = [];
   if(!p.phone) missing.push(t("dash.reqPhone"));
-  if(!p.diploma_url) missing.push(t("dash.reqDiploma"));
+  if(profileNeedsDiploma(p) && !p.diploma_url) missing.push(t("dash.reqDiploma"));
   if(!p.profile_photo_url) missing.push(t("dash.reqPhoto"));
   if(!missing.length) return "";
   return `<div class="note-box" style="background:#fff4d6;border-color:#e9d197;color:#8a6d1a;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
@@ -4809,7 +4813,7 @@ function profileCard(p){
   const missing = [];
   if(isProfessional){
     if(!p.phone) missing.push(t("dash.reqPhone"));
-    if(!p.diploma_url) missing.push(t("dash.reqDiploma"));
+    if(profileNeedsDiploma(p) && !p.diploma_url) missing.push(t("dash.reqDiploma"));
     if(!p.profile_photo_url) missing.push(t("dash.reqPhoto"));
   }
   const canApprove = !p.verified && missing.length === 0;
@@ -4817,7 +4821,7 @@ function profileCard(p){
     <div class="request-top">
       <div><h3>${esc(p.full_name||"—")}</h3><div class="muted">${esc(p.role||"")} · ${esc(p.home_port||"—")}${p.provider_activity?" · "+esc(activityLabel(p.provider_activity)):""}</div>
       <div class="muted">${esc(p.contact_email||p.email||"—")}${p.phone?` · 📞 ${esc(p.phone)}`:` · <span style="color:#c0392b">${esc(t("dash.reqPhone"))}</span>`}</div>
-      <div class="muted">${p.diploma_url ? `<a href="${esc(p.diploma_url)}" target="_blank">${esc(t("account.diplomaCurrent"))}</a>` : `<span style="color:#c0392b">${esc(t("dash.reqDiploma"))}</span>`}</div>
+      <div class="muted">${p.diploma_url ? `<a href="${esc(p.diploma_url)}" target="_blank">${esc(t("account.diplomaCurrent"))}</a>` : (profileNeedsDiploma(p) ? `<span style="color:#c0392b">${esc(t("dash.reqDiploma"))}</span>` : "")}</div>
       <div class="muted">${p.profile_photo_url ? `<a href="${esc(p.profile_photo_url)}" target="_blank">${esc(t("dash.reqPhotoLink"))}</a>` : `<span style="color:#c0392b">${esc(t("dash.reqPhoto"))}</span>`}</div></div>
       <span class="status-pill ${badge}">${p.verified ? "✓" : "—"}</span>
     </div>
@@ -5067,18 +5071,18 @@ function profileCompletionPercent(profile){
     !!profile.profile_photo_url,
     !!(profile.bio && profile.bio.trim()),
     !!(profile.price_from_cents || profile.price_half_day_cents || profile.price_hour_cents),
-    !!(profile.diploma_type && profile.diploma_type.trim()),
     !!(profile.skills && profile.skills.trim()),
     !!profile.experience_years,
     !!(profile.phone && profile.phone.trim())
   ];
+  if(profileNeedsDiploma(profile)) checks.push(!!(profile.diploma_type && profile.diploma_type.trim()));
   const done = checks.filter(Boolean).length;
   return Math.round((done / checks.length) * 100);
 }
 function profileForm(profile, payout, forcePayout){
  const isPro = ["skipper","provider","owner"].includes(profile?.role);
  const showPayout = isPro || forcePayout;
- const needsDiploma = ["skipper","provider"].includes(profile?.role);
+ const needsDiploma = profileNeedsDiploma(profile);
  const completion = profileCompletionPercent(profile);
   return `${completion !== null ? `<div class="field" style="margin-bottom:18px">
       <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:800;color:var(--navy);margin-bottom:6px"><span>${esc(t("account.profileCompletion"))}</span><span>${completion}%</span></div>
@@ -5111,8 +5115,8 @@ function profileForm(profile, payout, forcePayout){
       <input id="profileDiplomaInput" type="file" accept="image/*,.pdf">
       <div class="muted" style="margin-top:4px;font-size:12.5px">${esc(t("account.diplomaNote"))}</div>
     </div>
-    <div class="field"><label>${esc(t("account.diplomaTypeLabel"))}</label><input id="profileDiplomaType" placeholder="${esc(t("account.diplomaTypePlaceholder"))}" value="${esc(profile?.diploma_type||"")}"></div>
-    <div class="field"><label>${esc(t("account.siretLabel"))}</label><input id="profileSiret" value="${esc(profile?.siret||"")}"></div>
+    <div class="field"><label>${esc(t("account.diplomaTypeLabel"))}</label><input id="profileDiplomaType" placeholder="${esc(t("account.diplomaTypePlaceholder"))}" value="${esc(profile?.diploma_type||"")}"></div>` : ""}
+    ${["skipper","provider"].includes(profile?.role) ? `<div class="field"><label>${esc(t("account.siretLabel"))}</label><input id="profileSiret" value="${esc(profile?.siret||"")}"></div>
     <div class="field"><label>${esc(t("account.insuranceLabel"))}</label><input id="profileInsurance" placeholder="${esc(t("account.insurancePlaceholder"))}" value="${esc(profile?.insurance_info||"")}"></div>` : ""}
     ${showPayout ? `
     <div class="note-box">${esc(t("dash.payoutDetailsNote"))}</div>
