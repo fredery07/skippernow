@@ -72,23 +72,11 @@ const STATIC_DO_PAGES = [
   "excursiones-puerto-plata"
 ];
 
-// Pages Grèce écrites à la main (contenu SEO riche, en anglais) : même
-// protection — jamais régénérées ni supprimées, toujours dans le sitemap.
-const STATIC_GR_PAGES = [
-  "boat-rental-athens",
-  "boat-rental-mykonos",
-  "boat-rental-santorini",
-  "boat-rental-corfu"
-];
-
-// Pages Italie écrites à la main (contenu SEO riche, en italien, format
-// location de bateau + skipper comme la Grèce) : même protection — jamais
-// régénérées ni supprimées, toujours dans le sitemap.
-const STATIC_IT_PAGES = [
-  "noleggio-barche-portofino",
-  "noleggio-barche-positano",
-  "noleggio-barche-capri",
-  "noleggio-barche-costa-smeralda"
+const STATIC_BLOG_PAGES = [
+  "blog",
+  "blog/que-faire-cannes-en-bateau",
+  "blog/comment-choisir-son-skipper",
+  "blog/preparer-sa-sortie-en-mer"
 ];
 
 function slugify(str) {
@@ -307,8 +295,7 @@ async function main() {
   for (const slug of STATIC_BS_PAGES) urls.push(`${SITE_URL}/${slug}/`);
   for (const slug of STATIC_PR_PAGES) urls.push(`${SITE_URL}/${slug}/`);
   for (const slug of STATIC_DO_PAGES) urls.push(`${SITE_URL}/${slug}/`);
-  for (const slug of STATIC_GR_PAGES) urls.push(`${SITE_URL}/${slug}/`);
-  for (const slug of STATIC_IT_PAGES) urls.push(`${SITE_URL}/${slug}/`);
+  for (const slug of STATIC_BLOG_PAGES) urls.push(`${SITE_URL}/${slug}/`);
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls
     .map(u => `  <url><loc>${u}</loc><changefreq>weekly</changefreq></url>`)
