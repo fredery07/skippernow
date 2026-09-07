@@ -199,5 +199,42 @@ if(fs.existsSync(indexPath)){
 }
 
 // ---------------------------------------------------------------------
+// 5. SEO technique des pages réellement publiées
+// ---------------------------------------------------------------------
+console.log("\n== 5. SEO technique ==");
+
+const excludedSeoFiles = new Set([
+  "google54b3d5d39b0f915e.html", "index (1).html", "index (2).html",
+  "index (4).html", "index_1.html", "index-formulaire-simple.html", "index-services.html"
+]);
+const productionHtml = htmlFiles.filter(file=>!excludedSeoFiles.has(path.relative(ROOT,file)));
+for(const htmlFile of productionHtml){
+  const rel=path.relative(ROOT,htmlFile);
+  const html=fs.readFileSync(htmlFile,"utf8");
+  const required=[
+    [/<\/html>\s*$/i,"document HTML complet"],
+    [/<title>[^<]{10,}<\/title>/i,"title"],
+    [/<meta name="description" content="[^"]{50,}"/i,"meta description"],
+    [/<link rel="canonical" href="https:\/\/skippernow\.fr\/[^"]*"/i,"URL canonique"],
+    [/<h1(?:\s[^>]*)?>[\s\S]*?<\/h1>/i,"H1"]
+  ];
+  const missing=required.filter(([re])=>!re.test(html)).map(([,label])=>label);
+  if(missing.length) fail(`${rel}: SEO incomplet (${missing.join(", ")})`);
+  else ok(`${rel}: document, title, description, canonical et H1 présents`);
+}
+
+const sitemapPath=path.join(ROOT,"sitemap.xml");
+if(fs.existsSync(sitemapPath)){
+  const sitemap=fs.readFileSync(sitemapPath,"utf8");
+  const urls=[...sitemap.matchAll(/<loc>https:\/\/skippernow\.fr\/([^<]*)<\/loc>/g)].map(m=>m[1]);
+  const missingFiles=urls.filter(url=>{
+    const clean=url.replace(/\/$/,"");
+    return clean && !fs.existsSync(path.join(ROOT,clean,"index.html"));
+  });
+  if(missingFiles.length) fail(`sitemap.xml: URL(s) sans page locale : ${missingFiles.join(", ")}`);
+  else ok(`sitemap.xml: ${urls.length} URL(s), toutes associées à un fichier publié`);
+}
+
+// ---------------------------------------------------------------------
 console.log(`\n== Résumé : ${errors} erreur(s), ${warnings} avertissement(s) ==`);
 process.exit(errors > 0 ? 1 : 0);
