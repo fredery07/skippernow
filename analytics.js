@@ -46,28 +46,44 @@
       }
     }
 
+    function postRpc(name, body){
+      return fetch(SUPABASE_URL + "/rest/v1/rpc/" + name, {
+        method: "POST",
+        keepalive: true,
+        headers: {
+          "apikey": SUPABASE_KEY,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(body)
+      }).then(function(response){
+        if(!response.ok){
+          console.warn("SkipperNow analytics: " + name + " HTTP " + response.status);
+        }
+        return response.ok;
+      }).catch(function(error){
+        console.warn("SkipperNow analytics:", error);
+        return false;
+      });
+    }
+
+    window.skTrackEvent = function(eventName, metadata){
+      if(typeof eventName !== "string" || !eventName) return Promise.resolve(false);
+      return postRpc("record_booking_event", {
+        p_visitor_id: getVisitorId(),
+        p_event_name: eventName,
+        p_path: (location.pathname || "/").slice(0, 500),
+        p_metadata: metadata && typeof metadata === "object" ? metadata : {}
+      });
+    };
+
     const referrer = document.referrer && !document.referrer.startsWith(location.origin)
       ? document.referrer.slice(0, 500)
       : null;
 
-    fetch(SUPABASE_URL + "/rest/v1/rpc/record_page_visit", {
-      method: "POST",
-      keepalive: true,
-      headers: {
-        "apikey": SUPABASE_KEY,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
+    postRpc("record_page_visit", {
         p_visitor_id: getVisitorId(),
         p_path: path.slice(0, 500),
         p_referrer: referrer
-      })
-    }).then(function(response){
-      if(!response.ok){
-        console.warn("SkipperNow analytics: HTTP " + response.status);
-      }
-    }).catch(function(error){
-      console.warn("SkipperNow analytics:", error);
     });
   }catch(error){
     try{ console.warn("SkipperNow analytics:", error); }catch(_e){}
