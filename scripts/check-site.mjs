@@ -221,6 +221,9 @@ for(const htmlFile of productionHtml){
   const missing=required.filter(([re])=>!re.test(html)).map(([,label])=>label);
   if(missing.length) fail(`${rel}: SEO incomplet (${missing.join(", ")})`);
   else ok(`${rel}: document, title, description, canonical et H1 présents`);
+  for(const [i,match] of [...html.matchAll(/<script[^>]+type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)].entries()){
+    try{ JSON.parse(match[1]); }catch(err){ fail(`${rel}: JSON-LD #${i+1} invalide (${err.message})`); }
+  }
 }
 
 const sitemapPath=path.join(ROOT,"sitemap.xml");
@@ -234,6 +237,18 @@ if(fs.existsSync(sitemapPath)){
   if(missingFiles.length) fail(`sitemap.xml: URL(s) sans page locale : ${missingFiles.join(", ")}`);
   else ok(`sitemap.xml: ${urls.length} URL(s), toutes associées à un fichier publié`);
 }
+
+const brokenLinks=[];
+for(const htmlFile of productionHtml){
+  const html=fs.readFileSync(htmlFile,"utf8");
+  for(const match of html.matchAll(/href="(\/[^"]*)"/g)){
+    if(match[1].includes("${")) continue;
+    const clean=match[1].split(/[?#]/)[0].replace(/^\//,"").replace(/\/$/,"");
+    if(clean && !fs.existsSync(path.join(ROOT,clean)) && !fs.existsSync(path.join(ROOT,clean,"index.html"))) brokenLinks.push(`${path.relative(ROOT,htmlFile)} → ${match[1]}`);
+  }
+}
+if(brokenLinks.length) fail(`liens internes cassés : ${brokenLinks.join(", ")}`);
+else ok("liens internes statiques : aucune destination manquante");
 
 // ---------------------------------------------------------------------
 console.log(`\n== Résumé : ${errors} erreur(s), ${warnings} avertissement(s) ==`);
