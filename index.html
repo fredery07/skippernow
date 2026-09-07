@@ -417,6 +417,8 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
 .dash-side button.active,.dash-side button:hover{background:rgba(57,209,197,.16);color:#fff}
 .dash-side button.active svg{opacity:1}
 .dash-side button.logout-btn{margin-top:12px;color:#f3b9a6}
+.message-selection-bar{display:flex;align-items:center;flex-wrap:wrap;gap:12px;padding:12px 14px;margin-bottom:14px;border:1px solid var(--line);border-radius:14px;background:var(--mist)}
+.message-selection-bar label{display:flex;align-items:center;gap:9px;font-weight:700;font-size:13px;cursor:pointer}.message-selection-bar button{margin-left:auto}.message-select-box{width:18px;height:18px;accent-color:var(--navy);cursor:pointer;flex-shrink:0}.message-select-row{display:flex;align-items:center;padding:0 5px}.message-selection-count{font-size:12px;color:var(--muted)}
 .dash-main{min-width:0}
 .dash-account{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:20px;align-items:center;padding:24px;margin:0 0 22px;background:linear-gradient(120deg,#edf9f7,#f7fafc);border:1px solid #cfe7e4;border-radius:22px}
 .dash-identity{display:flex;gap:16px;align-items:center;min-width:0}.dash-avatar{width:64px;height:64px;border-radius:18px;object-fit:cover;display:grid;place-items:center;background:var(--navy);color:white;font-size:26px;font-weight:800;flex-shrink:0}
@@ -4969,6 +4971,45 @@ function roleLabel(p){
   if(p.role === "admin") return "Admin";
   return "";
 }
+function messageSelectionCopy(){
+  return ({fr:{all:"Tout sélectionner",select:"Sélectionner la conversation",remove:"Supprimer la sélection",selected:"sélectionnée(s)",scope:"Conversations affichées",confirm:"Supprimer définitivement {n} conversation(s) et leurs messages pour tous les participants ?",failed:"Certaines conversations n’ont pas pu être supprimées."},en:{all:"Select all",select:"Select conversation",remove:"Delete selected",selected:"selected",scope:"Displayed conversations",confirm:"Permanently delete {n} conversation(s) and their messages for all participants?",failed:"Some conversations could not be deleted."},es:{all:"Seleccionar todo",select:"Seleccionar conversación",remove:"Eliminar selección",selected:"seleccionada(s)",scope:"Conversaciones mostradas",confirm:"¿Eliminar definitivamente {n} conversación(es) y sus mensajes para todos los participantes?",failed:"No se pudieron eliminar algunas conversaciones."}})[currentLang] || {all:"Select all",select:"Select conversation",remove:"Delete selected",selected:"selected",scope:"Displayed conversations",confirm:"Delete {n} conversations and their messages for all participants?",failed:"Some conversations could not be deleted."};
+}
+function bindConversationSelection(main, myRoleColumn){
+  const boxes = [...main.querySelectorAll("[data-select-conversation]")];
+  const all = main.querySelector("#selectAllConversations");
+  const remove = main.querySelector("#deleteSelectedConversations");
+  const count = main.querySelector("#conversationSelectionCount");
+  if(!all || !remove || !count) return;
+  const copy = messageSelectionCopy();
+  let busy = false;
+  const update = ()=>{
+    const selected = boxes.filter(box=>box.checked).length;
+    all.checked = boxes.length > 0 && selected === boxes.length;
+    all.indeterminate = selected > 0 && selected < boxes.length;
+    remove.disabled = busy || selected === 0;
+    count.textContent = `${selected} ${copy.selected}`;
+  };
+  all.addEventListener("change", ()=>{ if(busy) return; boxes.forEach(box=>box.checked=all.checked); update(); });
+  boxes.forEach(box=>box.addEventListener("change", update));
+  remove.addEventListener("click", async ()=>{
+    if(busy) return;
+    const ids = boxes.filter(box=>box.checked).map(box=>box.dataset.selectConversation);
+    if(!ids.length || !confirm(copy.confirm.replace("{n}", String(ids.length)))) return;
+    busy = true; all.disabled = true; boxes.forEach(box=>box.disabled=true); update();
+    try{
+      const {data, error} = await db.from("conversations").delete().in("id", ids).select("id");
+      if(error) throw error;
+      if((data||[]).length !== ids.length) alert(copy.failed);
+      await refreshNotifications();
+      await renderMessagesPanel(myRoleColumn);
+    }catch(error){
+      alert(friendlyError(error));
+    }finally{
+      busy = false; all.disabled = false; boxes.forEach(box=>box.disabled=false); update();
+    }
+  });
+  update();
+}
 async function renderMessagesPanel(myRoleColumn, filterMode){
   const main = document.querySelector("#dashMain");
   main.innerHTML = `<div class="empty-note">${esc(t("dash.loading"))}</div>`;
@@ -4995,16 +5036,23 @@ async function renderMessagesPanel(myRoleColumn, filterMode){
   (unreadRows||[]).forEach(m => { unreadByConv[m.conversation_id] = (unreadByConv[m.conversation_id]||0) + 1; });
   const sorted = mode === "unread" ? rows.filter(c => unreadByConv[c.id] > 0) : rows;
   if(!sorted.length){ main.innerHTML = tabsHtml + `<div class="empty-note">${esc(mode==="unread" ? t("dash.noUnreadMessages") : t("dash.noMessages"))}</div>`; bindMessagesFilterTabs(main, myRoleColumn); return; }
-  main.innerHTML = tabsHtml + `<div id="conversationList">${sorted.map(c=>{
+  const selectionCopy = messageSelectionCopy();
+  main.innerHTML = tabsHtml + `<div id="conversationList"><div class="message-selection-bar">
+    <label><input type="checkbox" class="message-select-box" id="selectAllConversations">${esc(selectionCopy.all)}</label>
+    <span class="message-selection-count">${esc(selectionCopy.scope)} · <span id="conversationSelectionCount" aria-live="polite"></span></span>
+    <button type="button" class="small-btn danger" id="deleteSelectedConversations" disabled>${esc(selectionCopy.remove)}</button>
+  </div>${sorted.map(c=>{
     const otherId = String(c.client_id) === String(currentUser.id) ? c.skipper_id : c.client_id;
     const p = byId[String(otherId)];
     const unread = unreadByConv[c.id] || 0;
     return `<div style="display:flex;align-items:stretch;gap:6px">
+      <label class="message-select-row"><input type="checkbox" class="message-select-box" data-select-conversation="${c.id}" aria-label="${esc(selectionCopy.select)} : ${esc(p?.full_name || "—")}"></label>
       <button type="button" class="request-card" style="flex:1;text-align:left;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px;${unread ? "border-color:var(--aqua);background:var(--mist)" : ""}" data-conversation-id="${c.id}" data-conversation="${c.client_id}|${c.skipper_id}"><strong>${unread ? "🔵 " : ""}${esc(p?.full_name || "—")}</strong><span style="display:flex;align-items:center;gap:8px"><span class="tag">${esc(roleLabel(p))}</span>${unread ? `<span class="tag" style="background:#c0392b;color:#fff">${unread}</span>` : ""}</span></button>
       <button type="button" class="small-btn danger" data-delete-conversation="${c.id}" title="${esc(t("dash.deleteConversation"))}" style="flex:0 0 auto">🗑</button>
     </div>`;
   }).join("")}</div><div id="conversationThread" style="display:none"></div>`;
   bindMessagesFilterTabs(main, myRoleColumn);
+  bindConversationSelection(main, myRoleColumn);
   main.querySelectorAll("[data-conversation]").forEach(btn=>btn.addEventListener("click", ()=>{
     const [clientId, skipperId] = btn.dataset.conversation.split("|");
     document.querySelector("#conversationList").style.display = "none";
