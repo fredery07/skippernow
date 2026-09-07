@@ -121,7 +121,111 @@ grant select on public.page_views to authenticated;
 revoke all on function public.record_page_visit(text, text, text) from public;
 grant execute on function public.record_page_visit(text, text, text) to anon, authenticated;
 
--- 5. Statistiques agrégées pour le dashboard admin : get_traffic_stats() --
+-- 5. Événements du tunnel de réservation -------------------------------
+
+create table if not exists public.booking_events (
+  id bigint generated always as identity primary key,
+  visitor_id text not null,
+  event_name text not null,
+  path text not null,
+  metadata jsonb not null default '{}'::jsonb,
+  created_at timestamptz not null default now(),
+  constraint booking_events_name_check check (event_name in (
+    'booking_opened',
+    'booking_login_required',
+    'booking_submitted',
+    'booking_created',
+    'booking_failed'
+  ))
+);
+
+create index if not exists booking_events_created_at_idx
+  on public.booking_events (created_at);
+
+create index if not exists booking_events_name_created_at_idx
+  on public.booking_events (event_name, created_at);
+
+alter table public.booking_events enable row level security;
+
+drop policy if exists "booking_events_admin_read" on public.booking_events;
+create policy "booking_events_admin_read"
+on public.booking_events
+for select
+to authenticated
+using (
+  exists (
+    select 1 from public.profiles
+    where profiles.id = (select auth.uid())
+      and profiles.role = 'admin'
+  )
+);
+
+create or replace function public.record_booking_event(
+  p_visitor_id text,
+  p_event_name text,
+  p_path text,
+  p_metadata jsonb default '{}'::jsonb
+)
+returns void
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  clean_visitor_id text := trim(coalesce(p_visitor_id, ''));
+  clean_event_name text := trim(coalesce(p_event_name, ''));
+  clean_path text := trim(coalesce(p_path, ''));
+  clean_metadata jsonb := '{}'::jsonb;
+begin
+  if clean_visitor_id = ''
+     or length(clean_visitor_id) < 8
+     or length(clean_visitor_id) > 100
+     or clean_visitor_id !~ '^[A-Za-z0-9-]+$' then
+    return;
+  end if;
+
+  if clean_event_name not in (
+    'booking_opened', 'booking_login_required', 'booking_submitted',
+    'booking_created', 'booking_failed'
+  ) then
+    return;
+  end if;
+
+  if clean_path = '' or length(clean_path) > 500 or left(clean_path, 1) <> '/' then
+    return;
+  end if;
+
+  if jsonb_typeof(coalesce(p_metadata, '{}'::jsonb)) = 'object' then
+    clean_metadata := jsonb_strip_nulls(jsonb_build_object(
+      'activity', left(coalesce(p_metadata->>'activity', ''), 50),
+      'duration', left(coalesce(p_metadata->>'duration', ''), 20),
+      'source', left(coalesce(p_metadata->>'source', ''), 30),
+      'stage', left(coalesce(p_metadata->>'stage', ''), 30),
+      'has_target', lower(coalesce(p_metadata->>'has_target', 'false')) = 'true',
+      'has_photos', lower(coalesce(p_metadata->>'has_photos', 'false')) = 'true'
+    ));
+  end if;
+
+  -- Garde-fou contre les robots ou appels abusifs depuis la clé publique.
+  if (
+    select count(*) from public.booking_events
+    where visitor_id = clean_visitor_id
+      and created_at >= now() - interval '1 day'
+  ) >= 200 then
+    return;
+  end if;
+
+  insert into public.booking_events(visitor_id, event_name, path, metadata)
+  values (clean_visitor_id, clean_event_name, clean_path, clean_metadata);
+end;
+$$;
+
+revoke all on public.booking_events from anon, authenticated;
+grant select on public.booking_events to authenticated;
+revoke all on function public.record_booking_event(text, text, text, jsonb) from public;
+grant execute on function public.record_booking_event(text, text, text, jsonb) to anon, authenticated;
+
+-- 6. Statistiques agrégées pour le dashboard admin : get_traffic_stats() --
 
 create or replace function public.get_traffic_stats()
 returns jsonb
@@ -170,6 +274,15 @@ begin
       select count(*)
       from public.page_views
       where created_at >= now() - interval '30 days'
+    ),
+    'booking_events_30d', (
+      select coalesce(jsonb_object_agg(event_name, event_count), '{}'::jsonb)
+      from (
+        select event_name, count(*) as event_count
+        from public.booking_events
+        where created_at >= now() - interval '30 days'
+        group by event_name
+      ) booking_funnel
     ),
     'top_pages_30d', (
       select coalesce(jsonb_agg(row_to_json(top)), '[]'::jsonb)
