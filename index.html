@@ -4935,9 +4935,10 @@ async function renderMessagesPanel(myRoleColumn, filterMode){
   currentMessagesRoleColumn = myRoleColumn;
   const mode = filterMode || currentMessagesFilterMode || "unread";
   currentMessagesFilterMode = mode;
-  const query = myRoleColumn === "both"
-    ? db.from("conversations").select("*").or(`client_id.eq.${currentUser.id},skipper_id.eq.${currentUser.id}`).order("created_at",{ascending:false})
-    : db.from("conversations").select("*").eq(myRoleColumn, currentUser.id).order("created_at",{ascending:false});
+  // Match the notification badge: a professional can also be a client in a conversation.
+  const query = db.from("conversations").select("*")
+    .or(`client_id.eq.${currentUser.id},skipper_id.eq.${currentUser.id}`)
+    .order("created_at",{ascending:false});
   const {data: conversations, error} = await query;
   if(error){ main.innerHTML = `<div class="note-box">${esc(friendlyError(error))}</div>`; return; }
   const rows = conversations || [];
