@@ -4945,7 +4945,8 @@ function bindProfileActions(){
   }));
 }
 async function getOrCreateConversation(clientId, skipperId){
-  const {data} = await db.from("conversations").select("*").eq("client_id", clientId).eq("skipper_id", skipperId).maybeSingle();
+  const {data, error: lookupError} = await db.from("conversations").select("*").eq("client_id", clientId).eq("skipper_id", skipperId).order("created_at", {ascending:true}).order("id", {ascending:true}).limit(1).maybeSingle();
+  if(lookupError) throw lookupError;
   if(data) return data;
   const {data:created, error} = await db.from("conversations").insert({client_id: clientId, skipper_id: skipperId}).select().single();
   if(error) throw error;
@@ -4999,7 +5000,7 @@ async function renderMessagesPanel(myRoleColumn, filterMode){
     const p = byId[String(otherId)];
     const unread = unreadByConv[c.id] || 0;
     return `<div style="display:flex;align-items:stretch;gap:6px">
-      <button type="button" class="request-card" style="flex:1;text-align:left;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px;${unread ? "border-color:var(--aqua);background:var(--mist)" : ""}" data-conversation="${c.client_id}|${c.skipper_id}"><strong>${unread ? "🔵 " : ""}${esc(p?.full_name || "—")}</strong><span style="display:flex;align-items:center;gap:8px"><span class="tag">${esc(roleLabel(p))}</span>${unread ? `<span class="tag" style="background:#c0392b;color:#fff">${unread}</span>` : ""}</span></button>
+      <button type="button" class="request-card" style="flex:1;text-align:left;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px;${unread ? "border-color:var(--aqua);background:var(--mist)" : ""}" data-conversation-id="${c.id}" data-conversation="${c.client_id}|${c.skipper_id}"><strong>${unread ? "🔵 " : ""}${esc(p?.full_name || "—")}</strong><span style="display:flex;align-items:center;gap:8px"><span class="tag">${esc(roleLabel(p))}</span>${unread ? `<span class="tag" style="background:#c0392b;color:#fff">${unread}</span>` : ""}</span></button>
       <button type="button" class="small-btn danger" data-delete-conversation="${c.id}" title="${esc(t("dash.deleteConversation"))}" style="flex:0 0 auto">🗑</button>
     </div>`;
   }).join("")}</div><div id="conversationThread" style="display:none"></div>`;
@@ -5008,7 +5009,7 @@ async function renderMessagesPanel(myRoleColumn, filterMode){
     const [clientId, skipperId] = btn.dataset.conversation.split("|");
     document.querySelector("#conversationList").style.display = "none";
     document.querySelector("#conversationThread").style.display = "block";
-    openConversationThread(clientId, skipperId);
+    openConversationThread(clientId, skipperId, btn.dataset.conversationId);
   }));
   main.querySelectorAll("[data-delete-conversation]").forEach(btn=>btn.addEventListener("click", async (e)=>{
     e.stopPropagation();
@@ -5018,12 +5019,19 @@ async function renderMessagesPanel(myRoleColumn, filterMode){
     await renderMessagesPanel(myRoleColumn);
   }));
 }
-async function openConversationThread(clientId, skipperId){
+async function openConversationThread(clientId, skipperId, conversationId){
   unsubscribeThreadChannel();
   const thread = document.querySelector("#conversationThread") || document.querySelector("#dashMain");
   thread.innerHTML = `<div class="empty-note">${esc(t("dash.loading"))}</div>`;
   try{
-    const conversation = await getOrCreateConversation(clientId, skipperId);
+    let conversation;
+    if(conversationId){
+      const {data, error} = await db.from("conversations").select("*").eq("id", conversationId).eq("client_id", clientId).eq("skipper_id", skipperId).single();
+      if(error) throw error;
+      conversation = data;
+    }else{
+      conversation = await getOrCreateConversation(clientId, skipperId);
+    }
     const otherId = String(clientId) === String(currentUser.id) ? skipperId : clientId;
     const [{data: messages, error}, {data: otherProfile}] = await Promise.all([
       db.from("messages").select("*").eq("conversation_id", conversation.id).order("created_at",{ascending:true}),
@@ -5033,7 +5041,9 @@ async function openConversationThread(clientId, skipperId){
     const rows = messages || [];
     const unreadIds = rows.filter(m => String(m.sender_id) !== String(currentUser.id) && !m.read_at).map(m=>m.id);
     if(unreadIds.length){
-      db.from("messages").update({read_at: new Date().toISOString()}).in("id", unreadIds).then(()=>refreshNotifications());
+      const {error: readError} = await db.from("messages").update({read_at: new Date().toISOString()}).eq("conversation_id", conversation.id).neq("sender_id", currentUser.id).in("id", unreadIds);
+      if(readError) throw readError;
+      await refreshNotifications();
     }
     thread.innerHTML = `
       <button type="button" class="back-link" id="backToConversationList" style="margin:0 0 12px">← ${esc(t("common.back"))}</button>
@@ -5075,7 +5085,7 @@ async function openConversationThread(clientId, skipperId){
       if(!confirm(t("dash.confirmDeleteMessage"))) return;
       const {error: delError} = await db.from("messages").delete().eq("id", btn.dataset.deleteMessage);
       if(delError){ alert(friendlyError(delError)); return; }
-      await openConversationThread(clientId, skipperId);
+      await openConversationThread(clientId, skipperId, conversation.id);
     }));
     document.querySelector("#backToConversationList").addEventListener("click", ()=>{ unsubscribeThreadChannel(); renderMessagesPanel(currentMessagesRoleColumn); });
     document.querySelector("#messageSendBtn").addEventListener("click", async ()=>{
@@ -5098,7 +5108,7 @@ async function openConversationThread(clientId, skipperId){
       }
       notifyRecipient(otherId, currentProfile?.full_name || "SkipperNow", body.slice(0, 150), "https://skippernow.fr");
       input.value = "";
-      await openConversationThread(clientId, skipperId);
+      await openConversationThread(clientId, skipperId, conversation.id);
     });
   }catch(err){
     thread.innerHTML = `<div class="note-box">${esc(friendlyError(err))}</div>`;
