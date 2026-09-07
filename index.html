@@ -1161,6 +1161,10 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
           </select>
         </div>
       </div>
+      <div class="field" id="bookingDaysField" style="display:none">
+        <label data-i18n="duration.daysLabel">NOMBRE DE JOURS</label>
+        <input id="bookingDays" type="number" min="2" step="1" value="2">
+      </div>
       <div class="field" id="bookingBoatField">
         <label data-i18n="booking.boatOptionalLabel">TYPE DE BATEAU (OPTIONNEL)</label>
         <input id="bookingBoat" data-i18n-placeholder="booking.boatPlaceholder" placeholder="Ex. Cap Camarat 9.0">
@@ -1304,7 +1308,7 @@ const I18N = {
     "hero.ctaProviders":"Services nautiques","hero.ctaBoats":"Trouver un bateau","hero.ctaSkipper":"Trouver un skipper",
     "search.portLabel":"PORT DE DÉPART — MONDE ENTIER","search.portPlaceholder":"Ex. Cannes, Miami, Ibiza…",
     "search.dateLabel":"DATE","search.durationLabel":"DURÉE","search.submit":"Rechercher",
-    "duration.half":"Demi-journée","duration.day":"Journée","duration.multi":"Plusieurs jours",
+    "duration.half":"Demi-journée","duration.day":"Journée","duration.multi":"Plusieurs jours","duration.daysLabel":"NOMBRE DE JOURS",
     "rental.badge":"LOCATION DE BATEAUX","rental.title":"Mettre mon bateau en location","providersShowcase.badge":"PRESTATAIRES INSCRITS","providersShowcase.title":"Professionnels vérifiés disponibles","providersShowcase.subtitle":"Découvrez uniquement les profils réellement validés par SkipperNow.","providersShowcase.viewAll":"Voir les professionnels","providersShowcase.empty":"Aucun prestataire inscrit pour le moment.",
     "categories.badge":"CATÉGORIES","categories.title":"De quoi avez-vous besoin ?","categories.skipperDesc":"Sortie, location, convoyage et prise en main du bateau.","categories.daySailorDesc":"Aide à bord, manutention, convoyage court.","categories.providersDesc":"Nettoyage, entretien, mécanique, avitaillement et services à quai.","categories.boatRentalTitle":"Location de bateau","categories.boatRentalDesc":"Trouvez le bateau adapté à votre destination.","categories.experienceTitle":"Expériences en mer","categories.experienceDesc":"Excursions, sorties et expériences nautiques.","browseByType.title":"Le bateau idéal pour chacune de vos envies","browseByPort.title":"Nos destinations phares","boatType.motor":"Moteur","boatType.sailboat":"Voilier","boatType.rib":"Semi-rigide","boatType.catamaran":"Catamaran",
     "results.compactJoin.skipper":"Vous êtes skipper dans cette zone ? Rejoignez SkipperNow et recevez vos premières demandes.",
@@ -1410,13 +1414,14 @@ const I18N = {
     "booking.submit":"Envoyer la demande","booking.successTitle":"Demande envoyée",
     "booking.successText":"Le professionnel peut maintenant consulter votre demande et vous proposer un prix.","booking.successCta":"Voir ma demande",
     "booking.needLogin":"Connectez-vous avant d'envoyer une demande.","booking.needClient":"Un compte client est nécessaire pour envoyer une demande.",
-    "booking.needBoat":"Indiquez le type de bateau.","booking.needPort":"Indiquez le port ou la ville.","booking.needDate":"Choisissez une date.","booking.needDetails":"Décrivez votre besoin en quelques mots.","booking.sending":"Envoi en cours…",
+    "booking.needBoat":"Indiquez le type de bateau.","booking.needPort":"Indiquez le port ou la ville.","booking.needDate":"Choisissez une date.","booking.needFutureDate":"Choisissez une date à venir.","booking.needDays":"Indiquez le nombre de jours (minimum 2).","booking.needDetails":"Décrivez votre besoin en quelques mots.","booking.sending":"Envoi en cours…","dash.requestSent":"Envoyée","dash.requestReceived":"Reçue",
     "dash.clientEyebrow":"ESPACE CLIENT","dash.clientTitle":"Mes réservations",
     "dash.proEyebrow":"ESPACE PROFESSIONNEL","dash.proTitle":"Mes missions",
     "dash.adminEyebrow":"ADMINISTRATION","dash.adminTitle":"Tableau de bord SkipperNow",
     "dash.navRequests":"Mes demandes","dash.navBoats":"Mes bateaux","dash.viewUserBoats":"Voir ses bateaux","dash.editBoat":"Modifier l'annonce","dash.boatsOf":"Bateaux de","dash.clearFilter":"Voir tous les bateaux","dash.navProfile":"Mon profil","dash.navAvailability":"Disponibilités","dash.logout":"Se déconnecter","dash.navMessages":"Messages","dash.noMessages":"Aucune conversation pour le moment.","dash.noUnreadMessages":"Aucun nouveau message.","dash.messagePlaceholder":"Écrivez votre message…","dash.send":"Envoyer","dash.loading":"Chargement…","dash.deleteMessage":"Supprimer","dash.confirmDeleteMessage":"Supprimer ce message ?","dash.deleteConversation":"Supprimer la conversation","dash.confirmDeleteConversation":"Supprimer toute cette conversation ? Cette action est irréversible.","dash.tabUnread":"Non lus","dash.tabAll":"Tous","dash.navSupport":"Contacter le support","dash.noSupport":"Le support n'est pas disponible pour le moment.","dash.supportIntro":"Une question, un souci ? Écrivez directement à l'équipe SkipperNow.",
     "booking.privacyNote":"Pour votre sécurité, les coordonnées personnelles (téléphone, email) ne sont jamais partagées directement entre client et professionnel.",
-    "dash.navOverview":"Vue d'ensemble","dash.navTraffic":"Statistiques","dash.kpiVisitorsToday":"Visiteurs aujourd'hui","dash.kpiVisitors7d":"Visiteurs (7 j)","dash.kpiVisitors30d":"Visiteurs (30 j)","dash.kpiVisitorsYear":"Visiteurs (1 an)","dash.performance30d":"Résultats des 30 derniers jours","dash.kpiAccounts30d":"Nouveaux comptes","dash.kpiRequests30d":"Demandes envoyées","dash.kpiCompleted30d":"Missions terminées","dash.kpiConversion30d":"Visiteurs devenus membres","dash.topPagesTitle":"Pages consultées (30 derniers jours)","dash.noViewsYet":"Aucune visite enregistrée pour l'instant.","dash.navValidations":"Validations","dash.navMissions":"Missions","dash.navUsers":"Utilisateurs","dash.navSettings":"Réglages",
+    "dash.navOverview":"Vue d'ensemble","dash.navTraffic":"Statistiques","dash.kpiVisitorsToday":"Visiteurs aujourd'hui","dash.kpiVisitors7d":"Visiteurs (7 j)","dash.kpiVisitors30d":"Visiteurs (30 j)","dash.kpiVisitorsYear":"Visiteurs (1 an)","dash.performance30d":"Résultats des 30 derniers jours","dash.kpiAccounts30d":"Nouveaux comptes","dash.kpiRequests30d":"Demandes envoyées","dash.kpiCompleted30d":"Missions terminées","dash.kpiConversion30d":"Visiteurs devenus membres","dash.topPagesTitle":"Pages consultées (30 derniers jours)","dash.noViewsYet":"Aucune visite enregistrée pour l'instant.","dash.visitorsTrackingNote":"Les visiteurs uniques ne sont fiables que depuis la mise en place du suivi, le {date}. Les pages vues plus anciennes sont comptées comme pages vues mais pas comme visiteurs uniques.","dash.trackingSinceUnknown":"date inconnue","dash.pageViews30d":"{count} page(s) vue(s) sur 30 jours","dash.navValidations":"Validations","dash.navMissions":"Missions","dash.navUsers":"Utilisateurs","dash.navSettings":"Réglages",
+    "dash.bookingFunnelTitle":"Tunnel de réservation (30 jours)","dash.bookingOpened":"Formulaires ouverts","dash.bookingLoginRequired":"Connexion demandée","dash.bookingSubmitted":"Envois tentés","dash.bookingCreated":"Demandes créées","dash.bookingFailed":"Échecs d'envoi",
     "dash.noRequests":"Aucune demande pour le moment.","dash.noBoats":"Aucun bateau ajouté pour le moment.","dash.noMissions":"Aucune mission pour le moment.",
     "dash.kpiUsers":"Utilisateurs","dash.kpiPending":"À valider","dash.kpiMissions":"Missions","dash.kpiRevenue":"Commission cumulée",
     "dash.navPayments":"Encaissements","dash.navPayouts":"Virements","dash.navRefunds":"Remboursements","dash.navCommissions":"Commissions","dash.navBoatsAdmin":"Bateaux",
@@ -1478,7 +1483,7 @@ const I18N = {
     "hero.ctaProviders":"Marine services","hero.ctaBoats":"Find a boat","hero.ctaSkipper":"Find a skipper",
     "search.portLabel":"DEPARTURE PORT — WORLDWIDE","search.portPlaceholder":"E.g. Cannes, Miami, Ibiza…",
     "search.dateLabel":"DATE","search.durationLabel":"DURATION","search.submit":"Search",
-    "duration.half":"Half day","duration.day":"Full day","duration.multi":"Several days",
+    "duration.half":"Half day","duration.day":"Full day","duration.multi":"Several days","duration.daysLabel":"NUMBER OF DAYS",
     "rental.badge":"BOAT RENTALS","rental.title":"List my boat for rent","providersShowcase.badge":"REGISTERED PROVIDERS","providersShowcase.title":"Verified professionals available","providersShowcase.subtitle":"Discover only profiles genuinely approved by SkipperNow.","providersShowcase.viewAll":"View professionals","providersShowcase.empty":"No provider registered yet.",
     "categories.badge":"CATEGORIES","categories.title":"What do you need?","categories.skipperDesc":"Trips, rentals, deliveries and boat familiarisation.","categories.daySailorDesc":"Hands-on help, handling, short delivery trips.","categories.providersDesc":"Cleaning, maintenance, mechanics, provisioning and dockside services.","categories.boatRentalTitle":"Boat Rental","categories.boatRentalDesc":"Find the right boat for your destination.","categories.experienceTitle":"Experiences on the Water","categories.experienceDesc":"Excursions, trips and unforgettable experiences on the water.","browseByType.title":"The ideal boat for every occasion","browseByPort.title":"Our flagship destinations","boatType.motor":"Motorboat","boatType.sailboat":"Sailboat","boatType.rib":"RIB","boatType.catamaran":"Catamaran",
     "results.compactJoin.skipper":"Are you a skipper in this area? Join SkipperNow and get your first requests.",
@@ -1584,13 +1589,14 @@ const I18N = {
     "booking.submit":"Send request","booking.successTitle":"Request sent",
     "booking.successText":"The professional can now review your request and propose a price.","booking.successCta":"View my request",
     "booking.needLogin":"Log in before sending a request.","booking.needClient":"A client account is required to send a request.",
-    "booking.needBoat":"Please enter the boat type.","booking.needPort":"Please enter the port or city.","booking.needDate":"Please choose a date.","booking.needDetails":"Please describe your need briefly.","booking.sending":"Sending…",
+    "booking.needBoat":"Please enter the boat type.","booking.needPort":"Please enter the port or city.","booking.needDate":"Please choose a date.","booking.needFutureDate":"Please choose an upcoming date.","booking.needDays":"Please enter the number of days (minimum 2).","booking.needDetails":"Please describe your need briefly.","booking.sending":"Sending…","dash.requestSent":"Sent","dash.requestReceived":"Received",
     "dash.clientEyebrow":"CLIENT AREA","dash.clientTitle":"My bookings",
     "dash.proEyebrow":"PROFESSIONAL AREA","dash.proTitle":"My jobs",
     "dash.adminEyebrow":"ADMINISTRATION","dash.adminTitle":"SkipperNow dashboard",
     "dash.navRequests":"My requests","dash.navBoats":"My boats","dash.viewUserBoats":"View their boats","dash.editBoat":"Edit listing","dash.boatsOf":"Boats owned by","dash.clearFilter":"View all boats","dash.navProfile":"My profile","dash.navAvailability":"Availability","dash.logout":"Log out","dash.navMessages":"Messages","dash.noMessages":"No conversations yet.","dash.noUnreadMessages":"No new messages.","dash.messagePlaceholder":"Write your message…","dash.send":"Send","dash.loading":"Loading…","dash.deleteMessage":"Delete","dash.confirmDeleteMessage":"Delete this message?","dash.deleteConversation":"Delete conversation","dash.confirmDeleteConversation":"Delete this whole conversation? This cannot be undone.","dash.tabUnread":"Unread","dash.tabAll":"All","dash.navSupport":"Contact support","dash.noSupport":"Support is not available right now.","dash.supportIntro":"A question or an issue? Message the SkipperNow team directly.",
     "booking.privacyNote":"For your safety, personal contact details (phone, email) are never shared directly between client and professional.",
-    "dash.navOverview":"Overview","dash.navTraffic":"Analytics","dash.kpiVisitorsToday":"Visitors today","dash.kpiVisitors7d":"Visitors (7d)","dash.kpiVisitors30d":"Visitors (30d)","dash.kpiVisitorsYear":"Visitors (1 year)","dash.performance30d":"Results for the last 30 days","dash.kpiAccounts30d":"New accounts","dash.kpiRequests30d":"Requests sent","dash.kpiCompleted30d":"Completed jobs","dash.kpiConversion30d":"Visitors who joined","dash.topPagesTitle":"Pages visited (last 30 days)","dash.noViewsYet":"No visits recorded yet.","dash.navValidations":"Approvals","dash.navMissions":"Jobs","dash.navUsers":"Users","dash.navSettings":"Settings",
+    "dash.navOverview":"Overview","dash.navTraffic":"Analytics","dash.kpiVisitorsToday":"Visitors today","dash.kpiVisitors7d":"Visitors (7d)","dash.kpiVisitors30d":"Visitors (30d)","dash.kpiVisitorsYear":"Visitors (1 year)","dash.performance30d":"Results for the last 30 days","dash.kpiAccounts30d":"New accounts","dash.kpiRequests30d":"Requests sent","dash.kpiCompleted30d":"Completed jobs","dash.kpiConversion30d":"Visitors who joined","dash.topPagesTitle":"Pages visited (last 30 days)","dash.noViewsYet":"No visits recorded yet.","dash.visitorsTrackingNote":"Unique visitors are only reliable since tracking was set up, on {date}. Older page views are counted as page views but not as unique visitors.","dash.trackingSinceUnknown":"unknown date","dash.pageViews30d":"{count} page view(s) in 30 days","dash.navValidations":"Approvals","dash.navMissions":"Jobs","dash.navUsers":"Users","dash.navSettings":"Settings",
+    "dash.bookingFunnelTitle":"Booking funnel (30 days)","dash.bookingOpened":"Forms opened","dash.bookingLoginRequired":"Login required","dash.bookingSubmitted":"Submissions attempted","dash.bookingCreated":"Requests created","dash.bookingFailed":"Submission failures",
     "dash.noRequests":"No requests yet.","dash.noBoats":"No boats added yet.","dash.noMissions":"No jobs yet.",
     "dash.kpiUsers":"Users","dash.kpiPending":"To approve","dash.kpiMissions":"Jobs","dash.kpiRevenue":"Total commission",
     "dash.navPayments":"Payments","dash.navPayouts":"Payouts","dash.navRefunds":"Refunds","dash.navCommissions":"Commissions","dash.navBoatsAdmin":"Boats",
@@ -1651,7 +1657,7 @@ const I18N = {
     "hero.ctaProviders":"Servicios náuticos","hero.ctaBoats":"Encontrar un barco","hero.ctaSkipper":"Encontrar un skipper",
     "search.portLabel":"PUERTO DE SALIDA — TODO EL MUNDO","search.portPlaceholder":"Ej. Cannes, Miami, Ibiza…",
     "search.dateLabel":"FECHA","search.durationLabel":"DURACIÓN","search.submit":"Buscar",
-    "duration.half":"Medio día","duration.day":"Día completo","duration.multi":"Varios días",
+    "duration.half":"Medio día","duration.day":"Día completo","duration.multi":"Varios días","duration.daysLabel":"NÚMERO DE DÍAS",
     "rental.badge":"ALQUILER DE BARCOS","rental.title":"Poner mi barco en alquiler","providersShowcase.badge":"PRESTADORES REGISTRADOS","providersShowcase.title":"Profesionales verificados disponibles","providersShowcase.subtitle":"Descubre únicamente perfiles realmente validados por SkipperNow.","providersShowcase.viewAll":"Ver profesionales","providersShowcase.empty":"Todavía no hay ningún prestador registrado.",
     "categories.badge":"CATEGORÍAS","categories.title":"¿Qué necesitas?","categories.skipperDesc":"Salidas, alquiler, traslados y familiarización con el barco.","categories.daySailorDesc":"Ayuda a bordo, manipulación, traslados cortos.","categories.providersDesc":"Limpieza, mantenimiento, mecánica, avituallamiento y servicios en el muelle.","categories.boatRentalTitle":"Alquiler de barco","categories.boatRentalDesc":"Encuentra el barco ideal para tu destino.","categories.experienceTitle":"Experiencias en el mar","categories.experienceDesc":"Excursiones, salidas y experiencias inolvidables en el mar.","browseByType.title":"El barco ideal para cada ocasión","browseByPort.title":"Nuestros destinos estrella","boatType.motor":"Motor","boatType.sailboat":"Velero","boatType.rib":"Semirrígida","boatType.catamaran":"Catamarán",
     "results.compactJoin.skipper":"¿Eres skipper en esta zona? Únete a SkipperNow y recibe tus primeras solicitudes.",
@@ -1757,13 +1763,14 @@ const I18N = {
     "booking.submit":"Enviar solicitud","booking.successTitle":"Solicitud enviada",
     "booking.successText":"El profesional ya puede consultar tu solicitud y proponer un precio.","booking.successCta":"Ver mi solicitud",
     "booking.needLogin":"Inicia sesión antes de enviar una solicitud.","booking.needClient":"Se necesita una cuenta de cliente para enviar una solicitud.",
-    "booking.needBoat":"Indica el tipo de barco.","booking.needPort":"Indica el puerto o la ciudad.","booking.needDate":"Elige una fecha.","booking.needDetails":"Describe brevemente tu necesidad.","booking.sending":"Enviando…",
+    "booking.needBoat":"Indica el tipo de barco.","booking.needPort":"Indica el puerto o la ciudad.","booking.needDate":"Elige una fecha.","booking.needFutureDate":"Elige una fecha futura.","booking.needDays":"Indica el número de días (mínimo 2).","booking.needDetails":"Describe brevemente tu necesidad.","booking.sending":"Enviando…","dash.requestSent":"Enviada","dash.requestReceived":"Recibida",
     "dash.clientEyebrow":"ESPACIO CLIENTE","dash.clientTitle":"Mis reservas",
     "dash.proEyebrow":"ESPACIO PROFESIONAL","dash.proTitle":"Mis servicios",
     "dash.adminEyebrow":"ADMINISTRACIÓN","dash.adminTitle":"Panel de SkipperNow",
     "dash.navRequests":"Mis solicitudes","dash.navBoats":"Mis barcos","dash.viewUserBoats":"Ver sus barcos","dash.editBoat":"Editar anuncio","dash.boatsOf":"Barcos de","dash.clearFilter":"Ver todos los barcos","dash.navProfile":"Mi perfil","dash.navAvailability":"Disponibilidad","dash.logout":"Cerrar sesión","dash.navMessages":"Mensajes","dash.noMessages":"Todavía no hay conversaciones.","dash.noUnreadMessages":"No hay mensajes nuevos.","dash.messagePlaceholder":"Escribe tu mensaje…","dash.send":"Enviar","dash.loading":"Cargando…","dash.deleteMessage":"Eliminar","dash.confirmDeleteMessage":"¿Eliminar este mensaje?","dash.deleteConversation":"Eliminar conversación","dash.confirmDeleteConversation":"¿Eliminar toda esta conversación? Esta acción no se puede deshacer.","dash.tabUnread":"No leídos","dash.tabAll":"Todos","dash.navSupport":"Contactar con soporte","dash.noSupport":"El soporte no está disponible en este momento.","dash.supportIntro":"¿Una pregunta o un problema? Escribe directamente al equipo de SkipperNow.",
     "booking.privacyNote":"Por tu seguridad, los datos personales (teléfono, email) nunca se comparten directamente entre cliente y profesional.",
-    "dash.navOverview":"Resumen","dash.navTraffic":"Estadísticas","dash.kpiVisitorsToday":"Visitantes hoy","dash.kpiVisitors7d":"Visitantes (7 d)","dash.kpiVisitors30d":"Visitantes (30 d)","dash.kpiVisitorsYear":"Visitantes (1 año)","dash.performance30d":"Resultados de los últimos 30 días","dash.kpiAccounts30d":"Nuevas cuentas","dash.kpiRequests30d":"Solicitudes enviadas","dash.kpiCompleted30d":"Servicios completados","dash.kpiConversion30d":"Visitantes registrados","dash.topPagesTitle":"Páginas visitadas (últimos 30 días)","dash.noViewsYet":"Todavía no hay visitas registradas.","dash.navValidations":"Validaciones","dash.navMissions":"Servicios","dash.navUsers":"Usuarios","dash.navSettings":"Ajustes",
+    "dash.navOverview":"Resumen","dash.navTraffic":"Estadísticas","dash.kpiVisitorsToday":"Visitantes hoy","dash.kpiVisitors7d":"Visitantes (7 d)","dash.kpiVisitors30d":"Visitantes (30 d)","dash.kpiVisitorsYear":"Visitantes (1 año)","dash.performance30d":"Resultados de los últimos 30 días","dash.kpiAccounts30d":"Nuevas cuentas","dash.kpiRequests30d":"Solicitudes enviadas","dash.kpiCompleted30d":"Servicios completados","dash.kpiConversion30d":"Visitantes registrados","dash.topPagesTitle":"Páginas visitadas (últimos 30 días)","dash.noViewsYet":"Todavía no hay visitas registradas.","dash.visitorsTrackingNote":"Los visitantes únicos solo son fiables desde la puesta en marcha del seguimiento, el {date}. Las páginas vistas más antiguas cuentan como páginas vistas pero no como visitantes únicos.","dash.trackingSinceUnknown":"fecha desconocida","dash.pageViews30d":"{count} página(s) vista(s) en 30 días","dash.navValidations":"Validaciones","dash.navMissions":"Servicios","dash.navUsers":"Usuarios","dash.navSettings":"Ajustes",
+    "dash.bookingFunnelTitle":"Embudo de reservas (30 días)","dash.bookingOpened":"Formularios abiertos","dash.bookingLoginRequired":"Inicio de sesión solicitado","dash.bookingSubmitted":"Envíos intentados","dash.bookingCreated":"Solicitudes creadas","dash.bookingFailed":"Errores de envío",
     "dash.noRequests":"Todavía no hay solicitudes.","dash.noBoats":"Todavía no hay barcos añadidos.","dash.noMissions":"Todavía no hay servicios.",
     "dash.kpiUsers":"Usuarios","dash.kpiPending":"Por validar","dash.kpiMissions":"Servicios","dash.kpiRevenue":"Comisión acumulada",
     "dash.navPayments":"Cobros","dash.navPayouts":"Transferencias","dash.navRefunds":"Reembolsos","dash.navCommissions":"Comisiones","dash.navBoatsAdmin":"Barcos",
@@ -2023,8 +2030,18 @@ portInput.addEventListener("input", ()=>{ clearTimeout(portSearchTimer); portSea
 portInput.addEventListener("blur", ()=>setTimeout(updateSeoMeta, 150));
 document.addEventListener("click", e=>{ if(!e.target.closest(".field")) portSuggestions.classList.remove("open"); });
 
+// Date du jour dans le fuseau LOCAL du visiteur (et non new Date().toISOString(),
+// qui renvoie la date UTC : un visiteur situé après UTC, par exemple en Polynésie
+// ou sur la côte ouest américaine en soirée, se verrait sinon interdire de choisir
+// "aujourd'hui" ou même "demain").
+function localDateStr(d){
+  const date = d || new Date();
+  const offsetMs = date.getTimezoneOffset() * 60000;
+  return new Date(date.getTime() - offsetMs).toISOString().slice(0,10);
+}
+
 const dateInput = document.querySelector("#dateInput");
-dateInput.min = new Date().toISOString().slice(0,10);
+dateInput.min = localDateStr();
 dateInput.value = dateInput.min;
 
 document.querySelectorAll("#listingTabs button").forEach(btn=>{
@@ -2409,7 +2426,7 @@ function openExcursionRequest(excursionId){
 }
 const excReqDate = document.querySelector("#excReqDate");
 if (excReqDate) {
-  excReqDate.min = new Date().toISOString().slice(0, 10);
+  excReqDate.min = localDateStr();
 }
 document.querySelector("#excRequestForm")?.addEventListener("submit", async e=>{
   e.preventDefault();
@@ -3021,6 +3038,22 @@ document.addEventListener("click", (e)=>{
 });
 setInterval(()=>{ if(currentUser) refreshNotifications(); }, 45000);
 
+const BOOKING_DRAFT_KEY = "skippernow-quick-request";
+function trackBookingEvent(eventName, metadata){
+  try{
+    if(typeof window.skTrackEvent === "function"){
+      window.skTrackEvent(eventName, metadata || {});
+    }
+  }catch(_e){}
+}
+function updateBookingDaysVisibility(){
+  const durationValue = document.querySelector("#bookingDuration").value;
+  document.querySelector("#bookingDaysField").style.display = durationValue === "multi" ? "block" : "none";
+}
+document.querySelector("#bookingDuration").addEventListener("change", updateBookingDaysVisibility);
+function clearBookingDraft(){
+  try{ sessionStorage.removeItem(BOOKING_DRAFT_KEY); }catch(_e){}
+}
 window.openBookingFor = function(targetId, name, homePort, activity, subcategory){
   if(currentUser && targetId && String(targetId) === String(currentUser.id)){
     alert(t("boatDetail.ownListing"));
@@ -3033,12 +3066,15 @@ window.openBookingFor = function(targetId, name, homePort, activity, subcategory
   const bookingDate = document.querySelector("#bookingDate");
   const bookingDuration = document.querySelector("#bookingDuration");
   bookingPort.value = homePort || portInput.value || "";
-  bookingDate.min = dateInput.min || new Date().toISOString().slice(0,10);
+  bookingDate.min = dateInput.min || localDateStr();
   bookingDate.value = dateInput.value || bookingDate.min;
   bookingDuration.value = document.querySelector("#durationInput").value || "day";
+  document.querySelector("#bookingDays").value = "2";
+  updateBookingDaysVisibility();
   document.querySelector("#bookingForm").style.display = "block";
   document.querySelector("#bookingSuccess").style.display = "none";
   document.querySelector("#bookingMessage").textContent = "";
+  document.querySelector("#bookingSubmit").disabled = false;
   const isBoatRental = activity === "boat_rental";
   const isSupply = activity === "provisioning";
   document.querySelector("#bookingBoatField").style.display = isBoatRental ? "none" : "block";
@@ -3058,10 +3094,38 @@ window.openBookingFor = function(targetId, name, homePort, activity, subcategory
   document.querySelector("#bookingPhotos").value = "";
   document.querySelector("#bookingPhotosPreview").innerHTML = "";
   openModal("bookingModal");
+  trackBookingEvent("booking_opened", {
+    activity: activity || activeActivity,
+    has_target: Boolean(targetId),
+    source: targetId ? "listing" : "quick_request"
+  });
 };
+// Reprend un brouillon de demande (barre "demande rapide" OU formulaire de
+// réservation complet interrompu par une connexion/inscription) et
+// rouvre automatiquement le bon formulaire, pré-rempli.
+function applyBookingDraftAndOpen(draft){
+  if(draft.port) portInput.value = draft.port;
+  if(draft.date) dateInput.value = draft.date;
+  if(draft.duration) document.querySelector("#durationInput").value = draft.duration;
+  activeActivity = TAB_CONFIG[draft.activity] ? draft.activity : "skipper";
+  clearBookingDraft();
+  const targetId = draft.targetId || null;
+  const name = targetId ? (draft.name || t("booking.defaultTarget")) : t("quickRequest.openTitle");
+  window.openBookingFor(targetId, name, draft.port || portInput.value, activeActivity, draft.subcategory || "");
+  // openBookingFor vient de réinitialiser le formulaire avec des valeurs par
+  // défaut : on restaure par-dessus les valeurs conservées du brouillon.
+  if(draft.date) document.querySelector("#bookingDate").value = draft.date;
+  if(draft.duration){
+    document.querySelector("#bookingDuration").value = draft.duration;
+    updateBookingDaysVisibility();
+  }
+  if(draft.days) document.querySelector("#bookingDays").value = draft.days;
+  if(draft.boatType) document.querySelector("#bookingBoat").value = draft.boatType;
+  if(draft.details) document.querySelector("#bookingDetails").value = draft.details;
+}
 function openQuickRequest(){
   let saved = null;
-  try{ saved = JSON.parse(sessionStorage.getItem("skippernow-quick-request") || "null"); }catch(_e){}
+  try{ saved = JSON.parse(sessionStorage.getItem(BOOKING_DRAFT_KEY) || "null"); }catch(_e){}
   const draft = saved || {
     activity: activeActivity,
     port: portInput.value.trim(),
@@ -3069,7 +3133,7 @@ function openQuickRequest(){
     duration: document.querySelector("#durationInput").value
   };
   if(!currentUser){
-    sessionStorage.setItem("skippernow-quick-request", JSON.stringify(draft));
+    try{ sessionStorage.setItem(BOOKING_DRAFT_KEY, JSON.stringify(draft)); }catch(_e){}
     openAccountModal("create", "client");
     return;
   }
@@ -3077,12 +3141,7 @@ function openQuickRequest(){
     alert(t("booking.needClient"));
     return;
   }
-  if(draft.port) portInput.value = draft.port;
-  if(draft.date) dateInput.value = draft.date;
-  if(draft.duration) document.querySelector("#durationInput").value = draft.duration;
-  activeActivity = TAB_CONFIG[draft.activity] ? draft.activity : "skipper";
-  sessionStorage.removeItem("skippernow-quick-request");
-  window.openBookingFor(null, t("quickRequest.openTitle"), draft.port || portInput.value, activeActivity);
+  applyBookingDraftAndOpen(draft);
 }
 document.querySelector("#bookingPhotos").addEventListener("change", (e)=>{
   const preview = document.querySelector("#bookingPhotosPreview");
@@ -3094,52 +3153,115 @@ document.querySelector("#bookingPhotos").addEventListener("change", (e)=>{
 });
 document.querySelector("#bookingSubmit").addEventListener("click", async ()=>{
   const msg = document.querySelector("#bookingMessage");
-  if(!currentUser){ closeModal("bookingModal"); openAccountModal("login"); msg.textContent = t("booking.needLogin"); return; }
+  const submitBtn = document.querySelector("#bookingSubmit");
+  if(submitBtn.disabled) return; // évite un double envoi (double-clic pendant le chargement)
+  if(!currentUser){
+    // On conserve le formulaire en cours (port, date, durée, jours, type de
+    // service, bateau/pro ciblé, description) pour le restaurer après la
+    // connexion ou la création de compte.
+    const durationValue = document.querySelector("#bookingDuration").value;
+    const draft = {
+      targetId: bookingContext.targetId || null,
+      name: bookingContext.name || "",
+      activity: bookingContext.activity || activeActivity,
+      subcategory: bookingContext.subcategory || "",
+      port: document.querySelector("#bookingPort").value.trim(),
+      date: document.querySelector("#bookingDate").value,
+      duration: durationValue,
+      days: durationValue === "multi" ? document.querySelector("#bookingDays").value : "",
+      boatType: bookingContext.activity === "boat_rental" ? "" : document.querySelector("#bookingBoat").value.trim(),
+      details: document.querySelector("#bookingDetails").value.trim()
+    };
+    try{ sessionStorage.setItem(BOOKING_DRAFT_KEY, JSON.stringify(draft)); }catch(_e){}
+    trackBookingEvent("booking_login_required", {
+      activity: draft.activity,
+      has_target: Boolean(draft.targetId)
+    });
+    closeModal("bookingModal");
+    openAccountModal("login");
+    msg.textContent = t("booking.needLogin");
+    return;
+  }
   if(!currentProfile || (currentProfile.role !== "client" && currentProfile.role !== "admin")){ msg.textContent = t("booking.needClient"); return; }
   const isBoatRental = bookingContext.activity === "boat_rental";
   const boatType = isBoatRental ? (bookingContext.name || "") : document.querySelector("#bookingBoat").value.trim();
   const requestedPort = document.querySelector("#bookingPort").value.trim();
   const requestedDate = document.querySelector("#bookingDate").value;
   const details = sanitizeContactInfo(document.querySelector("#bookingDetails").value.trim());
+  // Une mission ne doit jamais être créée sans port, date ou description.
   if(!requestedPort){ msg.textContent = t("booking.needPort"); return; }
   if(!requestedDate){ msg.textContent = t("booking.needDate"); return; }
+  if(requestedDate < localDateStr()){ msg.textContent = t("booking.needFutureDate"); return; }
   if(!details){ msg.textContent = t("booking.needDetails"); return; }
+  const durationValue = document.querySelector("#bookingDuration").value;
+  let days = 1;
+  if(durationValue === "multi"){
+    days = Math.round(Number(document.querySelector("#bookingDays").value));
+    if(!Number.isFinite(days) || days < 2){ msg.textContent = t("booking.needDays"); return; }
+  }
   msg.style.color = "";
   msg.textContent = t("booking.sending");
+  submitBtn.disabled = true;
+  trackBookingEvent("booking_submitted", {
+    activity: bookingContext.activity || activeActivity,
+    duration: durationValue,
+    has_target: Boolean(bookingContext.targetId),
+    has_photos: document.querySelector("#bookingPhotos").files.length > 0
+  });
 
   const start = new Date(requestedDate + "T09:00:00");
-  const durationValue = document.querySelector("#bookingDuration").value;
-  const hours = durationValue === "half" ? 4 : durationValue === "multi" ? 24 : 8;
+  // Demi-journée = 4h, journée = 8h, plusieurs jours = nombre de jours x 24h.
+  const hours = durationValue === "half" ? 4 : durationValue === "day" ? 8 : days*24;
   const end = new Date(start.getTime() + hours*3600000);
 
-  const photoFiles = [...document.querySelector("#bookingPhotos").files].slice(0,4);
-  const photoUrls = [];
-  for(const file of photoFiles){
-    const path = `${currentUser.id}/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.\-_]/g,"_")}`;
-    const {error: uploadError} = await db.storage.from("mission-photos").upload(path, file);
-    if(uploadError){ msg.style.color = "#b42318"; msg.textContent = friendlyError(uploadError); return; }
-    const {data: pub} = db.storage.from("mission-photos").getPublicUrl(path);
-    photoUrls.push(pub.publicUrl);
-  }
+  try{
+    const photoFiles = [...document.querySelector("#bookingPhotos").files].slice(0,4);
+    const photoUrls = [];
+    for(const file of photoFiles){
+      const path = `${currentUser.id}/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.\-_]/g,"_")}`;
+      const {error: uploadError} = await db.storage.from("mission-photos").upload(path, file);
+      if(uploadError){
+        trackBookingEvent("booking_failed", {stage:"photo_upload"});
+        msg.style.color = "#b42318"; msg.textContent = friendlyError(uploadError); submitBtn.disabled = false; return;
+      }
+      const {data: pub} = db.storage.from("mission-photos").getPublicUrl(path);
+      photoUrls.push(pub.publicUrl);
+    }
 
-  const {error} = await db.from("missions").insert({
-    client_id: currentUser.id,
-    skipper_id: bookingContext.targetId || null,
-    port: requestedPort,
-    boat_type: boatType,
-    description: details,
-    photo_urls: photoUrls.length ? photoUrls : null,
-    starts_at: start.toISOString(),
-    ends_at: end.toISOString(),
-    amount_cents: 0,
-    urgent_fee_cents: 0,
-    platform_fee_cents: 0,
-    status: "pending",
-    payment_status: "unpaid"
-  });
-  if(error){ msg.style.color = "#b42318"; msg.textContent = friendlyError(error); return; }
-  document.querySelector("#bookingForm").style.display = "none";
-  document.querySelector("#bookingSuccess").style.display = "block";
+    const {error} = await db.from("missions").insert({
+      client_id: currentUser.id,
+      skipper_id: bookingContext.targetId || null,
+      port: requestedPort,
+      boat_type: boatType,
+      description: details,
+      photo_urls: photoUrls.length ? photoUrls : null,
+      starts_at: start.toISOString(),
+      ends_at: end.toISOString(),
+      amount_cents: 0,
+      urgent_fee_cents: 0,
+      platform_fee_cents: 0,
+      status: "pending",
+      payment_status: "unpaid"
+    });
+    if(error){
+      trackBookingEvent("booking_failed", {stage:"mission_insert"});
+      msg.style.color = "#b42318"; msg.textContent = friendlyError(error); submitBtn.disabled = false; return;
+    }
+    trackBookingEvent("booking_created", {
+      activity: bookingContext.activity || activeActivity,
+      duration: durationValue,
+      has_target: Boolean(bookingContext.targetId)
+    });
+    clearBookingDraft();
+    document.querySelector("#bookingForm").style.display = "none";
+    document.querySelector("#bookingSuccess").style.display = "block";
+  }catch(err){
+    // Le bouton est réactivé en cas d'erreur (réseau, etc.) pour permettre un nouvel essai.
+    trackBookingEvent("booking_failed", {stage:"unexpected"});
+    msg.style.color = "#b42318";
+    msg.textContent = friendlyError(err);
+    submitBtn.disabled = false;
+  }
 });
 document.querySelector("#bookingSuccessDone").addEventListener("click", ()=>{ closeModal("bookingModal"); openDashboard(); });
 
@@ -3282,11 +3404,19 @@ async function renderClientDashboard(){
 async function renderClientPanel(panel){
   const main = document.querySelector("#dashMain");
   if(panel === "requests"){
-    const {data} = await db.from("missions").select("*").eq("client_id", currentUser.id).order("created_at",{ascending:false});
+    // Un compte "client" peut aussi être propriétaire de bateau : il doit
+    // donc voir à la fois les demandes qu'il a envoyées (client_id) ET les
+    // demandes de location reçues pour son/ses bateau(x) (skipper_id), sinon
+    // ces dernières restent invisibles pour lui.
+    const {data} = await db.from("missions").select("*").or(`client_id.eq.${currentUser.id},skipper_id.eq.${currentUser.id}`).order("created_at",{ascending:false});
     const rows = data || [];
     const {data: reviewedRows} = await db.from("reviews").select("mission_id").eq("client_id", currentUser.id);
     const reviewedMissionIds = new Set((reviewedRows||[]).map(r=>String(r.mission_id)));
-    main.innerHTML = rows.length ? rows.map(m=>requestCard(m, "client", reviewedMissionIds)).join("") : `<div class="empty-note">${esc(t("dash.noRequests"))}</div>`;
+    main.innerHTML = rows.length ? rows.map(m=>{
+      const rowContext = String(m.client_id) === String(currentUser.id) ? "client" : "pro";
+      const tag = String(m.client_id) === String(currentUser.id) ? "" : `<span class="tag" style="margin-bottom:6px;display:inline-block">${esc(t("dash.requestReceived"))}</span>`;
+      return tag + requestCard(m, rowContext, reviewedMissionIds);
+    }).join("") : `<div class="empty-note">${esc(t("dash.noRequests"))}</div>`;
     bindRequestActions();
   }else if(panel === "messages"){
     await renderMessagesPanel("client_id");
@@ -3544,7 +3674,7 @@ async function renderProPanel(panel){
     const rows = data || [];
     main.innerHTML = `
       <form id="blockDateForm" class="field" style="display:flex;gap:10px;align-items:end;flex-wrap:wrap">
-        <div style="flex:1;min-width:180px"><label>${esc(t("search.dateLabel"))}</label><input id="blockDateInput" type="date" min="${new Date().toISOString().slice(0,10)}" required></div>
+        <div style="flex:1;min-width:180px"><label>${esc(t("search.dateLabel"))}</label><input id="blockDateInput" type="date" min="${localDateStr()}" required></div>
         <button class="primary" type="submit">${esc(t("dash.navAvailability"))}</button>
       </form>
       ${rows.map(r=>`<div class="request-card"><strong>${new Date(r.unavailable_date+"T12:00:00").toLocaleDateString(currentLang)}</strong> — ${esc(r.reason||"")} <button class="small-btn danger" data-unblock="${r.id}">×</button></div>`).join("") || `<div class="empty-note">—</div>`}`;
@@ -3750,36 +3880,31 @@ async function renderAdminPanel(panel){
       ${pending.length ? pending.map(p=>profileCard(p)).join("") : `<div class="empty-note">—</div>`}`;
     bindProfileActions();
   }else if(panel === "traffic"){
-    const {data: views, error: viewsError} = await db.from("page_views").select("path,visitor_id,visit_date,created_at").order("created_at",{ascending:false}).limit(50000);
-    if(viewsError){
-      main.innerHTML = `<div class="empty-note">${esc(friendlyError(viewsError))}</div>`;
+    // Les statistiques sont agrégées côté serveur par la RPC admin
+    // get_traffic_stats() : le dashboard ne télécharge plus toute la table
+    // page_views (elle peut contenir des dizaines de milliers de lignes).
+    const {data: stats, error: statsError} = await db.rpc("get_traffic_stats");
+    if(statsError){
+      main.innerHTML = `<div class="empty-note">${esc(friendlyError(statsError))}</div>`;
       return;
     }
-    const rows = views || [];
+    const s = stats || {};
     const now = Date.now();
-    const ageInDays = v => (now - new Date(v.visit_date || v.created_at).getTime())/(24*60*60*1000);
-    const uniqueVisitors = filteredRows => new Set(filteredRows.map(v=>v.visitor_id).filter(Boolean)).size;
-    const today = uniqueVisitors(rows.filter(v=>ageInDays(v) < 1));
-    const in7 = uniqueVisitors(rows.filter(v=>ageInDays(v) < 7));
-    const in30 = uniqueVisitors(rows.filter(v=>ageInDays(v) < 30));
-    const inYear = uniqueVisitors(rows.filter(v=>ageInDays(v) < 365));
     const isWithin30Days = value => value && (now - new Date(value).getTime()) < 30*24*60*60*1000;
     const accounts30 = profiles.filter(p=>isWithin30Days(p.created_at)).length;
     const requests30 = missions.filter(m=>isWithin30Days(m.created_at)).length;
     const completed30 = missions.filter(m=>m.status === "completed" && isWithin30Days(m.updated_at || m.created_at)).length;
     const verifiedPros = profiles.filter(p=>p.verified && ["skipper","provider"].includes(p.role)).length;
-    const countsByPath = {};
-    for(const v of rows){
-      if(ageInDays(v) >= 30) continue;
-      countsByPath[v.path] = (countsByPath[v.path]||0) + 1;
-    }
-    const topPages = Object.entries(countsByPath).sort((a,b)=>b[1]-a[1]).slice(0,20);
+    const topPages = Array.isArray(s.top_pages_30d) ? s.top_pages_30d : [];
+    const bookingEvents = s.booking_events_30d || {};
+    const trackingSinceText = s.tracking_since ? new Date(s.tracking_since).toLocaleDateString(currentLang) : t("dash.trackingSinceUnknown");
     main.innerHTML = `
+      <div class="note-box">${esc(t("dash.visitorsTrackingNote",{date: trackingSinceText}))}</div>
       <div class="kpi-grid">
-        <div class="kpi"><div class="kpi-top"><span>${esc(t("dash.kpiVisitorsToday"))}</span></div><strong>${today}</strong></div>
-        <div class="kpi"><div class="kpi-top"><span>${esc(t("dash.kpiVisitors7d"))}</span></div><strong>${in7}</strong></div>
-        <div class="kpi"><div class="kpi-top"><span>${esc(t("dash.kpiVisitors30d"))}</span></div><strong>${in30}</strong></div>
-        <div class="kpi"><div class="kpi-top"><span>${esc(t("dash.kpiVisitorsYear"))}</span></div><strong>${inYear}</strong></div>
+        <div class="kpi"><div class="kpi-top"><span>${esc(t("dash.kpiVisitorsToday"))}</span></div><strong>${s.visitors_today ?? 0}</strong></div>
+        <div class="kpi"><div class="kpi-top"><span>${esc(t("dash.kpiVisitors7d"))}</span></div><strong>${s.visitors_7d ?? 0}</strong></div>
+        <div class="kpi"><div class="kpi-top"><span>${esc(t("dash.kpiVisitors30d"))}</span></div><strong>${s.visitors_30d ?? 0}</strong></div>
+        <div class="kpi"><div class="kpi-top"><span>${esc(t("dash.kpiVisitorsYear"))}</span></div><strong>${s.visitors_year ?? 0}</strong></div>
       </div>
       <div class="dash-section-title">${esc(t("dash.performance30d"))}</div>
       <div class="kpi-grid">
@@ -3788,8 +3913,16 @@ async function renderAdminPanel(panel){
         <div class="kpi kpi--good"><div class="kpi-top"><span>${esc(t("dash.kpiCompleted30d"))}</span></div><strong>${completed30}</strong></div>
         <div class="kpi"><div class="kpi-top"><span>${esc(t("stats.pros"))}</span></div><strong>${verifiedPros}</strong></div>
       </div>
-      <div class="dash-section-title">${esc(t("dash.topPagesTitle"))}</div>
-      ${topPages.length ? `<div class="traffic-table">${topPages.map(([path,count])=>`<div class="traffic-row"><span class="traffic-path">${esc(path)}</span><span class="traffic-count">${count}</span></div>`).join("")}</div>` : `<div class="empty-note">${esc(t("dash.noViewsYet"))}</div>`}`;
+      <div class="dash-section-title">${esc(t("dash.bookingFunnelTitle"))}</div>
+      <div class="kpi-grid">
+        <div class="kpi"><div class="kpi-top"><span>${esc(t("dash.bookingOpened"))}</span></div><strong>${Number(bookingEvents.booking_opened || 0)}</strong></div>
+        <div class="kpi"><div class="kpi-top"><span>${esc(t("dash.bookingLoginRequired"))}</span></div><strong>${Number(bookingEvents.booking_login_required || 0)}</strong></div>
+        <div class="kpi"><div class="kpi-top"><span>${esc(t("dash.bookingSubmitted"))}</span></div><strong>${Number(bookingEvents.booking_submitted || 0)}</strong></div>
+        <div class="kpi kpi--good"><div class="kpi-top"><span>${esc(t("dash.bookingCreated"))}</span></div><strong>${Number(bookingEvents.booking_created || 0)}</strong></div>
+        <div class="kpi ${Number(bookingEvents.booking_failed || 0) ? 'kpi--danger' : ''}"><div class="kpi-top"><span>${esc(t("dash.bookingFailed"))}</span></div><strong>${Number(bookingEvents.booking_failed || 0)}</strong></div>
+      </div>
+      <div class="dash-section-title">${esc(t("dash.topPagesTitle"))}${Number.isFinite(s.views_30d) ? ` · ${esc(t("dash.pageViews30d",{count:s.views_30d}))}` : ""}</div>
+      ${topPages.length ? `<div class="traffic-table">${topPages.map(p=>`<div class="traffic-row"><span class="traffic-path">${esc(p.path)}</span><span class="traffic-count">${p.views}</span></div>`).join("")}</div>` : `<div class="empty-note">${esc(t("dash.noViewsYet"))}</div>`}`;
   }else if(panel === "missions"){
     main.innerHTML = missions.length ? missions.map(m=>adminMissionCard(m, byId)).join("") : `<div class="empty-note">${esc(t("dash.noMissions"))}</div>`;
     bindAdminMissionActions("missions");
