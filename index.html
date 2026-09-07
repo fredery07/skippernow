@@ -52,7 +52,7 @@
 <style>
 :root{
   --navy:#071d32;--blue:#0d6672;--aqua:#39d1c5;--mist:#eef8f7;--ink:#102b3f;
-  --muted:#647784;--line:#dce8e9;--shadow:0 18px 55px rgba(7,29,50,.13);
+  --muted:#506773;--line:#dce8e9;--shadow:0 18px 55px rgba(7,29,50,.13);
   --ok:#057554;--ok-bg:#dcf8ef;--warn:#8a5a00;--warn-bg:#fff0cf;--danger:#a22e2e;--danger-bg:#ffe6e6;
   --brass:#b6883a;--brass-light:#e4c581;--paper:#faf7ef;--display:'Fraunces',Georgia,serif;
   --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
@@ -104,6 +104,7 @@ nav{display:flex;align-items:center;justify-content:space-between;width:100%}
 .trust{display:flex;gap:24px;margin-top:26px;color:#e4f0ef;font-size:14px;flex-wrap:wrap;text-shadow:0 1px 8px rgba(0,0,0,.3)}
 .trust span:before{content:"✓";color:var(--brass-light);font-weight:900;margin-right:8px}
 .hero-cta{display:flex;gap:12px;margin-top:26px;flex-wrap:wrap;align-items:center}
+.hero-cta .primary{background:var(--aqua);color:var(--navy);box-shadow:0 10px 26px rgba(57,209,197,.24)}
 .hero-cta .secondary-light{padding:11px 16px;font-weight:700;font-size:14px;background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.45)}
 .port-chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
 .port-chips button{border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.12);color:#fff;border-radius:999px;padding:8px 15px;font-size:13px;font-weight:800;cursor:pointer;backdrop-filter:blur(4px)}
@@ -199,6 +200,13 @@ main{padding:52px 0 90px}
 .price strong{font-size:19px}
 .price small{display:block;color:var(--muted)}
 .empty-note{padding:24px;border:1px dashed var(--line);border-radius:16px;text-align:center;color:var(--muted);background:#fff}
+.home-empty-state{display:flex;align-items:center;gap:14px;padding:18px;border:1px solid #c8e8e5;border-radius:16px;background:linear-gradient(135deg,var(--mist),#fff);text-align:left}
+.home-empty-state-icon{width:48px;height:48px;display:grid;place-items:center;flex:0 0 auto;border-radius:14px;background:#fff;color:var(--blue);box-shadow:0 6px 18px rgba(16,43,63,.08)}
+.home-empty-state-icon svg{width:26px;height:26px}
+.home-empty-state-copy{flex:1;min-width:0}
+.home-empty-state strong{display:block;color:var(--navy);font-size:14px;margin-bottom:4px}
+.home-empty-state span{display:block;color:var(--muted);font-size:12.5px;line-height:1.45}
+.home-empty-state button{flex:0 0 auto;border:0;border-radius:11px;background:var(--navy);color:#fff;padding:10px 13px;font-size:12px;font-weight:850;cursor:pointer}
 .compact-join-card{background:var(--mist);border:1px dashed var(--aqua);border-radius:20px;padding:26px 22px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:10px;align-self:start;box-shadow:0 8px 25px rgba(16,43,63,.04)}
 .compact-join-icon{font-size:26px}
 .compact-join-card p{margin:0;color:var(--blue);font-weight:700;font-size:14px;line-height:1.45}
@@ -503,10 +511,29 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
 @media(max-width:640px){
   .shell{padding:0 16px}
   header{height:66px}
+  .logo{font-size:21px;gap:9px}
+  .mark{width:42px;height:42px;border-radius:13px}
+  .language-select{padding:9px 6px}
+  .nav-actions{gap:6px}
+  .nav-actions .primary{padding:11px 12px;font-size:12.5px}
   .nav-actions .link{display:none}
-  .hero{padding:44px 0 90px}
+  .hero{padding:36px 0 86px}
+  .hero h1{font-size:38px;margin:13px 0}
+  .hero p{font-size:15.5px;line-height:1.55}
+  .trust{gap:10px 16px;margin-top:20px;font-size:12.5px}
+  .hero-cta{margin-top:20px;gap:9px}
+  .hero-cta .primary{width:100%}
+  .hero-cta .secondary-light{flex:1;padding:11px 10px}
+  .port-chips{margin-top:13px;gap:6px}
+  .port-chips button{padding:7px 11px;font-size:11.5px}
+  .port-chips button:nth-child(n+7){display:none}
   .search-card{grid-template-columns:1fr}
+  .search-card{padding:14px;border-radius:19px;gap:9px}
+  .search-btn{min-height:52px}
   .search-wrap{margin-top:-46px}
+  .home-empty-state{align-items:flex-start;flex-wrap:wrap;padding:15px}
+  .home-empty-state-copy{min-width:calc(100% - 68px)}
+  .home-empty-state button{width:100%;padding:12px}
   .cards,.rental-hub,.steps,.join-grid,.footer-grid,.provider-grid,.result-list{grid-template-columns:1fr}
   .choice-grid{grid-template-columns:1fr}
   .kpi-grid{grid-template-columns:1fr 1fr}
@@ -607,10 +634,6 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
 </div>
 
 <div class="shell">
-  <div class="launch-banner" id="launchBanner">
-    <span class="launch-banner-icon">🚀</span>
-    <span data-i18n="launch.banner">Rejoignez les premiers professionnels SkipperNow et bénéficiez d'une visibilité prioritaire.</span>
-  </div>
   <div class="trust-stats" id="trustStats" style="display:none">
     <div class="trust-stat"><strong id="statMissions">—</strong><span data-i18n="stats.missions">missions réalisées</span></div>
     <div class="trust-stat"><strong id="statPros">—</strong><span data-i18n="stats.pros">professionnels vérifiés</span></div>
@@ -651,6 +674,11 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
       </button>
     </div>
   </section>
+
+  <div class="launch-banner" id="launchBanner">
+    <span class="launch-banner-icon">✦</span>
+    <span data-i18n="launch.banner">Rejoignez les premiers professionnels SkipperNow et bénéficiez d'une visibilité prioritaire.</span>
+  </div>
 
   <section class="home-pros" id="homeProvidersSection" style="display:none">
     <div class="home-pros-head">
@@ -1316,7 +1344,7 @@ const I18N = {
     "results.compactJoin.cleaning":"Vous proposez des services nautiques dans cette zone ? Rejoignez SkipperNow et recevez vos premières demandes.",
     "rental.text":"Créez votre compte propriétaire, ajoutez photos, caractéristiques, port d'attache et disponibilités. Vous pourrez ensuite proposer la location avec ou sans skipper.",
     "rental.cta":"Mettre mon bateau en location","rental.ctaShort":"Vous êtes propriétaire ? Mettre mon bateau en location","rental.examplesBadge":"BATEAUX DISPONIBLES",
-    "rental.examplesTitle":"Bateaux disponibles","rental.examplesSubtitle":"Trouvez votre prochain bateau, partout où SkipperNow est présent.","rental.viewAll":"Voir toutes les annonces","rental.empty":"Aucun bateau publié pour le moment. Soyez le premier propriétaire à proposer le vôtre !",
+    "rental.examplesTitle":"Bateaux disponibles","rental.examplesSubtitle":"Trouvez votre prochain bateau, partout où SkipperNow est présent.","rental.viewAll":"Voir toutes les annonces","rental.empty":"Aucun bateau publié pour le moment. Soyez le premier propriétaire à proposer le vôtre !","rental.emptyTitle":"Les premières annonces arrivent","rental.emptyText":"SkipperNow ouvre progressivement de nouveaux ports. Vous pouvez déjà publier gratuitement votre bateau.","rental.emptyCta":"Publier mon bateau",
     "results.skippersHeading":"Skippers disponibles","results.skippersSub":"Professionnels vérifiés près de votre port de départ",
     "results.daySailorsHeading":"Marins à la journée disponibles","results.daySailorsSub":"Aide à bord et missions ponctuelles près de votre port de départ",
     "results.cleaningHeading":"Prestataires disponibles","results.cleaningSub":"Nettoyage, services à quai et entretien près de votre port de départ",
@@ -1491,7 +1519,7 @@ const I18N = {
     "results.compactJoin.cleaning":"Do you offer marine services in this area? Join SkipperNow and get your first requests.",
     "rental.text":"Create an owner account, add photos, specifications, home port and availability. You can then offer your boat with or without a skipper.",
     "rental.cta":"List my boat for rent","rental.ctaShort":"Are you a boat owner? List your boat for rent","rental.examplesBadge":"AVAILABLE BOATS",
-    "rental.examplesTitle":"Boats available","rental.examplesSubtitle":"Find your next boat, wherever SkipperNow is present.","rental.viewAll":"View all listings","rental.empty":"No boats published yet. Be the first owner to list yours!",
+    "rental.examplesTitle":"Boats available","rental.examplesSubtitle":"Find your next boat, wherever SkipperNow is present.","rental.viewAll":"View all listings","rental.empty":"No boats published yet. Be the first owner to list yours!","rental.emptyTitle":"The first listings are coming","rental.emptyText":"SkipperNow is gradually opening new ports. You can already list your boat for free.","rental.emptyCta":"List my boat",
     "results.skippersHeading":"Available skippers","results.skippersSub":"Verified professionals near your departure port",
     "results.daySailorsHeading":"Available day sailors","results.daySailorsSub":"Hands-on help and one-off jobs near your departure port",
     "results.cleaningHeading":"Available service providers","results.cleaningSub":"Cleaning, dock services and maintenance near your departure port",
@@ -1665,7 +1693,7 @@ const I18N = {
     "results.compactJoin.cleaning":"¿Ofreces servicios náuticos en esta zona? Únete a SkipperNow y recibe tus primeras solicitudes.",
     "rental.text":"Crea una cuenta de propietario, añade fotos, características, puerto base y disponibilidad. Luego podrás ofrecer tu barco con o sin skipper.",
     "rental.cta":"Poner mi barco en alquiler","rental.ctaShort":"¿Eres propietario? Pon tu barco en alquiler","rental.examplesBadge":"BARCOS DISPONIBLES",
-    "rental.examplesTitle":"Barcos disponibles","rental.examplesSubtitle":"Encuentra tu próximo barco, allí donde SkipperNow está presente.","rental.viewAll":"Ver todos los anuncios","rental.empty":"Todavía no hay barcos publicados. ¡Sé el primer propietario en publicar el tuyo!",
+    "rental.examplesTitle":"Barcos disponibles","rental.examplesSubtitle":"Encuentra tu próximo barco, allí donde SkipperNow está presente.","rental.viewAll":"Ver todos los anuncios","rental.empty":"Todavía no hay barcos publicados. ¡Sé el primer propietario en publicar el tuyo!","rental.emptyTitle":"Los primeros anuncios están llegando","rental.emptyText":"SkipperNow abre nuevos puertos progresivamente. Ya puedes publicar tu barco gratis.","rental.emptyCta":"Publicar mi barco",
     "results.skippersHeading":"Skippers disponibles","results.skippersSub":"Profesionales verificados cerca de tu puerto de salida",
     "results.daySailorsHeading":"Marineros por día disponibles","results.daySailorsSub":"Ayuda a bordo y trabajos puntuales cerca de tu puerto de salida",
     "results.cleaningHeading":"Prestadores disponibles","results.cleaningSub":"Limpieza, servicios de puerto y mantenimiento cerca de tu puerto de salida",
@@ -1848,6 +1876,8 @@ function friendlyError(err){
 
 function applyStaticTranslations(){
   document.documentElement.lang = currentLang;
+  const dateLang = currentLang === "en" ? "en-US" : currentLang === "es" ? "es-ES" : "fr-FR";
+  document.querySelectorAll('input[type="date"]').forEach(el=>el.lang = dateLang);
   document.querySelectorAll("[data-i18n]").forEach(el=>{
     el.innerHTML = t(el.getAttribute("data-i18n"));
   });
@@ -2625,7 +2655,15 @@ function startBoatCardCarousels(){
 function renderHomeBoatStrip(){
   const box = document.querySelector("#homeBoatStrip");
   const list = boatCache.slice(0,4);
-  box.innerHTML = list.length ? `<div class="boat-grid${list.length===1?" boat-grid--single":""}">${list.map(b=>boatCardHtml(b)).join("")}</div>` : `<div class="empty-note">${esc(t("rental.empty"))}</div>`;
+  box.innerHTML = list.length ? `<div class="boat-grid${list.length===1?" boat-grid--single":""}">${list.map(b=>boatCardHtml(b)).join("")}</div>` : `
+    <div class="home-empty-state">
+      <span class="home-empty-state-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M3 15.5h18l-2.4 3.2a3 3 0 0 1-2.4 1.2H7.8a3 3 0 0 1-2.4-1.2L3 15.5Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M7 15.5 9.2 8h5.9l2 7.5M12 8V4m0 0 3.2 2.1M12 4 8.8 6.1" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+      <span class="home-empty-state-copy"><strong>${esc(t("rental.emptyTitle"))}</strong><span>${esc(t("rental.emptyText"))}</span></span>
+      <button id="emptyListBoatBtn" type="button">${esc(t("rental.emptyCta"))}</button>
+    </div>`;
+  document.querySelector("#emptyListBoatBtn")?.addEventListener("click", ()=>document.querySelector("#listBoatBtn")?.click());
   startBoatCardCarousels();
 }
 async function preloadHomeBoats(){
