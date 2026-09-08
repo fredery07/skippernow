@@ -5457,6 +5457,49 @@ async function loadDestinationTiles(){
   });
   autoScrollTileRow("portTileRow");
 }
+const activityPhotoCredits = {
+  "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/78/Mediterranean_coast_-_Eze%2C_France_-_panoramio.jpg/960px-Mediterranean_coast_-_Eze%2C_France_-_panoramio.jpg": {
+    "id": "11af0976-748e-4f7b-b441-9db7dd5caa98",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/78/Mediterranean_coast_-_Eze%2C_France_-_panoramio.jpg/960px-Mediterranean_coast_-_Eze%2C_France_-_panoramio.jpg",
+    "file": "Mediterranean coast - Eze, France - panoramio.jpg",
+    "author": "Sergey Ashmarin",
+    "caption": "La côte vue depuis Èze",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/"
+  },
+  "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6a/Sainte-Marguerite_%28south_coast%29.jpg/960px-Sainte-Marguerite_%28south_coast%29.jpg": {
+    "id": "2b07c1d2-3c49-4f78-9f7a-bf01bdf16a98",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6a/Sainte-Marguerite_%28south_coast%29.jpg/960px-Sainte-Marguerite_%28south_coast%29.jpg",
+    "file": "Sainte-Marguerite (south coast).jpg",
+    "author": "Tangopaso",
+    "caption": "Littoral de l’île Sainte-Marguerite",
+    "license": "Domaine public",
+    "licenseUrl": "https://commons.wikimedia.org/wiki/File:Sainte-Marguerite_(south_coast).jpg"
+  },
+  "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/54/Baie_de_Juan_Les_Pins.jpg/960px-Baie_de_Juan_Les_Pins.jpg": {
+    "id": "6f4f8a9b-842e-4714-a849-eb63714e1c73",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/54/Baie_de_Juan_Les_Pins.jpg/960px-Baie_de_Juan_Les_Pins.jpg",
+    "file": "Baie de Juan Les Pins.jpg",
+    "author": "Frederic Parizot",
+    "caption": "Coucher de soleil sur la baie de Juan-les-Pins",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/"
+  },
+  "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/dc/Juan-les-Pins.jpg/960px-Juan-les-Pins.jpg": {
+    "id": "078e3a2d-f8e8-4825-8bb6-a077225876f3",
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/dc/Juan-les-Pins.jpg/960px-Juan-les-Pins.jpg",
+    "file": "Juan-les-Pins.jpg",
+    "author": "JaayJay",
+    "caption": "Plage et baie de Juan-les-Pins",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/"
+  }
+};
+function activityPhotoCreditHtml(url){
+  const p = activityPhotoCredits[url];
+  if(!p) return "";
+  return `<small class="activity-photo-credit" style="display:block;font-size:11px;line-height:1.45;color:var(--muted);margin:0 0 10px">${esc(p.caption)} · <a href="https://commons.wikimedia.org/wiki/File:${encodeURIComponent(p.file)}" target="_blank" rel="noopener noreferrer">${esc(p.author)}</a> · <a href="${esc(p.licenseUrl)}" target="_blank" rel="noopener noreferrer">${esc(p.license)}</a> · recadrage</small>`;
+}
 let portActivitiesCache = [];
 async function loadPortActivities(){
   const row = document.querySelector("#activityRow");
@@ -5484,13 +5527,14 @@ function renderPortActivities(highlightPort){
   row.innerHTML = list.map(a=>`<article class="activity-card" data-activity-port="${esc(a.port_name)}">
     <div class="activity-card-photo" style="background-image:url('${esc(a.image_url)}')"><span class="activity-card-port">${esc(a.port_name)}</span></div>
     <div class="activity-card-body">
+      ${activityPhotoCreditHtml(a.image_url)}
       <h3>${esc(a.title)}</h3>
       ${a.description ? `<p>${esc(a.description)}</p>` : ""}
       <div class="activity-card-cta">${esc(t("activities.reserve"))}</div>
     </div>
   </article>`).join("");
   row.querySelectorAll(".activity-card").forEach(card=>{
-    card.addEventListener("click", ()=>openBoatFinder(card.dataset.activityPort));
+    card.addEventListener("click", (event)=>{ if(!event.target.closest("a")) openBoatFinder(card.dataset.activityPort); });
   });
 }
 function highlightPortActivities(port){
