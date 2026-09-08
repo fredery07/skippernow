@@ -551,6 +551,17 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
   .kpi-grid{grid-template-columns:1fr 1fr}
   .section-head{flex-direction:column;align-items:flex-start}
 }
+
+/* Reservation progress, readable profiles and touch targets. */
+.request-next{background:#edf8f6;border-left:3px solid #2aa99d;border-radius:10px;padding:12px;margin-top:12px;color:#254956;font-size:13px;line-height:1.5}
+.request-next strong{display:block;color:var(--navy);margin-bottom:3px}
+.profile-facts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0}
+.profile-facts>div{background:var(--mist);border:1px solid var(--line);padding:14px;border-radius:12px;overflow-wrap:anywhere}
+.profile-facts strong{display:block;margin-bottom:5px}.profile-actions{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0;position:sticky;bottom:0;background:white;padding:12px 0;z-index:1}
+.profile-actions button{flex:1;min-width:160px}.profile-review{border-top:1px solid var(--line);padding:14px 0}.profile-review p{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.6}
+.review-star{min-width:44px;min-height:44px;font-size:30px!important}.request-card{overflow-wrap:anywhere}
+@media(max-width:640px){.request-top{flex-wrap:wrap}.request-actions>button{min-height:44px;flex:1 1 140px}.profile-facts{grid-template-columns:1fr}.profile-actions{gap:8px}.profile-actions button{min-width:100%;min-height:46px}.dialog input,.dialog select,.dialog textarea{font-size:16px}.dash-side button{min-height:44px}.dash-identity{align-items:flex-start}.status-pill{white-space:normal}.dialog{max-width:100%;box-sizing:border-box}.request-top>div{min-width:0}}
+
 </style>
 </head>
 <body>
@@ -1079,7 +1090,7 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
         <button type="button" class="review-star" data-star="5" style="border:0;background:transparent;cursor:pointer;color:var(--line);padding:0">★</button>
       </div>
     </div>
-    <div class="field"><label data-i18n="dash.reviewCommentLabel">COMMENTAIRE (OPTIONNEL)</label><textarea id="reviewComment" rows="4"></textarea></div>
+    <div class="field"><label data-i18n="dash.reviewCommentLabel">COMMENTAIRE (OPTIONNEL)</label><textarea id="reviewComment" maxlength="2000" rows="4"></textarea></div>
     <button class="primary wide" id="submitReviewBtn" data-i18n="dash.reviewSubmit">Envoyer mon avis</button>
     <p class="ok-text" id="reviewMsg"></p>
   </div>
@@ -1822,6 +1833,10 @@ const I18N = {
   }
 };
 
+Object.assign(I18N.fr, {"flow.pending": "Le professionnel doit étudier votre demande et proposer son tarif.", "flow.pendingPro": "À vous de proposer un tarif pour cette demande.", "flow.quoted": "Tarif reçu : acceptez ou refusez le devis ci-dessous.", "flow.quotedPro": "Le client doit maintenant accepter votre devis.", "flow.accepted": "Devis accepté : réglez la prestation pour confirmer la réservation.", "flow.acceptedPro": "Devis accepté. Attendez la confirmation du paiement avant la prestation.", "flow.progress": "Paiement confirmé. La prestation peut être réalisée.", "flow.validation": "Le professionnel a terminé. Vérifiez la prestation puis validez-la.", "flow.validationPro": "Prestation terminée : en attente de validation par le client.", "flow.completed": "Prestation terminée. Merci de partager votre avis.", "flow.reviewed": "Prestation terminée · votre avis a été envoyé.", "flow.completedPro": "Prestation validée par le client.", "flow.cancelled": "Demande annulée. Aucun nouveau paiement à effectuer.", "flow.rejected": "Devis refusé. Vous pouvez échanger par message.", "flow.next": "Prochaine étape", "flow.prepared": "Paiement commencé : reprenez-le ci-dessous. Pour annuler, contactez le support.", "payment.processing": "Paiement en cours de confirmation. Ne payez pas une seconde fois ; consultez votre espace dans quelques instants.", "payment.confirmed": "Paiement confirmé. Retrouvez le suivi dans votre espace.", "payment.session": "Reconnectez-vous pour continuer le paiement.", "payment.unavailable": "Le paiement ne peut pas se charger. Actualisez la page ou contactez le support.", "payment.check": "Vérifier le paiement", "profile.quote": "Demander un devis", "profile.area": "Zone d’intervention", "profile.radius": "Jusqu’à {km} km autour de ce port", "profile.available": "Disponible pour recevoir des demandes · dates à confirmer avec le professionnel", "profile.unavailable": "Ne reçoit pas de nouvelles demandes pour le moment", "profile.reviews": "Avis après prestation", "profile.noReviews": "Pas encore d’avis après prestation.", "profile.reviewVerified": "Prestation terminée", "profile.reviewError": "Les avis ne peuvent pas être chargés pour le moment.", "profile.moreReviews": "Afficher plus d’avis", "review.stars": "{n} étoile(s) sur 5", "flow.refresh": "La demande a changé. Actualisez votre espace."});
+Object.assign(I18N.en, {"flow.pending": "The professional will review your request and propose a price.", "flow.pendingPro": "Your turn to propose a price for this request.", "flow.quoted": "Quote received: accept or decline it below.", "flow.quotedPro": "The client needs to accept your quote.", "flow.accepted": "Quote accepted: pay to confirm the booking.", "flow.acceptedPro": "Quote accepted. Wait for payment confirmation before the service.", "flow.progress": "Payment confirmed. The service can go ahead.", "flow.validation": "The professional has finished. Check the service, then approve it.", "flow.validationPro": "Service finished: awaiting client approval.", "flow.completed": "Service completed. Please share your review.", "flow.reviewed": "Service completed · your review has been submitted.", "flow.completedPro": "Service approved by the client.", "flow.cancelled": "Request cancelled. No new payment is due.", "flow.rejected": "Quote declined. You can discuss it by message.", "flow.next": "Next step", "flow.prepared": "Payment started: resume below. To cancel, contact support.", "payment.processing": "Payment confirmation is pending. Do not pay again; check your account shortly.", "payment.confirmed": "Payment confirmed. Track your booking in your account.", "payment.session": "Sign in again to continue payment.", "payment.unavailable": "Payment could not load. Refresh the page or contact support.", "payment.check": "Check payment", "profile.quote": "Request a quote", "profile.area": "Service area", "profile.radius": "Up to {km} km around this port", "profile.available": "Available for requests · confirm dates with the professional", "profile.unavailable": "Not accepting new requests at the moment", "profile.reviews": "Reviews after a service", "profile.noReviews": "No reviews after a service yet.", "profile.reviewVerified": "Completed service", "profile.reviewError": "Reviews could not be loaded right now.", "profile.moreReviews": "Show more reviews", "review.stars": "{n} star(s) out of 5", "flow.refresh": "The request has changed. Refresh your account."});
+Object.assign(I18N.es, {"flow.pending": "El profesional revisará tu solicitud y propondrá un precio.", "flow.pendingPro": "Te toca proponer un precio para esta solicitud.", "flow.quoted": "Presupuesto recibido: acéptalo o recházalo abajo.", "flow.quotedPro": "El cliente debe aceptar tu presupuesto.", "flow.accepted": "Presupuesto aceptado: paga para confirmar la reserva.", "flow.acceptedPro": "Presupuesto aceptado. Espera la confirmación del pago antes del servicio.", "flow.progress": "Pago confirmado. El servicio puede realizarse.", "flow.validation": "El profesional ha terminado. Revisa el servicio y valídalo.", "flow.validationPro": "Servicio terminado: pendiente de validación del cliente.", "flow.completed": "Servicio terminado. Comparte tu opinión.", "flow.reviewed": "Servicio terminado · tu reseña ha sido enviada.", "flow.completedPro": "Servicio validado por el cliente.", "flow.cancelled": "Solicitud cancelada. No hay ningún nuevo pago pendiente.", "flow.rejected": "Presupuesto rechazado. Puedes hablar por mensaje.", "flow.next": "Siguiente paso", "flow.prepared": "Pago iniciado: continúa abajo. Para cancelar, contacta con soporte.", "payment.processing": "Pago pendiente de confirmación. No pagues de nuevo; consulta tu espacio en unos instantes.", "payment.confirmed": "Pago confirmado. Consulta el seguimiento en tu espacio.", "payment.session": "Vuelve a iniciar sesión para continuar el pago.", "payment.unavailable": "No se pudo cargar el pago. Actualiza la página o contacta con soporte.", "payment.check": "Comprobar el pago", "profile.quote": "Pedir presupuesto", "profile.area": "Zona de servicio", "profile.radius": "Hasta {km} km alrededor de este puerto", "profile.available": "Disponible para solicitudes · confirma las fechas con el profesional", "profile.unavailable": "No acepta nuevas solicitudes por el momento", "profile.reviews": "Reseñas tras un servicio", "profile.noReviews": "Todavía no hay reseñas tras un servicio.", "profile.reviewVerified": "Servicio terminado", "profile.reviewError": "No se pueden cargar las reseñas ahora.", "profile.moreReviews": "Ver más reseñas", "review.stars": "{n} estrella(s) de 5", "flow.refresh": "La solicitud ha cambiado. Actualiza tu espacio."});
+
 let currentLang = localStorage.getItem("skippernow-language") || "fr";
 
 function t(key, vars){
@@ -1831,7 +1846,7 @@ function t(key, vars){
 }
 
 function profileRatingText(profile){
-  const rating = Number(profile?.rating || 0);
+  const rating = Number(profile?.rating_count || 0) > 0 ? Number(profile?.rating || 0) : 0;
   return rating > 0 ? `★ ${rating.toFixed(1)}` : t("card.newOnPlatform");
 }
 function pluralKey(base, n){ return base + "." + (n === 1 ? "one" : "other"); }
@@ -2774,6 +2789,7 @@ window.openProfileDetail = function(id, adminView){
   closeModal("boatFinderModal");
   const content = document.querySelector("#profileDetailContent");
   const activity = p.provider_activity || "skipper";
+  const canRequest = p.available !== false && !p.suspended;
   const photoStyle = p.profile_photo_url ? `background-image:url('${esc(p.profile_photo_url)}')` : "background:linear-gradient(135deg,#173b51,#3f9c9a)";
   content.innerHTML = `
     <div style="margin:-26px -26px 0;height:200px;${photoStyle};background-size:cover;background-position:center;border-radius:22px 22px 0 0;position:relative">
@@ -2782,9 +2798,10 @@ window.openProfileDetail = function(id, adminView){
     </div>
     <div style="padding-top:18px">
       <small style="color:var(--muted);font-weight:800;letter-spacing:.05em;text-transform:uppercase;font-size:11px">${esc(activityLabel(activity))}</small>
-      <div class="name-row" style="margin:4px 0 6px"><h2 style="margin:0">${esc(p.full_name||"—")}<span class="ig-badge" title="${esc(t("card.verifiedBadge"))}"><svg width="18" height="18" viewBox="0 0 24 24" role="img" aria-label="${esc(t("card.verifiedBadge"))}"><circle cx="12" cy="12" r="12" fill="#3897f0"/><path d="M9.5 12.8l-2-2-1.4 1.4L9.5 15.6l7.4-7.4-1.4-1.4z" fill="#fff"/></svg></span>${featuredBadgeHtml(p)}</h2></div>
+      <div class="name-row" style="margin:4px 0 6px"><h2 style="margin:0">${esc(p.full_name||"—")}${p.verified ? `<span class="ig-badge" title="${esc(t("card.verifiedBadge"))}"><svg width="18" height="18" viewBox="0 0 24 24" role="img" aria-label="${esc(t("card.verifiedBadge"))}"><circle cx="12" cy="12" r="12" fill="#3897f0"/><path d="M9.5 12.8l-2-2-1.4 1.4L9.5 15.6l7.4-7.4-1.4-1.4z" fill="#fff"/></svg></span>` : ""}${featuredBadgeHtml(p)}</h2></div>
       <div class="boat-card-port" style="margin-bottom:6px">📍 ${esc(p.home_port||"—")}</div>
       <div class="meta" style="margin-bottom:14px">${esc(profileRatingText(p))}${p.rating_count ? ` (${p.rating_count} ${esc(t(p.rating_count>1 ? "card.reviewsPlural" : "card.reviewsSingle"))})` : ""} · ${p.experience_years||0} ${esc(t("card.experience"))}${p.languages?" · "+esc(p.languages):""}</div>
+      <div class="profile-facts"><div><strong>${esc(t("profile.area"))}</strong>${esc(p.home_port||"—")}${p.travel_radius_km ? `<p>${esc(t("profile.radius",{km:p.travel_radius_km}))}</p>` : ""}</div><div><strong>${esc(t("dash.navAvailability"))}</strong>${esc(t(canRequest ? "profile.available" : "profile.unavailable"))}</div></div>
       <p class="muted" style="line-height:1.6">${esc(p.bio||t("boatDetail.noDescription"))}</p>
       ${p.skills ? `<div style="margin:14px 0"><strong style="font-size:13px">${esc(t("account.skillsLabel"))}</strong><div class="tags" style="margin-top:6px">${p.skills.split(",").map(x=>x.trim()).filter(Boolean).map(x=>`<span class="tag">${esc(x)}</span>`).join("")}</div></div>` : ""}
       ${(p.price_half_day_cents || p.price_hour_cents || p.travel_fee_cents) ? `<div class="muted" style="margin-bottom:10px">
@@ -2793,18 +2810,32 @@ window.openProfileDetail = function(id, adminView){
         ${p.travel_fee_cents ? `${esc(t("account.travelFeeLabel"))}: <strong>${money(p.travel_fee_cents)}</strong>` : ""}
       </div>` : ""}
       <div class="note-box" style="margin-top:14px">${p.price_from_cents ? `${esc(t("card.priceFrom"))} <strong>${money(p.price_from_cents)}</strong> — ${esc(t("card.priceNote"))}` : esc(t("card.priceOnRequest"))}</div>
-      ${p.diploma_type ? `<div class="tag" style="display:inline-block;margin-top:10px">🎓 ${esc(t("card.diplomaBadgePrefix"))} ${esc(p.diploma_type)}</div>` : ""}
+      ${p.verified && profileNeedsDiploma(p) && p.diploma_type ? `<div class="tag" style="display:inline-block;margin-top:10px">🎓 ${esc(t("card.diplomaBadgePrefix"))} ${esc(p.diploma_type)}</div>` : ""}
       ${adminView && p.diploma_url ? `<div class="muted" style="margin-top:10px"><a href="${esc(p.diploma_url)}" target="_blank">${esc(t("account.diplomaCurrent"))}</a></div>` : ""}
       ${adminView ? ""
         : (currentUser && String(p.id)===String(currentUser.id))
           ? `<div class="note-box" style="margin-top:18px">${esc(t("boatDetail.ownListing"))}</div>`
-          : `<div style="display:flex;gap:10px;margin-top:18px;flex-wrap:wrap">
-              <button class="primary wide" style="flex:1;min-width:160px" onclick="closeModal('profileDetailModal');openBookingFor('${p.id}','${esc(String(p.full_name||"").replace(/'/g,"\\'"))}','${esc(String(p.home_port||"").replace(/'/g,"\\'"))}','${activity}','${esc(currentProviderSubcategory||"")}')">${esc(t("boatDetail.request"))}</button>
+          : `<div class="profile-actions">
+              <button ${canRequest ? "" : "disabled"} class="primary wide" style="flex:1;min-width:160px" onclick="closeModal('profileDetailModal');openBookingFor('${p.id}','${esc(String(p.full_name||"").replace(/'/g,"\\'"))}','${esc(String(p.home_port||"").replace(/'/g,"\\'"))}','${activity}','${esc(currentProviderSubcategory||"")}')">${esc(t("profile.quote"))}</button>
               <button class="ghost wide" style="flex:1;min-width:160px" onclick="messageProfile('${p.id}')">${esc(t("card.sendMessage"))}</button>
             </div>`}
     </div>`;
+  content.insertAdjacentHTML("beforeend", `<section><h3>${esc(t("profile.reviews"))}</h3><div id="profileReviews" aria-live="polite">${esc(t("dash.loading"))}</div></section>`);
+  loadProfileReviews(p.id, document.querySelector("#profileReviews"));
   openModal("profileDetailModal");
 };
+async function loadProfileReviews(profileId, box, offset=0){
+  const {data,error}=await db.from("reviews").select("rating,comment,created_at").eq("skipper_id",profileId).order("created_at",{ascending:false}).range(offset,offset+9);
+  if(!box.isConnected) return;
+  box.querySelector("button")?.remove();
+  if(error){box.insertAdjacentHTML("beforeend",`<p>${esc(t("profile.reviewError"))}</p>`);return;}
+  if(!offset) box.innerHTML="";
+  if(!data?.length && !offset) box.textContent=t("profile.noReviews");
+  for(const review of data||[]){
+    box.insertAdjacentHTML("beforeend",`<article class="profile-review"><strong>${"★".repeat(Math.min(5,Math.max(1,Number(review.rating))))} · ${esc(t("profile.reviewVerified"))}</strong><div class="muted">${esc(new Date(review.created_at).toLocaleDateString(currentLang))}</div>${review.comment ? `<p>${esc(review.comment)}</p>` : ""}</article>`);
+  }
+  if(data?.length===10){const more=document.createElement("button");more.className="ghost";more.textContent=t("profile.moreReviews");more.onclick=()=>{more.disabled=true;loadProfileReviews(profileId,box,offset+10);};box.append(more);}
+}
 window.closeModal = closeModal;
 window.messageProfile = async function(targetId){
   closeModal("profileDetailModal");
@@ -3280,58 +3311,75 @@ document.querySelector("#bookingSubmit").addEventListener("click", async ()=>{
 });
 document.querySelector("#bookingSuccessDone").addEventListener("click", ()=>{ closeModal("bookingModal"); openDashboard(); });
 
+let paymentOpenVersion=0;
+let paymentConfirmedIntent=null;
+async function paymentCall(name,body){
+  const {data:{session}}=await db.auth.getSession();
+  if(!session) throw new Error(t("payment.session"));
+  const res=await fetch(SUPABASE_URL+"/functions/v1/"+name,{method:"POST",headers:{"Content-Type":"application/json",Authorization:"Bearer "+session.access_token,apikey:SUPABASE_KEY},body:JSON.stringify(body)});
+  const json=await res.json();
+  if(!res.ok) throw new Error(json.error||t("payment.unavailable"));
+  return json;
+}
 window.openPaymentFor = async function(missionId, amountCents){
-  currentPaymentMissionId = missionId;closeModal("dashboardModal");
-  document.querySelector("#paymentAmount").textContent = money(amountCents);
-  document.querySelector("#paymentMessage").textContent = "";
-  document.querySelector("#paymentElementWrap").innerHTML = `<div class="empty-note">${esc(t("dash.loading"))}</div>`;
-  document.querySelector("#paymentSubmit").style.display = "none";
+  const version=++paymentOpenVersion;
+  currentPaymentMissionId=missionId;paymentConfirmedIntent=null;paymentElementsInstance=null;
+  closeModal("dashboardModal");
+  document.querySelector("#paymentAmount").textContent=money(amountCents);
+  document.querySelector("#paymentMessage").textContent="";
+  document.querySelector("#paymentElementWrap").innerHTML=`<div class="empty-note">${esc(t("dash.loading"))}</div>`;
+  const submit=document.querySelector("#paymentSubmit");
+  submit.style.display="none";submit.disabled=false;submit.textContent=t("payment.pay");
   openModal("paymentModal");
-  if(!stripeClient){
-    document.querySelector("#paymentElementWrap").innerHTML = `<div class="note-box">Stripe n'a pas pu se charger.</div>`;
-    return;
-  }
   try{
-    const {data:{session}} = await db.auth.getSession();
-    const res = await fetch(SUPABASE_URL + "/functions/v1/smooth-function", {
-      method: "POST",
-      headers: {"Content-Type":"application/json", "Authorization":"Bearer "+session.access_token, "apikey": SUPABASE_KEY},
-      body: JSON.stringify({missionId})
-    });
-    const json = await res.json();
-    if(!res.ok) throw new Error(json.error || "Erreur serveur");
-    document.querySelector("#paymentElementWrap").innerHTML = "";
-    paymentElementsInstance = stripeClient.elements({clientSecret: json.client_secret});
-    const paymentElement = paymentElementsInstance.create("payment");
-    paymentElement.mount("#paymentElementWrap");
-    document.querySelector("#paymentSubmit").style.display = "block";
-  }catch(err){
-    document.querySelector("#paymentElementWrap").innerHTML = `<div class="note-box">${esc(friendlyError(err))}</div>`;
-  }
+    if(!stripeClient) throw new Error(t("payment.unavailable"));
+    const json=await paymentCall("smooth-function",{missionId});
+    if(version!==paymentOpenVersion) return;
+    if(json.paid){closeModal("paymentModal");await openDashboard();return;}
+    if(json.processing){document.querySelector("#paymentElementWrap").textContent=t("payment.processing");return;}
+    document.querySelector("#paymentAmount").textContent=moneyC(json.amount,json.currency);
+    document.querySelector("#paymentElementWrap").innerHTML="";
+    paymentElementsInstance=stripeClient.elements({clientSecret:json.client_secret});
+    paymentElementsInstance.create("payment").mount("#paymentElementWrap");
+    submit.style.display="block";
+  }catch(err){document.querySelector("#paymentElementWrap").textContent=friendlyError(err);}
 };
-document.querySelector("#paymentSubmit").addEventListener("click", async ()=>{
-  const msg = document.querySelector("#paymentMessage");
-  const submitBtn = document.querySelector("#paymentSubmit");
-  msg.textContent = "";
-  submitBtn.disabled = true;
-  const {error, paymentIntent} = await stripeClient.confirmPayment({elements: paymentElementsInstance, redirect: "if_required"});
-  if(error){ msg.textContent = friendlyError(error); submitBtn.disabled = false; return; }
+document.querySelector("#paymentSubmit").addEventListener("click",async ()=>{
+  const msg=document.querySelector("#paymentMessage"), btn=document.querySelector("#paymentSubmit");
+  if(btn.disabled || !paymentElementsInstance) return;
+  btn.disabled=true;msg.textContent="";
   try{
-    const {data:{session}} = await db.auth.getSession();
-    const res = await fetch(SUPABASE_URL + "/functions/v1/clever-processor", {
-      method: "POST",
-      headers: {"Content-Type":"application/json", "Authorization":"Bearer "+session.access_token, "apikey": SUPABASE_KEY},
-      body: JSON.stringify({missionId: currentPaymentMissionId, paymentIntentId: paymentIntent.id})
-    });
-    if(!res.ok){ const j = await res.json(); throw new Error(j.error || "Erreur de confirmation"); }
-    closeModal("paymentModal");
-    openDashboard();
-  }catch(err){
-    msg.textContent = friendlyError(err);
-  }finally{
-    submitBtn.disabled = false;
-  }
+    if(!paymentConfirmedIntent){
+      const returnUrl=new URL(location.origin+"/");returnUrl.searchParams.set("payment_mission",currentPaymentMissionId);
+      const {error,paymentIntent}=await stripeClient.confirmPayment({elements:paymentElementsInstance,confirmParams:{return_url:returnUrl.href},redirect:"if_required"});
+      if(error) throw error;
+      if(!paymentIntent) throw new Error(t("payment.processing"));
+      paymentConfirmedIntent=paymentIntent.id;
+    }
+    btn.textContent=t("payment.check");
+    const result=await paymentCall("clever-processor",{missionId:currentPaymentMissionId,paymentIntentId:paymentConfirmedIntent});
+    if(!result.ok){msg.textContent=t("payment.processing");return;}
+    closeModal("paymentModal");await openDashboard();
+  }catch(err){msg.textContent=friendlyError(err);}
+  finally{btn.disabled=false;}
 });
+async function resumePaymentReturn(){
+  const params=new URLSearchParams(location.search), missionId=params.get("payment_mission");
+  if(!missionId) return false;
+  const intentId=params.get("payment_intent"), clean=new URL(location.href);
+  ["payment_intent","payment_intent_client_secret","redirect_status"].forEach(k=>clean.searchParams.delete(k));
+  history.replaceState(null,"",clean.pathname+clean.search+clean.hash);
+  if(!currentUser){openAccountModal("login");return true;}
+  closeModal("accountModal");openModal("paymentModal");
+  document.querySelector("#paymentSubmit").style.display="none";
+  document.querySelector("#paymentElementWrap").textContent=t("dash.loading");
+  try{
+    const result=await paymentCall("clever-processor",{missionId,paymentIntentId:intentId});
+    document.querySelector("#paymentElementWrap").textContent=t(result.ok?"payment.confirmed":"payment.processing");
+    if(result.ok){clean.searchParams.delete("payment_mission");history.replaceState(null,"",clean.pathname+clean.search+clean.hash);closeModal("paymentModal");await openDashboard();}
+  }catch(err){document.querySelector("#paymentElementWrap").textContent=friendlyError(err);}
+  return true;
+}
 
 async function openDashboard(){
   if(!currentUser){ openAccountModal("login"); return; }
@@ -3454,7 +3502,11 @@ async function renderClientPanel(panel){
     // demandes de location reçues pour son/ses bateau(x) (skipper_id), sinon
     // ces dernières restent invisibles pour lui.
     const {data} = await db.from("missions").select("*").or(`client_id.eq.${currentUser.id},skipper_id.eq.${currentUser.id}`).order("created_at",{ascending:false});
-    const rows = data || [];
+    let rows = data || [];
+    const pendingChecks=rows.filter(m=>m.client_id===currentUser.id && m.status==='accepted' && m.stripe_payment_intent_id && ['unpaid','failed',null].includes(m.payment_status));
+    let reconciled=false;
+    for(const m of pendingChecks){try{const result=await paymentCall('clever-processor',{missionId:m.id});if(result.ok) reconciled=true;}catch(_error){/* Keep the request visible so the client can retry. */}}
+    if(reconciled){const refreshed=await db.from('missions').select('*').or(`client_id.eq.${currentUser.id},skipper_id.eq.${currentUser.id}`).order('created_at',{ascending:false});if(!refreshed.error) rows=refreshed.data||rows;}
     const {data: reviewedRows} = await db.from("reviews").select("mission_id").eq("client_id", currentUser.id);
     const reviewedMissionIds = new Set((reviewedRows||[]).map(r=>String(r.mission_id)));
     main.innerHTML = rows.length ? rows.map(m=>{
@@ -4662,6 +4714,16 @@ function statusPillClass(status){
   if(["rejected","cancelled"].includes(status)) return "danger";
   return "";
 }
+function missionNextStep(m, context, reviewedMissionIds){
+  const pro=context==="pro";
+  if(m.status==="cancelled"||m.status==="rejected") return t("flow."+m.status);
+  if(m.status==="completed") return t(pro?"flow.completedPro":reviewedMissionIds?.has(String(m.id))?"flow.reviewed":"flow.completed");
+  if(m.status==="awaiting_validation") return t(pro?"flow.validationPro":"flow.validation");
+  if(m.status==="in_progress" || ["paid","payout_ready","transferred"].includes(m.payment_status)) return t("flow.progress");
+  if(m.status==="accepted" && m.stripe_payment_intent_id && !pro) return t("flow.prepared");
+  const key=["pending","quoted","accepted"].includes(m.status)?m.status:"pending";
+  return t("flow."+key+(pro?"Pro":""));
+}
 function requestCard(m, context, reviewedMissionIds){
   const total = Number(m.amount_cents||0) + Number(m.urgent_fee_cents||0);
   const priceText = total ? money(total) : t("booking.priceTbd");
@@ -4673,8 +4735,8 @@ function requestCard(m, context, reviewedMissionIds){
     actions += `<button class="small-btn fill" data-accept-quote="${m.id}">${esc(t("dash.acceptQuote"))}</button>`;
     actions += `<button class="small-btn danger" data-reject-quote="${m.id}">${esc(t("dash.refuseQuote"))}</button>`;
   }
-  if(context === "client" && m.status === "accepted" && m.payment_status !== "paid"){
-   actions += `<button class="small-btn fill" data-pay-mission="${m.id}" data-pay-amount="${total}">${esc(t("dash.pay"))}</button>`;actions += `<button class="small-btn danger" data-cancel="${m.id}">${esc(t("dash.cancel"))}</button>`;
+  if(context === "client" && m.status === "accepted" && [null,"unpaid","failed"].includes(m.payment_status)){
+   actions += `<button class="small-btn fill" data-pay-mission="${m.id}" data-pay-amount="${total}">${esc(t("dash.pay"))}</button>`;if(!m.stripe_payment_intent_id) actions += `<button class="small-btn danger" data-cancel="${m.id}">${esc(t("dash.cancel"))}</button>`;
   }
   if(context === "pro" && m.status === "in_progress"){
     actions += `<button class="small-btn fill" data-complete="${m.id}">${esc(t("dash.markDone"))}</button>`;
@@ -4702,8 +4764,8 @@ function requestCard(m, context, reviewedMissionIds){
   if(context === "admin" && !["cancelled","completed"].includes(m.status)){
     actions += `<button class="small-btn danger" data-cancel="${m.id}">${esc(t("dash.cancel"))}</button>`;
   }
-  if((context === "client" || context === "pro") && m.skipper_id){
-    actions += `<button class="small-btn" data-open-chat="${m.client_id}|${m.skipper_id}">${esc(t("dash.navMessages"))}</button>`;
+  if((context === "client" || context === "pro") && (m.skipper_id||m.provider_id)){
+    actions += `<button class="small-btn" data-open-chat="${m.client_id}|${m.skipper_id||m.provider_id}">${esc(t("dash.navMessages"))}</button>`;
   }
   return `<article class="request-card">
     <div class="request-top">
@@ -4712,6 +4774,8 @@ function requestCard(m, context, reviewedMissionIds){
     </div>
     ${Array.isArray(m.photo_urls) && m.photo_urls.length ? `<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">${m.photo_urls.map(u=>`<img loading="lazy" src="${esc(u)}" style="width:56px;height:56px;object-fit:cover;border-radius:8px;cursor:pointer" onclick="window.open('${esc(u)}','_blank')">`).join("")}</div>` : ""}
     <div class="muted" style="margin-top:6px">${priceText}${m.guest_count ? ` · ${esc(String(m.guest_count))} ${esc(t("dash.guests"))}` : ""}</div>
+    <div class="muted">${esc(t("dash.paymentStatus"))}: ${esc(t("paymentStatus."+(m.payment_status||"unpaid")))}</div>
+    <div class="request-next"><strong>${esc(t("flow.next"))}</strong>${esc(missionNextStep(m,context,reviewedMissionIds))}</div>
     <div class="request-actions">${actions}</div>
   </article>`;
 }
@@ -4770,8 +4834,8 @@ function bindRequestActions(){
     if(error) alert(friendlyError(error)); else openDashboard();
   }));
   document.querySelectorAll("[data-complete]").forEach(btn=>btn.addEventListener("click", async ()=>{
-    const {error} = await db.from("missions").update({status:"awaiting_validation"}).eq("id", btn.dataset.complete).eq("skipper_id", currentUser.id);
-    if(error) alert(friendlyError(error)); else openDashboard();
+    const {data:changed,error} = await db.from("missions").update({status:"awaiting_validation"}).eq("id", btn.dataset.complete).eq("status","in_progress").or(`skipper_id.eq.${currentUser.id},provider_id.eq.${currentUser.id}`).select("id");
+    if(error || !changed?.length) alert(error?friendlyError(error):t("flow.refresh")); else openDashboard();
   }));
   document.querySelectorAll("[data-validate]").forEach(btn=>btn.addEventListener("click", async ()=>{
     const {error} = await db.from("missions").update({status:"completed"}).eq("id", btn.dataset.validate).eq("client_id", currentUser.id);
@@ -4824,6 +4888,8 @@ function openReviewModal(missionId, targetId){
 }
 function paintReviewStars(){
   document.querySelectorAll(".review-star").forEach(s=>{
+    s.setAttribute("aria-label",t("review.stars",{n:s.dataset.star}));
+    s.setAttribute("aria-pressed",String(Number(s.dataset.star)===reviewSelectedStars));
     s.style.color = Number(s.dataset.star) <= reviewSelectedStars ? "var(--brass)" : "var(--line)";
   });
 }
@@ -5642,6 +5708,7 @@ async function loadLogbook(){
   currentUser = session?.user || null;
   if(currentUser) await loadProfile();
   refreshAccountButton();
+  await resumePaymentReturn();
   const urlPro = params.get("pro");
   if(urlPro) openDirectRequest(urlPro);
   await preloadHomeBoats();
@@ -5669,6 +5736,7 @@ db.auth.onAuthStateChange(async (event, session)=>{
     currentUser = session.user;
     await loadProfile();
     refreshAccountButton();
+    if(event === "SIGNED_IN" && new URLSearchParams(location.search).has("payment_mission")) setTimeout(()=>resumePaymentReturn(),0);
     const urlPro = new URLSearchParams(location.search).get("pro");
     if(urlPro) openDirectRequest(urlPro);
   }
