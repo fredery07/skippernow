@@ -85,6 +85,13 @@
         p_path: path.slice(0, 500),
         p_referrer: referrer
     });
+
+    if(path === "/" || path === "/index.html"){
+      const ux = document.createElement("script");
+      ux.src = "/dashboard-ux.js";
+      ux.defer = true;
+      document.head.appendChild(ux);
+    }
   }catch(error){
     try{ console.warn("SkipperNow analytics:", error); }catch(_e){}
   }
