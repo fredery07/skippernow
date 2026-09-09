@@ -35,6 +35,14 @@ Deno.serve(async (req) => {
     if (missionErr || !mission || !mission.stripe_payment_intent_id) {
       return new Response(JSON.stringify({ error: "Mission ou paiement introuvable" }), { status: 404, headers: cors });
     }
+    // A separate-charge transfer must be reversed before refunding the client.
+    // Do not create the dangerous state "client refunded + professional paid".
+    const { data: payoutJob } = await supabaseAdmin.from("service_payouts").select("state,transfer_id").eq("mission_id", missionId).maybeSingle();
+    if (payoutJob || mission.stripe_transfer_id || mission.payment_status === "transferred") {
+      return new Response(JSON.stringify({
+        error: "Un transfert professionnel existe déjà. Vérifiez et inversez d’abord le transfert dans Stripe, puis contactez le support. Aucun remboursement n’a été créé."
+      }), { status: 409, headers: { ...cors, "Content-Type": "application/json" } });
+    }
 
     const stripeKey = Deno.env.get("STRIPE_SECRET_KEY")!;
     const resp = await fetch("https://api.stripe.com/v1/refunds", {
