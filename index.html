@@ -3733,7 +3733,7 @@ async function renderProPayments(main){
   const labels = {
     unpaid:proPaymentText("En attente du paiement client","Awaiting client payment","Pendiente de pago del cliente"),
     pending:proPaymentText("Payé par le client · en attente de versement","Client paid · awaiting payout","Cliente pagado · pendiente de abono"),
-    transferred:proPaymentText("Versement déclaré","Payout reported","Abono declarado"),
+    transferred:proPaymentText("Transfert Stripe confirmé","Stripe transfer confirmed","Transferencia Stripe confirmada"),
     blocked:proPaymentText("Litige · montant bloqué","Dispute · amount on hold","Disputa · importe retenido"),
     refund:proPaymentText("Remboursement demandé ou déclaré","Refund requested or reported","Reembolso solicitado o declarado"),
     closed:proPaymentText("Annulée / refusée","Cancelled / rejected","Cancelada / rechazada")
@@ -3746,7 +3746,7 @@ async function renderProPayments(main){
     return Object.entries(sums).map(([c,n])=>esc(format(n,c))).join(" · ") || "—";
   };
   main.innerHTML = `<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:16px">${["unpaid","pending","transferred","blocked"].map(key=>`<div class="request-card"><div class="muted">${esc(labels[key])}</div><strong style="display:block;font-size:24px;margin-top:8px">${totals(key)}</strong></div>`).join("")}</div>
-    <p class="note-box">${esc(proPaymentText("Montants nets après commission de la plateforme. Un paiement client ne confirme pas un virement sur votre compte bancaire. « Versement déclaré » correspond au statut renseigné par l’administration, à vérifier sur votre relevé bancaire.","Net amounts after platform commission. A client payment does not confirm a bank payout. ‘Payout reported’ is the status recorded by administration; check your bank statement.","Importes netos tras la comisión. Un pago del cliente no confirma un abono bancario. « Abono declarado » es el estado registrado por administración; comprueba tu extracto."))}</p>
+    <p class="note-box">${esc(proPaymentText("Montants nets après commission de la plateforme. Un paiement client ne confirme pas encore un transfert. Après confirmation du transfert Stripe, vérifiez son arrivée dans votre espace Stripe ou sur votre relevé bancaire.","Net amounts after platform commission. A client payment does not yet confirm a transfer. Once the Stripe transfer is confirmed, verify its arrival in Stripe or on your bank statement.","Importes netos tras la comisión. Un pago del cliente todavía no confirma una transferencia. Cuando Stripe la confirme, comprueba su llegada en Stripe o en tu extracto bancario."))}</p>
     <label>${esc(proPaymentText("Filtrer les paiements","Filter payments","Filtrar pagos"))} <select id="proPaymentFilter"><option value="all">${esc(t("dash.tabAll"))}</option>${Object.entries(labels).map(([k,v])=>`<option value="${k}">${esc(v)}</option>`).join("")}</select></label>
     <button class="small-btn" id="proPaymentRefresh" type="button">${esc(proPaymentText("Actualiser","Refresh","Actualizar"))}</button>
     <div id="proPaymentRows" aria-live="polite" style="margin-top:16px"></div>`;
