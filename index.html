@@ -3753,11 +3753,16 @@ async function renderProPayments(main){
   function renderRows(){
     const filter = main.querySelector("#proPaymentFilter").value;
     const visible = rows.filter(m=>filter==="all" || proPaymentBucket(m)===filter);
-    main.querySelector("#proPaymentRows").innerHTML = visible.length ? visible.map(m=>`<article class="request-card"><h3>${esc(m.port||"—")}</h3><div class="muted">${esc(String(m.id).slice(0,8))} · ${esc(m.starts_at ? new Date(m.starts_at).toLocaleDateString(currentLang) : "—")}</div><p><span class="tag">${esc(labels[proPaymentBucket(m)])}</span> · ${esc(t("status."+m.status))}</p><div>${esc(t("dash.total"))}: ${esc(format(Number(m.amount_cents||0)+Number(m.urgent_fee_cents||0),m.currency))} · ${esc(t("dash.commission"))}: ${esc(format(Number(m.platform_fee_cents||0),m.currency))}</div><strong>${esc(t("dash.netPro"))}: ${esc(format(net(m),m.currency))}</strong></article>`).join("") : `<p class="empty-note">${esc(proPaymentText("Aucun paiement pour ce filtre.","No payments for this filter.","No hay pagos para este filtro."))}</p>`;
+    main.querySelector("#proPaymentRows").innerHTML = visible.length ? visible.map(m=>`<article class="request-card"><h3>${esc(m.port||"—")}</h3><div class="muted">${esc(String(m.id).slice(0,8))} · ${esc(m.starts_at ? new Date(m.starts_at).toLocaleDateString(currentLang) : "—")}</div><p><span class="tag">${esc(labels[proPaymentBucket(m)])}</span> · ${esc(t("status."+m.status))}</p><div>${esc(t("dash.total"))}: ${esc(format(Number(m.amount_cents||0)+Number(m.urgent_fee_cents||0),m.currency))} · ${esc(t("dash.commission"))}: ${esc(format(Number(m.platform_fee_cents||0),m.currency))}</div><strong>${esc(t("dash.netPro"))}: ${esc(format(net(m),m.currency))}</strong><div data-service-summary="${esc(m.id)}"></div></article>`).join("") : `<p class="empty-note">${esc(proPaymentText("Aucun paiement pour ce filtre.","No payments for this filter.","No hay pagos para este filtro."))}</p>`;
   }
-  main.querySelector("#proPaymentFilter").addEventListener("change",renderRows);
+  main.querySelector("#proPaymentFilter").addEventListener("change",async()=>{
+    renderRows();
+    await mountServiceSummaries(main, rows);
+  });
   main.querySelector("#proPaymentRefresh").addEventListener("click",()=>renderProPayments(main));
   renderRows();
+  await mountConnectSetup(main);
+  await mountServiceSummaries(main, rows);
 }
 async function renderProDashboard(){
   const body = document.querySelector("#dashboardBody");
@@ -4109,9 +4114,7 @@ async function renderAdminPanel(panel){
     main.innerHTML = `<div class="note-box">${esc(t("dash.paymentsNote"))}</div>` + (rows.length ? rows.map(m=>adminMissionCard(m, byId, true)).join("") : `<div class="empty-note">${esc(t("dash.noMissions"))}</div>`);
     bindAdminMissionActions("payments");
   }else if(panel === "payouts"){
-    const rows = missions.filter(m => ["payout_ready","transferred"].includes(m.payment_status));
-    main.innerHTML = `<div class="note-box">${esc(t("dash.payoutsNote"))}</div>` + (rows.length ? rows.map(m=>adminMissionCard(m, byId, true, payoutsById)).join("") : `<div class="empty-note">${esc(t("dash.noMissions"))}</div>`);
-    bindAdminMissionActions("payouts");
+    await renderServicePayoutAdmin(main, missions, byId);
   }else if(panel === "refunds"){
     const rows = missions.filter(m => ["refund_requested","refunded","refund_rejected"].includes(m.payment_status));
     main.innerHTML = rows.length ? rows.map(m=>adminMissionCard(m, byId, true)).join("") : `<div class="empty-note">${esc(t("dash.noRefunds"))}</div>`;
@@ -4610,11 +4613,11 @@ function renderActivitiesPanel(tiles){
 }
 function adminMissionCard(m, byId, showFinance, payoutsById){
   const client = byId[String(m.client_id)];
-  const pro = byId[String(m.skipper_id)];
+  const pro = byId[String(m.provider_id||m.skipper_id)];
   const total = Number(m.amount_cents||0) + Number(m.urgent_fee_cents||0);
   const fee = Number(m.platform_fee_cents||0);
   const net = Math.max(0, total - fee);
-  const payout = payoutsById ? payoutsById[String(m.skipper_id)] : null;
+  const payout = payoutsById ? payoutsById[String(m.provider_id||m.skipper_id)] : null;
   return `<article class="request-card">
     <div class="request-top">
       <div>
@@ -4632,7 +4635,6 @@ function adminMissionCard(m, byId, showFinance, payoutsById){
       <select data-status-select="${m.id}">
         ${["pending","quoted","accepted","rejected","in_progress","awaiting_validation","completed","cancelled"].map(s=>`<option value="${s}" ${s===m.status?"selected":""}>${esc(t("status."+s))}</option>`).join("")}
       </select>
-      ${m.payment_status==="payout_ready" ? `<button class="small-btn fill" data-mark-paid="${m.id}">${esc(t("dash.markPaidOut"))}</button>` : ""}
       ${m.payment_status==="refund_requested" ? `<button class="small-btn fill" data-approve-refund="${m.id}">${esc(t("dash.approveRefund"))}</button><button class="small-btn danger" data-reject-refund="${m.id}">${esc(t("dash.rejectRefund"))}</button>` : ""}
       ${m.dispute_status==="open" ? `<button class="small-btn fill" data-resolve-dispute="${m.id}">${esc(t("dash.resolveDispute"))}</button>` : ""}
       <button class="small-btn danger" data-delete-mission="${m.id}">${esc(t("dash.delete"))}</button>
@@ -4647,11 +4649,6 @@ function bindAdminMissionActions(panel){
   document.querySelectorAll("[data-delete-mission]").forEach(btn=>btn.addEventListener("click", async ()=>{
     if(!confirm(t("dash.delete")+" ?")) return;
     const {error} = await db.from("missions").delete().eq("id", btn.dataset.deleteMission);
-    if(error) alert(friendlyError(error)); else renderAdminPanel(panel);
-  }));
-  document.querySelectorAll("[data-mark-paid]").forEach(btn=>btn.addEventListener("click", async ()=>{
-    if(!confirm(t("dash.markPaidOut")+" ?")) return;
-    const {error} = await db.from("missions").update({payment_status:"transferred"}).eq("id", btn.dataset.markPaid);
     if(error) alert(friendlyError(error)); else renderAdminPanel(panel);
   }));
   document.querySelectorAll("[data-approve-refund]").forEach(btn=>btn.addEventListener("click", async ()=>{
@@ -4849,6 +4846,7 @@ function requestCard(m, context, reviewedMissionIds){
     <div class="muted" style="margin-top:6px">${priceText}${m.guest_count ? ` · ${esc(String(m.guest_count))} ${esc(t("dash.guests"))}` : ""}</div>
     <div class="muted">${esc(t("dash.paymentStatus"))}: ${esc(t("paymentStatus."+(m.payment_status||"unpaid")))}</div>
     <div class="request-next"><strong>${esc(t("flow.next"))}</strong>${esc(missionNextStep(m,context,reviewedMissionIds))}</div>
+    <div data-service-summary="${esc(m.id)}"></div>
     <div class="request-actions">${actions}</div>
   </article>`;
 }
@@ -4907,8 +4905,7 @@ function bindRequestActions(){
     if(error) alert(friendlyError(error)); else openDashboard();
   }));
   document.querySelectorAll("[data-complete]").forEach(btn=>btn.addEventListener("click", async ()=>{
-    const {data:changed,error} = await db.from("missions").update({status:"awaiting_validation"}).eq("id", btn.dataset.complete).eq("status","in_progress").or(`skipper_id.eq.${currentUser.id},provider_id.eq.${currentUser.id}`).select("id");
-    if(error || !changed?.length) alert(error?friendlyError(error):t("flow.refresh")); else openDashboard();
+    openServiceCompletion(btn.dataset.complete);
   }));
   document.querySelectorAll("[data-validate]").forEach(btn=>btn.addEventListener("click", async ()=>{
     const {error} = await db.from("missions").update({status:"completed"}).eq("id", btn.dataset.validate).eq("client_id", currentUser.id);
@@ -5815,5 +5812,6 @@ db.auth.onAuthStateChange(async (event, session)=>{
   }
 });
 </script>
+<script src="/service-payouts.js"></script>
 </body>
 </html>
