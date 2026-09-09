@@ -55,6 +55,8 @@ CREATE POLICY payout_parties_read ON public.service_payouts FOR SELECT TO authen
 );
 CREATE POLICY payout_settings_read ON public.service_payout_settings FOR SELECT TO authenticated USING(true);
 CREATE INDEX service_completion_due ON public.service_completions(due_at) WHERE NOT held;
+CREATE INDEX service_completions_professional_idx ON public.service_completions(professional_id);
+CREATE INDEX service_payouts_professional_idx ON public.service_payouts(professional_id);
 INSERT INTO storage.buckets(id,name,public,file_size_limit,allowed_mime_types)
 VALUES('completion-proofs','completion-proofs',false,8388608,ARRAY['image/jpeg','image/png','image/webp']);
 -- No direct object policies: upload and short-lived viewing links use the
