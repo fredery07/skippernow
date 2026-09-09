@@ -39,6 +39,12 @@ assert.match(sql,/REVOKE ALL ON FUNCTION[\s\S]+FROM PUBLIC,anon,authenticated/);
 assert.match(sql,/service-payouts-every-15-minutes/);
 assert.match(sql,/status=CASE WHEN status='awaiting_validation' THEN 'completed'/);
 assert.match(edge,/input\.action==="set_enabled"/);
+assert.match(edge,/"connect-"\+a\.creation_key/);
+assert.doesNotMatch(edge,/Création de compte déjà engagée/);
+
+const flow=readFileSync('service-flow.js','utf8');
+assert.match(flow,/Vous n’avez pas besoin de posséder déjà un compte Stripe/);
+assert.match(flow,/Renseigner mes coordonnées/);
 
 const refund=readFileSync('supabase/functions/rapid-task/index.ts','utf8');
 assert.match(refund,/payoutJob \|\| mission\.stripe_transfer_id \|\| mission\.payment_status === "transferred"/);
