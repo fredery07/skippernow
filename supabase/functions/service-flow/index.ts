@@ -120,8 +120,11 @@ Deno.serve(async req=>{
         a=await checked(await db.from("connect_accounts").select("*").eq("professional_id",user.id).single());
       }
       if(input.action==="onboard" && !a.account_id){
-        const started=await checked(await db.from("connect_accounts").update({creation_started_at:new Date().toISOString()}).eq("professional_id",user.id).is("creation_started_at",null).select("professional_id"));
-        if(!started.length) throw new Error("Création de compte déjà engagée : contactez le support pour vérification.");
+        if(!a.creation_started_at){
+          await checked(await db.from("connect_accounts").update({creation_started_at:new Date().toISOString()}).eq("professional_id",user.id));
+        }
+        // Reusing the same key safely resumes a request that was interrupted
+        // after Stripe created the account but before its ID was stored.
         const account=await stripe("accounts",{"controller[stripe_dashboard][type]":"express","controller[fees][payer]":"application","controller[losses][payments]":"application","capabilities[transfers][requested]":"true","metadata[professional_id]":user.id},"connect-"+a.creation_key);
         await checked(await db.from("connect_accounts").update({account_id:account.id}).eq("professional_id",user.id));
         a.account_id=account.id;
