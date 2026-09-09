@@ -20,7 +20,7 @@ function serviceDialog(title){
 }
 function openServiceCompletion(id){
   const dialog=serviceDialog("Terminer la prestation");
-  dialog.querySelector(".service-dialog-body").innerHTML=`<form><p>Ajoutez une photo du bateau ou de la prestation réalisée. Elle sera visible uniquement par les parties de la mission et l’administration.</p><label>Photo obligatoire (JPEG, PNG, WebP · 8 Mo max.)<input name="photo" type="file" accept="image/jpeg,image/png,image/webp" required style="display:block;margin:16px 0;max-width:100%"></label><p>La confirmation démarre un délai de 5 jours. L’administration peut verser avant ; sinon le transfert sera automatique si les versements sont activés, votre compte Stripe est prêt et aucun litige ou blocage n’est ouvert.</p><button class="primary" type="submit">Confirmer avec la photo</button><p role="status"></p></form>`;
+  dialog.querySelector(".service-dialog-body").innerHTML=`<form><p>Ajoutez une photo du bateau ou de la prestation réalisée. Elle sera visible uniquement par les parties de la mission et l’administration.</p><label>Photo obligatoire (JPEG, PNG, WebP · 8 Mo max.)<input name="photo" type="file" accept="image/jpeg,image/png,image/webp" required style="display:block;margin:16px 0;max-width:100%"></label><p>La confirmation démarre un délai de 5 jours. L’administration peut verser avant ; sinon le transfert sera automatique si les versements sont activés, vos coordonnées de versement sont vérifiées et aucun litige ou blocage n’est ouvert.</p><button class="primary" type="submit">Confirmer avec la photo</button><p role="status"></p></form>`;
   dialog.querySelector("form").onsubmit=async e=>{
     e.preventDefault(); const button=e.target.querySelector('[type="submit"]');const status=e.target.querySelector('[role="status"]');
     const photo=e.target.photo.files[0];if(!photo || photo.size>8388608){status.textContent="Choisissez une photo de 8 Mo maximum.";return;}
@@ -39,7 +39,7 @@ function serviceSummary(c,j,enabled){
   if(j) return "Versement engagé ou à vérifier. Aucun deuxième envoi automatique.";
   if(c.held) return "Versement suspendu par l’administration.";
   const when=new Date(c.due_at).toLocaleString(currentLang);
-  return "Photo reçue. Échéance de versement : "+when+". "+(enabled?"Sous réserve d’un compte Stripe prêt et de l’absence de litige.":"Versements automatiques non activés pour le moment.");
+  return "Photo reçue. Échéance de versement : "+when+". "+(enabled?"Sous réserve de coordonnées de versement vérifiées et de l’absence de litige.":"Versements automatiques non activés pour le moment.");
 }
 async function mountServiceSummaries(main,rows){
   if(!rows.length) return;
@@ -58,13 +58,13 @@ async function mountServiceSummaries(main,rows){
   }
 }
 async function mountConnectSetup(main){
-  const box=document.createElement("div");box.className="note-box";box.innerHTML=`<strong>Compte de versement</strong><p>Connectez votre compte Stripe pour recevoir vos versements et consulter leur arrivée bancaire.</p><p role="status">Vérification…</p><button class="small-btn" type="button" data-connect>Configurer les versements</button> <button class="small-btn" type="button" data-stripe hidden>Ouvrir mon espace Stripe</button>`;main.prepend(box);
+  const box=document.createElement("div");box.className="note-box";box.innerHTML=`<strong>Coordonnées de versement</strong><p>Renseignez votre identité et votre RIB dans le formulaire sécurisé géré par Stripe. Vous n’avez pas besoin de posséder déjà un compte Stripe.</p><p role="status">Vérification…</p><button class="small-btn" type="button" data-connect>Renseigner mes coordonnées</button> <button class="small-btn" type="button" data-stripe hidden>Suivre mes versements</button>`;main.prepend(box);
   const message=box.querySelector('[role="status"]');
   for(const [selector,action] of [["[data-connect]","onboard"],["[data-stripe]","account_dashboard"]]) box.querySelector(selector).onclick=async e=>{
     e.target.disabled=true;
     try{const result=await serviceRequest(action);const url=new URL(result.url);if(url.protocol!=="https:" || !(url.hostname==="stripe.com" || url.hostname.endsWith(".stripe.com"))) throw new Error("Lien Stripe invalide");location.assign(url.href);}catch(error){message.textContent=error.message;e.target.disabled=false;}
   };
-  try{const result=await serviceRequest("account_status");message.textContent=result.ready?"Compte Stripe prêt à recevoir les transferts.":result.connected?"Configuration Stripe à compléter.":"Aucun compte Stripe relié.";box.querySelector('[data-stripe]').hidden=!result.connected;}
+  try{const result=await serviceRequest("account_status");message.textContent=result.ready?"Coordonnées vérifiées : vous pouvez recevoir des versements.":result.connected?"Configuration des versements à terminer.":"Coordonnées bancaires à renseigner.";box.querySelector('[data-stripe]').hidden=!result.connected;}
   catch(error){message.textContent=error.message;}
 }
 async function renderServicePayoutAdmin(main,missions,byId){
@@ -93,7 +93,7 @@ async function renderServicePayoutAdmin(main,missions,byId){
     const pro=byId[m.provider_id||m.skipper_id];const account=acs.data.find(a=>a.professional_id===(m.provider_id||m.skipper_id));
     const blocked=m.dispute_status==="open" || !["paid","payout_ready"].includes(m.payment_status);
     const card=document.createElement("article");card.className="request-card";
-    card.innerHTML=`<h3>${esc(m.port||"—")}</h3><p>${esc(pro?.full_name||"Professionnel non renseigné")} · ${esc(m.id.slice(0,8))}</p><strong>Net professionnel : ${moneyC(Math.max(0,Number(m.amount_cents||0)+Number(m.urgent_fee_cents||0)-Number(m.platform_fee_cents||0)),m.currency||"eur")}</strong><p>${esc(c?serviceSummary(c,j,enabled):"Ancienne mission sans preuve photo : aucun versement automatique programmé.")}</p><p>${blocked?"Litige, remboursement ou paiement à vérifier.":""} ${account?.ready?"Compte Stripe prêt.":"Compte Stripe du professionnel à configurer."}</p><div class="request-actions"></div><p role="status">${esc(j?.error||"")}</p>`;
+    card.innerHTML=`<h3>${esc(m.port||"—")}</h3><p>${esc(pro?.full_name||"Professionnel non renseigné")} · ${esc(m.id.slice(0,8))}</p><strong>Net professionnel : ${moneyC(Math.max(0,Number(m.amount_cents||0)+Number(m.urgent_fee_cents||0)-Number(m.platform_fee_cents||0)),m.currency||"eur")}</strong><p>${esc(c?serviceSummary(c,j,enabled):"Ancienne mission sans preuve photo : aucun versement automatique programmé.")}</p><p>${blocked?"Litige, remboursement ou paiement à vérifier.":""} ${account?.ready?"Coordonnées de versement vérifiées.":"Coordonnées de versement du professionnel à compléter."}</p><div class="request-actions"></div><p role="status">${esc(j?.error||"")}</p>`;
     const actions=card.querySelector(".request-actions");
     function button(label,action,disabled=false){const b=document.createElement("button");b.className="small-btn";b.textContent=label;b.disabled=disabled;b.onclick=async()=>{b.disabled=true;try{await action();}catch(e){card.querySelector('[role="status"]').textContent=e.message;}finally{b.disabled=disabled;}};actions.append(b);}
     if(c){
