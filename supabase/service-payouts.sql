@@ -207,7 +207,7 @@ SELECT cron.schedule(
   '*/15 * * * *',
   $cron$
   SELECT net.http_post(
-    url := 'https://pzvlarwsfvhenrniepkw.supabase.co/functions/v1/service-payouts',
+    url := 'https://pzvlarwsfvhenrniepkw.supabase.co/functions/v1/service-flow',
     headers := jsonb_build_object(
       'Content-Type','application/json',
       'x-service-worker',(SELECT decrypted_secret FROM vault.decrypted_secrets WHERE name='service_payout_worker_token')

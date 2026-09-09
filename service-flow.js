@@ -3,7 +3,7 @@ async function serviceRequest(action, missionId, extra={}){
   const {data:{session}}=await db.auth.getSession();
   if(!session) throw new Error("Connectez-vous pour continuer.");
   const isForm=extra instanceof FormData;
-  const response=await fetch(SUPABASE_URL+"/functions/v1/service-payouts",{
+  const response=await fetch(SUPABASE_URL+"/functions/v1/service-flow",{
     method:"POST",headers:{Authorization:"Bearer "+session.access_token,apikey:SUPABASE_KEY,...(isForm?{}:{"Content-Type":"application/json"})},
     body:isForm?extra:JSON.stringify({action,missionId,...extra})
   });
