@@ -2830,7 +2830,7 @@ window.openProfileDetail = function(id, adminView){
         : (currentUser && String(p.id)===String(currentUser.id))
           ? `<div class="note-box" style="margin-top:18px">${esc(t("boatDetail.ownListing"))}</div>`
           : `<div class="profile-actions">
-              <button ${canRequest ? "" : "disabled"} class="primary wide" style="flex:1;min-width:160px" onclick="closeModal('profileDetailModal');openBookingFor('${p.id}','${esc(String(p.full_name||"").replace(/'/g,"\\'"))}','${esc(String(p.home_port||"").replace(/'/g,"\\'"))}','${activity}','${esc(currentProviderSubcategory||"")}')">${esc(t("profile.quote"))}</button>
+              <button ${canRequest ? "" : "disabled"} class="primary wide" style="flex:1;min-width:160px" onclick="closeModal('profileDetailModal');openBookingFor('${p.id}','${esc(String(p.full_name||"").replace(/'/g,"\\'"))}','${esc(String(p.home_port||"").replace(/'/g,"\\'"))}','${activity}','${esc(currentProviderSubcategory||"")}','${esc(p.role||"")}')">${esc(t("profile.quote"))}</button>
               <button class="ghost wide" style="flex:1;min-width:160px" onclick="messageProfile('${p.id}')">${esc(t("card.sendMessage"))}</button>
             </div>`}
     </div>`;
@@ -3114,12 +3114,12 @@ document.querySelector("#bookingDuration").addEventListener("change", updateBook
 function clearBookingDraft(){
   try{ sessionStorage.removeItem(BOOKING_DRAFT_KEY); }catch(_e){}
 }
-window.openBookingFor = function(targetId, name, homePort, activity, subcategory){
+window.openBookingFor = function(targetId, name, homePort, activity, subcategory, targetRole){
   if(currentUser && targetId && String(targetId) === String(currentUser.id)){
     alert(t("boatDetail.ownListing"));
     return;
   }
-  bookingContext = {targetId, name, homePort, activity, subcategory};
+  bookingContext = {targetId, name, homePort, activity, subcategory, targetRole};
   document.querySelector("#bookingTargetName").textContent = name || t("booking.defaultTarget");
   document.querySelector("#bookingSummaryPrice").textContent = t("booking.priceTbd");
   const bookingPort = document.querySelector("#bookingPort");
@@ -3171,7 +3171,7 @@ function applyBookingDraftAndOpen(draft){
   clearBookingDraft();
   const targetId = draft.targetId || null;
   const name = targetId ? (draft.name || t("booking.defaultTarget")) : t("quickRequest.openTitle");
-  window.openBookingFor(targetId, name, draft.port || portInput.value, activeActivity, draft.subcategory || "");
+  window.openBookingFor(targetId, name, draft.port || portInput.value, activeActivity, draft.subcategory || "", draft.targetRole || "");
   // openBookingFor vient de réinitialiser le formulaire avec des valeurs par
   // défaut : on restaure par-dessus les valeurs conservées du brouillon.
   if(draft.date) document.querySelector("#bookingDate").value = draft.date;
@@ -3225,6 +3225,7 @@ document.querySelector("#bookingSubmit").addEventListener("click", async ()=>{
       name: bookingContext.name || "",
       activity: bookingContext.activity || activeActivity,
       subcategory: bookingContext.subcategory || "",
+      targetRole: bookingContext.targetRole || "",
       port: document.querySelector("#bookingPort").value.trim(),
       date: document.querySelector("#bookingDate").value,
       duration: durationValue,
@@ -3288,9 +3289,8 @@ document.querySelector("#bookingSubmit").addEventListener("click", async ()=>{
       photoUrls.push(pub.publicUrl);
     }
 
-    const {error} = await db.from("missions").insert({
+    const missionPayload = {
       client_id: currentUser.id,
-      skipper_id: bookingContext.targetId || null,
       port: requestedPort,
       boat_type: boatType,
       description: details,
@@ -3302,7 +3302,12 @@ document.querySelector("#bookingSubmit").addEventListener("click", async ()=>{
       platform_fee_cents: 0,
       status: "pending",
       payment_status: "unpaid"
-    });
+    };
+    if(bookingContext.targetId){
+      if(bookingContext.targetRole === "provider") missionPayload.provider_id = bookingContext.targetId;
+      else missionPayload.skipper_id = bookingContext.targetId;
+    }
+    const {error} = await db.from("missions").insert(missionPayload);
     if(error){
       trackBookingEvent("booking_failed", {stage:"mission_insert"});
       msg.style.color = "#b42318"; msg.textContent = friendlyError(error); submitBtn.disabled = false; return;
