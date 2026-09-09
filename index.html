@@ -2489,6 +2489,20 @@ async function openDirectRequest(proId){
   const {data: pro, error} = await db.from("profiles").select("id,full_name,role,home_port").eq("id", proId).eq("verified", true).eq("suspended", false).maybeSingle();
   if(error || !pro) return;
   directRequestTarget = pro;
+  // A returning client who follows the professional's link must land on the
+  // request already sent, not on an empty form that could create a duplicate.
+  if(currentUser && currentProfile?.role === "client"){
+    const {data: existing} = await db.from("missions").select("id")
+      .eq("client_id", currentUser.id)
+      .or(`provider_id.eq.${pro.id},skipper_id.eq.${pro.id}`)
+      .in("status", ["pending","quoted","accepted","in_progress","awaiting_validation"])
+      .order("created_at", {ascending:false}).limit(1).maybeSingle();
+    if(existing){
+      closeModal("directRequestModal");
+      await openDashboard();
+      return;
+    }
+  }
   document.querySelector("#directReqProName").textContent = t("directReq.title") + " — " + (pro.full_name || "");
   document.querySelector("#directReqPort").value = pro.home_port || "";
   const loggedOut = document.querySelector("#directReqLoggedOut");
@@ -2527,7 +2541,7 @@ document.querySelector("#directReqForm")?.addEventListener("submit", async e=>{
   if(error){ msg.style.color = "#b42318"; msg.textContent = friendlyError(error); return; }
   msg.style.color = "";
   msg.textContent = t("directReq.sent");
-  setTimeout(()=>closeModal("directRequestModal"), 1400);
+  setTimeout(async ()=>{ closeModal("directRequestModal"); await openDashboard(); }, 900);
 });
 function boatTypeLabel(type){
   const key = type === "motorboat" ? "boatDetail.typeMotorboat" : type === "rib" ? "boatDetail.typeRib" : type === "catamaran" ? "boatDetail.typeCatamaran" : "boatDetail.typeSailboat";
