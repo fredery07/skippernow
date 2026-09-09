@@ -3708,12 +3708,64 @@ function bindMyBoatActions(refreshFn){
     refreshFn();
   }));
 }
+function proPaymentText(fr,en,es){ return currentLang === "en" ? en : currentLang === "es" ? es : fr; }
+function proPaymentBucket(m){
+  if(m.payment_status === "transferred") return "transferred";
+  if(["refunded","refund_requested"].includes(m.payment_status)) return "refund";
+  if(m.dispute_status === "open") return "blocked";
+  if(["paid","payout_ready"].includes(m.payment_status)) return "pending";
+  if(["cancelled","rejected"].includes(m.status)) return "closed";
+  return "unpaid";
+}
+async function renderProPayments(main){
+  const userId = currentUser?.id;
+  if(!userId) return;
+  main.innerHTML = `<p role="status">${esc(t("dash.loading"))}</p>`;
+  const {data,error} = await db.from("missions")
+    .select("id,provider_id,skipper_id,port,starts_at,created_at,status,payment_status,amount_cents,urgent_fee_cents,platform_fee_cents,currency,dispute_status")
+    .or(`provider_id.eq.${userId},skipper_id.eq.${userId}`).order("created_at",{ascending:false});
+  if(currentUser?.id !== userId || !main.isConnected || !document.querySelector('.dash-side [data-panel="payments"].active')) return;
+  if(error){
+    main.innerHTML = `<p role="alert">${esc(proPaymentText("Impossible de charger les paiements. Réessayez.","Unable to load payments. Please retry.","No se pueden cargar los pagos. Inténtalo de nuevo."))}</p>`;
+    return;
+  }
+  const rows = (data||[]).filter(m=>m.provider_id===userId || m.skipper_id===userId);
+  const labels = {
+    unpaid:proPaymentText("En attente du paiement client","Awaiting client payment","Pendiente de pago del cliente"),
+    pending:proPaymentText("Payé par le client · en attente de versement","Client paid · awaiting payout","Cliente pagado · pendiente de abono"),
+    transferred:proPaymentText("Versement déclaré","Payout reported","Abono declarado"),
+    blocked:proPaymentText("Litige · montant bloqué","Dispute · amount on hold","Disputa · importe retenido"),
+    refund:proPaymentText("Remboursement demandé ou déclaré","Refund requested or reported","Reembolso solicitado o declarado"),
+    closed:proPaymentText("Annulée / refusée","Cancelled / rejected","Cancelada / rechazada")
+  };
+  const net = m=>Math.max(0,Number(m.amount_cents||0)+Number(m.urgent_fee_cents||0)-Number(m.platform_fee_cents||0));
+  const format = (amount,currency)=>new Intl.NumberFormat(currentLang,{style:"currency",currency:currency||"EUR"}).format(amount/100);
+  const totals = key=>{
+    const sums = {};
+    rows.filter(m=>proPaymentBucket(m)===key).forEach(m=>{const c=(m.currency||"eur").toUpperCase();sums[c]=(sums[c]||0)+net(m);});
+    return Object.entries(sums).map(([c,n])=>esc(format(n,c))).join(" · ") || "—";
+  };
+  main.innerHTML = `<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:16px">${["unpaid","pending","transferred","blocked"].map(key=>`<div class="request-card"><div class="muted">${esc(labels[key])}</div><strong style="display:block;font-size:24px;margin-top:8px">${totals(key)}</strong></div>`).join("")}</div>
+    <p class="note-box">${esc(proPaymentText("Montants nets après commission de la plateforme. Un paiement client ne confirme pas un virement sur votre compte bancaire. « Versement déclaré » correspond au statut renseigné par l’administration, à vérifier sur votre relevé bancaire.","Net amounts after platform commission. A client payment does not confirm a bank payout. ‘Payout reported’ is the status recorded by administration; check your bank statement.","Importes netos tras la comisión. Un pago del cliente no confirma un abono bancario. « Abono declarado » es el estado registrado por administración; comprueba tu extracto."))}</p>
+    <label>${esc(proPaymentText("Filtrer les paiements","Filter payments","Filtrar pagos"))} <select id="proPaymentFilter"><option value="all">${esc(t("dash.tabAll"))}</option>${Object.entries(labels).map(([k,v])=>`<option value="${k}">${esc(v)}</option>`).join("")}</select></label>
+    <button class="small-btn" id="proPaymentRefresh" type="button">${esc(proPaymentText("Actualiser","Refresh","Actualizar"))}</button>
+    <div id="proPaymentRows" aria-live="polite" style="margin-top:16px"></div>`;
+  function renderRows(){
+    const filter = main.querySelector("#proPaymentFilter").value;
+    const visible = rows.filter(m=>filter==="all" || proPaymentBucket(m)===filter);
+    main.querySelector("#proPaymentRows").innerHTML = visible.length ? visible.map(m=>`<article class="request-card"><h3>${esc(m.port||"—")}</h3><div class="muted">${esc(String(m.id).slice(0,8))} · ${esc(m.starts_at ? new Date(m.starts_at).toLocaleDateString(currentLang) : "—")}</div><p><span class="tag">${esc(labels[proPaymentBucket(m)])}</span> · ${esc(t("status."+m.status))}</p><div>${esc(t("dash.total"))}: ${esc(format(Number(m.amount_cents||0)+Number(m.urgent_fee_cents||0),m.currency))} · ${esc(t("dash.commission"))}: ${esc(format(Number(m.platform_fee_cents||0),m.currency))}</div><strong>${esc(t("dash.netPro"))}: ${esc(format(net(m),m.currency))}</strong></article>`).join("") : `<p class="empty-note">${esc(proPaymentText("Aucun paiement pour ce filtre.","No payments for this filter.","No hay pagos para este filtro."))}</p>`;
+  }
+  main.querySelector("#proPaymentFilter").addEventListener("change",renderRows);
+  main.querySelector("#proPaymentRefresh").addEventListener("click",()=>renderProPayments(main));
+  renderRows();
+}
 async function renderProDashboard(){
   const body = document.querySelector("#dashboardBody");
   const isBoatRentalPro = currentProfile?.provider_activity === "boat_rental_pro";
   const isProvider = currentProfile?.role === "provider";
   const navItems = [
     {id:"requests", label:t("dash.navRequests")},
+    {id:"payments", label:proPaymentText("Paiements", "Payments", "Pagos")},
     {id:"messages", label:t("dash.navMessages")},
     {id:"support", label:t("dash.navSupport")}
   ];
@@ -3751,7 +3803,9 @@ async function renderProPanel(panel){
   refreshDashboardIdentity(panel);
   const main = document.querySelector("#dashMain");
   const profileReminder = profileReminderBannerHtml(currentProfile);
-  if(panel === "requests"){
+  if(panel === "payments"){
+    await renderProPayments(main);
+  }else if(panel === "requests"){
     const {data} = await db.from("missions").select("*").order("created_at",{ascending:false});
     const rows = (data||[]).filter(m => String(m.skipper_id||"") === String(currentUser.id) || String(m.provider_id||"") === String(currentUser.id) || (!m.skipper_id && !m.provider_id && m.status === "pending"));
     main.innerHTML = profileReminder + (rows.length ? rows.map(m=>requestCard(m,"pro")).join("") : `<div class="empty-note">${esc(t("dash.noMissions"))}</div>`);
