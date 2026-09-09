@@ -23,6 +23,8 @@ r=await run('clever-processor',{}, {status:'succeeded'});assert.equal(r.body.ok,
 r=await run('clever-processor',{status:'completed',payment_status:'transferred',stripe_payment_intent_id:'pi_test1'}, {status:'succeeded'});assert.equal(r.body.ok,true);assert.equal(r.m.payment_status,'transferred');
 // Actual UI predicates: paid missions never offer another payment; provider messages work.
 const html=readFileSync('index.html','utf8');const code=html.slice(html.indexOf('function statusPillClass'),html.indexOf('window.openInvoice'));
+assert.match(html,/targetRole === "provider"\) missionPayload\.provider_id/);
+assert.match(html,/targetRole: bookingContext\.targetRole/);
 const ui=vm.createContext({t:(k)=>k,esc:String,money:String,currentUser:{id:'pro1'},currentLang:'fr'});vm.runInContext(code,ui);
 const card=(m,c='client',reviews=new Set())=>ui.requestCard({...base,provider_id:'pro1',...m},c,reviews);
 assert.match(card({}),/data-pay-mission/);assert.doesNotMatch(card({payment_status:'transferred'}),/data-pay-mission/);
