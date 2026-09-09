@@ -2,7 +2,7 @@ import {readFileSync} from 'node:fs';
 import assert from 'node:assert/strict';
 import vm from 'node:vm';
 
-const edge=readFileSync('supabase/functions/service-payouts/index.ts','utf8');
+const edge=readFileSync('supabase/functions/service-flow/index.ts','utf8');
 const pure=edge.slice(edge.indexOf('export function photoType'),edge.indexOf('async function transfer')).replaceAll('export ','');
 const context=vm.createContext({TextDecoder});
 vm.runInContext(pure,context);
@@ -28,7 +28,7 @@ for(const [badPi,badCharge,badJob] of [
 const html=readFileSync('index.html','utf8');
 assert.match(html,/data-complete="\$\{m\.id\}"/);
 assert.match(html,/data-service-summary="\$\{esc\(m\.id\)\}"/);
-assert.match(html,/<script src="\/service-payouts\.js"><\/script>/);
+assert.match(html,/<script src="\/service-flow\.js"><\/script>/);
 assert.doesNotMatch(html,/data-mark-paid/);
 
 const sql=readFileSync('supabase/service-payouts.sql','utf8');
