@@ -1466,6 +1466,7 @@ const I18N = {
     "dash.refuseQuote":"Refuser le devis","dash.pay":"Payer maintenant","dash.markDone":"Marquer comme terminée","dash.validate":"Valider la mission",
     "dash.cancel":"Annuler","dash.approve":"Valider le profil","dash.suspend":"Suspendre","dash.saveSettings":"Enregistrer les réglages",
     "dash.settingsCommission":"Commission par défaut (%)","dash.settingsUrgent":"Supplément demande urgente (€)","dash.settingsSupport":"Email d'assistance",
+    "dash.payoutSetupNote":"Renseignez vos coordonnées de versement uniquement dans Paiements, via le formulaire sécurisé.","dash.managePayoutDetails":"Gérer mes coordonnées dans Paiements",
     "dash.payoutDetailsNote":"Ces coordonnées bancaires ne sont visibles que par vous et par l'administrateur, jamais par les clients.","dash.holderLabel":"TITULAIRE DU COMPTE","dash.ibanLabel":"IBAN","dash.bicLabel":"BIC","dash.noIban":"Ce professionnel n'a pas encore renseigné son IBAN.",
     "status.pending":"En attente de prix","status.quoted":"Prix proposé","status.accepted":"Devis accepté","status.rejected":"Devis refusé",
     "status.paid":"Payée","status.in_progress":"En cours","status.awaiting_validation":"À valider","status.completed":"Terminée","status.cancelled":"Annulée",
@@ -1641,6 +1642,7 @@ const I18N = {
     "dash.refuseQuote":"Decline quote","dash.pay":"Pay now","dash.markDone":"Mark as completed","dash.validate":"Approve job",
     "dash.cancel":"Cancel","dash.approve":"Approve profile","dash.suspend":"Suspend","dash.saveSettings":"Save settings",
     "dash.settingsCommission":"Default commission (%)","dash.settingsUrgent":"Urgent request fee (€)","dash.settingsSupport":"Support email",
+    "dash.payoutSetupNote":"Enter your payout details only in Payments, using the secure form.","dash.managePayoutDetails":"Manage my details in Payments",
     "dash.payoutDetailsNote":"These bank details are only visible to you and the administrator, never to clients.","dash.holderLabel":"ACCOUNT HOLDER","dash.ibanLabel":"IBAN","dash.bicLabel":"BIC","dash.noIban":"This professional hasn't entered their IBAN yet.",
     "status.pending":"Waiting for price","status.quoted":"Price proposed","status.accepted":"Quote accepted","status.rejected":"Quote declined",
     "status.paid":"Paid","status.in_progress":"In progress","status.awaiting_validation":"To approve","status.completed":"Completed","status.cancelled":"Cancelled",
@@ -1815,6 +1817,7 @@ const I18N = {
     "dash.refuseQuote":"Rechazar presupuesto","dash.pay":"Pagar ahora","dash.markDone":"Marcar como terminado","dash.validate":"Validar el servicio",
     "dash.cancel":"Cancelar","dash.approve":"Validar el perfil","dash.suspend":"Suspender","dash.saveSettings":"Guardar ajustes",
     "dash.settingsCommission":"Comisión por defecto (%)","dash.settingsUrgent":"Cargo por solicitud urgente (€)","dash.settingsSupport":"Email de asistencia",
+    "dash.payoutSetupNote":"Indica tus datos de cobro únicamente en Pagos, mediante el formulario seguro.","dash.managePayoutDetails":"Gestionar mis datos en Pagos",
     "dash.payoutDetailsNote":"Estos datos bancarios solo son visibles para ti y para el administrador, nunca para los clientes.","dash.holderLabel":"TITULAR DE LA CUENTA","dash.ibanLabel":"IBAN","dash.bicLabel":"BIC","dash.noIban":"Este profesional todavía no ha indicado su IBAN.",
     "status.pending":"Esperando precio","status.quoted":"Precio propuesto","status.accepted":"Presupuesto aceptado","status.rejected":"Presupuesto rechazado",
     "status.paid":"Pagado","status.in_progress":"En curso","status.awaiting_validation":"Por validar","status.completed":"Terminado","status.cancelled":"Cancelado",
@@ -3541,8 +3544,7 @@ async function renderClientPanel(panel){
   }else if(panel === "boats"){
     await renderBoatsManager(main, ()=>renderClientPanel("boats"));
   }else if(panel === "profile"){
-    const {data: payout} = await db.from("payout_details").select("*").eq("profile_id", currentUser.id).maybeSingle();
-    main.innerHTML = profileForm(currentProfile, payout, true);
+    main.innerHTML = profileForm(currentProfile);
     bindProfileForm();
   }
 }
@@ -3845,8 +3847,7 @@ async function renderProPanel(panel){
   }else if(panel === "boats"){
     await renderBoatsManager(main, ()=>renderProPanel("boats"));
   }else if(panel === "profile"){
-    const {data: payout} = await db.from("payout_details").select("*").eq("profile_id", currentUser.id).maybeSingle();
-    main.innerHTML = profileReminder + profileForm(currentProfile, payout);
+    main.innerHTML = profileReminder + profileForm(currentProfile);
     bindProfileForm();
     bindProfileReminderLink();
   }else if(panel === "availability"){
@@ -5313,9 +5314,9 @@ function profileCompletionPercent(profile){
   const done = checks.filter(Boolean).length;
   return Math.round((done / checks.length) * 100);
 }
-function profileForm(profile, payout, forcePayout){
+function profileForm(profile){
  const isPro = ["skipper","provider","owner"].includes(profile?.role);
- const showPayout = isPro || forcePayout;
+ const showPayout = ["skipper","provider"].includes(profile?.role);
  const needsDiploma = profileNeedsDiploma(profile);
  const completion = profileCompletionPercent(profile);
   return `${completion !== null ? `<div class="field" style="margin-bottom:18px">
@@ -5352,12 +5353,7 @@ function profileForm(profile, payout, forcePayout){
     <div class="field"><label>${esc(t("account.diplomaTypeLabel"))}</label><input id="profileDiplomaType" placeholder="${esc(t("account.diplomaTypePlaceholder"))}" value="${esc(profile?.diploma_type||"")}"></div>` : ""}
     ${["skipper","provider"].includes(profile?.role) ? `<div class="field"><label>${esc(t("account.siretLabel"))}</label><input id="profileSiret" value="${esc(profile?.siret||"")}"></div>
     <div class="field"><label>${esc(t("account.insuranceLabel"))}</label><input id="profileInsurance" placeholder="${esc(t("account.insurancePlaceholder"))}" value="${esc(profile?.insurance_info||"")}"></div>` : ""}
-    ${showPayout ? `
-    <div class="note-box">${esc(t("dash.payoutDetailsNote"))}</div>
-    <div class="field"><label>${esc(t("dash.holderLabel"))}</label><input id="profileHolder" value="${esc(payout?.bank_holder_name||"")}"></div>
-    <div class="field"><label>${esc(t("dash.ibanLabel"))}</label><input id="profileIban" value="${esc(payout?.iban||"")}" placeholder="FR76 XXXX XXXX XXXX XXXX XXXX XXX"></div>
-    <div class="field"><label>${esc(t("dash.bicLabel"))}</label><input id="profileBic" value="${esc(payout?.bic||"")}" placeholder="XXXXXXXX"></div>
-    ` : ""}
+    ${showPayout ? `<div class="note-box"><p>${esc(t("dash.payoutSetupNote"))}</p><button class="small-btn" type="button" id="profilePayoutLink">${esc(t("dash.managePayoutDetails"))}</button></div>` : ""}
     <button class="primary wide" id="saveProfileBtn">${esc(t("dash.saveSettings"))}</button>
     <p class="ok-text" id="profileMsg"></p>`;
 }
@@ -5394,6 +5390,7 @@ function bindProfilePortAutocomplete(){
 }
 function bindProfileForm(){
   bindProfilePortAutocomplete();
+  document.querySelector("#profilePayoutLink")?.addEventListener("click", ()=>document.querySelector('.dash-side [data-panel="payments"]')?.click());
   document.querySelector("#saveProfileBtn").addEventListener("click", async ()=>{
     const btn = document.querySelector("#saveProfileBtn");
     const msg = document.querySelector("#profileMsg");
@@ -5469,17 +5466,6 @@ function bindProfileForm(){
     }
     const {error} = await db.from("profiles").update(patch).eq("id", currentUser.id);
     if(error){ msg.style.color = "#b42318"; msg.textContent = friendlyError(error); btn.disabled = false; return; }
-    const ibanInput = document.querySelector("#profileIban");
-    if(ibanInput){
-      const {error: payoutError} = await db.from("payout_details").upsert({
-        profile_id: currentUser.id,
-        bank_holder_name: document.querySelector("#profileHolder").value.trim(),
-        iban: ibanInput.value.trim(),
-        bic: document.querySelector("#profileBic").value.trim(),
-        updated_at: new Date().toISOString()
-      });
-      if(payoutError){ msg.style.color = "#b42318"; msg.textContent = friendlyError(payoutError); btn.disabled = false; return; }
-    }
     await loadProfile();
     refreshDashboardIdentity("profile");
     msg.style.color = "#08794e";
