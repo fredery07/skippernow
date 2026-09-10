@@ -17,7 +17,11 @@ export async function connectStripe(path, body, key){
   if(!response.ok){
     // Do not expose Stripe responses, request payloads, or session secrets to logs/UI.
     console.error("connect_api_error",{status:response.status,code:data.error?.code||data.code||null,request_id:response.headers.get("request-id")});
-    throw new Error("Le formulaire de versement est indisponible. Réessayez ou contactez le support.");
+    throw Object.assign(new Error("Le formulaire de versement est indisponible. Réessayez ou contactez le support."),{
+      stripe_code:data.error?.code||data.code||null,
+      stripe_param:data.error?.param||null,
+      stripe_request_id:response.headers.get("request-id")
+    });
   }
   return data;
 }
