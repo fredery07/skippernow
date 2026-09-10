@@ -57,16 +57,118 @@ async function mountServiceSummaries(main,rows){
     target.querySelector("button").onclick=()=>showServiceProof(c.mission_id);
   }
 }
-async function mountConnectSetup(main){
-  const box=document.createElement("div");box.className="note-box";box.innerHTML=`<strong>Coordonnées de versement</strong><p>Renseignez votre identité et votre RIB dans le formulaire sécurisé géré par Stripe. Vous n’avez pas besoin de posséder déjà un compte Stripe.</p><p role="status">Vérification…</p><button class="small-btn" type="button" data-connect>Renseigner mes coordonnées</button> <button class="small-btn" type="button" data-stripe hidden>Suivre mes versements</button>`;main.prepend(box);
-  const message=box.querySelector('[role="status"]');
-  for(const [selector,action] of [["[data-connect]","onboard"],["[data-stripe]","account_dashboard"]]) box.querySelector(selector).onclick=async e=>{
-    e.target.disabled=true;
-    try{const result=await serviceRequest(action);const url=new URL(result.url);if(url.protocol!=="https:" || !(url.hostname==="stripe.com" || url.hostname.endsWith(".stripe.com"))) throw new Error("Lien Stripe invalide");location.assign(url.href);}catch(error){message.textContent=error.message;e.target.disabled=false;}
-  };
-  try{const result=await serviceRequest("account_status");message.textContent=result.ready?"Coordonnées vérifiées : vous pouvez recevoir des versements.":result.connected?"Configuration des versements à terminer.":"Coordonnées bancaires à renseigner.";box.querySelector('[data-stripe]').hidden=!result.connected;}
-  catch(error){message.textContent=error.message;}
+let connectScriptPromise;
+let connectOwner=null, connectInstancePromise=null, connectGeneration=0;
+function loadConnectScript(){
+  if(window.StripeConnect?.init) return Promise.resolve(window.StripeConnect);
+  if(connectScriptPromise) return connectScriptPromise;
+  connectScriptPromise=new Promise((resolve,reject)=>{
+    const script=document.createElement('script');
+    script.src='https://connect-js.stripe.com/v1.0/connect.js';script.async=true;
+    const timer=setTimeout(()=>fail(),20000);
+    function fail(){clearTimeout(timer);script.remove();connectScriptPromise=null;reject(new Error('Le formulaire sécurisé ne se charge pas. Vérifiez votre connexion puis réessayez.'));}
+    script.onerror=fail;
+    window.StripeConnect=window.StripeConnect||{};
+    window.StripeConnect.onLoad=()=>{clearTimeout(timer);resolve(window.StripeConnect);};
+    script.onload=()=>{if(window.StripeConnect?.init){clearTimeout(timer);resolve(window.StripeConnect);}};
+    document.head.append(script);
+  });
+  return connectScriptPromise;
 }
+function resetConnectSession(){
+  connectGeneration++;
+  const old=connectInstancePromise;connectInstancePromise=null;connectOwner=null;
+  document.querySelectorAll('[data-connect-components]').forEach(el=>el.replaceChildren());
+  if(old) old.then(instance=>instance.logout()).catch(()=>{});
+}
+async function connectInstance(country){
+  const {data:{session}}=await db.auth.getSession();
+  if(!session) throw new Error('Connectez-vous pour continuer.');
+  const owner=session.user.id;
+  if(connectOwner && connectOwner!==owner) resetConnectSession();
+  if(connectInstancePromise) return connectInstancePromise;
+  connectOwner=owner;
+  const generation=connectGeneration;
+  const fetchClientSecret=async()=>{
+    const {data:{session:latest}}=await db.auth.getSession();
+    if(generation!==connectGeneration || latest?.user.id!==owner) throw new Error('Session terminée. Reconnectez-vous.');
+    const result=await serviceRequest('embedded_session',undefined,{country});
+    if(generation!==connectGeneration) throw new Error('Session terminée.');
+    if(result.livemode!==STRIPE_PUBLISHABLE_KEY.startsWith('pk_live_')) throw new Error('Configuration des versements à vérifier par le support.');
+    return result.client_secret;
+  };
+  connectInstancePromise=(async()=>{
+    const sdk=await loadConnectScript();
+    // Surface server errors before rendering an empty iframe. Do not persist the secret.
+    let firstSecret=await fetchClientSecret();
+    return sdk.init({publishableKey:STRIPE_PUBLISHABLE_KEY,locale:currentLang||'fr',
+      fetchClientSecret:async()=>{
+        const {data:{session:latest}}=await db.auth.getSession();
+        if(generation!==connectGeneration || latest?.user.id!==owner){firstSecret=null;throw new Error('Session terminée. Reconnectez-vous.');}
+        if(firstSecret){const secret=firstSecret;firstSecret=null;return secret;}return fetchClientSecret();
+      },
+      appearance:{overlays:'dialog',variables:{colorPrimary:'#087f8c',colorText:'#102b3f',colorBackground:'#ffffff',borderRadius:'12px',fontFamily:'Arial, sans-serif'}}});
+  })().catch(error=>{if(generation===connectGeneration){connectInstancePromise=null;connectOwner=null;}throw error;});
+  return connectInstancePromise;
+}
+async function mountConnectSetup(main){
+  const box=document.createElement('section');box.className='note-box';box.style.cssText='background:#f2fafa;min-width:0;';
+  box.innerHTML=`<h3 style="margin-top:0">Mes coordonnées de versement</h3><p>Renseignez votre identité et votre IBAN ici pour recevoir vos versements. Votre compte SkipperNow suffit. Les informations sont transmises de façon sécurisée à notre partenaire de paiement Stripe.</p><p role="status" aria-live="polite">Vérification…</p><div data-country hidden><label>Pays où votre activité est établie <select aria-label="Pays de votre activité" style="display:block;width:100%;max-width:360px;padding:12px;margin:8px 0"></select></label></div><div class="request-actions"><button class="small-btn" type="button" data-connect disabled>Renseigner mes coordonnées</button><button class="small-btn" type="button" data-payouts hidden>Suivre mes versements bancaires</button><button class="small-btn" type="button" data-refresh>Actualiser</button></div><div data-connect-components><div data-notifications></div><div data-form hidden style="margin-top:20px;background:white;padding:12px;border-radius:12px;min-width:0"></div></div>`;
+  main.prepend(box);
+  const message=box.querySelector('[role="status"]'), form=box.querySelector('[data-form]'), notices=box.querySelector('[data-notifications]');
+  const start=box.querySelector('[data-connect]'),payouts=box.querySelector('[data-payouts]'),countryBox=box.querySelector('[data-country]'),select=box.querySelector('select');
+  const countries='AD AE AL AR AT AU BE BG BH BR CA CH CI CL CM CO CR CY CZ DE DK DO DZ EE EG ES FI FR GB GF GI GP GR HK HR HU ID IE IL IN IS IT JP KE KR KW LI LT LU LV MA MC ME MG MQ MT MU MX MY NC NG NL NO NZ PA PE PF PH PL PM PT QA RE RO RS SA SE SG SI SK SN TH TN TR TW US VN ZA'.split(' ');
+  const names=new Intl.DisplayNames([currentLang||'fr'],{type:'region'});
+  for(const code of countries.sort((a,b)=>names.of(a).localeCompare(names.of(b)))){const option=document.createElement('option');option.value=code;option.textContent=names.of(code);select.append(option);}
+  select.value='FR';
+  let status=null,busy=false,noticeMounted=false,active=null;
+  function component(instance,name){
+    const el=instance.create(name);
+    el.setOnLoadError(()=>{if(box.isConnected){message.textContent='Le formulaire sécurisé ne se charge pas. Cliquez sur Actualiser pour réessayer.';active=null;}});
+    el.setOnLoaderStart(()=>{if(box.isConnected) message.textContent='';});
+    return el;
+  }
+  async function notifications(instance){
+    if(noticeMounted || !box.isConnected) return;
+    notices.replaceChildren(component(instance,'notification-banner'));noticeMounted=true;
+  }
+  async function refresh(){
+    try{
+      const result=await serviceRequest('account_status');if(!box.isConnected) return;
+      status=result;
+      message.textContent=result.ready?'Coordonnées vérifiées : vous pouvez recevoir des versements.':result.connected?'Vos informations sont enregistrées. Complétez les éléments demandés ou attendez leur vérification.':'Ajoutez vos coordonnées pour recevoir vos versements.';
+      start.textContent=result.connected?'Compléter ou modifier mes coordonnées':'Renseigner mes coordonnées';start.disabled=false;
+      payouts.hidden=!result.connected;countryBox.hidden=result.connected;
+      if(result.country){select.value=result.country;select.disabled=true;}
+      if(result.connected) await notifications(await connectInstance(result.country));
+    }catch(error){if(box.isConnected) message.textContent=error.message;}
+  }
+  async function open(kind){
+    if(busy || active===kind) return;busy=true;start.disabled=true;payouts.disabled=true;select.disabled=true;
+    message.textContent='Ouverture du formulaire sécurisé…';
+    try{
+      const instance=await connectInstance(select.value);if(!box.isConnected) return;
+      await notifications(instance);
+      const el=component(instance,kind);active=kind;
+      if(kind==='account-onboarding') el.setOnExit(()=>{active=null;form.hidden=true;form.replaceChildren();void refresh();});
+      form.hidden=false;form.replaceChildren(el);
+      const close=document.createElement('button');close.type='button';close.className='small-btn';close.textContent='Fermer le formulaire';close.style.marginTop='16px';
+      close.onclick=()=>{active=null;form.hidden=true;form.replaceChildren();void refresh();};form.append(close);
+      countryBox.hidden=true;payouts.hidden=false;
+    }catch(error){if(box.isConnected){message.textContent=error.message;select.disabled=!!status?.country;}}
+    finally{busy=false;start.disabled=false;payouts.disabled=false;}
+  }
+  start.onclick=()=>open(status?.ready?'account-management':'account-onboarding');
+  payouts.onclick=()=>open('payouts');
+  box.querySelector('[data-refresh]').onclick=async()=>{active=null;form.hidden=true;form.replaceChildren();notices.replaceChildren();noticeMounted=false;await refresh();};
+  await refresh();
+}
+// A Connect session must never survive signing out or switching SkipperNow accounts.
+// Keep this callback synchronous to avoid Supabase auth callback deadlocks.
+if(typeof db!=='undefined') db.auth.onAuthStateChange((event,session)=>{
+  if(event==='SIGNED_OUT' || (connectOwner && session?.user.id!==connectOwner)) resetConnectSession();
+});
+
 async function renderServicePayoutAdmin(main,missions,byId){
   main.textContent="Chargement des versements…";
   const [cs,js,ss,acs]=await Promise.all([
