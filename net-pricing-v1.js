@@ -20,6 +20,6 @@
   }
 
   function patchListingCards(){try{if(typeof resultsCache==="undefined")return;document.querySelectorAll("#cards .card").forEach((card,i)=>{const p=resultsCache[i];if(!p?.price_from_cents)return;const strong=card.querySelector(".price strong");if(strong)strong.textContent=t("card.priceFrom")+" "+money(grossCents(p.price_from_cents));});}catch(_e){}}
-  async function init(){await loadRate();await patchPublicPrices();patchProfessionalHints();patchListingCards();const ob=new MutationObserver(()=>{patchProfessionalHints();patchListingCards();});ob.observe(document.documentElement,{childList:true,subtree:true});}
+  async function init(){await loadRate();await patchPublicPrices();patchProfessionalHints();patchListingCards();const ob=new MutationObserver(()=>{patchProfessionalHints();patchListingCards();});ob.observe(document.documentElement,{childList:true,subtree:true});if(!window.__skippernowProNotificationsV1){window.__skippernowProNotificationsV1=true;const s=document.createElement("script");s.src="/pro-notifications-v1.js";s.defer=true;document.head.appendChild(s);}}
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();
 })();
