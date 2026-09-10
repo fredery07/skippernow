@@ -288,6 +288,12 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
 .modal.open{display:flex}
 .dialog{background:#fff;border-radius:22px;max-width:480px;width:100%;padding:26px;box-shadow:var(--shadow);max-height:90vh;overflow:auto;position:relative}
 .dialog.large{max-width:900px}
+#invoiceModal .dialog{max-width:760px;max-height:calc(100dvh - 40px);overflow-y:auto;overscroll-behavior:contain}
+#invoiceContent{overflow-wrap:anywhere}
+#invoiceContent .dialog-top{margin-bottom:18px}
+#invoiceContent .request-card{padding:18px}
+#invoiceContent [data-receipt] h2{margin:0 0 14px}
+@media(max-width:640px){#invoiceModal{padding:10px}#invoiceModal .dialog{padding:16px;max-height:calc(100dvh - 20px)}#invoiceContent .request-card{padding:12px}}
 .dialog.xlarge{max-width:1140px}
 .dialog-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
 .dialog-top small{color:var(--muted);font-weight:800;letter-spacing:.05em;text-transform:uppercase;font-size:11px}
@@ -1071,7 +1077,7 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
 </div>
 
 <div class="modal" data-nosnippet id="invoiceModal" style="z-index:1200">
-  <div class="dialog"><div id="invoiceContent"></div></div>
+  <div class="dialog large"><div id="invoiceContent"></div></div>
 </div>
 
 <div class="modal" data-nosnippet id="reviewModal" style="z-index:1200">
@@ -5778,6 +5784,6 @@ db.auth.onAuthStateChange(async (event, session)=>{
 });
 </script>
 <script src="/service-flow.js?v=20260910-embedded"></script>
-<script src="/mission-documents.js?v=20260910-documents"></script>
+<script src="/mission-documents.js?v=20260910-documents-layout"></script>
 </body>
 </html>

@@ -34,13 +34,13 @@
   window.openInvoice=async function(missionId){
     const seq=++generation;owner=currentUser?.id;
     const root=document.querySelector("#invoiceContent");const l=L();
-    root.innerHTML=`<button class="close" type="button" aria-label="Fermer" onclick="closeModal('invoiceModal')">×</button><h2>${esc(l.title)}</h2><div data-doc-body role="status">${esc(l.loading)}</div>`;
+    root.innerHTML=`<div class="dialog-top"><h2>${esc(l.title)}</h2><button class="close" type="button" aria-label="Fermer" onclick="closeModal('invoiceModal')">×</button></div><div data-doc-body role="status">${esc(l.loading)}</div>`;
     openModal("invoiceModal");
     const body=root.querySelector("[data-doc-body]");
     try{
       const data=await request("list",missionId);if(seq!==generation)return;
       body.removeAttribute("role");
-      body.innerHTML=`<section class="request-card"><h3>${esc(l.receipt)}</h3><div data-receipt></div>${data.hasPayment?`<button class="small-btn" type="button" data-receipt-load>${esc(l.getReceipt)}</button>`:`<p>${esc(l.pending)}</p>`}</section><section class="request-card" style="margin-top:16px"><h3>${esc(l.provider)}</h3><p>${esc(l.share)}</p><div data-document-list></div>${data.documents.length?`<p class="muted">${esc(l.note)}</p>`:""}</section>${data.canUpload?`<section class="request-card" style="margin-top:16px"><h3>${esc(l.upload)}</h3><form data-upload><label>${esc(l.kind)}<select name="documentKind"><option value="invoice">${esc(l.invoice)}</option><option value="credit_note">${esc(l.credit)}</option></select></label><label>${esc(l.company)}<input name="issuerName" required maxlength="200" autocomplete="organization"></label><label>${esc(l.number)}<input name="invoiceNumber" required maxlength="100"></label><label>${esc(l.file)}<input name="file" type="file" accept="application/pdf,.pdf" required></label><label style="display:flex;gap:10px;align-items:flex-start"><input name="confirmed" type="checkbox" required style="width:auto;margin-top:4px"><span>${esc(l.confirm)}</span></label><button class="primary" type="submit">${esc(l.save)}</button><p role="status"></p></form></section>`:""}`;
+      body.innerHTML=`<section class="request-card"><h3 data-receipt-heading>${esc(l.receipt)}</h3><div data-receipt></div>${data.hasPayment?`<button class="small-btn" type="button" data-receipt-load>${esc(l.getReceipt)}</button>`:`<p>${esc(l.pending)}</p>`}</section><section class="request-card" style="margin-top:16px"><h3>${esc(l.provider)}</h3><p>${esc(l.share)}</p><div data-document-list></div>${data.documents.length?`<p class="muted">${esc(l.note)}</p>`:""}</section>${data.canUpload?`<section class="request-card" style="margin-top:16px"><h3>${esc(l.upload)}</h3><form data-upload><label>${esc(l.kind)}<select name="documentKind"><option value="invoice">${esc(l.invoice)}</option><option value="credit_note">${esc(l.credit)}</option></select></label><label>${esc(l.company)}<input name="issuerName" required maxlength="200" autocomplete="organization"></label><label>${esc(l.number)}<input name="invoiceNumber" required maxlength="100"></label><label>${esc(l.file)}<input name="file" type="file" accept="application/pdf,.pdf" required></label><label style="display:flex;gap:10px;align-items:flex-start"><input name="confirmed" type="checkbox" required style="width:auto;margin-top:4px"><span>${esc(l.confirm)}</span></label><button class="primary" type="submit">${esc(l.save)}</button><p role="status"></p></form></section>`:""}`;
       for(const label of body.querySelectorAll("form label"))label.style.cssText+=";display:block;margin:14px 0";
       for(const input of body.querySelectorAll('form input:not([type="checkbox"]),form select'))input.style.cssText="display:block;width:100%;max-width:100%;margin-top:6px;padding:10px;box-sizing:border-box";
       const list=body.querySelector("[data-document-list]");
@@ -59,8 +59,8 @@
       body.querySelector("[data-receipt-load]")?.addEventListener("click",async e=>{
         const button=e.currentTarget;button.disabled=true;const target=body.querySelector("[data-receipt]");target.textContent=l.loading;
         try{const result=await request("receipt",missionId);if(seq!==generation)return;
-          const html=receiptHtml(result.receipt);target.innerHTML=html;
-          const print=document.createElement("button");print.type="button";print.className="small-btn";print.textContent=l.print;print.onclick=()=>printReceipt(html);target.append(print);button.hidden=true;
+          const html=receiptHtml(result.receipt);target.innerHTML=html;body.querySelector("[data-receipt-heading]").hidden=true;
+          const print=document.createElement("button");print.type="button";print.className="small-btn";print.textContent=l.print;print.onclick=()=>printReceipt(html);print.style.marginBottom="16px";target.prepend(print);button.hidden=true;
         }catch(error){if(seq===generation)target.textContent=error.message;}finally{button.disabled=false;}
       });
       body.querySelector("[data-upload]")?.addEventListener("submit",async e=>{
