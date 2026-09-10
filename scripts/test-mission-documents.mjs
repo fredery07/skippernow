@@ -30,4 +30,20 @@ actor=client;p={role:'client'};res=await call({action:'download',missionId:m.id,
 res=await call({action:'download',missionId:m.id,documentId:'55555555-5555-5555-5555-555555555555',object_path:'another-mission/secret.pdf'});assert.equal(res.status,200);assert.equal(signed,1);assert.equal(res.headers.get('Cache-Control'),'no-store');
 p={role:'admin',suspended:true};res=await call({action:'download',missionId:m.id,documentId:'55555555-5555-5555-5555-555555555555'});assert.equal(res.status,403);assert.equal(signed,1);
 const html=fs.readFileSync(new URL('../index.html',import.meta.url),'utf8');for(const x of html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi))if(x[2].trim()&&!x[1].includes('application/ld+json'))new vm.Script(x[2]);
+
+function referenceDb(existing,race=false){
+  let saved=existing,insertCalls=0;
+  return {get inserts(){return insertCalls},from(){let inserting=false;const q={select(){return q},eq(){return q},maybeSingle(){return q},single(){return q},insert(){inserting=true;return q},then(resolve){
+    if(inserting){insertCalls++;saved={id:7,issued_at:'2026-12-31T23:59:00Z',mission_id:m.id};return Promise.resolve(race?{error:{code:'23505'}}:{data:saved}).then(resolve);}
+    return Promise.resolve({data:saved}).then(resolve);
+  }};return q;}};
+}
+for(const race of [false,true]){
+ const refs=referenceDb(null,race);
+ assert.equal(await scope.receiptReference(refs,m.id,'ch_paid'),'SN-2026-000007');
+ assert.equal(await scope.receiptReference(refs,m.id,'ch_paid'),'SN-2026-000007');
+ assert.equal(refs.inserts,1);
+}
+await assert.rejects(()=>scope.receiptReference(referenceDb({id:7,issued_at:'2026-12-31T23:59:00Z',mission_id:other.id}),m.id,'ch_paid'));
+console.log('PASS: stable numbered receipts, repeated downloads, concurrent creation conflict, mission binding');
 console.log('PASS: role and mission isolation, provider-only upload, PDF validation, confirmed payment/refunds, document ID isolation, signed URL privacy, HTML syntax');

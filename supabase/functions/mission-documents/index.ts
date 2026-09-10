@@ -16,6 +16,19 @@ export function paymentReceipt(pi,charge,m){
   if(pi.id!==m.stripe_payment_intent_id || pi.status!=="succeeded" || pi.metadata?.mission_id!==m.id || pi.amount_received!==expected || pi.amount!==expected || pi.currency!==(m.currency||"eur").toLowerCase() || charge.payment_intent!==pi.id || charge.paid!==true || charge.amount_captured!==expected || charge.currency!==pi.currency) fail("Le paiement de cette mission ne peut pas être confirmé. Contactez le support.",409);
   return {reference:"SN-"+charge.id,paymentReference:pi.id,paidAt:new Date(charge.created*1000).toISOString(),total:pi.amount_received,refunded:Number(charge.amount_refunded||0),currency:pi.currency,disputed:!!charge.disputed,missionId:m.id,port:m.port,boat:m.boat_type,description:m.description,serviceAt:m.starts_at};
 }
+
+export async function receiptReference(db,missionId,chargeId){
+  let row=await checked(await db.from("payment_receipt_numbers").select("id,issued_at,mission_id").eq("stripe_charge_id",chargeId).maybeSingle());
+  if(!row){
+    const result=await db.from("payment_receipt_numbers").insert({mission_id:missionId,stripe_charge_id:chargeId}).select("id,issued_at,mission_id").single();
+    if(result.error?.code==="23505"){
+      row=await checked(await db.from("payment_receipt_numbers").select("id,issued_at,mission_id").eq("stripe_charge_id",chargeId).single());
+    }else row=await checked(result);
+  }
+  if(!row || row.mission_id!==missionId)fail("Référence de reçu indisponible.",409);
+  return "SN-"+new Date(row.issued_at).getUTCFullYear()+"-"+String(row.id).padStart(6,"0");
+}
+
 async function stripeRead(path){
   const secret=Deno.env.get("STRIPE_SECRET_KEY");if(!secret)fail("Le justificatif de paiement est temporairement indisponible.",503);
   const res=await fetch("https://api.stripe.com/v1/"+path,{headers:{Authorization:"Bearer "+secret},signal:AbortSignal.timeout(18000)});
@@ -47,7 +60,9 @@ export async function handle(req){
       const pi=await stripeRead("payment_intents/"+encodeURIComponent(m.stripe_payment_intent_id));
       if(!pi.latest_charge)fail("Aucun paiement confirmé pour cette mission.",409);
       const charge=await stripeRead("charges/"+encodeURIComponent(pi.latest_charge));
-      return response({receipt:paymentReceipt(pi,charge,m)});
+      const receipt=paymentReceipt(pi,charge,m);
+      receipt.reference=await receiptReference(db,m.id,charge.id);
+      return response({receipt});
     }
     if(action==="download"){
       if(!uuid.test(get("documentId")||""))fail("Référence de document invalide.");
