@@ -73,7 +73,10 @@ Deno.serve(async req=>{
       if(input.dry_run){
         // Read-only: confirms Connect API access without creating an account or transfer.
         const accounts=await stripe("accounts?limit=1");
-        return reply({ok:true,enabled:settings.enabled,connect_access:true,has_accounts:!!accounts.data?.length});
+        let v2_access;
+        try{await connectStripe("v2/core/accounts?limit=1");v2_access={ok:true};}
+        catch(e){v2_access={ok:false,code:e.stripe_code,param:e.stripe_param,request_id:e.stripe_request_id};}
+        return reply({ok:true,enabled:settings.enabled,connect_access:true,has_accounts:!!accounts.data?.length,v2_access});
       }
       await refreshAccountStatuses(db);
       if(!settings.enabled) return reply({enabled:false});
@@ -118,19 +121,26 @@ Deno.serve(async req=>{
       if(!["provider","skipper"].includes(p.role) || !p.verified) return reply({error:"Profil professionnel vérifié requis"},403);
       if(["onboard","account_dashboard"].includes(input.action))
         return reply({error:"Actualisez SkipperNow pour utiliser le formulaire intégré à votre espace."},409);
+      try{
       // Never accept a destination/account/professional ID supplied by the browser.
       let a=await checked(await db.from("connect_accounts").select("*").eq("professional_id",user.id).maybeSingle());
       if(input.action==="embedded_session") a=await ensureAccount(db,user.id,input.country);
       if(!a?.account_id) return reply({connected:false,ready:false,country:a?.embedded_country||null});
       const account=await retrieveAccount(a);
       const ready=accountReady(account,a.account_api);
-      await checked(await db.from("connect_accounts").update({ready,checked_at:new Date().toISOString()}).eq("professional_id",user.id));
+      await checked(await db.from("connect_accounts").update({ready,checked_at:new Date().toISOString(),last_error:null}).eq("professional_id",user.id));
       if(input.action==="embedded_session"){
         const session=await connectStripe("v1/account_sessions",sessionOptions(a,account));
         return new Response(JSON.stringify({client_secret:session.client_secret,livemode:session.livemode}),
           {headers:{...cors,"Cache-Control":"no-store"}});
       }
       return reply({connected:true,ready,country:a.embedded_country||null});
+      }catch(e){
+        if(e.stripe_request_id || e.stripe_code){
+          await db.from("connect_accounts").update({last_error:{code:e.stripe_code,param:e.stripe_param,request_id:e.stripe_request_id,at:new Date().toISOString()}}).eq("professional_id",user.id);
+        }
+        throw e;
+      }
     }
     const m=await missionFor(db,input.missionId,user,isAdmin);
     if(input.action==="proof"){
