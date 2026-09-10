@@ -26,8 +26,10 @@ export async function connectStripe(path, body, key){
   return data;
 }
 async function checked(result){if(result.error) throw result.error;return result.data;}
-export function accountPayload(owner,country){
-  return {dashboard:"none",identity:{country:country.toLowerCase()},
+export function accountPayload(owner,country,contactEmail){
+  if(typeof contactEmail!=="string" || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contactEmail))
+    throw new Error("Renseignez une adresse e-mail valide dans votre compte SkipperNow avant de configurer vos versements.");
+  return {contact_email:contactEmail,dashboard:"none",identity:{country:country.toLowerCase()},
     defaults:{responsibilities:{fees_collector:"application",losses_collector:"application"}},
     configuration:{recipient:{capabilities:{stripe_balance:{stripe_transfers:{requested:true}}}}},
     metadata:{professional_id:owner,skippernow_account_api:"v2"}};
@@ -89,7 +91,7 @@ async function findExisting(owner,api){
   }
   throw new Error("Vérification du compte de versement nécessaire. Contactez le support.");
 }
-export async function ensureAccount(db,owner,country,api=connectStripe,now=Date.now()){
+export async function ensureAccount(db,owner,country,contactEmail,api=connectStripe,now=Date.now()){
   await checked(await db.from("connect_accounts").upsert({professional_id:owner},{onConflict:"professional_id",ignoreDuplicates:true}));
   // The query is thenable: await it before inspecting its result.
   let row=await checked(await db.from("connect_accounts").select("*").eq("professional_id",owner).single());
@@ -111,7 +113,17 @@ export async function ensureAccount(db,owner,country,api=connectStripe,now=Date.
   // Never recreate after Stripe's 24h idempotency retention period.
   if(now-new Date(row.embedded_started_at).getTime()>23*60*60*1000)
     throw new Error("La création du compte doit être vérifiée par le support avant de reprendre.");
-  const account=await api("v2/core/accounts",accountPayload(owner,row.embedded_country),"connect-embedded-v2-"+row.creation_key);
+  if(!row.embedded_contact_email){
+    // Snapshot the authenticated user's email once, including validation-failed
+    // attempts from the previous release. Preserve the creation key and deadline.
+    const email=typeof contactEmail==="string"?contactEmail.trim():"";
+    accountPayload(owner,row.embedded_country,email);
+    await checked(await db.from("connect_accounts").update({embedded_contact_email:email})
+      .eq("professional_id",owner).is("account_id",null).is("embedded_contact_email",null));
+    row=await checked(await db.from("connect_accounts").select("*").eq("professional_id",owner).single());
+    if(row.account_id) return row;
+  }
+  const account=await api("v2/core/accounts",accountPayload(owner,row.embedded_country,row.embedded_contact_email),"connect-embedded-v2-"+row.creation_key);
   await checked(await db.from("connect_accounts").update({account_id:account.id,account_api:"v2"}).eq("professional_id",owner).is("account_id",null));
   row=await checked(await db.from("connect_accounts").select("*").eq("professional_id",owner).single());
   if(row.account_id!==account.id) throw new Error("Vérification du compte de versement nécessaire.");
