@@ -45,15 +45,15 @@ await assert.rejects(c.ensureAccount(state.db,'pro','FR',async(path,body)=>{asse
 // Ambiguous matches must never silently pick a recipient.
 state=database();await assert.rejects(c.ensureAccount(state.db,'pro','FR',async()=>({data:[{id:'a',metadata:{professional_id:'pro'}},{id:'b',metadata:{professional_id:'pro'}}],has_more:false})),/Plusieurs/);
 // Execute the actual edge handler: clients/unverified/suspended providers cannot issue sessions.
-let handler,sessionOptionsSeen;
+let handler,sessionOptionsSeen,errorScenario=false,diagnostic;
 const edge=readFileSync('supabase/functions/service-flow/index.ts','utf8').replace(/^import .*;\n/gm,'').replaceAll('export ','');
 let role='client',verified=true,suspended=false;
-const edgeDb={from(table){return {select(){return this},eq(k,v){assert.equal(v,'owner');return this},single(){return {data:{role,verified,suspended}}},maybeSingle(){return {data:{professional_id:'owner',account_id:'acct_owner',account_api:'v2'}}},update(){return this},then(resolve){return Promise.resolve({data:null}).then(resolve)}}}};
+const edgeDb={from(table){return {select(){return this},eq(k,v){assert.equal(v,'owner');return this},single(){return {data:{role,verified,suspended}}},maybeSingle(){return {data:{professional_id:'owner',account_id:'acct_owner',account_api:'v2'}}},update(value){if(value.last_error) diagnostic=value.last_error;return this},then(resolve){return Promise.resolve({data:null}).then(resolve)}}}};
 const env=vm.createContext({Deno:{serve(fn){handler=fn}},Response,Request,URLSearchParams,TextDecoder,
  context:async()=>({user:{id:'owner'},admin:edgeDb}),cors:{},reply:(body,status=200)=>new Response(JSON.stringify(body),{status}),
  ensureAccount:async(db,owner)=>{assert.equal(owner,'owner');return {account_id:'acct_owner',account_api:'v2'}},
  retrieveAccount:async()=>current,accountReady:c.accountReady,sessionOptions:c.sessionOptions,
- connectStripe:async(path,body)=>{assert.equal(path,'v1/account_sessions');sessionOptionsSeen=body;return {client_secret:'secret_for_owner',livemode:true}}});
+ connectStripe:async(path,body)=>{if(errorScenario) throw Object.assign(new Error('Indisponible'),{stripe_code:'fixture_error',stripe_param:'dashboard',stripe_request_id:'req_fixture',raw_secret:'must_not_persist'});assert.equal(path,'v1/account_sessions');sessionOptionsSeen=body;return {client_secret:'secret_for_owner',livemode:true}}});
 vm.runInContext(edge,env);
 const request=()=>new Request('https://example.test',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'embedded_session',account_id:'acct_victim',professional_id:'victim'})});
 assert.equal((await handler(request())).status,403);
@@ -61,3 +61,5 @@ role='provider';verified=false;assert.equal((await handler(request())).status,40
 verified=true;suspended=true;assert.equal((await handler(request())).status,403);
 suspended=false;const response=await handler(request());assert.equal(response.status,200);assert.equal(response.headers.get('Cache-Control'),'no-store');assert.equal(sessionOptionsSeen.account,'acct_owner');
 console.log('PASS: owner-only sessions; no provider money-movement permissions; capability restrictions; account recovery, concurrency and expired retry guards.');
+
+errorScenario=true;assert.equal((await handler(request())).status,400);assert.equal(diagnostic.code,'fixture_error');assert.equal(diagnostic.request_id,'req_fixture');assert.equal(diagnostic.raw_secret,undefined);console.log('PASS: safe server diagnostics omit sensitive Stripe payloads.');
