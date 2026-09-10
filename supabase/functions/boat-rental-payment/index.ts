@@ -3,7 +3,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
 const cors={"Access-Control-Allow-Origin":"*","Access-Control-Allow-Headers":"authorization, x-client-info, apikey, content-type","Content-Type":"application/json"};
 const reply=(body:unknown,status=200)=>new Response(JSON.stringify(body),{status,headers:cors});
 
-async function stripe(path:string, body?:Record<string,string>, key?:string){
+async function stripe(path:string,body?:Record<string,string>,key?:string){
   const secret=Deno.env.get("STRIPE_SECRET_KEY");
   if(!secret) throw new Error("Paiement indisponible");
   const r=await fetch("https://api.stripe.com/v1/"+path,{method:body?"POST":"GET",headers:{Authorization:"Bearer "+secret,...(body?{"Content-Type":"application/x-www-form-urlencoded"}:{}),...(key?{"Idempotency-Key":key}:{})},body:body?new URLSearchParams(body):undefined});
@@ -26,8 +26,15 @@ Deno.serve(async req=>{
     const {data:rental,error}=await admin.from("boat_rental_requests").select("*").eq("id",String(input.requestId||"")).eq("renter_id",user.id).single();
     if(error||!rental) return reply({error:"Réservation introuvable"},404);
 
+    if(rental.wants_skipper){
+      const {data:dispatch}=await admin.from("boat_rental_skipper_dispatches").select("status,assigned_skipper_id").eq("rental_id",rental.id).maybeSingle();
+      if(!dispatch||dispatch.status!=="assigned"||!dispatch.assigned_skipper_id){
+        return reply({error:"Le paiement sera disponible dès qu’un skipper aura accepté la mission."},409);
+      }
+    }
+
     if(input.action==="create"){
-      if(rental.status!=="accepted"||rental.payment_status!=="unpaid") return reply({error:"Cette réservation n'est pas prête à être payée"},409);
+      if(rental.status!=="accepted"||!["unpaid","processing"].includes(rental.payment_status)) return reply({error:"Cette réservation n'est pas prête à être payée"},409);
       let pi;
       if(rental.stripe_payment_intent_id) pi=await stripe("payment_intents/"+encodeURIComponent(rental.stripe_payment_intent_id));
       else{
