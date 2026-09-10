@@ -1,7 +1,7 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.4";
 import { context, cors, reply, stripe } from "../_shared/payment.ts";
 
-const site = "https://skippernow.fr";
+import {ensureAccount, retrieveAccount, accountReady, sessionOptions, connectStripe, refreshAccountStatuses} from "./connect.ts";
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 async function checked(result){ if(result.error) throw result.error; return result.data; }
 async function rpc(db,name,args){ return checked(await db.rpc(name,args)); }
@@ -28,8 +28,9 @@ async function transfer(db,missionId,actor,automatic){
   if(!claim.claimed) return {existing:true};
   const j=claim.job;
   try{
-    const account=await stripe("accounts/"+encodeURIComponent(j.destination));
-    if(!account.payouts_enabled || account.capabilities?.transfers!=="active") throw new Error("Compte Stripe incomplet ou restreint");
+    const row=await checked(await db.from("connect_accounts").select("account_id,account_api").eq("account_id",j.destination).single());
+    const account=await retrieveAccount(row);
+    if(!accountReady(account,row.account_api)) throw new Error("Coordonnées de versement incomplètes ou restreintes");
     const pi=await stripe("payment_intents/"+encodeURIComponent(claim.payment_intent));
     const charge=await stripe("charges/"+encodeURIComponent(pi.latest_charge));
     verifyTransferPayment(pi,charge,j,claim.total);
@@ -74,6 +75,7 @@ Deno.serve(async req=>{
         const accounts=await stripe("accounts?limit=1");
         return reply({ok:true,enabled:settings.enabled,connect_access:true,has_accounts:!!accounts.data?.length});
       }
+      await refreshAccountStatuses(db);
       if(!settings.enabled) return reply({enabled:false});
       const due=await rpc(db,"list_due_service_payouts",{p_limit:10});
       const results=[];
@@ -112,30 +114,23 @@ Deno.serve(async req=>{
       await checked(await db.from("service_payout_settings").update({enabled}).eq("id",true));
       return reply({enabled});
     }
-    if(["account_status","onboard","account_dashboard"].includes(input.action)){
+    if(["account_status","embedded_session","onboard","account_dashboard"].includes(input.action)){
       if(!["provider","skipper"].includes(p.role) || !p.verified) return reply({error:"Profil professionnel vérifié requis"},403);
+      if(["onboard","account_dashboard"].includes(input.action))
+        return reply({error:"Actualisez SkipperNow pour utiliser le formulaire intégré à votre espace."},409);
+      // Never accept a destination/account/professional ID supplied by the browser.
       let a=await checked(await db.from("connect_accounts").select("*").eq("professional_id",user.id).maybeSingle());
-      if(input.action==="onboard" && !a){
-        await checked(await db.from("connect_accounts").upsert({professional_id:user.id},{onConflict:"professional_id",ignoreDuplicates:true}));
-        a=await checked(await db.from("connect_accounts").select("*").eq("professional_id",user.id).single());
-      }
-      if(input.action==="onboard" && !a.account_id){
-        if(!a.creation_started_at){
-          await checked(await db.from("connect_accounts").update({creation_started_at:new Date().toISOString()}).eq("professional_id",user.id));
-        }
-        // Reusing the same key safely resumes a request that was interrupted
-        // after Stripe created the account but before its ID was stored.
-        const account=await stripe("accounts",{"controller[stripe_dashboard][type]":"express","controller[fees][payer]":"application","controller[losses][payments]":"application","capabilities[transfers][requested]":"true","metadata[professional_id]":user.id},"connect-"+a.creation_key);
-        await checked(await db.from("connect_accounts").update({account_id:account.id}).eq("professional_id",user.id));
-        a.account_id=account.id;
-      }
-      if(!a?.account_id) return reply({connected:false,ready:false});
-      const account=await stripe("accounts/"+a.account_id);
-      const ready=account.payouts_enabled && account.capabilities?.transfers==="active";
+      if(input.action==="embedded_session") a=await ensureAccount(db,user.id,input.country);
+      if(!a?.account_id) return reply({connected:false,ready:false,country:a?.embedded_country||null});
+      const account=await retrieveAccount(a);
+      const ready=accountReady(account,a.account_api);
       await checked(await db.from("connect_accounts").update({ready,checked_at:new Date().toISOString()}).eq("professional_id",user.id));
-      if(input.action==="onboard") return reply(await stripe("account_links",{account:a.account_id,type:"account_onboarding",return_url:site+"/?connect=return",refresh_url:site+"/?connect=refresh"}));
-      if(input.action==="account_dashboard") return reply(await stripe("accounts/"+a.account_id+"/login_links",{}));
-      return reply({connected:true,ready});
+      if(input.action==="embedded_session"){
+        const session=await connectStripe("v1/account_sessions",sessionOptions(a,account));
+        return new Response(JSON.stringify({client_secret:session.client_secret,livemode:session.livemode}),
+          {headers:{...cors,"Cache-Control":"no-store"}});
+      }
+      return reply({connected:true,ready,country:a.embedded_country||null});
     }
     const m=await missionFor(db,input.missionId,user,isAdmin);
     if(input.action==="proof"){
