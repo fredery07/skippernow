@@ -124,7 +124,7 @@ Deno.serve(async req=>{
       try{
       // Never accept a destination/account/professional ID supplied by the browser.
       let a=await checked(await db.from("connect_accounts").select("*").eq("professional_id",user.id).maybeSingle());
-      if(input.action==="embedded_session") a=await ensureAccount(db,user.id,input.country);
+      if(input.action==="embedded_session") a=await ensureAccount(db,user.id,input.country,user.email);
       if(!a?.account_id) return reply({connected:false,ready:false,country:a?.embedded_country||null});
       const account=await retrieveAccount(a);
       const ready=accountReady(account,a.account_api);
