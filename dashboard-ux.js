@@ -85,4 +85,12 @@
   const observer = new MutationObserver(()=>enhanceDirectLink());
   observer.observe(document.documentElement,{childList:true,subtree:true});
   enhanceDirectLink();
+
+  if(!window.__skippernowBoatRentalV1){
+    window.__skippernowBoatRentalV1 = true;
+    const rental = document.createElement("script");
+    rental.src = "/boat-rental-v1.js";
+    rental.defer = true;
+    document.head.appendChild(rental);
+  }
 })();
