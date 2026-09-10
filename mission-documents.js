@@ -22,7 +22,7 @@
   }
   function receiptHtml(r){
     const l=L();
-    return `<h2>${esc(l.receipt)}</h2><p><strong>SkipperNow</strong> · skippernow.fr</p><p>${esc(l.reference)} : ${esc(r.reference)}<br>${esc(l.date)} : ${esc(date(r.paidAt))}</p><p>${esc(l.mission)} : ${esc(r.missionId)}<br>${esc(r.port||"")} · ${esc(r.boat||"")}<br>${esc(r.description||"")}</p><hr><p><strong>${esc(l.paid)} : ${esc(amount(r.total,r.currency))}</strong></p>${r.refunded?`<p>${esc(l.refund)} : ${esc(amount(r.refunded,r.currency))}</p>`:""}${r.disputed?`<p>${esc(l.dispute)}</p>`:""}<p style="overflow-wrap:anywhere">${esc(l.paymentReference)} : ${esc(r.paymentReference)}</p><p>${esc(l.legal)}</p>`;
+    return `<h2>${esc(l.receipt)}</h2><p><strong>SkipperNow</strong> · skippernow.fr</p><p>${esc(l.reference)} : ${esc(r.reference)}<br>${esc(l.date)} : ${esc(date(r.paidAt))}</p><p><strong>${esc(l.mission)}</strong><br>${esc(r.port||"")} · ${esc(r.boat||"")}<br>${esc(r.description||"")}</p><hr><p><strong>${esc(l.paid)} : ${esc(amount(r.total,r.currency))}</strong></p>${r.refunded?`<p>${esc(l.refund)} : ${esc(amount(r.refunded,r.currency))}</p>`:""}${r.disputed?`<p>${esc(l.dispute)}</p>`:""}<p>${esc(l.legal)}</p>`;
   }
   function printReceipt(html){
     document.querySelector("#receiptPrintFrame")?.remove();
