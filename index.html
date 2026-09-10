@@ -2811,6 +2811,16 @@ window.openProfileDetail = function(id, adminView){
   closeModal("providerModal");
   closeModal("boatFinderModal");
   const content = document.querySelector("#profileDetailContent");
+  if(p.role === "client"){
+    content.innerHTML = `<button class="close" type="button" onclick="closeModal('profileDetailModal')">×</button>
+      ${p.profile_photo_url ? `<img class="dash-avatar" src="${esc(p.profile_photo_url)}" alt="">` : ""}
+      <small class="muted">${esc(roleLabel(p))}</small>
+      <h2>${esc(p.full_name||"—")}</h2>
+      <div class="boat-card-port">📍 ${esc(p.home_port||"—")}</div>
+      <p class="muted">${esc(p.bio||t("boatDetail.noDescription"))}</p>`;
+    openModal("profileDetailModal");
+    return;
+  }
   const activity = p.provider_activity || "skipper";
   const canRequest = p.available !== false && !p.suspended;
   const photoStyle = p.profile_photo_url ? `background-image:url('${esc(p.profile_photo_url)}')` : "background:linear-gradient(135deg,#173b51,#3f9c9a)";
