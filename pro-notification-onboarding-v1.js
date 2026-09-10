@@ -99,5 +99,13 @@
     window.openDashboard=async function(){const r=await old.apply(this,arguments);setTimeout(run,250);return r;};
   }
 
+  if(!window.__skippernowLiveTrackingV1){
+    window.__skippernowLiveTrackingV1=true;
+    const s=document.createElement("script");
+    s.src="/skipper-live-tracking-v1.js";
+    s.defer=true;
+    document.head.appendChild(s);
+  }
+
   setTimeout(run,1200);
 })();
