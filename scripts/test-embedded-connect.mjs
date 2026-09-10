@@ -21,6 +21,9 @@ assert.equal(c.accountReady({...current,configuration:{}},'v2'),false);
 const restricted=structuredClone(current);restricted.configuration.recipient.capabilities.stripe_balance.payouts.status='restricted';assert.equal(c.accountReady(restricted,'v2'),false);
 const opts=c.sessionOptions({account_id:'acct_owner',account_api:'v2'},current);
 assert.equal(opts.account,'acct_owner');
+// Stripe rejects a session when onboarding and payouts disagree on bank collection.
+for(const comp of ['account_onboarding','account_management','notification_banner','payouts'])
+  assert.equal(opts[`components[${comp}][features][external_account_collection]`],'true');
 for(const comp of ['account_onboarding','account_management','notification_banner','payouts']) assert.equal(opts[`components[${comp}][features][disable_stripe_user_authentication]`],'true');
 assert.equal(opts['components[payouts][features][standard_payouts]'],'false');
 assert.equal(opts['components[payouts][features][edit_payout_schedule]'],'false');

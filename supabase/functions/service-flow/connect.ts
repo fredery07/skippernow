@@ -66,7 +66,9 @@ export function sessionOptions(row,account){
   const body={account:row.account_id};
   for(const name of ["account_onboarding","account_management","notification_banner","payouts"]){
     body[`components[${name}][enabled]`]="true";
-    body[`components[${name}][features][external_account_collection]`]=name==="payouts"?"false":"true";
+    // Stripe requires the bank-collection setting to match across components.
+    // Collecting an IBAN does not grant permission to initiate a payout.
+    body[`components[${name}][features][external_account_collection]`]="true";
     if(noStripeAuth) body[`components[${name}][features][disable_stripe_user_authentication]`]="true";
   }
   // Providers can inspect bank payouts but only SkipperNow controls money movements.
