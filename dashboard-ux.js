@@ -5,7 +5,7 @@
   const TEXT = {
     fr:{quoted:"En attente de l’acceptation du client",proposal:"Votre proposition",payment:"Paiement en attente",waiting:"Aucune action requise tant que le client n’a pas accepté et payé.",details:"Voir les détails",hide:"Masquer les détails",copy:"Copier mon lien",copied:"Lien copié !",confirmed:"Payée – Mission confirmée"},
     en:{quoted:"Waiting for client approval",proposal:"Your proposal",payment:"Payment pending",waiting:"No action is required until the client has accepted and paid.",details:"View details",hide:"Hide details",copy:"Copy my link",copied:"Link copied!",confirmed:"Paid – Job confirmed"},
-    es:{quoted:"Esperando la aceptación del cliente",proposal:"Tu propuesta",payment:"Pago pendiente",waiting:"No tienes que hacer nada hasta que el cliente acepte y pague.",details:"Ver detalles",hide:"Ocultar detalles",copy:"Copiar mi enlace",copied:"¡Enlace copiado!",confirmed:"Pagada – Misión confirmada"}
+    es:{quoted:"Esperando la aceptación del cliente",proposal:"Tu propuesta",payment:"Pago pendiente",waiting:"No tienes que hacer nada hasta que el cliente acepte y pague.",details:"Ver detalles",hide:"Ocultar los detalles",copy:"Copiar mi enlace",copied:"¡Enlace copiado!",confirmed:"Pagada – Misión confirmada"}
   };
   function tx(k){ const l=TEXT[lang()]?lang():"fr"; return TEXT[l][k] || TEXT.fr[k]; }
   function escHtml(v){return String(v??"").replace(/[&<>'"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[c]));}
@@ -92,5 +92,12 @@
     rental.src = "/boat-rental-v1.js";
     rental.defer = true;
     document.head.appendChild(rental);
+  }
+  if(!window.__skippernowSkipperDispatchV1){
+    window.__skippernowSkipperDispatchV1 = true;
+    const dispatch = document.createElement("script");
+    dispatch.src = "/skipper-dispatch-v1.js";
+    dispatch.defer = true;
+    document.head.appendChild(dispatch);
   }
 })();
