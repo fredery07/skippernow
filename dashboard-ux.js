@@ -116,4 +116,11 @@
     agency.defer = true;
     document.head.appendChild(agency);
   }
+  if(!window.__skippernowProviderDashboardV2){
+    window.__skippernowProviderDashboardV2 = true;
+    const provider = document.createElement("script");
+    provider.src = "/provider-dashboard-v2.js";
+    provider.defer = true;
+    document.head.appendChild(provider);
+  }
 })();
