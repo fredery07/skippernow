@@ -44,6 +44,65 @@
   const home = path === "/" || path === "/index.html";
   const landing = /\/(skipper-|location-bateau-|boat-rental-|alquiler-barcos-)/i.test(path);
 
+  function installHomePremiumPalette(){
+    if(!home || document.querySelector("style[data-sn-premium-palette]")) return;
+    const style = document.createElement("style");
+    style.dataset.snPremiumPalette = "1";
+    style.textContent = `
+      :root{
+        --navy:#061827!important;
+        --blue:#0b6570!important;
+        --aqua:#35d7c8!important;
+        --mist:#edf8f5!important;
+        --ink:#102b3f!important;
+        --muted:#5d6f76!important;
+        --line:#ddd7c9!important;
+        --brass:#b88a45!important;
+        --brass-light:#e7c985!important;
+        --paper:#f7f2e8!important;
+        --shadow:0 22px 60px rgba(6,24,39,.14)!important;
+      }
+      body{background:linear-gradient(180deg,#fbf7ee 0%,#f7f2e8 38%,#f3eee5 100%)!important}
+      header{background:rgba(250,247,239,.94)!important;border-bottom-color:rgba(184,138,69,.22)!important;box-shadow:0 7px 28px rgba(6,24,39,.05)}
+      .mark{background:linear-gradient(145deg,#061827,#0b6570)!important;color:#e7c985!important;box-shadow:0 7px 22px rgba(6,24,39,.24)!important}
+      .logo{color:#061827!important}
+      .hero{background:linear-gradient(125deg,#04131f 0%,#082f3c 45%,#0b6570 76%,#1b8b8a 100%)!important}
+      .hero:after{content:"";position:absolute;inset:0;pointer-events:none;z-index:1;background:radial-gradient(circle at 78% 22%,rgba(231,201,133,.20),transparent 28%),radial-gradient(circle at 18% 84%,rgba(53,215,200,.15),transparent 34%)}
+      .hero-shade{background:linear-gradient(90deg,rgba(4,19,31,.72),rgba(4,19,31,.42) 48%,rgba(4,19,31,.14))!important}
+      .hero h1{color:#fffdf7!important}
+      .hero p,.trust{color:#e6f3f0!important}
+      .hero-cta .primary,.search-btn{background:linear-gradient(135deg,#39dfce,#27beaF)!important;color:#04131f!important;box-shadow:0 10px 28px rgba(53,215,200,.28)!important}
+      .hero-cta .secondary-light{border-color:rgba(231,201,133,.65)!important;color:#fff9eb!important;background:rgba(231,201,133,.10)!important}
+      .port-chips button{border-color:rgba(231,201,133,.42)!important;background:rgba(255,255,255,.10)!important}
+      .port-chips button:hover{background:rgba(231,201,133,.18)!important;border-color:#e7c985!important}
+      .search-card{background:rgba(255,253,248,.97)!important;border:1px solid rgba(184,138,69,.20)!important;box-shadow:0 22px 65px rgba(6,24,39,.16)!important}
+      .field{background:#fffdf8!important;border-color:#ded5c3!important}
+      .field:focus-within{border-color:#35d7c8!important;box-shadow:0 0 0 3px rgba(53,215,200,.10)}
+      .trust-stats,.launch-banner{background:linear-gradient(135deg,#061827,#0a3440)!important;border:1px solid rgba(231,201,133,.18)!important;box-shadow:0 18px 42px rgba(6,24,39,.20)!important}
+      .trust-stat strong,.launch-banner{color:#e7c985!important}
+      .quick-request-bar{background:linear-gradient(135deg,#effaf7 0%,#fffaf0 100%)!important;border-color:rgba(53,215,200,.32)!important}
+      .quick-request-card{background:linear-gradient(145deg,#061827 0%,#0b6570 72%,#168487 100%)!important;border-color:rgba(231,201,133,.26)!important}
+      .trust-process-card,.rental-box,.provider-card,.boat-card,.card{background:#fffdf8!important;border-color:#e1d8c7!important;box-shadow:0 12px 34px rgba(6,24,39,.07)!important}
+      .trust-process-icon{background:linear-gradient(145deg,#e9faf6,#fff5df)!important}
+      .pill-link,.eyebrow{color:#b88a45!important}
+      .primary{background:linear-gradient(135deg,#061827,#0b6570)!important;box-shadow:0 8px 20px rgba(6,24,39,.14)}
+      .ghost,.small-btn,.language-select{background:#fffaf1!important;border-color:#ddd2bc!important}
+      .sn-home-choice{background:linear-gradient(145deg,#fffdf8 0%,#fbf7ef 100%)!important;border-color:rgba(184,138,69,.27)!important;box-shadow:0 22px 60px rgba(6,24,39,.12)!important}
+      .sn-home-kicker{color:#a97b37!important}
+      .sn-home-choice-card{background:linear-gradient(155deg,#fffdf8,#f8f3e9)!important;border-color:#ded4c1!important;position:relative;overflow:hidden}
+      .sn-home-choice-card:before{content:"";position:absolute;inset:0 0 auto;height:3px;background:linear-gradient(90deg,#35d7c8,#e7c985);opacity:.9}
+      .sn-home-choice-card:hover{border-color:#c9a96d!important;box-shadow:0 14px 34px rgba(6,24,39,.10)!important}
+      .sn-home-choice-card b{color:#0b6570!important}
+      .sn-home-reassurance{border-top-color:#e8dfd0!important}
+      footer{background:#04131f!important;color:#e6f3f0!important}
+      @media(max-width:760px){
+        header{background:rgba(250,247,239,.97)!important}
+        .hero{background:linear-gradient(145deg,#04131f 0%,#0a4652 72%,#12777a 100%)!important}
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
   function installHomeConversion(){
     if(!home || document.querySelector("[data-sn-home-conversion]")) return;
     const target = document.querySelector(".search-wrap") || document.querySelector("main") || document.body.firstElementChild;
@@ -121,6 +180,7 @@
 
   function install(){
     installPostLoginCleanup();
+    installHomePremiumPalette();
     installHomeConversion();
     installSticky();
   }
