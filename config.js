@@ -6,8 +6,14 @@ window.SKIPPERNOW_CONFIG = {
 (function(){
   if(window.__skippernowPartnersLoader) return;
   window.__skippernowPartnersLoader = true;
-  const s = document.createElement("script");
-  s.src = "/partners-v1.js";
-  s.defer = true;
-  document.head.appendChild(s);
+
+  const partners = document.createElement("script");
+  partners.src = "/partners-v1.js";
+  partners.defer = true;
+  document.head.appendChild(partners);
+
+  const layout = document.createElement("script");
+  layout.src = "/home-layout-v1.js";
+  layout.defer = true;
+  document.head.appendChild(layout);
 })();
