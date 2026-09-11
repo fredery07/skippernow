@@ -71,7 +71,7 @@ $("#authForm").onsubmit=async e=>{
       if(error) throw error;
       currentUser=data.user;
       $("#authDialog").close();
-      openDashboard();
+      window.location.href="/";
     }
   }catch(err){$("#authMessage").style.color="#b42318";$("#authMessage").textContent=err.message;}
 };
