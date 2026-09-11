@@ -1,0 +1,54 @@
+name: Apply homepage partners fix
+
+on:
+  push:
+    paths:
+      - '.github/workflows/apply-home-partners-fix.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch-homepage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch homepage source
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+
+          path = Path('index.html')
+          text = path.read_text(encoding='utf-8')
+
+          # Remove the old homepage verified-professionals showcase at source.
+          text, removed = re.subn(
+              r'\s*<section class="home-pros" id="homeProvidersSection"[^>]*>.*?</section>\s*',
+              '\n',
+              text,
+              count=1,
+              flags=re.S,
+          )
+
+          # Load the partner/publicity manager directly from the production homepage.
+          tag = '<script src="/partners-v2.js?v=20260911-2345"></script>'
+          if tag not in text:
+              text = text.replace('</body>', tag + '\n</body>', 1)
+
+          path.write_text(text, encoding='utf-8')
+          print(f'provider section removed: {removed}')
+          if removed != 1:
+              raise SystemExit('Expected provider showcase was not found exactly once')
+      - name: Commit production homepage fix
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'No change needed'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Replace homepage provider showcase with partners carousel'
+          git push
