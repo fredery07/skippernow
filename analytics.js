@@ -86,6 +86,11 @@
         p_referrer: referrer
     });
 
+    const conversion = document.createElement("script");
+    conversion.src = "/conversion-ux-v1.js";
+    conversion.defer = true;
+    document.head.appendChild(conversion);
+
     if(path === "/" || path === "/index.html"){
       const ux = document.createElement("script");
       ux.src = "/dashboard-ux.js";
