@@ -11,6 +11,23 @@
     catch(_e){ return ""; }
   }
 
+  // If the user signs in from one of the home choice links, return to a clean
+  // homepage instead of reopening the activity modal from the old query string.
+  // INITIAL_SESSION is deliberately ignored so an already signed-in user can
+  // still click a home choice and open the corresponding search normally.
+  function installPostLoginCleanup(){
+    try{
+      if(typeof db === "undefined" || !db?.auth?.onAuthStateChange) return;
+      db.auth.onAuthStateChange((event)=>{
+        if(event !== "SIGNED_IN") return;
+        const url = new URL(location.href);
+        if(url.searchParams.get("source") !== "home_choice") return;
+        if(sessionStorage.getItem("skippernow-quick-request")) return;
+        location.replace("/");
+      });
+    }catch(_e){}
+  }
+
   document.addEventListener("click", function(e){
     const el = e.target.closest && e.target.closest("a,button");
     if(!el) return;
@@ -102,7 +119,11 @@
     track("landing_cta_shown", {source:"seo",stage:"view",activity:cfg.activity});
   }
 
-  function install(){ installHomeConversion(); installSticky(); }
+  function install(){
+    installPostLoginCleanup();
+    installHomeConversion();
+    installSticky();
+  }
   if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", install, {once:true});
   else install();
 })();
