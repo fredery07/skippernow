@@ -109,4 +109,11 @@
     pricing.defer = true;
     document.head.appendChild(pricing);
   }
+  if(!window.__skippernowAgencyDashboardV1){
+    window.__skippernowAgencyDashboardV1 = true;
+    const agency = document.createElement("script");
+    agency.src = "/agency-dashboard-v1.js";
+    agency.defer = true;
+    document.head.appendChild(agency);
+  }
 })();
