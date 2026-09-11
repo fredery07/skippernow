@@ -3,9 +3,9 @@
 
   const lang = () => (document.documentElement.lang || "fr").slice(0,2);
   const TEXT = {
-    fr:{quoted:"En attente de l’acceptation du client",proposal:"Vous recevrez",payment:"Paiement en attente",waiting:"Montant net prévu pour vous. Le prix final client inclut les frais SkipperNow.",details:"Voir les détails",hide:"Masquer les détails",copy:"Copier mon lien",copied:"Lien copié !",confirmed:"Payée – Mission confirmée"},
-    en:{quoted:"Waiting for client approval",proposal:"You will receive",payment:"Payment pending",waiting:"Your expected net amount. The client's final price includes SkipperNow fees.",details:"View details",hide:"Hide details",copy:"Copy my link",copied:"Link copied!",confirmed:"Paid – Job confirmed"},
-    es:{quoted:"Esperando la aceptación del cliente",proposal:"Recibirás",payment:"Pago pendiente",waiting:"Tu importe neto previsto. El precio final del cliente incluye las tarifas de SkipperNow.",details:"Ver los detalles",hide:"Ocultar los detalles",copy:"Copiar mi enlace",copied:"¡Enlace copiado!",confirmed:"Pagada – Misión confirmada"}
+    fr:{quoted:"En attente de l’acceptation du client",proposal:"Vous recevrez",payment:"Paiement en attente",waiting:"Montant net prévu pour vous. Le prix final client inclut les frais SkipperNow.",details:"Voir les détails",hide:"Masquer les détails",copy:"Copier mon lien",copied:"Lien copié !",confirmed:"Payée – Mission confirmée",backProvider:"← Retour au centre prestataire"},
+    en:{quoted:"Waiting for client approval",proposal:"You will receive",payment:"Payment pending",waiting:"Your expected net amount. The client's final price includes SkipperNow fees.",details:"View details",hide:"Hide details",copy:"Copy my link",copied:"Link copied!",confirmed:"Paid – Job confirmed",backProvider:"← Back to provider center"},
+    es:{quoted:"Esperando la aceptación del cliente",proposal:"Recibirás",payment:"Pago pendiente",waiting:"Tu importe neto previsto. El precio final del cliente incluye las tarifas de SkipperNow.",details:"Ver los detalles",hide:"Ocultar los detalles",copy:"Copiar mi enlace",copied:"¡Enlace copiado!",confirmed:"Pagada – Misión confirmada",backProvider:"← Volver al centro profesional"}
   };
   function tx(k){ const l=TEXT[lang()]?lang():"fr"; return TEXT[l][k] || TEXT.fr[k]; }
   function escHtml(v){return String(v??"").replace(/[&<>'"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[c]));}
@@ -84,9 +84,53 @@
     });
   }
 
-  const observer = new MutationObserver(()=>enhanceDirectLink());
+  function normalizeProviderLogout(modal){
+    const top=modal.querySelector(".dialog-top");
+    const close=top?.querySelector("[data-close='dashboardModal']");
+    if(!top||!close) return;
+    let actions=top.querySelector("[data-pd-top-actions]");
+    if(!actions){
+      actions=document.createElement("div");
+      actions.dataset.pdTopActions="1";
+      actions.style.cssText="display:flex;align-items:center;gap:8px;margin-left:auto";
+      close.before(actions);
+      actions.appendChild(close);
+    }else if(close.parentElement!==actions){
+      actions.appendChild(close);
+    }
+    const all=[...modal.querySelectorAll(".logout-btn,[data-panel='__logout']")];
+    if(!all.length) return;
+    let keep=actions.querySelector(".logout-btn,[data-panel='__logout']") || all[0];
+    if(keep.parentElement!==actions) actions.insertBefore(keep,close);
+    all.forEach(btn=>{ if(btn!==keep) btn.remove(); });
+    keep.style.cssText="display:inline-flex;align-items:center;gap:7px;border:1px solid #dce8e9;background:#fff;color:#a22e2e;border-radius:10px;padding:8px 11px;font-weight:800;cursor:pointer";
+  }
+
+  function enhanceProviderLegacyNavigation(){
+    const modal=document.querySelector("#dashboardModal");
+    const body=modal?.querySelector("#dashboardBody");
+    if(!modal||!body) return;
+    const centerBtn=body.querySelector(".dash-side [data-panel='provider-center']");
+    if(!centerBtn) return;
+    normalizeProviderLogout(modal);
+    const main=body.querySelector(".dash-main");
+    if(!main || main.querySelector("[data-sn-provider-back]")) return;
+    const wrap=document.createElement("div");
+    wrap.dataset.snProviderBack="1";
+    wrap.style.cssText="margin:0 0 14px;display:flex;align-items:center";
+    const back=document.createElement("button");
+    back.type="button";
+    back.className="small-btn";
+    back.textContent=tx("backProvider");
+    back.onclick=()=>centerBtn.click();
+    wrap.appendChild(back);
+    main.prepend(wrap);
+  }
+
+  const observer = new MutationObserver(()=>{enhanceDirectLink();enhanceProviderLegacyNavigation();});
   observer.observe(document.documentElement,{childList:true,subtree:true});
   enhanceDirectLink();
+  enhanceProviderLegacyNavigation();
 
   if(!window.__skippernowBoatRentalV1){
     window.__skippernowBoatRentalV1 = true;
