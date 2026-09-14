@@ -209,3 +209,102 @@ async function renderServicePayoutAdmin(main,missions,byId){
     main.append(card);
   }
 }
+
+/* Admin activity notifications: new accounts + new requests. */
+const baseRefreshNotifications = refreshNotifications;
+function adminSeenKey(kind){
+  return `skippernow-admin-${kind}-seen-${currentUser?.id||"anon"}`;
+}
+function adminLatestDate(rows){
+  return (rows||[]).reduce((latest,row)=>row?.created_at && (!latest || row.created_at>latest) ? row.created_at : latest, "");
+}
+function adminSetNavBadge(panel,count){
+  const btn=document.querySelector(`.dash-side button[data-panel="${panel}"]`);
+  if(!btn) return;
+  let badge=btn.querySelector("[data-admin-activity-badge]");
+  if(!count){ badge?.remove(); return; }
+  if(!badge){
+    badge=document.createElement("span");
+    badge.dataset.adminActivityBadge="1";
+    badge.style.cssText="margin-left:auto;background:#c0392b;color:#fff;border-radius:999px;min-width:19px;height:19px;padding:0 5px;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:900";
+    btn.style.display="flex";btn.style.alignItems="center";btn.style.gap="8px";
+    btn.append(badge);
+  }
+  badge.textContent=count>9?"9+":String(count);
+}
+async function adminOpenActivity(panel,kind,latest){
+  if(latest) localStorage.setItem(adminSeenKey(kind),latest);
+  document.querySelector("#notifPanel").style.display="none";
+  await openDashboard();
+  document.querySelectorAll(".dash-side button").forEach(b=>b.classList.toggle("active",b.dataset.panel===panel));
+  await renderAdminPanel(panel);
+  await refreshNotifications();
+}
+async function enhanceAdminNotifications(){
+  if(!currentUser || currentProfile?.role!=="admin") return;
+  const usersKey=adminSeenKey("users");
+  const requestsKey=adminSeenKey("requests");
+  let seenUsers=localStorage.getItem(usersKey);
+  let seenRequests=localStorage.getItem(requestsKey);
+
+  if(!seenUsers || !seenRequests){
+    const [lastUser,lastRequest]=await Promise.all([
+      db.from("profiles").select("created_at").order("created_at",{ascending:false}).limit(1),
+      db.from("missions").select("created_at").order("created_at",{ascending:false}).limit(1)
+    ]);
+    const now=new Date().toISOString();
+    if(!seenUsers){seenUsers=lastUser.data?.[0]?.created_at||now;localStorage.setItem(usersKey,seenUsers);}
+    if(!seenRequests){seenRequests=lastRequest.data?.[0]?.created_at||now;localStorage.setItem(requestsKey,seenRequests);}
+  }
+
+  const [usersRes,requestsRes]=await Promise.all([
+    db.from("profiles").select("id,full_name,role,created_at").gt("created_at",seenUsers).order("created_at",{ascending:false}).limit(50),
+    db.from("missions").select("id,port,activity,created_at,client_id").gt("created_at",seenRequests).order("created_at",{ascending:false}).limit(50)
+  ]);
+  const newUsers=usersRes.data||[];
+  const newRequests=requestsRes.data||[];
+  const latestUsers=adminLatestDate(newUsers);
+  const latestRequests=adminLatestDate(newRequests);
+
+  adminSetNavBadge("users",newUsers.length);
+  adminSetNavBadge("missions",newRequests.length);
+
+  const panel=document.querySelector("#notifPanel");
+  if(!panel) return;
+  if(newUsers.length || newRequests.length) panel.querySelector(".empty-note")?.remove();
+  const makeButton=(label,panelId,kind,latest)=>{
+    const button=document.createElement("button");
+    button.type="button";button.className="request-card";
+    button.style.cssText="width:100%;text-align:left;cursor:pointer;display:block;margin-bottom:6px;border-color:#b9e9e4;background:#f2fafa";
+    button.textContent=label;
+    button.addEventListener("click",()=>adminOpenActivity(panelId,kind,latest));
+    return button;
+  };
+  if(newRequests.length) panel.prepend(makeButton(`📩 ${newRequests.length} nouvelle${newRequests.length>1?"s":""} demande${newRequests.length>1?"s":""} envoyée${newRequests.length>1?"s":""}`,"missions","requests",latestRequests));
+  if(newUsers.length) panel.prepend(makeButton(`👤 ${newUsers.length} nouvel${newUsers.length>1?"s":""} utilisateur${newUsers.length>1?"s":""}`,"users","users",latestUsers));
+
+  const extra=newUsers.length+newRequests.length;
+  if(extra){
+    const badge=document.querySelector("#notifBadge");
+    const base=badge.style.display==="none"?0:(badge.textContent==="9+"?9:Number(badge.textContent)||0);
+    const total=base+extra;
+    badge.textContent=total>9?"9+":String(total);
+    badge.style.display="flex";
+  }
+
+  [["users",usersKey,latestUsers],["missions",requestsKey,latestRequests]].forEach(([panelId,key,latest])=>{
+    const btn=document.querySelector(`.dash-side button[data-panel="${panelId}"]`);
+    if(btn && !btn.dataset.adminSeenBound){
+      btn.dataset.adminSeenBound="1";
+      btn.addEventListener("click",()=>{
+        const stamp=panelId==="users"?latestUsers:latestRequests;
+        if(stamp) localStorage.setItem(key,stamp);
+        setTimeout(()=>refreshNotifications(),0);
+      });
+    }
+  });
+}
+refreshNotifications = async function(){
+  await baseRefreshNotifications();
+  try{await enhanceAdminNotifications();}catch(error){console.warn("Admin notifications:",error);}
+};
