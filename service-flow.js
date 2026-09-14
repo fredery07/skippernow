@@ -99,7 +99,6 @@ async function connectInstance(country){
   };
   connectInstancePromise=(async()=>{
     const sdk=await loadConnectScript();
-    // Surface server errors before rendering an empty iframe. Do not persist the secret.
     let firstSecret=await fetchClientSecret();
     return sdk.init({publishableKey:STRIPE_PUBLISHABLE_KEY,locale:currentLang||'fr',
       fetchClientSecret:async()=>{
@@ -163,8 +162,6 @@ async function mountConnectSetup(main){
   box.querySelector('[data-refresh]').onclick=async()=>{active=null;form.hidden=true;form.replaceChildren();notices.replaceChildren();noticeMounted=false;await refresh();};
   await refresh();
 }
-// A Connect session must never survive signing out or switching SkipperNow accounts.
-// Keep this callback synchronous to avoid Supabase auth callback deadlocks.
 if(typeof db!=='undefined') db.auth.onAuthStateChange((event,session)=>{
   if(event==='SIGNED_OUT' || (connectOwner && session?.user.id!==connectOwner)) resetConnectSession();
 });
@@ -246,7 +243,6 @@ async function enhanceAdminNotifications(){
   const requestsKey=adminSeenKey("requests");
   let seenUsers=localStorage.getItem(usersKey);
   let seenRequests=localStorage.getItem(requestsKey);
-
   if(!seenUsers || !seenRequests){
     const [lastUser,lastRequest]=await Promise.all([
       db.from("profiles").select("created_at").order("created_at",{ascending:false}).limit(1),
@@ -256,7 +252,6 @@ async function enhanceAdminNotifications(){
     if(!seenUsers){seenUsers=lastUser.data?.[0]?.created_at||now;localStorage.setItem(usersKey,seenUsers);}
     if(!seenRequests){seenRequests=lastRequest.data?.[0]?.created_at||now;localStorage.setItem(requestsKey,seenRequests);}
   }
-
   const [usersRes,requestsRes]=await Promise.all([
     db.from("profiles").select("id,full_name,role,created_at").gt("created_at",seenUsers).order("created_at",{ascending:false}).limit(50),
     db.from("missions").select("id,port,activity,created_at,client_id").gt("created_at",seenRequests).order("created_at",{ascending:false}).limit(50)
@@ -265,41 +260,30 @@ async function enhanceAdminNotifications(){
   const newRequests=requestsRes.data||[];
   const latestUsers=adminLatestDate(newUsers);
   const latestRequests=adminLatestDate(newRequests);
-
   adminSetNavBadge("users",newUsers.length);
   adminSetNavBadge("missions",newRequests.length);
-
   const panel=document.querySelector("#notifPanel");
   if(!panel) return;
   if(newUsers.length || newRequests.length) panel.querySelector(".empty-note")?.remove();
   const makeButton=(label,panelId,kind,latest)=>{
-    const button=document.createElement("button");
-    button.type="button";button.className="request-card";
+    const button=document.createElement("button");button.type="button";button.className="request-card";
     button.style.cssText="width:100%;text-align:left;cursor:pointer;display:block;margin-bottom:6px;border-color:#b9e9e4;background:#f2fafa";
-    button.textContent=label;
-    button.addEventListener("click",()=>adminOpenActivity(panelId,kind,latest));
-    return button;
+    button.textContent=label;button.addEventListener("click",()=>adminOpenActivity(panelId,kind,latest));return button;
   };
   if(newRequests.length) panel.prepend(makeButton(`📩 ${newRequests.length} nouvelle${newRequests.length>1?"s":""} demande${newRequests.length>1?"s":""} envoyée${newRequests.length>1?"s":""}`,"missions","requests",latestRequests));
   if(newUsers.length) panel.prepend(makeButton(`👤 ${newUsers.length} nouvel${newUsers.length>1?"s":""} utilisateur${newUsers.length>1?"s":""}`,"users","users",latestUsers));
-
   const extra=newUsers.length+newRequests.length;
   if(extra){
     const badge=document.querySelector("#notifBadge");
     const base=badge.style.display==="none"?0:(badge.textContent==="9+"?9:Number(badge.textContent)||0);
-    const total=base+extra;
-    badge.textContent=total>9?"9+":String(total);
-    badge.style.display="flex";
+    const total=base+extra;badge.textContent=total>9?"9+":String(total);badge.style.display="flex";
   }
-
   [["users",usersKey,latestUsers],["missions",requestsKey,latestRequests]].forEach(([panelId,key,latest])=>{
     const btn=document.querySelector(`.dash-side button[data-panel="${panelId}"]`);
     if(btn && !btn.dataset.adminSeenBound){
-      btn.dataset.adminSeenBound="1";
-      btn.addEventListener("click",()=>{
+      btn.dataset.adminSeenBound="1";btn.addEventListener("click",()=>{
         const stamp=panelId==="users"?latestUsers:latestRequests;
-        if(stamp) localStorage.setItem(key,stamp);
-        setTimeout(()=>refreshNotifications(),0);
+        if(stamp) localStorage.setItem(key,stamp);setTimeout(()=>refreshNotifications(),0);
       });
     }
   });
@@ -308,3 +292,51 @@ refreshNotifications = async function(){
   await baseRefreshNotifications();
   try{await enhanceAdminNotifications();}catch(error){console.warn("Admin notifications:",error);}
 };
+
+/* Homepage conversion boost: make the free request the clearest next step. */
+function conversionCopy(){
+  if((window.currentLang||"fr")==="en") return {title:"Tell us what you need",subtitle:"Send one free request and available skippers or marine professionals can reply with their price.",cta:"Send my free request",hero:"Get offers from available professionals",proof:"Free request · No commitment · Secure payment",profiles:"Available professionals right now",view:"View profile"};
+  if((window.currentLang||"fr")==="es") return {title:"Dinos qué necesitas",subtitle:"Envía una solicitud gratuita y los skippers o profesionales disponibles podrán responderte con su precio.",cta:"Enviar mi solicitud gratis",hero:"Recibir propuestas de profesionales disponibles",proof:"Solicitud gratis · Sin compromiso · Pago seguro",profiles:"Profesionales disponibles ahora",view:"Ver perfil"};
+  return {title:"Dites-nous simplement ce qu’il vous faut",subtitle:"Envoyez une demande gratuite : les skippers et prestataires disponibles peuvent vous répondre directement avec leur tarif.",cta:"Faire une demande gratuitement",hero:"Recevoir des propositions de professionnels disponibles",proof:"Demande gratuite · Sans engagement · Paiement sécurisé",profiles:"Professionnels disponibles maintenant",view:"Voir le profil"};
+}
+function openConversionRequest(source){
+  try{if(typeof trackBookingEvent==="function") trackBookingEvent("conversion_cta_clicked",{source});}catch(_e){}
+  if(typeof openQuickRequest==="function") openQuickRequest();
+}
+async function mountConversionProfiles(anchor){
+  if(!anchor || document.querySelector("#conversionProfiles")) return;
+  try{
+    const {data,error}=await db.from("profiles").select("id,full_name,home_port,profile_photo_url,provider_activity").eq("verified",true).eq("available",true).in("role",["skipper","provider"]).order("created_at",{ascending:false}).limit(3);
+    if(error || !data?.length) return;
+    const c=conversionCopy();
+    const section=document.createElement("section");section.id="conversionProfiles";
+    section.style.cssText="margin:18px 0 28px;padding:18px;border:1px solid var(--line);border-radius:20px;background:#fff;box-shadow:0 8px 24px rgba(16,43,63,.05)";
+    section.innerHTML=`<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px"><strong style="color:var(--navy);font-size:16px">${esc(c.profiles)}</strong><span style="font-size:12px;color:var(--ok);font-weight:800">● En ligne</span></div><div style="display:grid;grid-template-columns:repeat(${Math.min(data.length,3)},1fr);gap:10px">${data.map(p=>`<button type="button" data-conversion-profile="${p.id}" style="border:1px solid var(--line);background:#fafdfd;border-radius:14px;padding:12px;text-align:left;cursor:pointer;min-width:0"><div style="display:flex;align-items:center;gap:10px">${p.profile_photo_url?`<img src="${esc(p.profile_photo_url)}" alt="" style="width:44px;height:44px;border-radius:50%;object-fit:cover">`:`<span style="width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--mist);font-size:20px">⚓</span>`}<div style="min-width:0"><strong style="display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(p.full_name||"Professionnel")}</strong><small style="color:var(--muted)">${esc(p.home_port||"")}</small></div></div><span style="display:block;margin-top:8px;color:var(--navy);font-size:12px;font-weight:800">${esc(c.view)} →</span></button>`).join("")}</div>`;
+    anchor.insertAdjacentElement("afterend",section);
+    section.querySelectorAll("[data-conversion-profile]").forEach(btn=>btn.addEventListener("click",()=>openProfileDetail(btn.dataset.conversionProfile)));
+  }catch(_e){}
+}
+function mountHomepageConversionBoost(){
+  const quick=document.querySelector(".quick-request-bar");
+  const quickBtn=document.querySelector("#quickRequestBtn");
+  if(!quick || !quickBtn || document.body.dataset.conversionBoost==="1") return;
+  document.body.dataset.conversionBoost="1";
+  const c=conversionCopy();
+  const strong=quick.querySelector(".quick-request-copy strong");
+  const sub=quick.querySelector(".quick-request-copy span");
+  if(strong) strong.textContent=c.title;
+  if(sub) sub.textContent=c.subtitle;
+  quickBtn.textContent=c.cta;
+  quick.style.border="2px solid var(--aqua)";
+  quick.style.boxShadow="0 12px 32px rgba(13,102,114,.13)";
+  const proof=document.createElement("div");proof.style.cssText="font-size:12px;color:var(--muted);font-weight:700;margin:-2px 0 12px 24px";proof.textContent="✓ "+c.proof;quick.insertAdjacentElement("afterend",proof);
+  const hero=document.querySelector(".hero-cta");
+  if(hero && !document.querySelector("#heroConversionRequest")){
+    const btn=document.createElement("button");btn.id="heroConversionRequest";btn.type="button";btn.className="primary";btn.textContent=c.hero;btn.addEventListener("click",()=>openConversionRequest("hero"));hero.prepend(btn);
+  }
+  quickBtn.addEventListener("click",()=>{try{if(typeof trackBookingEvent==="function") trackBookingEvent("conversion_cta_clicked",{source:"quick_bar"});}catch(_e){}});
+  const style=document.createElement("style");style.textContent=`#mobileConversionCta{display:none}@media(max-width:720px){body{padding-bottom:76px}#mobileConversionCta{display:block;position:fixed;left:12px;right:12px;bottom:10px;z-index:999;border:0;border-radius:15px;background:var(--aqua);color:var(--navy);font-weight:900;padding:15px 16px;box-shadow:0 12px 34px rgba(7,29,50,.28);font-size:15px}.quick-request-bar{border-width:2px!important}.quick-request-copy strong{font-size:18px!important}#conversionProfiles>div:nth-child(2){grid-template-columns:1fr!important}}`;document.head.append(style);
+  const mobile=document.createElement("button");mobile.id="mobileConversionCta";mobile.type="button";mobile.textContent="⚓ "+c.cta;mobile.addEventListener("click",()=>openConversionRequest("mobile_sticky"));document.body.append(mobile);
+  mountConversionProfiles(proof);
+}
+setTimeout(mountHomepageConversionBoost,0);
