@@ -3063,14 +3063,8 @@ async function renderAdminPanel(panel){
     const completed30 = missions.filter(m=>m.status === "completed" && isWithin30Days(m.updated_at || m.created_at)).length;
     const verifiedPros = profiles.filter(p=>p.verified && ["skipper","provider"].includes(p.role)).length;
     const topPages = Array.isArray(s.top_pages_30d) ? s.top_pages_30d : [];
-    const topCountries = Array.isArray(s.top_countries_30d) ? s.top_countries_30d : [];
-    const topTimezones = Array.isArray(s.top_timezones_30d) ? s.top_timezones_30d : [];
     const bookingEvents = s.booking_events_30d || {};
     const trackingSinceText = s.tracking_since ? new Date(s.tracking_since).toLocaleDateString(currentLang) : t("dash.trackingSinceUnknown");
-    let regionNames = null;
-    try{ regionNames = new Intl.DisplayNames([currentLang],{type:"region"}); }catch(_error){}
-    const countryFlag = code => /^[A-Z]{2}$/.test(code||"") ? String.fromCodePoint(...code.split("").map(c=>127397+c.charCodeAt(0))) : "🌍";
-    const countryName = code => { try{ return regionNames ? regionNames.of(code) : code; }catch(_error){ return code; } };
     main.innerHTML = `
       <div class="note-box">${esc(t("dash.visitorsTrackingNote",{date: trackingSinceText}))}</div>
       <div class="kpi-grid">
@@ -3093,16 +3087,6 @@ async function renderAdminPanel(panel){
         <div class="kpi" tabindex="0" role="button" data-admin-panel="forms"><div class="kpi-top"><span>${esc(t("dash.bookingSubmitted"))}</span></div><strong>${Number(bookingEvents.booking_submitted || 0)}</strong></div>
         <div class="kpi kpi--good" tabindex="0" role="button" data-admin-panel="forms"><div class="kpi-top"><span>${esc(t("dash.bookingCreated"))}</span></div><strong>${Number(bookingEvents.booking_created || 0)}</strong></div>
         <div class="kpi ${Number(bookingEvents.booking_failed || 0) ? 'kpi--danger' : ''}" tabindex="0" role="button" data-admin-panel="forms"><div class="kpi-top"><span>${esc(t("dash.bookingFailed"))}</span></div><strong>${Number(bookingEvents.booking_failed || 0)}</strong></div>
-      </div>
-      <div class="dash-section-title">${esc(t("dash.originTitle"))}</div>
-      <div class="note-box">${esc(t("dash.originPrivacyNote"))}</div>
-      <div class="traffic-origin-grid">
-        <section class="traffic-origin-card"><h3>${esc(t("dash.countryProbable"))}</h3>
-          ${topCountries.length ? `<div class="traffic-table">${topCountries.map(row=>`<div class="traffic-row"><span>${countryFlag(row.country_code)} ${esc(countryName(row.country_code))}<small class="traffic-origin-meta">${esc(t("dash.viewCount",{count:row.views}))}</small></span><span class="traffic-count">${esc(t("dash.visitorCount",{count:row.visitors}))}</span></div>`).join("")}</div>` : `<div class="empty-note">${esc(t("dash.originEmpty"))}</div>`}
-        </section>
-        <section class="traffic-origin-card"><h3>${esc(t("dash.timezones"))}</h3>
-          ${topTimezones.length ? `<div class="traffic-table">${topTimezones.map(row=>`<div class="traffic-row"><span>${esc(String(row.timezone||"").replaceAll("_"," "))}<small class="traffic-origin-meta">${esc(t("dash.viewCount",{count:row.views}))}</small></span><span class="traffic-count">${esc(t("dash.visitorCount",{count:row.visitors}))}</span></div>`).join("")}</div>` : `<div class="empty-note">${esc(t("dash.originEmpty"))}</div>`}
-        </section>
       </div>
       <div class="dash-section-title">${esc(t("dash.topPagesTitle"))}${Number.isFinite(s.views_30d) ? ` · ${esc(t("dash.pageViews30d",{count:s.views_30d}))}` : ""}</div>
       ${topPages.length ? `<div class="traffic-table">${topPages.map(p=>`<div class="traffic-row" tabindex="0" role="button" data-open-path="${esc(p.path)}"><span class="traffic-path">${esc(p.path)}</span><span class="traffic-count">${p.views}</span></div>`).join("")}</div>` : `<div class="empty-note">${esc(t("dash.noViewsYet"))}</div>`}`;

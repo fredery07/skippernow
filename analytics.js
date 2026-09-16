@@ -46,22 +46,6 @@
       }
     }
 
-    function getApproximateRegion(){
-      const language = String((navigator.languages && navigator.languages[0]) || navigator.language || "").slice(0, 35);
-      let timezone = "";
-      let countryCode = "";
-      try{
-        timezone = String(Intl.DateTimeFormat().resolvedOptions().timeZone || "").slice(0, 80);
-      }catch(_error){}
-      try{
-        if(typeof Intl.Locale === "function" && language){
-          countryCode = String(new Intl.Locale(language).region || "").toUpperCase();
-        }
-      }catch(_error){}
-      if(!/^[A-Z]{2}$/.test(countryCode)) countryCode = "";
-      return {countryCode: countryCode || null, timezone: timezone || null, language: language || null};
-    }
-
     function postRpc(name, body){
       const headers = {
         "apikey": SUPABASE_KEY,
@@ -102,14 +86,10 @@
       ? document.referrer.slice(0, 500)
       : null;
 
-    const approximateRegion = getApproximateRegion();
-    postRpc("record_page_visit_v2", {
+    postRpc("record_page_visit", {
         p_visitor_id: getVisitorId(),
         p_path: path.slice(0, 500),
-        p_referrer: referrer,
-        p_country_code: approximateRegion.countryCode,
-        p_timezone: approximateRegion.timezone,
-        p_language: approximateRegion.language
+        p_referrer: referrer
     });
 
     const conversion = document.createElement("script");
