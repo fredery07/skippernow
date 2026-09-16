@@ -191,7 +191,7 @@ async function renderServicePayoutAdmin(main,missions,byId){
     const c=cs.data.find(x=>x.mission_id===m.id),j=js.data.find(x=>x.mission_id===m.id);
     const pro=byId[m.provider_id||m.skipper_id];const account=acs.data.find(a=>a.professional_id===(m.provider_id||m.skipper_id));
     const blocked=m.dispute_status==="open" || !["paid","payout_ready"].includes(m.payment_status);
-    const card=document.createElement("article");card.className="request-card";
+    const card=document.createElement("article");card.className="request-card";card.tabIndex=0;card.setAttribute("role","button");card.dataset.adminDetail="mission";card.dataset.adminId=m.id;
     card.innerHTML=`<h3>${esc(m.port||"—")}</h3><p>${esc(pro?.full_name||"Professionnel non renseigné")} · ${esc(m.id.slice(0,8))}</p><strong>Net professionnel : ${moneyC(Math.max(0,Number(m.amount_cents||0)+Number(m.urgent_fee_cents||0)-Number(m.platform_fee_cents||0)),m.currency||"eur")}</strong><p>${esc(c?serviceSummary(c,j,enabled):"Ancienne mission sans preuve photo : aucun versement automatique programmé.")}</p><p>${blocked?"Litige, remboursement ou paiement à vérifier.":""} ${account?.ready?"Coordonnées de versement vérifiées.":"Coordonnées de versement du professionnel à compléter."}</p><div class="request-actions"></div><p role="status">${esc(j?.error||"")}</p>`;
     const actions=card.querySelector(".request-actions");
     function button(label,action,disabled=false){const b=document.createElement("button");b.className="small-btn";b.textContent=label;b.disabled=disabled;b.onclick=async()=>{b.disabled=true;try{await action();}catch(e){card.querySelector('[role="status"]').textContent=e.message;}finally{b.disabled=disabled;}};actions.append(b);}

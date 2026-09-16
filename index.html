@@ -455,6 +455,19 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
 .kpi--danger .kpi-icon{background:#fbe8e5;color:#c0392b}
 .kpi--danger strong{color:#c0392b}
 .kpi--danger .kpi-trend{color:#c0392b}
+.kpi[data-admin-panel],.kpi[data-form-filter],.priority-row[data-admin-panel],.traffic-row[data-open-path],.request-card[data-admin-detail],.form-session-row{cursor:pointer;transition:transform .16s,box-shadow .16s,border-color .16s}
+.kpi[data-admin-panel]:hover,.kpi[data-form-filter]:hover,.request-card[data-admin-detail]:hover,.form-session-row:hover{transform:translateY(-2px);border-color:#7dd9d1;box-shadow:0 10px 26px rgba(16,43,63,.09)}
+.kpi[data-admin-panel]:focus-visible,.priority-row[data-admin-panel]:focus-visible,.traffic-row[data-open-path]:focus-visible,.request-card[data-admin-detail]:focus-visible,.form-session-row:focus-visible{outline:3px solid rgba(57,209,197,.35);outline-offset:2px}
+.priority-row[data-admin-panel]:hover,.traffic-row[data-open-path]:hover{background:var(--mist)}
+.form-session-list{display:flex;flex-direction:column;gap:9px}
+.form-session-row{display:grid;grid-template-columns:minmax(170px,1.2fr) minmax(140px,1fr) minmax(130px,.8fr) auto;gap:14px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.form-session-main strong{display:block;color:var(--navy);font-size:14px}.form-session-main span,.form-session-meta{display:block;color:var(--muted);font-size:12px;margin-top:3px}.form-session-step{font-size:12.5px;font-weight:700;color:var(--ink)}
+.admin-detail-backdrop{position:fixed;inset:0;background:rgba(4,19,31,.58);z-index:4200;display:flex;align-items:center;justify-content:center;padding:18px}
+.admin-detail-card{width:min(760px,100%);max-height:min(86vh,900px);overflow:auto;background:#fff;border-radius:22px;box-shadow:0 30px 80px rgba(4,19,31,.34);padding:22px}
+.admin-detail-head{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:16px}.admin-detail-head h2{margin:3px 0 0;font-size:22px;color:var(--navy)}
+.admin-detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 18px}.admin-detail-field{padding:10px 0;border-bottom:1px solid #edf2f2;min-width:0}.admin-detail-field small{display:block;color:var(--muted);font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px}.admin-detail-field div{color:var(--ink);font-size:13.5px;white-space:pre-wrap;overflow-wrap:anywhere}
+.admin-detail-field--wide{grid-column:1/-1}.admin-history{margin:14px 0 0;padding:0;list-style:none}.admin-history li{position:relative;padding:0 0 14px 20px;font-size:13px;color:var(--ink)}.admin-history li:before{content:"";position:absolute;left:2px;top:5px;width:8px;height:8px;border-radius:50%;background:var(--aqua)}.admin-history li:after{content:"";position:absolute;left:5px;top:14px;bottom:2px;width:2px;background:var(--line)}.admin-history li:last-child:after{display:none}.admin-history time{display:block;color:var(--muted);font-size:11px;margin-top:2px}
+@media(max-width:720px){.form-session-row{grid-template-columns:1fr auto}.form-session-meta,.form-session-step{grid-column:1/-1}.admin-detail-grid{grid-template-columns:1fr}.admin-detail-field--wide{grid-column:auto}.admin-detail-backdrop{padding:8px}.admin-detail-card{border-radius:17px;padding:17px;max-height:94vh}}
 .priority-queue{background:#fff;border:1px solid var(--line);border-radius:18px;padding:4px 0;margin-bottom:24px;overflow:hidden}
 .priority-queue-head{display:flex;align-items:center;gap:8px;padding:14px 18px 10px;font-weight:800;font-size:14px;color:var(--navy)}
 .priority-queue-head .count-pill{background:#c0392b;color:#fff;font-size:11px;font-weight:800;border-radius:999px;padding:2px 9px}
@@ -1429,6 +1442,7 @@ const I18N = {
     "dash.adminEyebrow":"ADMINISTRATION","dash.adminTitle":"Tableau de bord SkipperNow",
     "dash.navRequests":"Mes demandes","dash.navBoats":"Mes bateaux","dash.viewUserBoats":"Voir ses bateaux","dash.editBoat":"Modifier l'annonce","dash.boatsOf":"Bateaux de","dash.clearFilter":"Voir tous les bateaux","dash.navProfile":"Mon profil","dash.navAvailability":"Disponibilités","dash.logout":"Se déconnecter","dash.navMessages":"Messages","dash.noMessages":"Aucune conversation pour le moment.","dash.noUnreadMessages":"Aucun nouveau message.","dash.messagePlaceholder":"Écrivez votre message…","dash.send":"Envoyer","dash.loading":"Chargement…","dash.deleteMessage":"Supprimer","dash.confirmDeleteMessage":"Supprimer ce message ?","dash.deleteConversation":"Supprimer la conversation","dash.confirmDeleteConversation":"Supprimer toute cette conversation ? Cette action est irréversible.","dash.tabUnread":"Non lus","dash.tabAll":"Tous","dash.navSupport":"Contacter le support","dash.noSupport":"Le support n'est pas disponible pour le moment.","dash.supportIntro":"Une question, un souci ? Écrivez directement à l'équipe SkipperNow.",
     "booking.privacyNote":"Pour votre sécurité, les coordonnées personnelles (téléphone, email) ne sont jamais partagées directement entre client et professionnel.",
+    "dash.navForms":"Formulaires",
     "dash.navOverview":"Vue d'ensemble","dash.navTraffic":"Statistiques","dash.kpiVisitorsToday":"Visiteurs aujourd'hui","dash.kpiVisitors7d":"Visiteurs (7 j)","dash.kpiVisitors30d":"Visiteurs (30 j)","dash.kpiVisitorsYear":"Visiteurs (1 an)","dash.performance30d":"Résultats des 30 derniers jours","dash.kpiAccounts30d":"Nouveaux comptes","dash.kpiRequests30d":"Demandes envoyées","dash.kpiCompleted30d":"Missions terminées","dash.kpiConversion30d":"Visiteurs devenus membres","dash.topPagesTitle":"Pages consultées (30 derniers jours)","dash.noViewsYet":"Aucune visite enregistrée pour l'instant.","dash.visitorsTrackingNote":"Les visiteurs uniques ne sont fiables que depuis la mise en place du suivi, le {date}. Les pages vues plus anciennes sont comptées comme pages vues mais pas comme visiteurs uniques.","dash.trackingSinceUnknown":"date inconnue","dash.pageViews30d":"{count} page(s) vue(s) sur 30 jours","dash.navValidations":"Validations","dash.navMissions":"Missions","dash.navUsers":"Utilisateurs","dash.navSettings":"Réglages",
     "dash.bookingFunnelTitle":"Tunnel de réservation (30 jours)","dash.bookingOpened":"Formulaires ouverts","dash.bookingLoginRequired":"Connexion demandée","dash.bookingSubmitted":"Envois tentés","dash.bookingCreated":"Demandes créées","dash.bookingFailed":"Échecs d'envoi",
     "dash.noRequests":"Aucune demande pour le moment.","dash.noBoats":"Aucun bateau ajouté pour le moment.","dash.noMissions":"Aucune mission pour le moment.",
@@ -1605,6 +1619,7 @@ const I18N = {
     "dash.adminEyebrow":"ADMINISTRATION","dash.adminTitle":"SkipperNow dashboard",
     "dash.navRequests":"My requests","dash.navBoats":"My boats","dash.viewUserBoats":"View their boats","dash.editBoat":"Edit listing","dash.boatsOf":"Boats owned by","dash.clearFilter":"View all boats","dash.navProfile":"My profile","dash.navAvailability":"Availability","dash.logout":"Log out","dash.navMessages":"Messages","dash.noMessages":"No conversations yet.","dash.noUnreadMessages":"No new messages.","dash.messagePlaceholder":"Write your message…","dash.send":"Send","dash.loading":"Loading…","dash.deleteMessage":"Delete","dash.confirmDeleteMessage":"Delete this message?","dash.deleteConversation":"Delete conversation","dash.confirmDeleteConversation":"Delete this whole conversation? This cannot be undone.","dash.tabUnread":"Unread","dash.tabAll":"All","dash.navSupport":"Contact support","dash.noSupport":"Support is not available right now.","dash.supportIntro":"A question or an issue? Message the SkipperNow team directly.",
     "booking.privacyNote":"For your safety, personal contact details (phone, email) are never shared directly between client and professional.",
+    "dash.navForms":"Forms",
     "dash.navOverview":"Overview","dash.navTraffic":"Analytics","dash.kpiVisitorsToday":"Visitors today","dash.kpiVisitors7d":"Visitors (7d)","dash.kpiVisitors30d":"Visitors (30d)","dash.kpiVisitorsYear":"Visitors (1 year)","dash.performance30d":"Results for the last 30 days","dash.kpiAccounts30d":"New accounts","dash.kpiRequests30d":"Requests sent","dash.kpiCompleted30d":"Completed jobs","dash.kpiConversion30d":"Visitors who joined","dash.topPagesTitle":"Pages visited (last 30 days)","dash.noViewsYet":"No visits recorded yet.","dash.visitorsTrackingNote":"Unique visitors are only reliable since tracking was set up, on {date}. Older page views are counted as page views but not as unique visitors.","dash.trackingSinceUnknown":"unknown date","dash.pageViews30d":"{count} page view(s) in 30 days","dash.navValidations":"Approvals","dash.navMissions":"Jobs","dash.navUsers":"Users","dash.navSettings":"Settings",
     "dash.bookingFunnelTitle":"Booking funnel (30 days)","dash.bookingOpened":"Forms opened","dash.bookingLoginRequired":"Login required","dash.bookingSubmitted":"Submissions attempted","dash.bookingCreated":"Requests created","dash.bookingFailed":"Submission failures",
     "dash.noRequests":"No requests yet.","dash.noBoats":"No boats added yet.","dash.noMissions":"No jobs yet.",
@@ -1780,6 +1795,7 @@ const I18N = {
     "dash.adminEyebrow":"ADMINISTRACIÓN","dash.adminTitle":"Panel de SkipperNow",
     "dash.navRequests":"Mis solicitudes","dash.navBoats":"Mis barcos","dash.viewUserBoats":"Ver sus barcos","dash.editBoat":"Editar anuncio","dash.boatsOf":"Barcos de","dash.clearFilter":"Ver todos los barcos","dash.navProfile":"Mi perfil","dash.navAvailability":"Disponibilidad","dash.logout":"Cerrar sesión","dash.navMessages":"Mensajes","dash.noMessages":"Todavía no hay conversaciones.","dash.noUnreadMessages":"No hay mensajes nuevos.","dash.messagePlaceholder":"Escribe tu mensaje…","dash.send":"Enviar","dash.loading":"Cargando…","dash.deleteMessage":"Eliminar","dash.confirmDeleteMessage":"¿Eliminar este mensaje?","dash.deleteConversation":"Eliminar conversación","dash.confirmDeleteConversation":"¿Eliminar toda esta conversación? Esta acción no se puede deshacer.","dash.tabUnread":"No leídos","dash.tabAll":"Todos","dash.navSupport":"Contactar con soporte","dash.noSupport":"El soporte no está disponible en este momento.","dash.supportIntro":"¿Una pregunta o un problema? Escribe directamente al equipo de SkipperNow.",
     "booking.privacyNote":"Por tu seguridad, los datos personales (teléfono, email) nunca se comparten directamente entre cliente y profesional.",
+    "dash.navForms":"Formularios",
     "dash.navOverview":"Resumen","dash.navTraffic":"Estadísticas","dash.kpiVisitorsToday":"Visitantes hoy","dash.kpiVisitors7d":"Visitantes (7 d)","dash.kpiVisitors30d":"Visitantes (30 d)","dash.kpiVisitorsYear":"Visitantes (1 año)","dash.performance30d":"Resultados de los últimos 30 días","dash.kpiAccounts30d":"Nuevas cuentas","dash.kpiRequests30d":"Solicitudes enviadas","dash.kpiCompleted30d":"Servicios completados","dash.kpiConversion30d":"Visitantes registrados","dash.topPagesTitle":"Páginas visitadas (últimos 30 días)","dash.noViewsYet":"Todavía no hay visitas registradas.","dash.visitorsTrackingNote":"Los visitantes únicos solo son fiables desde la puesta en marcha del seguimiento, el {date}. Las páginas vistas más antiguas cuentan como páginas vistas pero no como visitantes únicos.","dash.trackingSinceUnknown":"fecha desconocida","dash.pageViews30d":"{count} página(s) vista(s) en 30 días","dash.navValidations":"Validaciones","dash.navMissions":"Servicios","dash.navUsers":"Usuarios","dash.navSettings":"Ajustes",
     "dash.bookingFunnelTitle":"Embudo de reservas (30 días)","dash.bookingOpened":"Formularios abiertos","dash.bookingLoginRequired":"Inicio de sesión solicitado","dash.bookingSubmitted":"Envíos intentados","dash.bookingCreated":"Solicitudes creadas","dash.bookingFailed":"Errores de envío",
     "dash.noRequests":"Todavía no hay solicitudes.","dash.noBoats":"Todavía no hay barcos añadidos.","dash.noMissions":"Todavía no hay servicios.",
@@ -2333,6 +2349,8 @@ let providerResultsCache = [];
 let boatCache = [];
 let resultsCache = [];
 let adminProfilesCache = [];
+let adminMissionsCache = [];
+let adminFormSessionsCache = [];
 let currentMessagesRoleColumn = null;
 let currentThreadChannel = null;
 function unsubscribeThreadChannel(){
@@ -3105,12 +3123,47 @@ document.addEventListener("click", (e)=>{
 setInterval(()=>{ if(currentUser) refreshNotifications(); }, 45000);
 
 const BOOKING_DRAFT_KEY = "skippernow-quick-request";
+function newBookingSessionId(){
+  if(window.crypto && typeof window.crypto.randomUUID === "function") return window.crypto.randomUUID();
+  return "form-"+Date.now().toString(36)+"-"+Math.random().toString(36).slice(2);
+}
+function bookingFormSnapshot(stage){
+  const duration = document.querySelector("#bookingDuration")?.value || "";
+  const details = sanitizeContactInfo(document.querySelector("#bookingDetails")?.value.trim() || "");
+  const files = document.querySelector("#bookingPhotos")?.files;
+  return {
+    session_id: bookingContext.formSessionId || "",
+    stage: stage || "",
+    activity: bookingContext.activity || activeActivity,
+    subcategory: bookingContext.subcategory || "",
+    source: bookingContext.targetId ? "listing" : "quick_request",
+    port: document.querySelector("#bookingPort")?.value.trim() || "",
+    date: document.querySelector("#bookingDate")?.value || "",
+    duration,
+    days: duration === "multi" ? (document.querySelector("#bookingDays")?.value || "") : "",
+    boat_type: bookingContext.activity === "boat_rental" ? (bookingContext.name || "") : (document.querySelector("#bookingBoat")?.value.trim() || ""),
+    details,
+    target_id: bookingContext.targetId || "",
+    target_name: bookingContext.name || "",
+    has_target: Boolean(bookingContext.targetId),
+    has_photos: Boolean(files?.length),
+    photo_count: files?.length || 0
+  };
+}
 function trackBookingEvent(eventName, metadata){
   try{
     if(typeof window.skTrackEvent === "function"){
-      window.skTrackEvent(eventName, metadata || {});
+      const detail = eventName.startsWith("booking_") ? bookingFormSnapshot(metadata?.stage || eventName.replace("booking_","")) : {};
+      window.skTrackEvent(eventName, {...detail, ...(metadata || {}), session_id: bookingContext.formSessionId || metadata?.session_id || ""});
     }
   }catch(_e){}
+}
+let bookingProgressTimer = null;
+function queueBookingProgress(stage){
+  if(!bookingContext.formSessionId || bookingContext.sent) return;
+  bookingContext.lastStage = stage;
+  clearTimeout(bookingProgressTimer);
+  bookingProgressTimer = setTimeout(()=>trackBookingEvent("booking_progress", {stage}), 450);
 }
 function updateBookingDaysVisibility(){
   const durationValue = document.querySelector("#bookingDuration").value;
@@ -3125,7 +3178,7 @@ window.openBookingFor = function(targetId, name, homePort, activity, subcategory
     alert(t("boatDetail.ownListing"));
     return;
   }
-  bookingContext = {targetId, name, homePort, activity, subcategory, targetRole};
+  bookingContext = {targetId, name, homePort, activity, subcategory, targetRole, formSessionId:newBookingSessionId(), sent:false, abandonTracked:false, lastStage:"opened"};
   document.querySelector("#bookingTargetName").textContent = name || t("booking.defaultTarget");
   document.querySelector("#bookingSummaryPrice").textContent = t("booking.priceTbd");
   const bookingPort = document.querySelector("#bookingPort");
@@ -3216,7 +3269,24 @@ document.querySelector("#bookingPhotos").addEventListener("change", (e)=>{
     const url = URL.createObjectURL(file);
     preview.innerHTML += `<img loading="lazy" src="${url}" style="width:64px;height:64px;object-fit:cover;border-radius:10px">`;
   });
+  queueBookingProgress("photos");
 });
+["bookingPort","bookingDate","bookingDuration","bookingDays","bookingBoat","bookingDetails"].forEach(id=>{
+  const field = document.querySelector("#"+id);
+  if(!field) return;
+  const stage = ({bookingPort:"port",bookingDate:"date",bookingDuration:"duration",bookingDays:"days",bookingBoat:"boat_type",bookingDetails:"details"})[id];
+  field.addEventListener(id === "bookingDetails" ? "input" : "change", ()=>queueBookingProgress(stage));
+});
+function trackBookingAbandonment(){
+  const modal = document.querySelector("#bookingModal");
+  if(!modal?.classList.contains("open") || !bookingContext.formSessionId || bookingContext.sent || bookingContext.abandonTracked) return;
+  bookingContext.abandonTracked = true;
+  clearTimeout(bookingProgressTimer);
+  trackBookingEvent("booking_abandoned", {stage:"closed_after_"+(bookingContext.lastStage||"opened")});
+}
+document.querySelector("#bookingModal [data-close='bookingModal']")?.addEventListener("click", trackBookingAbandonment, {capture:true});
+document.querySelector("#bookingModal")?.addEventListener("click", e=>{ if(e.target === e.currentTarget) trackBookingAbandonment(); }, {capture:true});
+window.addEventListener("pagehide", trackBookingAbandonment);
 document.querySelector("#bookingSubmit").addEventListener("click", async ()=>{
   const msg = document.querySelector("#bookingMessage");
   const submitBtn = document.querySelector("#bookingSubmit");
@@ -3323,6 +3393,7 @@ document.querySelector("#bookingSubmit").addEventListener("click", async ()=>{
       duration: durationValue,
       has_target: Boolean(bookingContext.targetId)
     });
+    bookingContext.sent = true;
     clearBookingDraft();
     document.querySelector("#bookingForm").style.display = "none";
     document.querySelector("#bookingSuccess").style.display = "block";
@@ -3436,6 +3507,7 @@ const NAV_ICONS = {
   users:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>',
   boats:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20a3 3 0 003 1.5 3 3 0 003-1.5 3 3 0 003 1.5 3 3 0 003-1.5 3 3 0 003 1.5 3 3 0 003-1.5M4 18l-1-6h18l-2 6M6 12V6h9l3 6"/></svg>',
   requests:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>',
+  forms:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg>',
   support:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
   profile:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>',
   content:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></svg>',
@@ -3984,6 +4056,7 @@ async function renderAdminDashboard(){
   body.innerHTML = dashShell([
     {id:"overview", label:t("dash.navOverview"), group:t("dash.groupActivity")},
     {id:"traffic", label:t("dash.navTraffic"), group:t("dash.groupActivity")},
+    {id:"forms", label:t("dash.navForms"), group:t("dash.groupActivity")},
     {id:"missions", label:t("dash.navMissions"), group:t("dash.groupActivity")},
     {id:"messages", label:t("dash.navMessages"), group:t("dash.groupActivity")},
     {id:"payments", label:t("dash.navPayments"), group:t("dash.groupFinance")},
@@ -3999,6 +4072,7 @@ async function renderAdminDashboard(){
     {id:"activities", label:t("dash.navActivities"), group:t("dash.groupContent")}
   ], "overview");
   bindDashNav(renderAdminPanel);
+  bindAdminDashboardInteractions();
   await renderAdminPanel("overview");
 }
 async function loadAdminData(){
@@ -4027,12 +4101,138 @@ async function loadAdminData(){
 }
 function profilesById(list){ return Object.fromEntries(list.map(p=>[String(p.id), p])); }
 
+function adminUiCopy(){
+  return ({
+    fr:{started:"Commencés",unfinished:"Inachevés",created:"Demandes créées",inProgress:"En cours",failed:"Échec",completed:"Demande créée",anonymous:"Visiteur non connecté",lastStep:"Dernière étape",openDetail:"Ouvrir le détail",contact:"Coordonnées",service:"Service",city:"Ville / port",date:"Date demandée",duration:"Durée",boat:"Bateau",details:"Besoin indiqué",target:"Professionnel ciblé",photos:"Photos",history:"Historique",status:"Statut",createdAt:"Créée le",updatedAt:"Dernière mise à jour",payment:"Paiement",amount:"Montant",mission:"Détail de la demande",user:"Détail de l'utilisateur",form:"Détail du formulaire",all:"Tous",noForms:"Aucun formulaire enregistré pour le moment.",migration:"Le suivi détaillé démarre après l'installation de la migration Supabase.",close:"Fermer",unknown:"Non renseigné",event:{booking_opened:"Formulaire ouvert",booking_progress:"Champ renseigné",booking_abandoned:"Formulaire quitté",booking_login_required:"Connexion demandée",booking_submitted:"Envoi tenté",booking_created:"Demande créée",booking_failed:"Erreur d'envoi"}},
+    en:{started:"Started",unfinished:"Unfinished",created:"Requests created",inProgress:"In progress",failed:"Failed",completed:"Request created",anonymous:"Signed-out visitor",lastStep:"Last step",openDetail:"Open details",contact:"Contact",service:"Service",city:"City / port",date:"Requested date",duration:"Duration",boat:"Boat",details:"Request details",target:"Target professional",photos:"Photos",history:"History",status:"Status",createdAt:"Created",updatedAt:"Last update",payment:"Payment",amount:"Amount",mission:"Request details",user:"User details",form:"Form details",all:"All",noForms:"No forms recorded yet.",migration:"Detailed tracking starts after the Supabase migration is installed.",close:"Close",unknown:"Not provided",event:{booking_opened:"Form opened",booking_progress:"Field completed",booking_abandoned:"Form left",booking_login_required:"Login required",booking_submitted:"Submission attempted",booking_created:"Request created",booking_failed:"Submission error"}},
+    es:{started:"Iniciados",unfinished:"Incompletos",created:"Solicitudes creadas",inProgress:"En curso",failed:"Error",completed:"Solicitud creada",anonymous:"Visitante sin sesión",lastStep:"Último paso",openDetail:"Abrir detalle",contact:"Contacto",service:"Servicio",city:"Ciudad / puerto",date:"Fecha solicitada",duration:"Duración",boat:"Barco",details:"Necesidad indicada",target:"Profesional elegido",photos:"Fotos",history:"Historial",status:"Estado",createdAt:"Creado",updatedAt:"Última actualización",payment:"Pago",amount:"Importe",mission:"Detalle de la solicitud",user:"Detalle del usuario",form:"Detalle del formulario",all:"Todos",noForms:"Todavía no hay formularios registrados.",migration:"El seguimiento detallado empieza después de instalar la migración de Supabase.",close:"Cerrar",unknown:"No indicado",event:{booking_opened:"Formulario abierto",booking_progress:"Campo completado",booking_abandoned:"Formulario abandonado",booking_login_required:"Inicio de sesión solicitado",booking_submitted:"Envío intentado",booking_created:"Solicitud creada",booking_failed:"Error de envío"}}
+  })[currentLang] || null;
+}
+function adminField(label, value, wide){
+  const c = adminUiCopy();
+  const display = value === null || value === undefined || value === "" ? c.unknown : value;
+  return `<div class="admin-detail-field${wide?" admin-detail-field--wide":""}"><small>${esc(label)}</small><div>${esc(display)}</div></div>`;
+}
+function adminDate(value){ return value ? new Date(value).toLocaleString(currentLang) : ""; }
+function closeAdminDetail(){ document.querySelector("#adminDetailBackdrop")?.remove(); }
+function showAdminDetail(title, eyebrow, html){
+  closeAdminDetail();
+  const wrap = document.createElement("div");
+  wrap.id = "adminDetailBackdrop";
+  wrap.className = "admin-detail-backdrop";
+  wrap.innerHTML = `<section class="admin-detail-card" role="dialog" aria-modal="true" aria-labelledby="adminDetailTitle"><div class="admin-detail-head"><div><small>${esc(eyebrow)}</small><h2 id="adminDetailTitle">${esc(title)}</h2></div><button class="close" type="button" data-close-admin-detail aria-label="${esc(adminUiCopy().close)}">×</button></div>${html}</section>`;
+  wrap.addEventListener("click", e=>{ if(e.target===wrap || e.target.closest("[data-close-admin-detail]")) closeAdminDetail(); });
+  document.body.appendChild(wrap);
+  wrap.querySelector("[data-close-admin-detail]")?.focus();
+}
+function missionHistory(m){
+  const rows = [
+    [m.created_at,"Demande créée"],[m.updated_at,"Demande mise à jour"],[m.paid_at,"Paiement reçu"],
+    [m.completed_at,"Prestation terminée"],[m.validated_at,"Prestation validée"],[m.transferred_at,"Virement effectué"],
+    [m.dispute_opened_at,"Litige ouvert"],[m.dispute_resolved_at,"Litige résolu"]
+  ].filter(x=>x[0]).sort((a,b)=>new Date(a[0])-new Date(b[0]));
+  return rows;
+}
+function openAdminMissionDetail(id){
+  const m = adminMissionsCache.find(row=>String(row.id)===String(id));
+  if(!m) return;
+  const byId = profilesById(adminProfilesCache), client = byId[String(m.client_id)], pro = byId[String(m.provider_id||m.skipper_id)], c=adminUiCopy();
+  const total = Number(m.amount_cents||0)+Number(m.urgent_fee_cents||0);
+  const photos = Array.isArray(m.photo_urls) ? m.photo_urls : [];
+  const history = missionHistory(m);
+  showAdminDetail(m.port||c.mission, c.mission, `<div class="admin-detail-grid">
+    ${adminField(c.contact, `${client?.full_name||"—"}\n${client?.contact_email||client?.email||""}\n${client?.phone||""}`, true)}
+    ${adminField(c.service, m.boat_type||m.activity||m.provider_activity)}${adminField(c.city,m.port)}
+    ${adminField(c.date,m.starts_at?new Date(m.starts_at).toLocaleDateString(currentLang):"")}${adminField(c.duration,m.starts_at&&m.ends_at?`${adminDate(m.starts_at)} → ${adminDate(m.ends_at)}`:"")}
+    ${adminField(c.target, `${pro?.full_name||"—"}${pro?.phone?" · "+pro.phone:""}`, true)}
+    ${adminField(c.details,m.description,true)}${adminField(c.status,t("status."+(m.status||"pending")))}${adminField(c.payment,t("paymentStatus."+(m.payment_status||"unpaid")))}${adminField(c.amount,total?money(total):t("booking.priceTbd"))}
+    ${photos.length?`<div class="admin-detail-field admin-detail-field--wide"><small>${esc(c.photos)}</small><div style="display:flex;gap:8px;flex-wrap:wrap">${photos.map(u=>`<a href="${esc(u)}" target="_blank" rel="noopener"><img src="${esc(u)}" alt="" style="width:82px;height:82px;object-fit:cover;border-radius:10px"></a>`).join("")}</div></div>`:""}
+  </div><h3>${esc(c.history)}</h3><ul class="admin-history">${history.map(h=>`<li>${esc(h[1])}<time>${esc(adminDate(h[0]))}</time></li>`).join("")||`<li>${esc(c.unknown)}</li>`}</ul>`);
+}
+function openAdminUserDetail(id){
+  const p = adminProfilesCache.find(row=>String(row.id)===String(id));
+  if(!p) return;
+  const c=adminUiCopy(), related=adminMissionsCache.filter(m=>[m.client_id,m.skipper_id,m.provider_id].some(x=>String(x)===String(p.id)));
+  showAdminDetail(p.full_name||c.user,c.user,`<div class="admin-detail-grid">
+    ${adminField(c.contact,`${p.contact_email||p.email||""}\n${p.phone||""}`,true)}${adminField(c.status,p.suspended?t("dash.suspended"):(p.verified?"✓":"—"))}${adminField("Rôle",p.role)}${adminField(c.city,p.home_port)}${adminField(c.service,p.provider_activity?activityLabel(p.provider_activity):"")}${adminField("Bio",p.bio,true)}${adminField(t("dash.missionsCount"),related.length)}${adminField(c.createdAt,adminDate(p.created_at))}${adminField(t("dash.internalNoteLabel"),p.admin_notes,true)}
+  </div>`);
+}
+function bookingSessionStatus(session){
+  const c=adminUiCopy(), names=session.events.map(e=>e.event_name), last=session.events[0];
+  if(names.includes("booking_created")) return {key:"created",label:c.completed,css:"ok"};
+  if(last?.event_name === "booking_failed") return {key:"unfinished",label:c.failed,css:"danger"};
+  const fresh = last && Date.now()-new Date(last.created_at).getTime()<30*60*1000 && !names.includes("booking_abandoned");
+  return {key:"unfinished",label:fresh?c.inProgress:c.unfinished,css:fresh?"":"danger"};
+}
+function groupBookingSessions(events, profiles){
+  const map=new Map(), byId=profilesById(profiles);
+  (events||[]).forEach(e=>{
+    const key=e.form_session_id || e.metadata?.session_id || `legacy-${e.visitor_id}`;
+    if(!map.has(key)) map.set(key,{id:key,events:[],profile:null,metadata:{}});
+    const s=map.get(key); s.events.push(e); if(e.profile_id) s.profile=byId[String(e.profile_id)]||s.profile;
+  });
+  return [...map.values()].map(s=>{
+    s.events.sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
+    s.metadata=s.events.find(e=>e.metadata && Object.values(e.metadata).some(Boolean))?.metadata||{};
+    s.status=bookingSessionStatus(s); return s;
+  }).sort((a,b)=>{
+    if(a.status.key!==b.status.key) return a.status.key==="unfinished"?-1:b.status.key==="unfinished"?1:0;
+    return new Date(b.events[0]?.created_at||0)-new Date(a.events[0]?.created_at||0);
+  });
+}
+function openAdminFormDetail(id){
+  const s=adminFormSessionsCache.find(row=>row.id===id); if(!s) return;
+  const c=adminUiCopy(), m=s.metadata||{}, contact=s.profile?`${s.profile.full_name||"—"}\n${s.profile.contact_email||s.profile.email||""}\n${s.profile.phone||""}`:c.anonymous;
+  const last=s.events[0], stage=last?.metadata?.stage||last?.event_name||"";
+  showAdminDetail(m.port||m.activity||c.form,c.form,`<div class="admin-detail-grid">
+    ${adminField(c.contact,contact,true)}${adminField(c.status,s.status.label)}${adminField(c.lastStep,stage)}${adminField(c.service,m.activity)}${adminField("Sous-catégorie",m.subcategory)}${adminField(c.city,m.port)}${adminField(c.date,m.date)}${adminField(c.duration,m.duration+(m.days?` · ${m.days} jours`:""))}${adminField(c.boat,m.boat_type)}${adminField(c.target,m.target_name||m.target_id,true)}${adminField(c.details,m.details,true)}${adminField(c.photos,m.photo_count||0)}${adminField(c.updatedAt,adminDate(last?.created_at))}
+  </div><h3>${esc(c.history)}</h3><ul class="admin-history">${[...s.events].reverse().map(e=>`<li>${esc(c.event[e.event_name]||e.event_name)}${e.metadata?.stage?` · ${esc(e.metadata.stage)}`:""}<time>${esc(adminDate(e.created_at))}</time></li>`).join("")}</ul>`);
+}
+async function loadAdminFormSessions(profiles){
+  const since=new Date(Date.now()-30*24*60*60*1000).toISOString();
+  const {data,error}=await db.from("booking_events").select("id,visitor_id,profile_id,form_session_id,event_name,path,metadata,created_at").gte("created_at",since).order("created_at",{ascending:false}).limit(1500);
+  if(error) throw error;
+  adminFormSessionsCache=groupBookingSessions(data||[],profiles);
+  return adminFormSessionsCache;
+}
+function renderAdminFormsList(main, sessions, filter="all"){
+  const c=adminUiCopy(), filtered=filter==="all"?sessions:sessions.filter(s=>s.status.key===filter);
+  main.innerHTML=`<div class="kpi-grid"><div class="kpi" tabindex="0" role="button" data-form-filter="all"><div class="kpi-top"><span>${esc(c.started)}</span></div><strong>${sessions.length}</strong></div><div class="kpi kpi--danger" tabindex="0" role="button" data-form-filter="unfinished"><div class="kpi-top"><span>${esc(c.unfinished)}</span></div><strong>${sessions.filter(s=>s.status.key==="unfinished").length}</strong></div><div class="kpi kpi--good" tabindex="0" role="button" data-form-filter="created"><div class="kpi-top"><span>${esc(c.created)}</span></div><strong>${sessions.filter(s=>s.status.key==="created").length}</strong></div></div>
+    ${filtered.length?`<div class="form-session-list">${filtered.map(s=>{const m=s.metadata||{},p=s.profile,last=s.events[0];return `<article class="form-session-row" tabindex="0" role="button" data-admin-detail="form" data-admin-id="${esc(s.id)}"><div class="form-session-main"><strong>${esc(p?.full_name||c.anonymous)}</strong><span>${esc(p?.contact_email||p?.email||p?.phone||adminDate(last?.created_at))}</span></div><div class="form-session-meta">${esc(m.activity||"—")} · ${esc(m.port||"—")}<span>${esc(m.date||"")}</span></div><div class="form-session-step">${esc(c.lastStep)} : ${esc(last?.metadata?.stage||last?.event_name||"—")}</div><span class="status-pill ${s.status.css}">${esc(s.status.label)}</span></article>`;}).join("")}</div>`:`<div class="empty-note">${esc(c.noForms)}</div>`}`;
+  main.querySelectorAll("[data-form-filter]").forEach(btn=>{
+    const apply=()=>renderAdminFormsList(main,sessions,btn.dataset.formFilter);
+    btn.addEventListener("click",apply); btn.addEventListener("keydown",e=>{if(["Enter"," "].includes(e.key)){e.preventDefault();apply();}});
+  });
+}
+function goToAdminPanel(panel){
+  const btn=[...document.querySelectorAll(".dash-side [data-panel]")].find(b=>b.dataset.panel===panel);
+  if(btn) btn.click();
+}
+function bindAdminDashboardInteractions(){
+  const body=document.querySelector("#dashboardBody");
+  if(!body || body.dataset.adminClickBound) return;
+  body.dataset.adminClickBound="1";
+  const activate=e=>{
+    const target=e.target.closest("[data-admin-panel],[data-admin-detail],[data-open-path]");
+    if(!target || (e.type==="keydown" && !["Enter"," "].includes(e.key))) return;
+    if(e.target.closest("button,select,input,textarea,a") && e.target!==target) return;
+    if(e.type==="keydown") e.preventDefault();
+    if(target.dataset.adminPanel) goToAdminPanel(target.dataset.adminPanel);
+    else if(target.dataset.openPath) window.open(target.dataset.openPath,"_blank","noopener");
+    else if(target.dataset.adminDetail==="mission") openAdminMissionDetail(target.dataset.adminId);
+    else if(target.dataset.adminDetail==="user") openAdminUserDetail(target.dataset.adminId);
+    else if(target.dataset.adminDetail==="form") openAdminFormDetail(target.dataset.adminId);
+  };
+  body.addEventListener("click",activate); body.addEventListener("keydown",activate);
+}
+
 async function renderAdminPanel(panel){
   refreshDashboardIdentity(panel);
   const main = document.querySelector("#dashMain");
   const {profiles, missions, settings, boats, payoutsById, ports, heroSlides, destTiles, activities} = await loadAdminData();
   adminProfilesCache = profiles;
   const byId = profilesById(profiles);
+  adminMissionsCache = missions;
   const pending = profiles.filter(p => ["skipper","provider"].includes(p.role) && !p.verified);
   const activeMissions = missions.filter(m => !["cancelled","completed"].includes(m.status));
   const heldFunds = missions.filter(m => ["paid","payout_ready"].includes(m.payment_status)).reduce((s,m)=>s+Number(m.amount_cents||0),0);
@@ -4051,15 +4251,15 @@ async function renderAdminPanel(panel){
     main.innerHTML = `
       <div class="priority-queue">
         <div class="priority-queue-head">${NAV_ICONS.disputes}${esc(t("dash.priorityQueueTitle"))}${priorityItems.length?`<span class="count-pill">${priorityItems.length}</span>`:""}</div>
-        ${priorityItems.length ? priorityItems.map(it=>`<div class="priority-row"><span class="pr-dot ${it.level}"></span><div class="pr-body"><div class="pr-title">${esc(it.title)}</div><div class="pr-sub">${esc(it.sub)}</div></div></div>`).join("") : `<div class="priority-empty">${esc(t("dash.priorityEmpty"))}</div>`}
+        ${priorityItems.length ? priorityItems.map(it=>`<div class="priority-row" tabindex="0" role="button" data-admin-panel="${it.type==="validation"?"users":it.type==="dispute"?"disputes":"payouts"}"><span class="pr-dot ${it.level}"></span><div class="pr-body"><div class="pr-title">${esc(it.title)}</div><div class="pr-sub">${esc(it.sub)}</div></div></div>`).join("") : `<div class="priority-empty">${esc(t("dash.priorityEmpty"))}</div>`}
       </div>
       <div class="kpi-grid">
-        <div class="kpi"><div class="kpi-top"><span>${esc(t("dash.kpiActiveMissions"))}</span><span class="kpi-icon">${NAV_ICONS.missions}</span></div><strong>${activeMissions.length}</strong></div>
-        <div class="kpi"><div class="kpi-top"><span>${esc(t("dash.kpiHeldFunds"))}</span><span class="kpi-icon">${NAV_ICONS.payments}</span></div><strong>${money(heldFunds)}</strong></div>
-        <div class="kpi ${toPayout.length?'kpi--warn':''}"><div class="kpi-top"><span>${esc(t("dash.kpiToPayout"))}</span><span class="kpi-icon">${NAV_ICONS.payouts}</span></div><strong>${toPayout.length}</strong></div>
-        <div class="kpi kpi--good"><div class="kpi-top"><span>${esc(t("dash.kpiPlatformRevenue"))}</span><span class="kpi-icon">${NAV_ICONS.commissions}</span></div><strong>${money(revenue)}</strong></div>
-        <div class="kpi"><div class="kpi-top"><span>${esc(t("dash.kpiNewUsers"))}</span><span class="kpi-icon">${NAV_ICONS.users}</span></div><strong>${newUsers}</strong><div class="kpi-trend">${esc(t("dash.kpiTrendWeek"))}</div></div>
-        <div class="kpi ${openDisputes?'kpi--danger':''}"><div class="kpi-top"><span>${esc(t("dash.kpiOpenDisputes"))}</span><span class="kpi-icon">${NAV_ICONS.disputes}</span></div><strong>${openDisputes}</strong></div>
+        <div class="kpi" tabindex="0" role="button" data-admin-panel="missions"><div class="kpi-top"><span>${esc(t("dash.kpiActiveMissions"))}</span><span class="kpi-icon">${NAV_ICONS.missions}</span></div><strong>${activeMissions.length}</strong></div>
+        <div class="kpi" tabindex="0" role="button" data-admin-panel="payments"><div class="kpi-top"><span>${esc(t("dash.kpiHeldFunds"))}</span><span class="kpi-icon">${NAV_ICONS.payments}</span></div><strong>${money(heldFunds)}</strong></div>
+        <div class="kpi ${toPayout.length?'kpi--warn':''}" tabindex="0" role="button" data-admin-panel="payouts"><div class="kpi-top"><span>${esc(t("dash.kpiToPayout"))}</span><span class="kpi-icon">${NAV_ICONS.payouts}</span></div><strong>${toPayout.length}</strong></div>
+        <div class="kpi kpi--good" tabindex="0" role="button" data-admin-panel="commissions"><div class="kpi-top"><span>${esc(t("dash.kpiPlatformRevenue"))}</span><span class="kpi-icon">${NAV_ICONS.commissions}</span></div><strong>${money(revenue)}</strong></div>
+        <div class="kpi" tabindex="0" role="button" data-admin-panel="users"><div class="kpi-top"><span>${esc(t("dash.kpiNewUsers"))}</span><span class="kpi-icon">${NAV_ICONS.users}</span></div><strong>${newUsers}</strong><div class="kpi-trend">${esc(t("dash.kpiTrendWeek"))}</div></div>
+        <div class="kpi ${openDisputes?'kpi--danger':''}" tabindex="0" role="button" data-admin-panel="disputes"><div class="kpi-top"><span>${esc(t("dash.kpiOpenDisputes"))}</span><span class="kpi-icon">${NAV_ICONS.disputes}</span></div><strong>${openDisputes}</strong></div>
       </div>
       <div class="dash-section-title">${NAV_ICONS.users}${esc(t("dash.navValidations"))} (${pending.length})</div>
       ${pending.length ? pending.map(p=>profileCard(p)).join("") : `<div class="empty-note">—</div>`}`;
@@ -4093,21 +4293,29 @@ async function renderAdminPanel(panel){
       </div>
       <div class="dash-section-title">${esc(t("dash.performance30d"))}</div>
       <div class="kpi-grid">
-        <div class="kpi"><div class="kpi-top"><span>${esc(t("dash.kpiAccounts30d"))}</span></div><strong>${accounts30}</strong></div>
-        <div class="kpi"><div class="kpi-top"><span>${esc(t("dash.kpiRequests30d"))}</span></div><strong>${requests30}</strong></div>
-        <div class="kpi kpi--good"><div class="kpi-top"><span>${esc(t("dash.kpiCompleted30d"))}</span></div><strong>${completed30}</strong></div>
-        <div class="kpi"><div class="kpi-top"><span>${esc(t("stats.pros"))}</span></div><strong>${verifiedPros}</strong></div>
+        <div class="kpi" tabindex="0" role="button" data-admin-panel="users"><div class="kpi-top"><span>${esc(t("dash.kpiAccounts30d"))}</span></div><strong>${accounts30}</strong></div>
+        <div class="kpi" tabindex="0" role="button" data-admin-panel="missions"><div class="kpi-top"><span>${esc(t("dash.kpiRequests30d"))}</span></div><strong>${requests30}</strong></div>
+        <div class="kpi kpi--good" tabindex="0" role="button" data-admin-panel="missions"><div class="kpi-top"><span>${esc(t("dash.kpiCompleted30d"))}</span></div><strong>${completed30}</strong></div>
+        <div class="kpi" tabindex="0" role="button" data-admin-panel="users"><div class="kpi-top"><span>${esc(t("stats.pros"))}</span></div><strong>${verifiedPros}</strong></div>
       </div>
       <div class="dash-section-title">${esc(t("dash.bookingFunnelTitle"))}</div>
       <div class="kpi-grid">
-        <div class="kpi"><div class="kpi-top"><span>${esc(t("dash.bookingOpened"))}</span></div><strong>${Number(bookingEvents.booking_opened || 0)}</strong></div>
-        <div class="kpi"><div class="kpi-top"><span>${esc(t("dash.bookingLoginRequired"))}</span></div><strong>${Number(bookingEvents.booking_login_required || 0)}</strong></div>
-        <div class="kpi"><div class="kpi-top"><span>${esc(t("dash.bookingSubmitted"))}</span></div><strong>${Number(bookingEvents.booking_submitted || 0)}</strong></div>
-        <div class="kpi kpi--good"><div class="kpi-top"><span>${esc(t("dash.bookingCreated"))}</span></div><strong>${Number(bookingEvents.booking_created || 0)}</strong></div>
-        <div class="kpi ${Number(bookingEvents.booking_failed || 0) ? 'kpi--danger' : ''}"><div class="kpi-top"><span>${esc(t("dash.bookingFailed"))}</span></div><strong>${Number(bookingEvents.booking_failed || 0)}</strong></div>
+        <div class="kpi" tabindex="0" role="button" data-admin-panel="forms"><div class="kpi-top"><span>${esc(t("dash.bookingOpened"))}</span></div><strong>${Number(bookingEvents.booking_opened || 0)}</strong></div>
+        <div class="kpi" tabindex="0" role="button" data-admin-panel="forms"><div class="kpi-top"><span>${esc(t("dash.bookingLoginRequired"))}</span></div><strong>${Number(bookingEvents.booking_login_required || 0)}</strong></div>
+        <div class="kpi" tabindex="0" role="button" data-admin-panel="forms"><div class="kpi-top"><span>${esc(t("dash.bookingSubmitted"))}</span></div><strong>${Number(bookingEvents.booking_submitted || 0)}</strong></div>
+        <div class="kpi kpi--good" tabindex="0" role="button" data-admin-panel="forms"><div class="kpi-top"><span>${esc(t("dash.bookingCreated"))}</span></div><strong>${Number(bookingEvents.booking_created || 0)}</strong></div>
+        <div class="kpi ${Number(bookingEvents.booking_failed || 0) ? 'kpi--danger' : ''}" tabindex="0" role="button" data-admin-panel="forms"><div class="kpi-top"><span>${esc(t("dash.bookingFailed"))}</span></div><strong>${Number(bookingEvents.booking_failed || 0)}</strong></div>
       </div>
       <div class="dash-section-title">${esc(t("dash.topPagesTitle"))}${Number.isFinite(s.views_30d) ? ` · ${esc(t("dash.pageViews30d",{count:s.views_30d}))}` : ""}</div>
-      ${topPages.length ? `<div class="traffic-table">${topPages.map(p=>`<div class="traffic-row"><span class="traffic-path">${esc(p.path)}</span><span class="traffic-count">${p.views}</span></div>`).join("")}</div>` : `<div class="empty-note">${esc(t("dash.noViewsYet"))}</div>`}`;
+      ${topPages.length ? `<div class="traffic-table">${topPages.map(p=>`<div class="traffic-row" tabindex="0" role="button" data-open-path="${esc(p.path)}"><span class="traffic-path">${esc(p.path)}</span><span class="traffic-count">${p.views}</span></div>`).join("")}</div>` : `<div class="empty-note">${esc(t("dash.noViewsYet"))}</div>`}`;
+  }else if(panel === "forms"){
+    main.innerHTML = `<div class="empty-note">${esc(t("dash.loading"))}</div>`;
+    try{
+      const sessions = await loadAdminFormSessions(profiles);
+      renderAdminFormsList(main,sessions);
+    }catch(error){
+      main.innerHTML = `<div class="empty-note">${esc(friendlyError(error))}<br><small>${esc(adminUiCopy().migration)}</small></div>`;
+    }
   }else if(panel === "missions"){
     main.innerHTML = missions.length ? missions.map(m=>adminMissionCard(m, byId)).join("") : `<div class="empty-note">${esc(t("dash.noMissions"))}</div>`;
     bindAdminMissionActions("missions");
@@ -4622,7 +4830,7 @@ function adminMissionCard(m, byId, showFinance, payoutsById){
   const fee = Number(m.platform_fee_cents||0);
   const net = Math.max(0, total - fee);
   const payout = payoutsById ? payoutsById[String(m.provider_id||m.skipper_id)] : null;
-  return `<article class="request-card">
+  return `<article class="request-card" tabindex="0" role="button" data-admin-detail="mission" data-admin-id="${esc(m.id)}">
     <div class="request-top">
       <div>
         <h3>${esc(m.port||"—")} · ${esc(m.boat_type||"")}</h3>
@@ -4680,7 +4888,7 @@ function bindAdminMissionActions(panel){
 function adminUserCard(p, missions, defaultCommission){
   const missionCount = missions.filter(m => String(m.client_id)===String(p.id) || String(m.skipper_id)===String(p.id)).length;
   const isProfessional = ["skipper","provider"].includes(p.role);
-  return `<article class="request-card">
+  return `<article class="request-card" tabindex="0" role="button" data-admin-detail="user" data-admin-id="${esc(p.id)}">
     <div class="request-top">
       <div>
         <h3>${esc(p.full_name||"—")}${featuredBadgeHtml(p)}</h3>
@@ -4977,7 +5185,7 @@ function profileCard(p){
     if(!p.profile_photo_url) missing.push(t("dash.reqPhoto"));
   }
   const canApprove = !p.verified && missing.length === 0;
-  return `<article class="request-card">
+  return `<article class="request-card" tabindex="0" role="button" data-admin-detail="user" data-admin-id="${esc(p.id)}">
     <div class="request-top">
       <div><h3>${esc(p.full_name||"—")}</h3><div class="muted">${esc(p.role||"")} · ${esc(p.home_port||"—")}${p.provider_activity?" · "+esc(activityLabel(p.provider_activity)):""}</div>
       <div class="muted">${esc(p.contact_email||p.email||"—")}${p.phone?` · 📞 ${esc(p.phone)}`:` · <span style="color:#c0392b">${esc(t("dash.reqPhone"))}</span>`}</div>

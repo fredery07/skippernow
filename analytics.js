@@ -47,13 +47,19 @@
     }
 
     function postRpc(name, body){
+      const headers = {
+        "apikey": SUPABASE_KEY,
+        "Content-Type": "application/json"
+      };
+      try{
+        const storedSession = JSON.parse(window.localStorage.getItem("skippernow-auth") || "null");
+        const accessToken = storedSession && storedSession.access_token;
+        if(accessToken) headers.Authorization = "Bearer " + accessToken;
+      }catch(_error){}
       return fetch(SUPABASE_URL + "/rest/v1/rpc/" + name, {
         method: "POST",
         keepalive: true,
-        headers: {
-          "apikey": SUPABASE_KEY,
-          "Content-Type": "application/json"
-        },
+        headers: headers,
         body: JSON.stringify(body)
       }).then(function(response){
         if(!response.ok){
