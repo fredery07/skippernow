@@ -1,5 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="SkipperNow anchor">
   <rect width="512" height="512" rx="112" fill="#071d32"/>
   <circle cx="256" cy="256" r="190" fill="#0d6672" opacity=".34"/>
-  <text x="256" y="350" text-anchor="middle" font-size="280" font-family="Apple Color Emoji,Segoe UI Emoji,sans-serif" fill="#39d1c5">⚓</text>
+  <g fill="none" stroke="#39d1c5" stroke-width="23" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="256" cy="132" r="24"/>
+    <path d="M256 156v225M193 205h126M148 302c0 64 44 112 108 112s108-48 108-112M148 302l-28 31M148 302l31 27M364 302l28 31M364 302l-31 27"/>
+  </g>
 </svg>
