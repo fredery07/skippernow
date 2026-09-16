@@ -46,12 +46,7 @@
   }
 }
 </script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preconnect" href="https://images.unsplash.com">
-<link rel="preconnect" href="https://images.pexels.com">
-<link rel="preload" as="image" href="https://images.unsplash.com/photo-1719813916544-9a0d82f96a53?auto=format&amp;fit=crop&amp;w=1200&amp;q=72" fetchpriority="high">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="/hero-main.avif" type="image/avif" fetchpriority="high">
 <link rel="stylesheet" href="/skippernow-main.css?v=20260917-perf">
 
 </head>
@@ -77,7 +72,7 @@
 
 <section class="hero">
 <div id="heroBgContainer">
-  <div class="hero-bg active" style="background-image:url('https://images.unsplash.com/photo-1719813916544-9a0d82f96a53?auto=format&fit=crop&w=1200&q=72')"></div>
+  <div class="hero-bg active" style="background-image:url('/hero-main.avif')"></div>
   <div class="hero-bg" data-bg="https://images.unsplash.com/photo-1624184780131-189b96898b84?auto=format&fit=crop&w=1200&q=72"></div>
   <div class="hero-bg" data-bg="https://images.unsplash.com/photo-1688076164054-a3a7667befc3?auto=format&fit=crop&w=1200&q=72"></div>
   <div class="hero-bg" data-bg="https://images.unsplash.com/photo-1719813916924-68f2cf5cc795?auto=format&fit=crop&w=1200&q=72"></div>
@@ -727,7 +722,7 @@
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+<script src="/supabase-js.min.js?v=2-20260917" defer></script>
 <script src="/analytics.js" defer></script>
 <script src="/skippernow-main.js?v=20260917-perf" defer></script>
 

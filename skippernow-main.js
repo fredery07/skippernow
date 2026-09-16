@@ -4757,16 +4757,13 @@ async function loadLogbook(){
   await resumePaymentReturn();
   const urlPro = params.get("pro");
   if(urlPro) openDirectRequest(urlPro);
-  await Promise.all([
-    preloadHomeBoats(),
-    preloadHomeProviders(),
-    loadListings(),
-    loadTrustStats(),
-    loadLogbook(),
-    loadHeroSlides(),
-    loadDestinationTiles(),
-    loadPortActivities()
-  ]);
+  const loadHomeContent = ()=>Promise.all([
+    preloadHomeBoats(), preloadHomeProviders(), loadListings(), loadTrustStats(),
+    loadLogbook(), loadHeroSlides(), loadDestinationTiles(), loadPortActivities()
+  ]).catch(error=>console.warn("SkipperNow home content:",error));
+  const needsImmediateContent = Boolean(urlPort || urlActivity || urlPro);
+  if(needsImmediateContent) await loadHomeContent();
+  else setTimeout(loadHomeContent, 500);
   if(currentUser && sessionStorage.getItem("skippernow-quick-request")) openQuickRequest();
 })();
 
