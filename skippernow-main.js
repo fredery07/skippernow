@@ -76,7 +76,7 @@ const I18N = {
   fr:{
     "nav.login":"Se connecter","nav.signup":"Créer un compte","nav.myAccount":"Mon espace",
     "notif.unreadMessages":"message(s) non lu(s)","notif.quotesReceived":"devis reçu(s) à examiner","notif.awaitingValidation":"mission(s) à valider","notif.newRequests":"nouvelle(s) demande(s) disponible(s)",
-    "notif.pendingValidations":"profil(s) en attente de validation","notif.refundRequests":"demande(s) de remboursement","notif.openDisputes":"litige(s) ouvert(s)","notif.empty":"Aucune notification pour le moment.",
+    "notif.pendingValidations":"profil(s) en attente de validation","notif.adminNewRequests":"nouvelle(s) demande(s) client à traiter","notif.refundRequests":"demande(s) de remboursement","notif.openDisputes":"litige(s) ouvert(s)","notif.empty":"Aucune notification pour le moment.",
     "push.unsupported":"Les notifications ne sont pas prises en charge sur ce navigateur.","push.enable":"Activer les notifications","push.enabled":"Notifications activées !",
     "hero.eyebrow":"Disponible dans tous les ports du monde",
     "seo.titleDefault":"SkipperNow | Skippers, bateaux, services & expériences en mer","seo.descDefault":"Réservez un skipper, trouvez un bateau, un service nautique ou une expérience en mer avec SkipperNow, partout dans le monde.",
@@ -253,7 +253,7 @@ const I18N = {
   en:{
     "nav.login":"Log in","nav.signup":"Create an account","nav.myAccount":"My account",
     "notif.unreadMessages":"unread message(s)","notif.quotesReceived":"quote(s) received to review","notif.awaitingValidation":"job(s) to validate","notif.newRequests":"new request(s) available",
-    "notif.pendingValidations":"profile(s) pending approval","notif.refundRequests":"refund request(s)","notif.openDisputes":"open dispute(s)","notif.empty":"No notifications yet.",
+    "notif.pendingValidations":"profile(s) pending approval","notif.adminNewRequests":"new client request(s) to process","notif.refundRequests":"refund request(s)","notif.openDisputes":"open dispute(s)","notif.empty":"No notifications yet.",
     "push.unsupported":"Notifications are not supported on this browser.","push.enable":"Enable notifications","push.enabled":"Notifications enabled!",
     "hero.eyebrow":"Available in every port worldwide",
     "seo.titleDefault":"SkipperNow | Skippers, boats, services & experiences at sea","seo.descDefault":"Book a skipper, find a boat, a marine service or an experience at sea with SkipperNow, anywhere in the world.",
@@ -429,7 +429,7 @@ const I18N = {
   es:{
     "nav.login":"Iniciar sesión","nav.signup":"Crear una cuenta","nav.myAccount":"Mi cuenta",
     "notif.unreadMessages":"mensaje(s) sin leer","notif.quotesReceived":"presupuesto(s) recibido(s) para revisar","notif.awaitingValidation":"servicio(s) por validar","notif.newRequests":"nueva(s) solicitud(es) disponible(s)",
-    "notif.pendingValidations":"perfil(es) pendiente(s) de validación","notif.refundRequests":"solicitud(es) de reembolso","notif.openDisputes":"disputa(s) abierta(s)","notif.empty":"Sin notificaciones por ahora.",
+    "notif.pendingValidations":"perfil(es) pendiente(s) de validación","notif.adminNewRequests":"nueva(s) solicitud(es) de cliente por tratar","notif.refundRequests":"solicitud(es) de reembolso","notif.openDisputes":"disputa(s) abierta(s)","notif.empty":"Sin notificaciones por ahora.",
     "push.unsupported":"Las notificaciones no son compatibles con este navegador.","push.enable":"Activar notificaciones","push.enabled":"¡Notificaciones activadas!",
     "hero.eyebrow":"Disponible en todos los puertos del mundo",
     "seo.titleDefault":"SkipperNow | Skippers, barcos, servicios y experiencias en el mar","seo.descDefault":"Reserva un skipper, encuentra un barco, un servicio náutico o una experiencia en el mar con SkipperNow, en cualquier parte del mundo.",
@@ -1133,6 +1133,7 @@ let resultsCache = [];
 let adminProfilesCache = [];
 let adminMissionsCache = [];
 let adminFormSessionsCache = [];
+let adminFormsInitialFilter = "all";
 let currentMessagesRoleColumn = null;
 let currentThreadChannel = null;
 function unsubscribeThreadChannel(){
@@ -1674,6 +1675,14 @@ window.messageProfile = async function(targetId){
 let authMode = "create";
 let selectedRole = "client";
 
+function trackSignupStarted(source){
+  try{
+    if(typeof window.skTrackEvent === "function"){
+      window.skTrackEvent("signup_started", {source:source || "account_modal",stage:"form_opened",role:selectedRole});
+    }
+  }catch(_e){}
+}
+
 function setAuthMode(mode){
   authMode = mode;
   document.querySelector("#authModeCreate").classList.toggle("active", mode==="create");
@@ -1706,14 +1715,20 @@ function refreshRoleFields(){
     portInputField.placeholder = t("account.portPlaceholder");
   }
 }
-document.querySelector("#authModeCreate").addEventListener("click", ()=>setAuthMode("create"));
+document.querySelector("#authModeCreate").addEventListener("click", ()=>{
+  const startsSignup = authMode !== "create";
+  setAuthMode("create");
+  if(startsSignup) trackSignupStarted("account_tab");
+});
 document.querySelector("#authModeLogin").addEventListener("click", ()=>setAuthMode("login"));
 document.querySelectorAll("#roleChoice .choice-card").forEach(card=>card.addEventListener("click", ()=>setRole(card.dataset.role)));
 
 function openAccountModal(mode, role){
-  setAuthMode(mode || "create");
+  const nextMode = mode || "create";
+  setAuthMode(nextMode);
   if(role) setRole(role);
   openModal("accountModal");
+  if(nextMode === "create") trackSignupStarted("account_modal");
 }
 document.querySelector("#loginBtn").addEventListener("click", ()=>{
   if(currentUser){ openDashboard(); return; }
@@ -1791,10 +1806,13 @@ document.querySelector("#authSubmit").addEventListener("click", async ()=>{
   const metadata = {
     full_name: name,
     role: dbRole,
-    home_port: portValue,
-    provider_activity: selectedRole === "provider" ? activity : (selectedRole === "skipper" ? "skipper" : null),
     lang: currentLang
   };
+  // A client account needs only the three visible signup values. Keep the
+  // existing professional/owner metadata for the roles that collect it.
+  if(selectedRole !== "client") metadata.home_port = portValue;
+  if(selectedRole === "provider") metadata.provider_activity = activity;
+  else if(selectedRole === "skipper") metadata.provider_activity = "skipper";
   const {data, error} = await db.auth.signUp({email, password, options:{data: metadata}});
   if(error){ msg.textContent = friendlyError(error); return; }
   if(!data.session){ msg.style.color = "#08794e"; msg.textContent = t("account.signupSuccess"); return; }
@@ -1863,6 +1881,8 @@ async function refreshNotifications(){
     const {data: pending} = await db.from("missions").select("id",{count:"exact"}).eq("status","pending").is("skipper_id", null);
     if(pending?.length) items.push({label: `${pending.length} ${t("notif.newRequests")}`, panel:"requests"});
   }else if(role === "admin"){
+    const {data: newRequests} = await db.from("missions").select("id").eq("status","pending");
+    if(newRequests?.length) items.push({label: `${newRequests.length} ${t("notif.adminNewRequests")}`, panel:"missions"});
     const {data: pendingUsers} = await db.from("profiles").select("id",{count:"exact"}).eq("verified", false).in("role",["skipper","provider"]);
     if(pendingUsers?.length) items.push({label: `${pendingUsers.length} ${t("notif.pendingValidations")}`, panel:"validations"});
     const {data: refunds} = await db.from("missions").select("id",{count:"exact"}).eq("payment_status","refund_requested");
@@ -2165,7 +2185,7 @@ document.querySelector("#bookingSubmit").addEventListener("click", async ()=>{
       if(bookingContext.targetRole === "provider") missionPayload.provider_id = bookingContext.targetId;
       else missionPayload.skipper_id = bookingContext.targetId;
     }
-    const {error} = await db.from("missions").insert(missionPayload);
+    const {data: createdMission, error} = await db.from("missions").insert(missionPayload).select("id").single();
     if(error){
       trackBookingEvent("booking_failed", {stage:"mission_insert"});
       msg.style.color = "#b42318"; msg.textContent = friendlyError(error); submitBtn.disabled = false; return;
@@ -2173,7 +2193,8 @@ document.querySelector("#bookingSubmit").addEventListener("click", async ()=>{
     trackBookingEvent("booking_created", {
       activity: bookingContext.activity || activeActivity,
       duration: durationValue,
-      has_target: Boolean(bookingContext.targetId)
+      has_target: Boolean(bookingContext.targetId),
+      mission_id: createdMission.id
     });
     bookingContext.sent = true;
     clearBookingDraft();
@@ -2372,6 +2393,16 @@ async function renderClientDashboard(){
   bindDashNav(renderClientPanel);
   await renderClientPanel("requests");
 }
+function clientProfileCompletionNotice(){
+  if(currentProfile?.phone && currentProfile?.home_port) return "";
+  const copy = ({
+    fr:{title:"Complétez votre profil",text:"Ajoutez vos coordonnées après votre première connexion pour faciliter le suivi de vos réservations.",cta:"Compléter mon profil"},
+    en:{title:"Complete your profile",text:"Add your contact details after signing in to make booking follow-up easier.",cta:"Complete my profile"},
+    es:{title:"Completa tu perfil",text:"Añade tus datos de contacto después de iniciar sesión para facilitar el seguimiento de tus reservas.",cta:"Completar mi perfil"}
+  })[currentLang] || null;
+  const c = copy || {title:"Complétez votre profil",text:"Ajoutez vos coordonnées pour faciliter le suivi de vos réservations.",cta:"Compléter mon profil"};
+  return `<div class="note-box" data-client-profile-reminder style="display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:14px"><div><strong>${esc(c.title)}</strong><div class="muted" style="margin-top:4px">${esc(c.text)}</div></div><button type="button" class="small-btn fill" data-open-client-profile>${esc(c.cta)} →</button></div>`;
+}
 async function renderClientPanel(panel){
   refreshDashboardIdentity(panel);
   const main = document.querySelector("#dashMain");
@@ -2388,11 +2419,15 @@ async function renderClientPanel(panel){
     if(reconciled){const refreshed=await db.from('missions').select('*').or(`client_id.eq.${currentUser.id},skipper_id.eq.${currentUser.id}`).order('created_at',{ascending:false});if(!refreshed.error) rows=refreshed.data||rows;}
     const {data: reviewedRows} = await db.from("reviews").select("mission_id").eq("client_id", currentUser.id);
     const reviewedMissionIds = new Set((reviewedRows||[]).map(r=>String(r.mission_id)));
-    main.innerHTML = rows.length ? rows.map(m=>{
+    const requestRows = rows.length ? rows.map(m=>{
       const rowContext = String(m.client_id) === String(currentUser.id) ? "client" : "pro";
       const tag = String(m.client_id) === String(currentUser.id) ? "" : `<span class="tag" style="margin-bottom:6px;display:inline-block">${esc(t("dash.requestReceived"))}</span>`;
       return tag + requestCard(m, rowContext, reviewedMissionIds);
     }).join("") : `<div class="empty-note">${esc(t("dash.noRequests"))}</div>`;
+    main.innerHTML = clientProfileCompletionNotice() + requestRows;
+    document.querySelector("[data-open-client-profile]")?.addEventListener("click", ()=>{
+      document.querySelector('.dash-side [data-panel="profile"]')?.click();
+    });
     bindRequestActions();
   }else if(panel === "messages"){
     await renderMessagesPanel("client_id");
@@ -2966,19 +3001,22 @@ function openAdminFormDetail(id){
   const s=adminFormSessionsCache.find(row=>row.id===id); if(!s) return;
   const c=adminUiCopy(), m=s.metadata||{}, contact=s.profile?`${s.profile.full_name||"—"}\n${s.profile.contact_email||s.profile.email||""}\n${s.profile.phone||""}`:c.anonymous;
   const last=s.events[0], stage=last?.metadata?.stage||last?.event_name||"";
+  const linkedMission = m.mission_id && adminMissionsCache.some(row=>String(row.id)===String(m.mission_id));
   showAdminDetail(m.port||m.activity||c.form,c.form,`<div class="admin-detail-grid">
     ${adminField(c.contact,contact,true)}${adminField(c.status,s.status.label)}${adminField(c.lastStep,stage)}${adminField(c.service,m.activity)}${adminField("Sous-catégorie",m.subcategory)}${adminField(c.city,m.port)}${adminField(c.date,m.date)}${adminField(c.duration,m.duration+(m.days?` · ${m.days} jours`:""))}${adminField(c.boat,m.boat_type)}${adminField(c.target,m.target_name||m.target_id,true)}${adminField(c.details,m.details,true)}${adminField(c.photos,m.photo_count||0)}${adminField(c.updatedAt,adminDate(last?.created_at))}
-  </div><h3>${esc(c.history)}</h3><ul class="admin-history">${[...s.events].reverse().map(e=>`<li>${esc(c.event[e.event_name]||e.event_name)}${e.metadata?.stage?` · ${esc(e.metadata.stage)}`:""}<time>${esc(adminDate(e.created_at))}</time></li>`).join("")}</ul>`);
+  </div>${linkedMission?`<button class="primary wide" type="button" data-open-linked-mission="${esc(m.mission_id)}">${esc(c.mission)}</button>`:""}<h3>${esc(c.history)}</h3><ul class="admin-history">${[...s.events].reverse().map(e=>`<li>${esc(c.event[e.event_name]||e.event_name)}${e.metadata?.stage?` · ${esc(e.metadata.stage)}`:""}<time>${esc(adminDate(e.created_at))}</time></li>`).join("")}</ul>`);
+  document.querySelector("[data-open-linked-mission]")?.addEventListener("click", e=>openAdminMissionDetail(e.currentTarget.dataset.openLinkedMission));
 }
 async function loadAdminFormSessions(profiles){
   const since=new Date(Date.now()-30*24*60*60*1000).toISOString();
-  const {data,error}=await db.from("booking_events").select("id,visitor_id,profile_id,form_session_id,event_name,path,metadata,created_at").gte("created_at",since).order("created_at",{ascending:false}).limit(1500);
+  const bookingEventNames=["booking_opened","booking_progress","booking_abandoned","booking_login_required","booking_submitted","booking_created","booking_failed"];
+  const {data,error}=await db.from("booking_events").select("id,visitor_id,profile_id,form_session_id,event_name,path,metadata,created_at").in("event_name",bookingEventNames).gte("created_at",since).order("created_at",{ascending:false}).limit(1500);
   if(error) throw error;
   adminFormSessionsCache=groupBookingSessions(data||[],profiles);
   return adminFormSessionsCache;
 }
 function renderAdminFormsList(main, sessions, filter="all"){
-  const c=adminUiCopy(), filtered=filter==="all"?sessions:sessions.filter(s=>s.status.key===filter);
+  const c=adminUiCopy(), filtered=filter==="all"?sessions:sessions.filter(s=>filter.startsWith("booking_")?s.events.some(e=>e.event_name===filter):s.status.key===filter);
   main.innerHTML=`<div class="kpi-grid"><div class="kpi" tabindex="0" role="button" data-form-filter="all"><div class="kpi-top"><span>${esc(c.started)}</span></div><strong>${sessions.length}</strong></div><div class="kpi kpi--danger" tabindex="0" role="button" data-form-filter="unfinished"><div class="kpi-top"><span>${esc(c.unfinished)}</span></div><strong>${sessions.filter(s=>s.status.key==="unfinished").length}</strong></div><div class="kpi kpi--good" tabindex="0" role="button" data-form-filter="created"><div class="kpi-top"><span>${esc(c.created)}</span></div><strong>${sessions.filter(s=>s.status.key==="created").length}</strong></div></div>
     ${filtered.length?`<div class="form-session-list">${filtered.map(s=>{const m=s.metadata||{},p=s.profile,last=s.events[0];return `<article class="form-session-row" tabindex="0" role="button" data-admin-detail="form" data-admin-id="${esc(s.id)}"><div class="form-session-main"><strong>${esc(p?.full_name||c.anonymous)}</strong><span>${esc(p?.contact_email||p?.email||p?.phone||adminDate(last?.created_at))}</span></div><div class="form-session-meta">${esc(m.activity||"—")} · ${esc(m.port||"—")}<span>${esc(m.date||"")}</span></div><div class="form-session-step">${esc(c.lastStep)} : ${esc(last?.metadata?.stage||last?.event_name||"—")}</div><span class="status-pill ${s.status.css}">${esc(s.status.label)}</span></article>`;}).join("")}</div>`:`<div class="empty-note">${esc(c.noForms)}</div>`}`;
   main.querySelectorAll("[data-form-filter]").forEach(btn=>{
@@ -2999,7 +3037,10 @@ function bindAdminDashboardInteractions(){
     if(!target || (e.type==="keydown" && !["Enter"," "].includes(e.key))) return;
     if(e.target.closest("button,select,input,textarea,a") && e.target!==target) return;
     if(e.type==="keydown") e.preventDefault();
-    if(target.dataset.adminPanel) goToAdminPanel(target.dataset.adminPanel);
+    if(target.dataset.adminPanel){
+      if(target.dataset.adminPanel==="forms") adminFormsInitialFilter=target.dataset.adminFormFilter||"all";
+      goToAdminPanel(target.dataset.adminPanel);
+    }
     else if(target.dataset.openPath) window.open(target.dataset.openPath,"_blank","noopener");
     else if(target.dataset.adminDetail==="mission") openAdminMissionDetail(target.dataset.adminId);
     else if(target.dataset.adminDetail==="user") openAdminUserDetail(target.dataset.adminId);
@@ -3082,11 +3123,11 @@ async function renderAdminPanel(panel){
       </div>
       <div class="dash-section-title">${esc(t("dash.bookingFunnelTitle"))}</div>
       <div class="kpi-grid">
-        <div class="kpi" tabindex="0" role="button" data-admin-panel="forms"><div class="kpi-top"><span>${esc(t("dash.bookingOpened"))}</span></div><strong>${Number(bookingEvents.booking_opened || 0)}</strong></div>
-        <div class="kpi" tabindex="0" role="button" data-admin-panel="forms"><div class="kpi-top"><span>${esc(t("dash.bookingLoginRequired"))}</span></div><strong>${Number(bookingEvents.booking_login_required || 0)}</strong></div>
-        <div class="kpi" tabindex="0" role="button" data-admin-panel="forms"><div class="kpi-top"><span>${esc(t("dash.bookingSubmitted"))}</span></div><strong>${Number(bookingEvents.booking_submitted || 0)}</strong></div>
-        <div class="kpi kpi--good" tabindex="0" role="button" data-admin-panel="forms"><div class="kpi-top"><span>${esc(t("dash.bookingCreated"))}</span></div><strong>${Number(bookingEvents.booking_created || 0)}</strong></div>
-        <div class="kpi ${Number(bookingEvents.booking_failed || 0) ? 'kpi--danger' : ''}" tabindex="0" role="button" data-admin-panel="forms"><div class="kpi-top"><span>${esc(t("dash.bookingFailed"))}</span></div><strong>${Number(bookingEvents.booking_failed || 0)}</strong></div>
+        <div class="kpi" tabindex="0" role="button" data-admin-panel="forms" data-admin-form-filter="booking_opened"><div class="kpi-top"><span>${esc(t("dash.bookingOpened"))}</span></div><strong>${Number(bookingEvents.booking_opened || 0)}</strong></div>
+        <div class="kpi" tabindex="0" role="button" data-admin-panel="forms" data-admin-form-filter="booking_login_required"><div class="kpi-top"><span>${esc(t("dash.bookingLoginRequired"))}</span></div><strong>${Number(bookingEvents.booking_login_required || 0)}</strong></div>
+        <div class="kpi" tabindex="0" role="button" data-admin-panel="forms" data-admin-form-filter="booking_submitted"><div class="kpi-top"><span>${esc(t("dash.bookingSubmitted"))}</span></div><strong>${Number(bookingEvents.booking_submitted || 0)}</strong></div>
+        <div class="kpi kpi--good" tabindex="0" role="button" data-admin-panel="forms" data-admin-form-filter="booking_created"><div class="kpi-top"><span>${esc(t("dash.bookingCreated"))}</span></div><strong>${Number(bookingEvents.booking_created || 0)}</strong></div>
+        <div class="kpi ${Number(bookingEvents.booking_failed || 0) ? 'kpi--danger' : ''}" tabindex="0" role="button" data-admin-panel="forms" data-admin-form-filter="booking_failed"><div class="kpi-top"><span>${esc(t("dash.bookingFailed"))}</span></div><strong>${Number(bookingEvents.booking_failed || 0)}</strong></div>
       </div>
       <div class="dash-section-title">${esc(t("dash.topPagesTitle"))}${Number.isFinite(s.views_30d) ? ` · ${esc(t("dash.pageViews30d",{count:s.views_30d}))}` : ""}</div>
       ${topPages.length ? `<div class="traffic-table">${topPages.map(p=>`<div class="traffic-row" tabindex="0" role="button" data-open-path="${esc(p.path)}"><span class="traffic-path">${esc(p.path)}</span><span class="traffic-count">${p.views}</span></div>`).join("")}</div>` : `<div class="empty-note">${esc(t("dash.noViewsYet"))}</div>`}`;
@@ -3094,7 +3135,9 @@ async function renderAdminPanel(panel){
     main.innerHTML = `<div class="empty-note">${esc(t("dash.loading"))}</div>`;
     try{
       const sessions = await loadAdminFormSessions(profiles);
-      renderAdminFormsList(main,sessions);
+      const initialFilter=adminFormsInitialFilter;
+      adminFormsInitialFilter="all";
+      renderAdminFormsList(main,sessions,initialFilter);
     }catch(error){
       main.innerHTML = `<div class="empty-note">${esc(friendlyError(error))}<br><small>${esc(adminUiCopy().migration)}</small></div>`;
     }
