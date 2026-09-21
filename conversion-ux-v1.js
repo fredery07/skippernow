@@ -11,6 +11,27 @@
     catch(_e){ return ""; }
   }
 
+  function ctaMetadata(el){
+    const href = el.getAttribute?.("href") || "";
+    const id = el.id || "";
+    const role = el.dataset?.role || "";
+    const roleSignup = Boolean(role && !el.closest("#roleChoice"));
+    const opensBooking = (el.getAttribute?.("onclick") || "").includes("openBookingFor(");
+    const requestIds = new Set(["quickRequestBtn","heroConversionRequest","mobileConversionCta","bookingSubmit"]);
+    const signupIds = new Set(["signupBtn","authModeCreate","listBoatBtn","footerBecomePro","footerAddBoat"]);
+    const isActivityLink = href.includes("activity=") || href.includes("port=");
+    const isRequest = isActivityLink || opensBooking || requestIds.has(id) || el.hasAttribute?.("data-quick-request");
+    const isSignup = signupIds.has(id) || roleSignup;
+    if(!isRequest && !isSignup) return null;
+    return {
+      source: el.dataset?.snSource || id || (roleSignup ? "role_" + role : "landing_cta"),
+      stage: "click",
+      intent: isSignup ? "signup" : "request",
+      role: role || undefined,
+      activity: activityFromHref(href) || undefined
+    };
+  }
+
   // If the user signs in from one of the home choice links, return to a clean
   // homepage instead of reopening the activity modal from the old query string.
   // INITIAL_SESSION is deliberately ignored so an already signed-in user can
@@ -31,14 +52,8 @@
   document.addEventListener("click", function(e){
     const el = e.target.closest && e.target.closest("a,button");
     if(!el) return;
-    const text = (el.textContent || "").trim().toLowerCase();
-    const href = el.getAttribute && el.getAttribute("href");
-    if(href && (href.includes("activity=") || href.includes("port="))){
-      track("cta_clicked", {source:el.dataset?.snSource || "landing_cta",stage:"click",activity:activityFromHref(href)});
-    }
-    if(text.includes("inscri") || text.includes("créer un compte") || text.includes("creer un compte")){
-      track("signup_started", {source:"site",stage:"click"});
-    }
+    const metadata = ctaMetadata(el);
+    if(metadata) track("cta_clicked", metadata);
   }, true);
 
   const home = path === "/" || path === "/index.html";
