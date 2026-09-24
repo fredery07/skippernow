@@ -6,6 +6,41 @@
   const path = location.pathname || "/";
   const track = (name, meta) => { try{ if(typeof window.skTrackEvent === "function") window.skTrackEvent(name, meta || {}); }catch(_e){} };
 
+  const COPY={
+    fr:{
+      kicker:"Que recherchez-vous aujourd’hui ?",title:"Choisissez, SkipperNow s’occupe du reste.",subtitle:"Accédez directement au bon parcours. La demande est gratuite et vous gardez le contrôle avant tout paiement.",
+      boatTitle:"Louer un bateau",boatSub:"Voir les bateaux et disponibilités",boatCta:"Voir les bateaux →",
+      skipperTitle:"Réserver un skipper",skipperSub:"Trouver un professionnel disponible",skipperCta:"Voir les skippers →",
+      serviceTitle:"Demander une prestation",serviceSub:"Nettoyage, préparation, convoyage et services à quai",serviceCta:"Déposer une demande →",
+      trust1:"✓ Demande gratuite",trust2:"✓ Professionnels vérifiés",trust3:"✓ Paiement sécurisé",trust4:"✓ Vous validez le prix avant de payer",
+      availableSkippers:"Voir les skippers disponibles",availableBoats:"Voir les bateaux disponibles",
+      skipperTrust:"Demande gratuite · profils vérifiés · paiement sécurisé",boatTrust:"Disponibilités · réservation sécurisée · réponse rapide",
+      aria:"Réservation SkipperNow"
+    },
+    en:{
+      kicker:"What are you looking for today?",title:"Choose what you need. SkipperNow handles the rest.",subtitle:"Go straight to the right service. Requests are free and you stay in control before any payment.",
+      boatTitle:"Rent a boat",boatSub:"Browse boats and availability",boatCta:"View boats →",
+      skipperTitle:"Book a skipper",skipperSub:"Find an available professional",skipperCta:"View skippers →",
+      serviceTitle:"Request a service",serviceSub:"Cleaning, preparation, delivery and dockside services",serviceCta:"Send a request →",
+      trust1:"✓ Free request",trust2:"✓ Verified professionals",trust3:"✓ Secure payment",trust4:"✓ You approve the price before paying",
+      availableSkippers:"View available skippers",availableBoats:"View available boats",
+      skipperTrust:"Free request · verified profiles · secure payment",boatTrust:"Availability · secure booking · fast response",
+      aria:"SkipperNow booking"
+    },
+    es:{
+      kicker:"¿Qué buscas hoy?",title:"Elige lo que necesitas. SkipperNow se ocupa del resto.",subtitle:"Accede directamente al servicio adecuado. La solicitud es gratuita y mantienes el control antes de cualquier pago.",
+      boatTitle:"Alquilar un barco",boatSub:"Ver barcos y disponibilidad",boatCta:"Ver barcos →",
+      skipperTitle:"Reservar un skipper",skipperSub:"Encontrar un profesional disponible",skipperCta:"Ver skippers →",
+      serviceTitle:"Solicitar un servicio",serviceSub:"Limpieza, preparación, traslado y servicios en puerto",serviceCta:"Enviar una solicitud →",
+      trust1:"✓ Solicitud gratuita",trust2:"✓ Profesionales verificados",trust3:"✓ Pago seguro",trust4:"✓ Validás el precio antes de pagar",
+      availableSkippers:"Ver skippers disponibles",availableBoats:"Ver barcos disponibles",
+      skipperTrust:"Solicitud gratuita · perfiles verificados · pago seguro",boatTrust:"Disponibilidad · reserva segura · respuesta rápida",
+      aria:"Reserva SkipperNow"
+    }
+  };
+  const lang=()=>((typeof currentLang!=="undefined"&&COPY[currentLang])?currentLang:(localStorage.getItem("skippernow-language")||"fr"));
+  const cp=()=>COPY[lang()]||COPY.fr;
+
   function activityFromHref(href){
     try{ return new URL(href, location.origin).searchParams.get("activity") || ""; }
     catch(_e){ return ""; }
@@ -122,6 +157,7 @@
     if(!home || document.querySelector("[data-sn-home-conversion]")) return;
     const target = document.querySelector(".search-wrap") || document.querySelector("main") || document.body.firstElementChild;
     if(!target || !target.parentNode) return;
+    const x=cp();
 
     const section = document.createElement("section");
     section.dataset.snHomeConversion = "1";
@@ -129,22 +165,22 @@
     section.innerHTML = `
       <div class="sn-home-choice">
         <div class="sn-home-choice-head">
-          <span class="sn-home-kicker">Que recherchez-vous aujourd’hui ?</span>
-          <h2>Choisissez, SkipperNow s’occupe du reste.</h2>
-          <p>Accédez directement au bon parcours. La demande est gratuite et vous gardez le contrôle avant tout paiement.</p>
+          <span class="sn-home-kicker">${x.kicker}</span>
+          <h2>${x.title}</h2>
+          <p>${x.subtitle}</p>
         </div>
         <div class="sn-home-choice-grid">
           <a class="sn-home-choice-card" data-sn-source="home_choice" href="/?activity=boat_rental&source=home_choice">
-            <span class="sn-home-choice-icon">🛥️</span><strong>Louer un bateau</strong><small>Voir les bateaux et disponibilités</small><b>Voir les bateaux →</b>
+            <span class="sn-home-choice-icon">🛥️</span><strong>${x.boatTitle}</strong><small>${x.boatSub}</small><b>${x.boatCta}</b>
           </a>
           <a class="sn-home-choice-card" data-sn-source="home_choice" href="/?activity=skipper&source=home_choice">
-            <span class="sn-home-choice-icon">⚓</span><strong>Réserver un skipper</strong><small>Trouver un professionnel disponible</small><b>Voir les skippers →</b>
+            <span class="sn-home-choice-icon">⚓</span><strong>${x.skipperTitle}</strong><small>${x.skipperSub}</small><b>${x.skipperCta}</b>
           </a>
           <a class="sn-home-choice-card" data-sn-source="home_choice" href="/?activity=service&source=home_choice">
-            <span class="sn-home-choice-icon">🧰</span><strong>Demander une prestation</strong><small>Nettoyage, préparation, convoyage et services à quai</small><b>Déposer une demande →</b>
+            <span class="sn-home-choice-icon">🧰</span><strong>${x.serviceTitle}</strong><small>${x.serviceSub}</small><b>${x.serviceCta}</b>
           </a>
         </div>
-        <div class="sn-home-reassurance"><span>✓ Demande gratuite</span><span>✓ Professionnels vérifiés</span><span>✓ Paiement sécurisé</span><span>✓ Vous validez le prix avant de payer</span></div>
+        <div class="sn-home-reassurance"><span>${x.trust1}</span><span>${x.trust2}</span><span>${x.trust3}</span><span>${x.trust4}</span></div>
       </div>`;
 
     const style = document.createElement("style");
@@ -171,8 +207,8 @@
     const city = slug.replace(/^skipper-/i,"").replace(/^location-bateau-/i,"").replace(/^boat-rental-/i,"").replace(/^alquiler-barcos-/i,"").split("-").map(x=>x.charAt(0).toUpperCase()+x.slice(1)).join(" ");
     const isSkipper = /^skipper-/i.test(slug);
     const activity = isSkipper ? "skipper" : "boat_rental";
-    const label = isSkipper ? "Voir les skippers disponibles" : "Voir les bateaux disponibles";
-    const sub = isSkipper ? "Demande gratuite · profils vérifiés · paiement sécurisé" : "Disponibilités · réservation sécurisée · réponse rapide";
+    const label = isSkipper ? cp().availableSkippers : cp().availableBoats;
+    const sub = isSkipper ? cp().skipperTrust : cp().boatTrust;
     return {city,activity,label,sub};
   }
 
@@ -183,7 +219,7 @@
     const bar = document.createElement("div");
     bar.dataset.snConversionBar = "1";
     bar.setAttribute("role","region");
-    bar.setAttribute("aria-label","Réservation SkipperNow");
+    bar.setAttribute("aria-label",cp().aria);
     bar.innerHTML = '<div class="sn-conv-inner"><div class="sn-conv-copy"><strong>'+cfg.label+'</strong><span>'+cfg.sub+'</span></div><a class="sn-conv-btn" data-sn-source="seo_sticky" href="'+href+'">'+cfg.label+'</a></div>';
     const style = document.createElement("style");
     style.textContent = '.sn-conv-bar{position:fixed;left:0;right:0;bottom:0;z-index:2200;background:#071d32;color:#fff;border-top:1px solid rgba(255,255,255,.15);box-shadow:0 -8px 30px rgba(7,29,50,.18);padding:10px 16px}.sn-conv-inner{max-width:1080px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:16px}.sn-conv-copy{display:flex;flex-direction:column;line-height:1.25}.sn-conv-copy strong{font-size:14px}.sn-conv-copy span{font-size:12px;opacity:.82;margin-top:3px}.sn-conv-btn{display:inline-flex;align-items:center;justify-content:center;background:#39d1c5;color:#071d32!important;text-decoration:none!important;font-weight:900;border-radius:11px;padding:11px 16px;white-space:nowrap}@media(max-width:680px){body{padding-bottom:86px}.sn-conv-bar{padding:9px 10px}.sn-conv-inner{gap:10px}.sn-conv-copy span{font-size:11px}.sn-conv-copy strong{display:none}.sn-conv-btn{width:100%;padding:12px 14px}}';
@@ -192,6 +228,12 @@
     document.body.appendChild(bar);
     track("landing_cta_shown", {source:"seo",stage:"view",activity:cfg.activity});
   }
+
+  function refreshHomeConversionLanguage(){
+    const old=document.querySelector("[data-sn-home-conversion]");
+    if(old){ old.remove(); installHomeConversion(); }
+  }
+  document.querySelector("#languageSelect")?.addEventListener("change",()=>setTimeout(refreshHomeConversionLanguage,0));
 
   function install(){
     installPostLoginCleanup();
