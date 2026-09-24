@@ -11,6 +11,14 @@
   let current = 0;
   let rows = [];
 
+  const UI = {
+    fr:{sponsored:"Sponsorisé",partner:"Partenaire",partnerBrand:"Partenaire SkipperNow",discover:"Découvrir →",previous:"Partenaire précédent",next:"Partenaire suivant",maskedEmail:"[email masqué]",maskedPhone:"[téléphone masqué]",defaultBoat:"Bateau",defaultLanguage:"Français"},
+    en:{sponsored:"Sponsored",partner:"Partner",partnerBrand:"SkipperNow partner",discover:"Discover →",previous:"Previous partner",next:"Next partner",maskedEmail:"[email hidden]",maskedPhone:"[phone hidden]",defaultBoat:"Boat",defaultLanguage:"French"},
+    es:{sponsored:"Patrocinado",partner:"Socio",partnerBrand:"Socio de SkipperNow",discover:"Descubrir →",previous:"Socio anterior",next:"Socio siguiente",maskedEmail:"[email oculto]",maskedPhone:"[teléfono oculto]",defaultBoat:"Barco",defaultLanguage:"Francés"}
+  };
+  const lang=()=>((typeof currentLang!=="undefined" && UI[currentLang]) ? currentLang : "fr");
+  const ui=key=>UI[lang()][key] || UI.fr[key] || key;
+
   function getDb(){
     try{ if(typeof db !== "undefined" && db?.from) return db; }catch(_e){}
     return window.db?.from ? window.db : null;
@@ -67,8 +75,8 @@
   }
 
   function captionFor(p){
-    const label=p.sponsored?"Sponsorisé":(p.badge||"Partenaire SkipperNow");
-    return `<span class="sn-pc-kicker">${esc(label)}</span><span class="sn-pc-title">${esc(p.name)}</span>${p.subtitle?`<span class="sn-pc-sub">${esc(p.subtitle)}${p.link_url?" · Découvrir →":""}</span>`:""}`;
+    const label=p.sponsored?ui("sponsored"):(p.badge||ui("partnerBrand"));
+    return `<span class="sn-pc-kicker">${esc(label)}</span><span class="sn-pc-title">${esc(p.name)}</span>${p.subtitle?`<span class="sn-pc-sub">${esc(p.subtitle)}${p.link_url?" · "+esc(ui("discover")):""}</span>`:""}`;
   }
 
   function show(index){
@@ -83,7 +91,12 @@
     const caption=carousel.querySelector(".sea-carousel-caption");
     if(caption) caption.innerHTML=captionFor(rows[current]);
     const badge=carousel.querySelector(".sn-pc-badge");
-    if(badge) badge.textContent=rows[current].sponsored?"Sponsorisé":(rows[current].badge||"Partenaire");
+    if(badge) badge.textContent=rows[current].sponsored?ui("sponsored"):(rows[current].badge||ui("partner"));
+    dots.forEach((dot,i)=>dot.setAttribute("aria-label",`${ui("partner")} ${i+1}`));
+    const prev=carousel.querySelector(".sn-pc-prev");
+    const next=carousel.querySelector(".sn-pc-next");
+    if(prev) prev.setAttribute("aria-label",ui("previous"));
+    if(next) next.setAttribute("aria-label",ui("next"));
   }
 
   function restart(){
@@ -111,7 +124,7 @@
         : `<div class="sea-slide${i===0?" active":""}" style="${style}" aria-label="${esc(p.name)}"></div>`;
     }).join("");
 
-    dots.innerHTML=rows.map((_,i)=>`<span class="${i===0?"active":""}" data-sn-pc-dot="${i}" aria-label="Partenaire ${i+1}"></span>`).join("");
+    dots.innerHTML=rows.map((_,i)=>`<span class="${i===0?"active":""}" data-sn-pc-dot="${i}" aria-label="${esc(ui("partner"))} ${i+1}"></span>`).join("");
     caption.removeAttribute("data-i18n");
     caption.innerHTML=captionFor(rows[0]);
 
@@ -119,12 +132,12 @@
     carousel.querySelectorAll(".sn-pc-arrow").forEach(x=>x.remove());
     const badge=document.createElement("span");
     badge.className="sn-pc-badge";
-    badge.textContent=rows[0].sponsored?"Sponsorisé":(rows[0].badge||"Partenaire");
+    badge.textContent=rows[0].sponsored?ui("sponsored"):(rows[0].badge||ui("partner"));
     carousel.appendChild(badge);
 
     if(rows.length>1){
-      const prev=document.createElement("button"); prev.type="button"; prev.className="sn-pc-arrow sn-pc-prev"; prev.innerHTML="‹"; prev.setAttribute("aria-label","Partenaire précédent");
-      const next=document.createElement("button"); next.type="button"; next.className="sn-pc-arrow sn-pc-next"; next.innerHTML="›"; next.setAttribute("aria-label","Partenaire suivant");
+      const prev=document.createElement("button"); prev.type="button"; prev.className="sn-pc-arrow sn-pc-prev"; prev.innerHTML="‹"; prev.setAttribute("aria-label",ui("previous"));
+      const next=document.createElement("button"); next.type="button"; next.className="sn-pc-arrow sn-pc-next"; next.innerHTML="›"; next.setAttribute("aria-label",ui("next"));
       prev.onclick=e=>{e.preventDefault();e.stopPropagation();show(current-1);restart();};
       next.onclick=e=>{e.preventDefault();e.stopPropagation();show(current+1);restart();};
       carousel.append(prev,next);
@@ -137,8 +150,106 @@
     restart();
   }
 
+  function localizePlace(place){
+    if(!place) return place;
+    const maps={
+      en:{"Espagne":"Spain","États-Unis":"United States","République dominicaine":"Dominican Republic","Grèce":"Greece","Italie":"Italy","Barcelone":"Barcelona","Palma de Majorque":"Palma de Mallorca","Valence":"Valencia","Athènes":"Athens","Corfou":"Corfu"},
+      es:{"France":"Francia","Espagne":"España","États-Unis":"Estados Unidos","République dominicaine":"República Dominicana","Grèce":"Grecia","Italie":"Italia","Barcelone":"Barcelona","Palma de Majorque":"Palma de Mallorca","Valence":"Valencia","Athènes":"Atenas","Corfou":"Corfú","Nice":"Niza"}
+    };
+    const map=maps[lang()]||{};
+    let value=String(place);
+    for(const [from,to] of Object.entries(map)) value=value.replaceAll(from,to);
+    return value;
+  }
+
+  function translateLanguageText(value){
+    if(!value) return ui("defaultLanguage");
+    const replacements={
+      en:{"Français":"French","Anglais":"English","Espagnol":"Spanish","Italien":"Italian","Allemand":"German"},
+      es:{"Français":"Francés","Anglais":"Inglés","Espagnol":"Español","Italien":"Italiano","Allemand":"Alemán"}
+    };
+    const map=replacements[lang()]||{};
+    let text=String(value);
+    for(const [from,to] of Object.entries(map)) text=text.replaceAll(from,to);
+    return text;
+  }
+
+  function hardenExistingI18n(){
+    try{
+      if(typeof I18N!=="undefined"){
+        for(const code of ["fr","en","es"]){
+          if(!I18N[code]) continue;
+          I18N[code]["privacy.maskedEmail"]=UI[code].maskedEmail;
+          I18N[code]["privacy.maskedPhone"]=UI[code].maskedPhone;
+          I18N[code]["boat.defaultTitle"]=UI[code].defaultBoat;
+          I18N[code]["profile.defaultLanguage"]=UI[code].defaultLanguage;
+        }
+      }
+      if(typeof sanitizeContactInfo==="function"){
+        sanitizeContactInfo=function(text){
+          if(!text) return text;
+          let cleaned=text;
+          const maskedEmail=(typeof t==="function")?t("privacy.maskedEmail"):ui("maskedEmail");
+          const maskedPhone=(typeof t==="function")?t("privacy.maskedPhone"):ui("maskedPhone");
+          cleaned=cleaned.replace(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g,maskedEmail);
+          cleaned=cleaned.replace(/(\+?\d[\s.\-]?){8,}/g,maskedPhone);
+          cleaned=cleaned.replace(/\b0\d(?:[\s.\-]?\d{2}){4}\b/g,maskedPhone);
+          return cleaned;
+        };
+      }
+      if(typeof normalizeBoatTitle==="function"){
+        normalizeBoatTitle=function(b){
+          const composed=[b.brand,b.model].filter(Boolean).join(" ").trim();
+          if(composed) return composed;
+          if(b.name&&b.name.trim()) return b.name.trim().replace(/\w\S*/g,w=>w[0].toUpperCase()+w.slice(1).toLowerCase());
+          return (typeof t==="function")?t("boat.defaultTitle"):ui("defaultBoat");
+        };
+      }
+      if(typeof renderPortSuggestions==="function"){
+        renderPortSuggestions=function(items){
+          if(typeof portSuggestions==="undefined" || !portSuggestions) return;
+          portSuggestions.innerHTML=items.map((x,i)=>`<button type="button" class="port-option" data-i="${i}"><strong>${esc(x.name)}</strong><small>${esc(localizePlace(x.place))}</small></button>`).join("");
+          portSuggestions.classList.toggle("open",items.length>0);
+          [...portSuggestions.querySelectorAll(".port-option")].forEach((btn,i)=>btn.onclick=()=>{
+            if(typeof portInput!=="undefined" && portInput) portInput.value=items[i].name;
+            portSuggestions.classList.remove("open");
+            if(typeof updateSeoMeta==="function") updateSeoMeta();
+          });
+        };
+      }
+    }catch(error){ console.warn("i18n-hardening",error); }
+  }
+
+  function localizeVisibleFallbacks(root=document){
+    if(lang()==="fr") return;
+    root.querySelectorAll?.(".tags .tag").forEach(el=>{
+      const translated=translateLanguageText(el.textContent);
+      if(translated!==el.textContent) el.textContent=translated;
+    });
+  }
+
+  function installFallbackObserver(){
+    let scheduled=false;
+    const run=()=>{scheduled=false;localizeVisibleFallbacks(document);};
+    const observer=new MutationObserver(()=>{
+      if(scheduled) return;
+      scheduled=true;
+      queueMicrotask(run);
+    });
+    observer.observe(document.body,{childList:true,subtree:true});
+    document.querySelector("#languageSelect")?.addEventListener("change",()=>{
+      queueMicrotask(()=>{
+        show(current);
+        localizeVisibleFallbacks(document);
+      });
+    });
+    localizeVisibleFallbacks(document);
+  }
+
   async function boot(){
     installStyles();
+    hardenExistingI18n();
+    installFallbackObserver();
     await waitForDb();
     rows=await loadPartners();
     if(!rows.length) return;
