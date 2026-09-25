@@ -13,8 +13,8 @@ a{color:inherit}
 
 header{height:76px;background:rgba(255,255,255,.94);backdrop-filter:blur(18px);display:flex;align-items:center;position:sticky;top:0;z-index:30;border-bottom:1px solid rgba(220,232,233,.75)}
 nav{display:flex;align-items:center;justify-content:space-between;width:100%}
-.logo{display:flex;align-items:center;gap:12px;font-weight:900;font-size:27px;letter-spacing:-.01em;color:var(--navy);text-decoration:none;background:none;border:0;cursor:pointer}
-.mark{width:50px;height:50px;border-radius:15px;background:var(--navy);display:grid;place-items:center;color:var(--aqua);font-size:22px;box-shadow:0 4px 12px rgba(7,29,50,.22)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:850;font-size:22px;color:var(--navy);text-decoration:none;background:none;border:0;cursor:pointer}
+.mark{width:37px;height:37px;border-radius:12px;background:var(--navy);display:grid;place-items:center;color:var(--aqua);font-size:20px}
 .nav-actions{display:flex;gap:10px;align-items:center}
 .link{border:0;background:transparent;color:var(--ink);font-weight:700;cursor:pointer;padding:10px 8px}
 .primary{border:0;background:var(--navy);color:white;border-radius:13px;padding:13px 18px;font-weight:800;cursor:pointer}
@@ -487,8 +487,8 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
 @media(max-width:640px){
   .shell{padding:0 16px}
   header{height:66px}
-  .logo{font-size:21px;gap:9px}
-  .mark{width:42px;height:42px;border-radius:13px}
+  .logo{font-size:22px;gap:10px}
+  .mark{width:37px;height:37px;border-radius:12px}
   .language-select{padding:9px 6px}
   .nav-actions{gap:6px}
   .nav-actions .primary{padding:11px 12px;font-size:12.5px}
