@@ -879,23 +879,15 @@ async function loadTrustStats(){
   const banner = document.querySelector("#launchBanner");
   const stats = document.querySelector("#trustStats");
   try{
-    const [{count:missionsCount}, {count:prosCount}, {data:ratedProfiles}] = await Promise.all([
-      db.from("missions").select("id", {count:"exact", head:true}).eq("status","completed"),
-      db.from("profiles").select("id", {count:"exact", head:true}).eq("verified", true).in("role", ["skipper","provider"]),
-      db.from("profiles").select("rating").not("rating", "is", null).gt("rating", 0)
-    ]);
-    const hasRealTraction = (missionsCount ?? 0) > 0;
-    if(!hasRealTraction){
-      // Pas encore de mission réellement terminée : on garde le message de
-      // lancement plutôt que d'afficher des stats à zéro ou incomplètes
-      // (le simple fait d'avoir des professionnels inscrits ne suffit pas).
-      return;
-    }
-    document.querySelector("#statMissions").textContent = missionsCount ?? 0;
-    document.querySelector("#statPros").textContent = prosCount ?? 0;
+    const {data:ratedProfiles} = await db
+      .from("profiles")
+      .select("rating")
+      .not("rating", "is", null)
+      .gt("rating", 0);
     const ratings = (ratedProfiles || []).map(p => Number(p.rating)).filter(n => Number.isFinite(n));
-    const avg = ratings.length ? (ratings.reduce((a,b)=>a+b,0) / ratings.length) : 0;
-    document.querySelector("#statRating").textContent = ratings.length ? "★ " + avg.toFixed(1) : "—";
+    if(!ratings.length) return;
+    const avg = ratings.reduce((a,b)=>a+b,0) / ratings.length;
+    document.querySelector("#statRating").textContent = "★ " + avg.toFixed(1);
     banner.style.display = "none";
     stats.style.display = "";
   }catch(_e){
