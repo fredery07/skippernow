@@ -2867,6 +2867,7 @@ async function renderAdminDashboard(){
     {id:"traffic", label:t("dash.navTraffic"), group:t("dash.groupActivity")},
     {id:"forms", label:t("dash.navForms"), group:t("dash.groupActivity")},
     {id:"missions", label:t("dash.navMissions"), group:t("dash.groupActivity")},
+    {id:"directRequests", label:"Demandes aux prestataires", group:t("dash.groupActivity")},
     {id:"messages", label:t("dash.navMessages"), group:t("dash.groupActivity")},
     {id:"payments", label:t("dash.navPayments"), group:t("dash.groupFinance")},
     {id:"payouts", label:t("dash.navPayouts"), group:t("dash.groupFinance")},
@@ -3041,6 +3042,17 @@ function bindAdminDashboardInteractions(){
   body.addEventListener("click",activate); body.addEventListener("keydown",activate);
 }
 
+function renderAdminDirectRequests(main, missions, byId, filter="pending"){
+  const rows=missions.filter(m=>m.client_id&&(m.provider_id||m.skipper_id));
+  const unanswered=rows.filter(m=>m.status==="pending");
+  const shown=filter==="pending"?unanswered:rows;
+  const age=m=>{const hours=Math.max(0,Math.floor((Date.now()-new Date(m.created_at).getTime())/3600000));return Number.isFinite(hours)?hours<24?`${hours} h`:`${Math.floor(hours/24)} j`:"—";};
+  main.innerHTML=`<div class="panel-head"><div><h3>Demandes adressées aux prestataires</h3><p class="muted">Suivez les réponses et relancez les professionnels en attente.</p></div></div>
+    <div class="kpi-grid"><button class="kpi ${filter==="pending"?"kpi--warn":""}" type="button" data-direct-filter="pending"><div class="kpi-top">Sans devis</div><strong>${unanswered.length}</strong></button><button class="kpi" type="button" data-direct-filter="all"><div class="kpi-top">Toutes les demandes</div><strong>${rows.length}</strong></button></div>
+    <div class="request-list">${shown.length?shown.map(m=>{const client=byId[String(m.client_id)]||{},pro=byId[String(m.provider_id||m.skipper_id)]||{};const email=pro.contact_email||pro.email||"";const subject=`Relance SkipperNow — demande ${m.port||"nautique"}`;const message=`Bonjour ${pro.full_name||""}, une demande client du ${new Date(m.created_at).toLocaleDateString("fr-FR")} attend votre devis sur SkipperNow. Pouvez-vous la consulter depuis votre espace prestataire ? Merci, Fredery`;const href=email?`mailto:${encodeURIComponent(email)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(message)}`:"";return `<article class="request-card"><div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap"><div><strong>${esc(m.boat_type||"Prestation nautique")} · ${esc(m.port||"—")}</strong><div class="muted">Client : ${esc(client.full_name||"—")} · Prestataire : ${esc(pro.full_name||"—")}</div><div class="muted">Créée le ${esc(adminDate(m.created_at))} · Il y a ${esc(age(m))}</div></div><span class="status-pill ${statusPillClass(m.status)}">${esc(t("status."+(m.status||"pending")))}</span></div><p>${esc(m.description||"")}</p><div class="request-actions"><button class="small-btn" type="button" data-admin-detail="mission" data-admin-id="${esc(m.id)}">Voir la demande</button>${m.status==="pending"&&href?`<a class="small-btn fill" href="${esc(href)}">Relancer par e-mail</a>`:""}${m.status==="pending"&&pro.phone?`<a class="small-btn" href="tel:${esc(pro.phone)}">Appeler</a>`:""}${m.status==="pending"&&!href&&!pro.phone?'<span class="muted">Coordonnées à compléter sur le profil prestataire.</span>':""}</div></article>`;}).join(""):'<div class="empty-note">Aucune demande dans cette catégorie.</div>'}</div>`;
+  main.querySelectorAll("[data-direct-filter]").forEach(btn=>btn.addEventListener("click",()=>renderAdminDirectRequests(main,missions,byId,btn.dataset.directFilter)));
+}
+
 async function renderAdminPanel(panel){
   refreshDashboardIdentity(panel);
   const main = document.querySelector("#dashMain");
@@ -3133,6 +3145,8 @@ async function renderAdminPanel(panel){
     }catch(error){
       main.innerHTML = `<div class="empty-note">${esc(friendlyError(error))}<br><small>${esc(adminUiCopy().migration)}</small></div>`;
     }
+  }else if(panel === "directRequests"){
+    renderAdminDirectRequests(main, missions, byId);
   }else if(panel === "missions"){
     main.innerHTML = missions.length ? missions.map(m=>adminMissionCard(m, byId)).join("") : `<div class="empty-note">${esc(t("dash.noMissions"))}</div>`;
     bindAdminMissionActions("missions");
