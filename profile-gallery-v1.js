@@ -5,10 +5,11 @@
   let carouselTimer=null;
   function addEditor(){
     const input=document.querySelector("#profilePhotoInput");
-    if(!input||document.querySelector("#profileGalleryEditor")||!["provider","skipper"].includes(currentProfile?.role))return;
+    const anchor=input?.closest(".field")||document.querySelector('#dashMain [data-pd-legacy="profile"]')?.closest(".request-card");
+    if(!anchor||document.querySelector("#profileGalleryEditor")||!["provider","skipper"].includes(currentProfile?.role))return;
     const box=document.createElement("section");box.id="profileGalleryEditor";box.className="field";
     box.innerHTML='<label for="profileGalleryInput">Photos de vos prestations (8 maximum)</label><p class="muted">Montrez vos réalisations aux clients. La photo de profil reste indépendante.</p><div id="profileGalleryList" style="display:flex;gap:10px;flex-wrap:wrap;margin:10px 0"></div><input id="profileGalleryInput" type="file" accept="image/jpeg,image/png,image/webp" multiple><div style="margin-top:10px"><button type="button" class="small-btn fill" id="profileGallerySave">Ajouter les photos</button></div><p id="profileGalleryMsg" class="muted" role="status"></p>';
-    input.closest(".field")?.after(box);
+    anchor.after(box);
     let urls=photos(currentProfile?.profile_gallery_urls);
     const list=box.querySelector("#profileGalleryList"),message=box.querySelector("#profileGalleryMsg");
     const render=()=>{list.innerHTML=urls.length?urls.map((url,i)=>`<div style="position:relative"><img src="${esc(url)}" alt="Réalisation ${i+1}" style="width:110px;height:82px;object-fit:cover;border-radius:10px"><button type="button" class="small-btn" data-gallery-remove="${i}" aria-label="Retirer la photo ${i+1}" style="position:absolute;right:3px;top:3px;padding:2px 7px;background:white">×</button></div>`).join(""):'<span class="muted">Aucune photo de prestation ajoutée.</span>';};
