@@ -159,15 +159,12 @@
 <main class="shell">
 
   <section class="rental-hub" id="rentalHub">
-    <div class="rental-box">
-      <span class="pill-link">🧭 <span data-i18n="categories.badge">CATÉGORIES</span></span>
-      <h3 data-i18n="categories.title">De quoi avez-vous besoin ?</h3>
-      <div class="category-grid" id="homeCategoryGrid">
-        <button type="button" class="category-tile" data-activity="skipper"><span class="category-icon">⚓</span><span class="category-text"><strong data-i18n="tabs.skippers">Skippers</strong><span class="category-desc" data-i18n="categories.skipperDesc">Sortie, location, convoyage et prise en main du bateau.</span></span><span class="category-arrow">→</span></button>
-        <button type="button" class="category-tile" data-tile="boat_rental"><span class="category-icon">🛥</span><span class="category-text"><strong data-i18n="categories.boatRentalTitle">Location de bateau</strong><span class="category-desc" data-i18n="categories.boatRentalDesc">Trouvez le bateau adapté à votre destination.</span></span><span class="category-arrow">→</span></button>
-        <button type="button" class="category-tile" data-activity="all_providers"><span class="category-icon">🔧</span><span class="category-text"><strong data-i18n="tabs.cleaning">Services nautiques</strong><span class="category-desc" data-i18n="categories.providersDesc">Nettoyage, entretien, mécanique, avitaillement et services à quai.</span></span><span class="category-arrow">→</span></button>
-        <button type="button" class="category-tile" data-tile="experience"><span class="category-icon">🌊</span><span class="category-text"><strong data-i18n="categories.experienceTitle">Expériences en mer</strong><span class="category-desc" data-i18n="categories.experienceDesc">Excursions, sorties et expériences nautiques.</span></span><span class="category-arrow">→</span></button>
-      </div>
+    <div class="rental-box" id="homeProvidersSection">
+      <span class="pill-link">✓ <span data-i18n="providersShowcase.badge">PRESTATAIRES INSCRITS</span></span>
+      <h3 data-i18n="providersShowcase.title">Professionnels vérifiés disponibles</h3>
+      <p class="muted" style="margin:2px 0 14px;font-size:14px" data-i18n="providersShowcase.subtitle">Découvrez uniquement les profils réellement validés par SkipperNow.</p>
+      <div id="homeProvidersStrip"><div class="empty-note" data-i18n="providersShowcase.empty">Aucun prestataire inscrit pour le moment.</div></div>
+      <button class="back-link" id="viewAllProvidersBtn" type="button" style="margin-top:12px;padding:0"><span data-i18n="providersShowcase.viewAll">Voir les professionnels</span> →</button>
     </div>
     <div class="rental-box">
       <span class="pill-link">🌊 <span data-i18n="rental.examplesBadge">BATEAUX DISPONIBLES</span></span>
