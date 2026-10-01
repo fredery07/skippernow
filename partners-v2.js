@@ -36,7 +36,6 @@
     const s=document.createElement("style");
     s.id="snPartnersV2Style";
     s.textContent=`
-      #homeProvidersSection{display:none!important}
       .sn-p2{margin:36px 0 8px;padding:24px;border:1px solid rgba(184,138,69,.28);border-radius:24px;background:linear-gradient(135deg,#fffdf8,#f1faf7 55%,#fff7e8);box-shadow:0 18px 50px rgba(6,24,39,.09);overflow:hidden}
       .sn-p2-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:16px}.sn-p2-head h2{font-family:var(--display,Georgia,serif);font-size:27px;margin:0;color:var(--navy,#061827)}.sn-p2-head p{margin:5px 0 0;color:var(--muted,#5d6f76);font-size:13.5px}.sn-p2-kicker{display:block;color:#a67832;font-size:11px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px}
       .sn-p2-nav{display:flex;gap:8px}.sn-p2-nav button{width:38px;height:38px;border-radius:50%;border:1px solid #d9c69f;background:#fffaf0;color:#08253b;font-weight:900;cursor:pointer}
@@ -50,8 +49,9 @@
   }
 
   function killProviderShowcase(){
-    if(!HOME) return;
-    document.querySelectorAll("#homeProvidersSection").forEach(el=>el.remove());
+    // Le carrousel des prestataires est désormais un bloc principal de
+    // l'accueil. Les partenaires restent affichés plus bas sans le supprimer.
+    return;
   }
 
   async function activePartners(){
