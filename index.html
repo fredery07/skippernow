@@ -619,9 +619,11 @@
       <label data-i18n="account.passwordLabel">MOT DE PASSE</label>
       <input id="accountPassword" type="password" data-i18n-placeholder="account.passwordPlaceholder" placeholder="8 caractères minimum">
     </div>
-    <div class="field" id="portField" style="display:none">
+    <div class="field" id="portField" style="display:none;position:relative">
       <label data-i18n="account.portLabel">PORT PRINCIPAL — VILLE, PAYS</label>
-      <input id="accountPort" data-i18n-placeholder="account.portPlaceholder" placeholder="Ex. Port Vauban, Antibes, France">
+      <input id="accountPort" autocomplete="off" data-i18n-placeholder="account.portPlaceholder" placeholder="Ex. Port Vauban, Antibes, France">
+      <div id="accountPortSuggestions" class="port-suggestions"></div>
+      <div class="muted" style="margin-top:4px;font-size:12px" data-i18n="account.portHelp">Choisissez une suggestion dans la liste pour que votre ville soit bien reconnue.</div>
     </div>
     <div class="field" id="activityField" style="display:none">
       <label data-i18n="account.activityLabel">ACTIVITÉ PROPOSÉE</label>
@@ -742,7 +744,7 @@
 
 <script src="/supabase-js.min.js?v=2-20260917" defer></script>
 <script src="/analytics.js?v=20260920-visitor-region" defer></script>
-<script src="/skippernow-main.js?v=20261001-outre-mer" defer></script>
+<script src="/skippernow-main.js?v=20261001-pro-marinas" defer></script>
 
 <script src="/service-flow.js?v=20260924-i18n" defer></script>
 <script src="/provider-dashboard-v2.js?v=20260929-contrast" defer></script>
