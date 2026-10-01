@@ -1749,6 +1749,34 @@ document.querySelector("#authModeCreate").addEventListener("click", ()=>{
 document.querySelector("#authModeLogin").addEventListener("click", ()=>setAuthMode("login"));
 document.querySelectorAll("#roleChoice .choice-card").forEach(card=>card.addEventListener("click", ()=>setRole(card.dataset.role)));
 
+let accountPortSearchTimer;
+function bindAccountPortAutocomplete(){
+  const input = document.querySelector("#accountPort");
+  const box = document.querySelector("#accountPortSuggestions");
+  if(!input || !box || input.dataset.bound) return;
+  input.dataset.bound = "1";
+  const render = (items)=>{
+    box.innerHTML = items.map((x,i)=>`<button type="button" class="port-option" data-i="${i}"><strong>${esc(x.name)}</strong><small>${esc(x.place)}</small></button>`).join("");
+    box.classList.toggle("open", items.length>0);
+    [...box.querySelectorAll(".port-option")].forEach((btn,i)=>btn.onclick=()=>{
+      input.value = items[i].place && items[i].place !== items[i].name ? `${items[i].name}, ${items[i].place}` : items[i].name;
+      box.classList.remove("open");
+    });
+  };
+  input.addEventListener("focus", ()=>{
+    const q = input.value.trim();
+    render(q ? localPortMatches(q) : POPULAR_PORTS.slice(0,8).map(x=>({name:x[0],place:x[1]})));
+  });
+  input.addEventListener("input", ()=>{
+    clearTimeout(accountPortSearchTimer);
+    accountPortSearchTimer = setTimeout(()=>render(localPortMatches(input.value.trim())),180);
+  });
+  document.addEventListener("click", e=>{
+    if(!e.target.closest("#portField")) box.classList.remove("open");
+  });
+}
+bindAccountPortAutocomplete();
+
 function openAccountModal(mode, role){
   const nextMode = mode || "create";
   setAuthMode(nextMode);
