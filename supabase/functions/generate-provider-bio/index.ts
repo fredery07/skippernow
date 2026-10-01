@@ -1,0 +1,40 @@
+const cors={"Access-Control-Allow-Origin":"https://skippernow.fr","Access-Control-Allow-Headers":"authorization,apikey,content-type","Access-Control-Allow-Methods":"POST,OPTIONS"};
+const json=(body,status=200)=>new Response(JSON.stringify(body),{status,headers:{...cors,"Content-Type":"application/json"}});
+Deno.serve(async req=>{
+  if(req.method==="OPTIONS")return new Response(null,{headers:cors});
+  if(req.method!=="POST")return json({error:"Méthode non autorisée."},405);
+  const apiKey=Deno.env.get("OPENAI_API_KEY");
+  if(!apiKey)return json({error:"L’assistant IA n’est pas encore configuré."},503);
+  const token=req.headers.get("authorization")?.replace(/^Bearer\s+/i,"");
+  const url=Deno.env.get("SUPABASE_URL"),anon=Deno.env.get("SUPABASE_ANON_KEY"),service=Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+  if(!token||!url||!anon||!service)return json({error:"Session indisponible."},401);
+  try{
+    const userRes=await fetch(url+"/auth/v1/user",{headers:{Authorization:"Bearer "+token,apikey:anon}});
+    if(!userRes.ok)return json({error:"Reconnectez-vous pour continuer."},401);
+    const user=await userRes.json();
+    const profileRes=await fetch(url+"/rest/v1/profiles?id=eq."+encodeURIComponent(user.id)+"&select=role,full_name,provider_activity,home_port,experience_years,skills,languages,bio",{headers:{Authorization:"Bearer "+token,apikey:anon}});
+    if(!profileRes.ok)return json({error:"Profil indisponible."},403);
+    const profile=(await profileRes.json())[0];
+    if(!profile||!["skipper","provider"].includes(profile.role))return json({error:"Réservé aux professionnels."},403);
+    const body=await req.json();
+    const detail=String(body.detail||"").slice(0,450).trim();
+    const tone=["professionnel","chaleureux","premium"].includes(body.tone)?body.tone:"professionnel";
+    const language=["fr","en","es"].includes(body.language)?body.language:"fr";
+    const day=new Date().toISOString().slice(0,10);
+    const adminHeaders={Authorization:"Bearer "+service,apikey:service,"Content-Type":"application/json"};
+    const limitRes=await fetch(url+"/rest/v1/profile_bio_ai_usage?user_id=eq."+encodeURIComponent(user.id)+"&usage_date=eq."+day+"&select=count",{headers:adminHeaders});
+    if(!limitRes.ok)return json({error:"Assistant temporairement indisponible."},503);
+    const previous=(await limitRes.json())[0]?.count||0;
+    if(previous>=5)return json({error:"Vous avez utilisé vos 5 propositions du jour. Réessayez demain."},429);
+    const increment=await fetch(url+"/rest/v1/profile_bio_ai_usage?on_conflict=user_id,usage_date",{method:"POST",headers:{...adminHeaders,Prefer:"resolution=merge-duplicates"},body:JSON.stringify({user_id:user.id,usage_date:day,count:previous+1})});
+    if(!increment.ok)return json({error:"Assistant temporairement indisponible."},503);
+    const facts={activity:profile.provider_activity||profile.role,port:profile.home_port||"",experience_years:profile.experience_years||null,skills:profile.skills||"",languages:profile.languages||"",existing_bio:profile.bio||"",detail};
+    const prompt="Rédige une biographie de prestataire nautique pour SkipperNow en "+language+". Ton "+tone+". 70 à 110 mots, première personne, naturelle, claire et crédible. Utilise uniquement les faits fournis. Ne crée jamais de diplôme, licence, ancienneté, garantie, bateau, avis ou disponibilité non fournis. Aucun numéro, adresse e-mail, URL, tarif ni promesse de réservation. Réponds uniquement par la biographie. Données : "+JSON.stringify(facts);
+    const response=await fetch("https://api.openai.com/v1/responses",{method:"POST",headers:{Authorization:"Bearer "+apiKey,"Content-Type":"application/json"},body:JSON.stringify({model:"gpt-5-mini",input:prompt,max_output_tokens:350,store:false})});
+    if(!response.ok)return json({error:"La génération a échoué. Réessayez."},502);
+    const result=await response.json();
+    const bio=(result.output||[]).flatMap(o=>o.content||[]).filter(c=>c.type==="output_text").map(c=>c.text).join("\n").trim().slice(0,1200);
+    if(!bio)return json({error:"Aucun texte généré. Réessayez."},502);
+    return json({bio});
+  }catch(_e){return json({error:"Impossible de générer la biographie pour le moment."},500);}
+});
