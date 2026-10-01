@@ -323,7 +323,7 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
 .boat-card:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
 .boat-card-photo{height:170px;background:linear-gradient(135deg,#173b51,#3f9c9a);background-size:cover;background-position:center;position:relative}
 .boat-card-photo::after{content:"";position:absolute;left:0;right:0;bottom:0;height:46%;background:linear-gradient(0deg,rgba(7,29,50,.55) 0%,rgba(7,29,50,0) 100%);pointer-events:none}
-.provider-spotlight{height:190px;border-radius:16px;background:linear-gradient(135deg,#173b51,#3f9c9a);background-size:cover;background-position:center;position:relative;transition:opacity .25s ease}
+.provider-spotlight{height:190px;border-radius:16px;background-color:#eaf4f3;background-image:linear-gradient(135deg,#173b51,#3f9c9a);background-size:contain;background-position:center;background-repeat:no-repeat;position:relative;transition:opacity .25s ease}
 .provider-spotlight-badge{position:absolute;top:12px;left:12px;background:rgba(255,255,255,.94);color:var(--ok);font-weight:800;font-size:12px;padding:5px 10px;border-radius:20px;box-shadow:0 4px 10px rgba(0,0,0,.15)}
 .provider-spotlight-rating{position:absolute;bottom:12px;right:12px;background:rgba(7,29,50,.72);color:#ffce54;font-weight:800;font-size:13px;padding:5px 10px;border-radius:20px}
 .provider-spotlight .ph-icon{position:absolute;inset:0;display:grid;place-items:center;font-size:42px;color:rgba(255,255,255,.85)}
@@ -348,7 +348,7 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
 .boat-card-specs-line{display:flex;gap:6px;flex-wrap:wrap}
 .boat-card-specs-line .spec-chip{background:var(--mist);color:var(--blue);font-size:11.5px;font-weight:750;padding:4px 9px;border-radius:999px;white-space:nowrap}
 .boat-card-fav{position:absolute;top:12px;left:12px;background:rgba(255,255,255,.92);border:0;width:32px;height:32px;border-radius:50%;font-size:16px;color:#c0392b;cursor:pointer;display:grid;place-items:center;box-shadow:0 4px 10px rgba(0,0,0,.15)}
-.boat-photo-slide{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity .5s ease}
+.boat-photo-slide{position:absolute;inset:0;background-color:#eaf4f3;background-size:contain;background-position:center;background-repeat:no-repeat;opacity:0;transition:opacity .5s ease}
 .boat-photo-slide.active{opacity:1}
 .boat-card-dots{position:absolute;bottom:10px;left:0;right:0;display:flex;justify-content:center;gap:5px;z-index:2}
 .boat-card-dots span{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.55);transition:.2s}
