@@ -1141,6 +1141,8 @@ window.showProviderCategories = showProviderCategories;
 
 let providerResultsCache = [];
 let boatCache = [];
+let saleBoatCache = [];
+let saleInquiryTarget = null;
 let resultsCache = [];
 let adminProfilesCache = [];
 let adminMissionsCache = [];
@@ -1163,6 +1165,9 @@ let myBoatsCache = [];
 document.querySelector("#heroBoats").addEventListener("click", ()=>openBoatFinder());
 document.querySelector("#viewAllBoatsBtn").addEventListener("click", ()=>openBoatFinder());
 document.querySelector("#footerFindBoat").addEventListener("click", ()=>openBoatFinder());
+document.querySelector("#heroBoatSales")?.addEventListener("click", ()=>openBoatSaleFinder());
+document.querySelector("#viewAllBoatSalesBtn")?.addEventListener("click", ()=>openBoatSaleFinder());
+document.querySelector("#footerFindBoatSale")?.addEventListener("click", ()=>openBoatSaleFinder());
 function debounce(fn, delay){
   let timer;
   return (...args)=>{
@@ -1178,7 +1183,7 @@ async function openBoatFinder(presetPort, presetType){
   if(presetPort) finderPort.value = presetPort;
   else if(portInput.value.trim()) finderPort.value = portInput.value.trim();
   if(presetType) document.querySelector("#boatFinderTypeInput").value = presetType;
-  const {data, error} = await db.from("boats").select("*").order("created_at",{ascending:false});
+  const {data, error} = await db.from("boats").select("*").in("listing_type",["rental","both"]).order("created_at",{ascending:false});
   if(error){ box.innerHTML = `<div class="empty-note">${esc(friendlyError(error))}</div>`; return; }
   boatCache = data || [];
   renderBoatResults();
@@ -1204,7 +1209,40 @@ async function renderBoatResults(){
     if(skipperFilter === "without" && b.skipper_included) return false;
     return true;
   });
-  box.innerHTML = list.length ? list.map(b=>boatListCardHtml(b)).join("") : `<div class="empty-note">${esc(t("boatFinder.empty"))}</div>`;
+  box.innerHTML = list.length ? list.map(b=>boatListCardHtml(b,"rental")).join("") : `<div class="empty-note">${esc(t("boatFinder.empty"))}</div>`;
+  startBoatCardCarousels();
+}
+function saleText(fr,en,es){ return currentLang === "en" ? en : currentLang === "es" ? es : fr; }
+async function openBoatSaleFinder(presetPort){
+  openModal("boatSaleFinderModal");
+  const box = document.querySelector("#boatSaleResults");
+  box.innerHTML = `<div class="empty-note">…</div>`;
+  const finderPort = document.querySelector("#boatSalePortInput");
+  if(presetPort) finderPort.value = presetPort;
+  else if(portInput.value.trim()) finderPort.value = portInput.value.trim();
+  const {data,error} = await db.from("boats").select("*").in("listing_type",["sale","both"]).eq("sale_status","available").order("featured",{ascending:false}).order("created_at",{ascending:false});
+  if(error){ box.innerHTML = `<div class="empty-note">${esc(friendlyError(error))}</div>`; return; }
+  saleBoatCache = data || [];
+  renderBoatSaleResults();
+  if(!finderPort.dataset.bound){
+    finderPort.dataset.bound = "1";
+    finderPort.addEventListener("input", debounce(renderBoatSaleResults, 300));
+    document.querySelector("#boatSaleTypeInput").addEventListener("change", renderBoatSaleResults);
+    document.querySelector("#boatSaleMaxPriceInput").addEventListener("input", debounce(renderBoatSaleResults, 300));
+  }
+}
+async function renderBoatSaleResults(){
+  const box = document.querySelector("#boatSaleResults");
+  const portFilter = (document.querySelector("#boatSalePortInput")?.value || "").trim().toLowerCase();
+  const typeFilter = document.querySelector("#boatSaleTypeInput")?.value || "";
+  const maxPrice = Number(document.querySelector("#boatSaleMaxPriceInput")?.value) || 0;
+  const byPort = await filterByPortNearby(saleBoatCache, portFilter, b=>b.home_port, 50);
+  const list = byPort.filter(b=>{
+    if(typeFilter && b.boat_type !== typeFilter) return false;
+    if(maxPrice && Number(b.sale_price||0) > maxPrice) return false;
+    return true;
+  });
+  box.innerHTML = list.length ? list.map(b=>boatListCardHtml(b,"sale")).join("") : `<div class="empty-note">${esc(saleText("Aucun bateau à vendre ne correspond à votre recherche.","No boats for sale match your search.","Ningún barco en venta coincide con tu búsqueda."))}</div>`;
   startBoatCardCarousels();
 }
 let excursionCache = [];
@@ -1394,18 +1432,26 @@ function normalizePlaceLabel(place){
   if(!place || !place.trim()) return "—";
   return place.trim().replace(/\w\S*/g, w=>w[0].toUpperCase()+w.slice(1).toLowerCase());
 }
-function boatListCardHtml(b){
+function boatPriceLabel(b, mode="rental"){
+  if(mode === "sale"){
+    const sale = Number(b.sale_price||0);
+    return sale ? money(sale*100) : esc(saleText("Prix sur demande","Price on request","Precio a consultar"));
+  }
   const day = Number(b.price_per_day||b.daily_price||b.price||0);
   const half = Number(b.price_half_day||0);
-  let priceLabel = esc(t("boatDetail.onRequest"));
-  if(day) priceLabel = `${esc(t("card.priceFrom"))} ${money(day*100)}${esc(t("boatDetail.perDaySuffix"))}`;
-  else if(half) priceLabel = `${esc(t("card.priceFrom"))} ${money(half*100)}${esc(t("boatDetail.perHalfDaySuffix"))}`;
+  if(day) return `${esc(t("card.priceFrom"))} ${money(day*100)}${esc(t("boatDetail.perDaySuffix"))}`;
+  if(half) return `${esc(t("card.priceFrom"))} ${money(half*100)}${esc(t("boatDetail.perHalfDaySuffix"))}`;
+  return esc(t("boatDetail.onRequest"));
+}
+function boatListCardHtml(b, mode="rental"){
+  const priceLabel = boatPriceLabel(b, mode);
   const photos = (Array.isArray(b.photo_urls) && b.photo_urls.length ? b.photo_urls : (b.photo_url ? [b.photo_url] : []));
   const specsLine = boatSpecsLine(b);
-  return `<article class="boat-list-card" onclick="openBoatDetail('${b.id}')">
+  return `<article class="boat-list-card" onclick="openBoatDetail('${b.id}','${mode}')">
     <div class="boat-list-photo" data-carousel="${b.id}">
       ${photos.length ? photos.map((url,i)=>`<div class="boat-photo-slide ${i===0?"active":""}" style="background-image:url('${esc(url)}')"></div>`).join("") : `<div class="no-photo">⛵</div>`}
       ${photos.length > 1 ? `<div class="boat-card-dots">${photos.map((_,i)=>`<span class="${i===0?"active":""}"></span>`).join("")}</div>` : ""}
+      ${mode==="sale" ? `<span class="sale-listing-badge">${esc(saleText("À VENDRE","FOR SALE","EN VENTA"))}</span>` : ""}
       <button type="button" class="boat-card-fav" data-favorite-btn="${b.id}" onclick="toggleBoatFavorite('${b.id}', event)">${isFavoriteBoat(b.id) ? "♥" : "♡"}</button>
     </div>
     <div class="boat-list-body">
@@ -1421,16 +1467,12 @@ function boatListCardHtml(b){
     </div>
   </article>`;
 }
-function boatCardHtml(b){
-  const day = Number(b.price_per_day||b.daily_price||b.price||0);
-  const half = Number(b.price_half_day||0);
-  let priceLabel = esc(t("boatDetail.onRequest"));
-  if(day) priceLabel = `${esc(t("card.priceFrom"))} ${money(day*100)}${esc(t("boatDetail.perDaySuffix"))}`;
-  else if(half) priceLabel = `${esc(t("card.priceFrom"))} ${money(half*100)}${esc(t("boatDetail.perHalfDaySuffix"))}`;
+function boatCardHtml(b, mode="rental"){
+  const priceLabel = boatPriceLabel(b, mode);
   const photos = (Array.isArray(b.photo_urls) && b.photo_urls.length ? b.photo_urls : (b.photo_url ? [b.photo_url] : []));
   const chips = boatSpecsChips(b);
   const isFeaturedNow = b.featured && b.featured_until && new Date(b.featured_until) > new Date();
-  return `<article class="boat-card" onclick="openBoatDetail('${b.id}')">
+  return `<article class="boat-card" onclick="openBoatDetail('${b.id}','${mode}')">
     <div class="boat-card-photo" data-carousel="${b.id}">
       ${photos.length ? photos.map((url,i)=>`<div class="boat-photo-slide ${i===0?"active":""}" style="background-image:url('${esc(url)}')"></div>`).join("") : `<div class="no-photo">⛵</div>`}
       ${photos.length > 1 ? `<div class="boat-card-dots">${photos.map((_,i)=>`<span class="${i===0?"active":""}"></span>`).join("")}</div>` : ""}
@@ -1470,7 +1512,7 @@ function startBoatCardCarousels(){
 function renderHomeBoatStrip(){
   const box = document.querySelector("#homeBoatStrip");
   const list = boatCache.slice(0,4);
-  box.innerHTML = list.length ? `<div class="boat-grid${list.length===1?" boat-grid--single":""}">${list.map(b=>boatCardHtml(b)).join("")}</div>` : `
+  box.innerHTML = list.length ? `<div class="boat-grid${list.length===1?" boat-grid--single":""}">${list.map(b=>boatCardHtml(b,"rental")).join("")}</div>` : `
     <div class="home-empty-state">
       <span class="home-empty-state-icon" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="none"><path d="M3 15.5h18l-2.4 3.2a3 3 0 0 1-2.4 1.2H7.8a3 3 0 0 1-2.4-1.2L3 15.5Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M7 15.5 9.2 8h5.9l2 7.5M12 8V4m0 0 3.2 2.1M12 4 8.8 6.1" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -1483,17 +1525,31 @@ function renderHomeBoatStrip(){
 }
 async function preloadHomeBoats(){
   const nowIso = new Date().toISOString();
-  const {data:featuredData} = await db.from("boats").select("*").eq("featured", true).gt("featured_until", nowIso).order("featured_until",{ascending:true}).limit(4);
+  const {data:featuredData} = await db.from("boats").select("*").in("listing_type",["rental","both"]).eq("featured", true).gt("featured_until", nowIso).order("featured_until",{ascending:true}).limit(4);
   const featured = featuredData || [];
   let list = featured;
   if(list.length < 4){
-    const {data:recentData} = await db.from("boats").select("*").order("created_at",{ascending:false}).limit(4 + featured.length);
+    const {data:recentData} = await db.from("boats").select("*").in("listing_type",["rental","both"]).order("created_at",{ascending:false}).limit(4 + featured.length);
     const featuredIds = new Set(featured.map(b=>String(b.id)));
     const recent = (recentData||[]).filter(b=>!featuredIds.has(String(b.id)));
     list = featured.concat(recent).slice(0,4);
   }
   boatCache = list;
   renderHomeBoatStrip();
+}
+function renderHomeSaleBoatStrip(){
+  const box = document.querySelector("#homeSaleBoatStrip");
+  if(!box) return;
+  const list = saleBoatCache.slice(0,4);
+  box.innerHTML = list.length ? `<div class="boat-grid${list.length===1?" boat-grid--single":""}">${list.map(b=>boatCardHtml(b,"sale")).join("")}</div>` : `<div class="home-empty-state"><span class="home-empty-state-icon">⚓</span><span class="home-empty-state-copy"><strong>${esc(saleText("Les premières ventes arrivent","First boats for sale coming soon","Próximamente los primeros barcos en venta"))}</strong><span>${esc(saleText("Publiez gratuitement votre bateau dès maintenant.","List your boat for free now.","Publica tu barco gratis ahora."))}</span></span><button id="emptySellBoatBtn" type="button">${esc(saleText("Vendre mon bateau","Sell my boat","Vender mi barco"))}</button></div>`;
+  document.querySelector("#emptySellBoatBtn")?.addEventListener("click", ()=>document.querySelector("#sellBoatBtn")?.click());
+  startBoatCardCarousels();
+}
+async function preloadHomeSales(){
+  const {data,error} = await db.from("boats").select("*").in("listing_type",["sale","both"]).eq("sale_status","available").order("featured",{ascending:false}).order("created_at",{ascending:false}).limit(4);
+  if(error){ console.warn("SkipperNow home sales:",error); saleBoatCache=[]; renderHomeSaleBoatStrip(); return; }
+  saleBoatCache = data || [];
+  renderHomeSaleBoatStrip();
 }
 let homeProvidersCache = [];
 let homeProvidersIndex = 0;
@@ -1568,46 +1624,90 @@ function renderProviderSpotlight(){
   const dots = document.querySelector("#providerSpotlightDots");
   if(dots) dots.innerHTML = homeProvidersCache.map((_,i)=>`<span class="${i===homeProvidersIndex?"active":""}"></span>`).join("");
 }
-window.openBoatDetail = async function(id){
-  const boat = boatCache.find(b=>String(b.id)===String(id));
+window.openBoatDetail = async function(id, mode){
+  let boat = [...boatCache,...saleBoatCache].find(b=>String(b.id)===String(id));
+  if(!boat){
+    const {data} = await db.from("boats").select("*").eq("id",id).maybeSingle();
+    boat = data;
+  }
   if(!boat) return;
+  const viewMode = mode || (boat.listing_type==="sale" ? "sale" : "rental");
   closeModal("boatFinderModal");
+  closeModal("boatSaleFinderModal");
   const content = document.querySelector("#boatDetailContent");
-  const half = Number(boat.price_half_day||0), day = Number(boat.price_per_day||boat.daily_price||boat.price||0);
+  const half = Number(boat.price_half_day||0), day = Number(boat.price_per_day||boat.daily_price||boat.price||0), sale = Number(boat.sale_price||0);
   const photos = (Array.isArray(boat.photo_urls) && boat.photo_urls.length ? boat.photo_urls : (boat.photo_url ? [boat.photo_url] : []));
+  const saleFacts = viewMode==="sale" ? `
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:18px">
+      <div style="border:1px solid var(--line);border-radius:14px;padding:12px;text-align:center"><div style="color:var(--muted);font-size:11px;font-weight:800;text-transform:uppercase">${esc(saleText("Prix de vente","Sale price","Precio de venta"))}</div><div class="sale-price" style="margin-top:4px">${sale?money(sale*100):esc(saleText("Sur demande","On request","A consultar"))}</div></div>
+      ${boat.engine_hours!=null ? `<div style="border:1px solid var(--line);border-radius:14px;padding:12px;text-align:center"><div style="color:var(--muted);font-size:11px;font-weight:800;text-transform:uppercase">${esc(saleText("Heures moteur","Engine hours","Horas de motor"))}</div><div style="font-size:18px;font-weight:900;margin-top:4px">${esc(boat.engine_hours)} h</div></div>` : ""}
+      ${boat.year_built ? `<div style="border:1px solid var(--line);border-radius:14px;padding:12px;text-align:center"><div style="color:var(--muted);font-size:11px;font-weight:800;text-transform:uppercase">${esc(saleText("Année","Year","Año"))}</div><div style="font-size:18px;font-weight:900;margin-top:4px">${esc(boat.year_built)}</div></div>` : ""}
+    </div>` : `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px">
+      <div style="border:1px solid var(--line);border-radius:14px;padding:12px;text-align:center"><div style="color:var(--muted);font-size:11px;font-weight:800;text-transform:uppercase">${esc(t("boatDetail.halfDay"))}</div><div style="font-size:18px;font-weight:900;margin-top:4px">${half?money(half*100):esc(t("boatDetail.onRequest"))}</div></div>
+      <div style="border:1px solid var(--line);border-radius:14px;padding:12px;text-align:center"><div style="color:var(--muted);font-size:11px;font-weight:800;text-transform:uppercase">${esc(t("boatDetail.fullDay"))}</div><div style="font-size:18px;font-weight:900;margin-top:4px">${day?money(day*100):esc(t("boatDetail.onRequest"))}</div></div>
+    </div>`;
+  const action = (currentUser && String(boat.client_id)===String(currentUser.id))
+    ? `<div class="note-box">${esc(t("boatDetail.ownListing"))}</div>`
+    : viewMode==="sale"
+      ? `<button class="primary wide" onclick="openSaleInquiry('${esc(boat.id)}')">${esc(saleText("Contacter le vendeur","Contact seller","Contactar al vendedor"))}</button>`
+      : `<button class="primary wide" onclick="closeModal('boatDetailModal');openBookingFor('${esc(boat.client_id||"")}','${esc(String(boat.name||"Bateau").replace(/'/g,"\\'"))}','${esc(String(boat.home_port||"").replace(/'/g,"\\'"))}','boat_rental')">${esc(t("boatDetail.request"))}</button>`;
   content.innerHTML = `
     <div class="boat-detail-photo" style="margin:-26px -26px 0;height:230px;border-radius:22px 22px 0 0;overflow:hidden;${photos.length?"":"background:linear-gradient(135deg,#173b51,#3f9c9a)"}">
       ${photos.length ? photos.map((url,i)=>`<div class="boat-photo-slide ${i===0?"active":""}" data-detail-slide style="background-image:url('${esc(url)}')"></div>`).join("") : `<div style="position:absolute;inset:0;display:grid;place-items:center;font-size:42px;color:rgba(255,255,255,.85)">⛵</div>`}
       ${photos.length > 1 ? `<button type="button" class="boat-carousel-arrow prev" onclick="stepBoatDetailPhoto(-1)">‹</button><button type="button" class="boat-carousel-arrow next" onclick="stepBoatDetailPhoto(1)">›</button><div class="boat-card-dots" data-detail-dots>${photos.map((_,i)=>`<span class="${i===0?"active":""}"></span>`).join("")}</div>` : ""}
       <button class="close" type="button" onclick="closeModal('boatDetailModal')" style="position:absolute;top:14px;right:14px;background:rgba(255,255,255,.92);z-index:3">×</button>
+      ${viewMode==="sale" ? `<span class="sale-listing-badge">${esc(saleText("À VENDRE","FOR SALE","EN VENTA"))}</span>` : ""}
     </div>
     <div style="padding-top:18px">
-      <small style="color:var(--muted);font-weight:800;letter-spacing:.05em;text-transform:uppercase;font-size:11px">${esc(t("boatFinder.eyebrow"))}</small>
-      <h2 style="margin:4px 0 6px">${esc(boat.name||"Bateau")}${boat.verified ? verifiedBoatBadgeHtml() : ""}</h2>
+      <small style="color:var(--muted);font-weight:800;letter-spacing:.05em;text-transform:uppercase;font-size:11px">${esc(viewMode==="sale"?saleText("VENTE DE BATEAUX","BOATS FOR SALE","BARCOS EN VENTA"):t("boatFinder.eyebrow"))}</small>
+      <h2 style="margin:4px 0 6px">${esc(normalizeBoatTitle(boat))}${boat.verified ? verifiedBoatBadgeHtml() : ""}</h2>
       <div class="boat-card-port" style="margin-bottom:12px">📍 ${esc(boat.home_port||"—")}</div>
       ${boatSpecsLine(boat) ? `<div class="boat-card-specs-line" style="margin-bottom:18px;font-size:14px">${boatSpecsLine(boat)}</div>` : ""}
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px">
-        <div style="border:1px solid var(--line);border-radius:14px;padding:12px;text-align:center">
-          <div style="color:var(--muted);font-size:11px;font-weight:800;text-transform:uppercase">${esc(t("boatDetail.halfDay"))}</div>
-          <div style="font-size:18px;font-weight:900;margin-top:4px">${half?money(half*100):esc(t("boatDetail.onRequest"))}</div>
-        </div>
-        <div style="border:1px solid var(--line);border-radius:14px;padding:12px;text-align:center">
-          <div style="color:var(--muted);font-size:11px;font-weight:800;text-transform:uppercase">${esc(t("boatDetail.fullDay"))}</div>
-          <div style="font-size:18px;font-weight:900;margin-top:4px">${day?money(day*100):esc(t("boatDetail.onRequest"))}</div>
-        </div>
-      </div>
+      ${saleFacts}
       <p class="muted">${esc(boat.description||t("boatDetail.noDescription"))}</p>
       ${boat.equipment ? `<div style="margin:14px 0"><strong style="font-size:13px">${esc(t("boatDetail.equipment"))}</strong><div class="tags" style="margin-top:6px">${boat.equipment.split(",").map(x=>x.trim()).filter(Boolean).map(x=>`<span class="tag">${esc(x)}</span>`).join("")}</div></div>` : ""}
-      ${boat.deposit_amount ? `<div class="note-box" style="margin-bottom:10px">${esc(t("boatDetail.deposit"))}: <strong>${money(Number(boat.deposit_amount)*100)}</strong></div>` : ""}
-      ${boat.cancellation_policy ? `<p class="muted"><strong>${esc(t("boatDetail.cancellationPolicy"))}:</strong> ${esc(boat.cancellation_policy)}</p>` : ""}
+      ${viewMode!=="sale" && boat.deposit_amount ? `<div class="note-box" style="margin-bottom:10px">${esc(t("boatDetail.deposit"))}: <strong>${money(Number(boat.deposit_amount)*100)}</strong></div>` : ""}
+      ${viewMode!=="sale" && boat.cancellation_policy ? `<p class="muted"><strong>${esc(t("boatDetail.cancellationPolicy"))}:</strong> ${esc(boat.cancellation_policy)}</p>` : ""}
       ${boat.rules_text ? `<p class="muted"><strong>${esc(t("boatDetail.rules"))}:</strong> ${esc(boat.rules_text)}</p>` : ""}
-      ${(currentUser && String(boat.client_id)===String(currentUser.id))
-        ? `<div class="note-box">${esc(t("boatDetail.ownListing"))}</div>`
-        : `<button class="primary wide" onclick="closeModal('boatDetailModal');openBookingFor('${esc(boat.client_id||"")}','${esc(String(boat.name||"Bateau").replace(/'/g,"\\'"))}','${esc(String(boat.home_port||"").replace(/'/g,"\\'"))}','boat_rental')">${esc(t("boatDetail.request"))}</button>`}
+      ${action}
+      ${boat.listing_type==="both" ? `<button class="small-btn wide" style="margin-top:9px" onclick="openBoatDetail('${esc(boat.id)}','${viewMode==="sale"?"rental":"sale"}')">${esc(viewMode==="sale"?saleText("Voir les tarifs de location","See rental rates","Ver tarifas de alquiler"):saleText("Voir le prix de vente","See sale price","Ver precio de venta"))}</button>` : ""}
     </div>`;
   boatDetailPhotoIndex = 0;
   openModal("boatDetailModal");
 };
+window.openSaleInquiry = function(boatId){
+  const boat = [...saleBoatCache,...boatCache].find(b=>String(b.id)===String(boatId));
+  if(!boat) return;
+  closeModal("boatDetailModal");
+  if(!currentUser){ openAccountModal("login"); return; }
+  saleInquiryTarget = boat;
+  document.querySelector("#saleInquiryTitle").textContent = saleText("Contacter le vendeur — ","Contact seller — ","Contactar al vendedor — ") + normalizeBoatTitle(boat);
+  document.querySelector("#saleInquiryMessage").value = saleText("Bonjour, je souhaite avoir plus d'informations sur ce bateau et organiser une visite.","Hello, I would like more information about this boat and to arrange a viewing.","Hola, me gustaría recibir más información sobre este barco y organizar una visita.");
+  document.querySelector("#saleInquiryMsg").textContent = "";
+  openModal("saleInquiryModal");
+};
+document.querySelector("#saleInquiryForm")?.addEventListener("submit", async e=>{
+  e.preventDefault();
+  const msg=document.querySelector("#saleInquiryMsg");
+  if(!currentUser || !saleInquiryTarget) return;
+  if(String(currentUser.id)===String(saleInquiryTarget.client_id)){ msg.textContent=saleText("Vous êtes le vendeur de cette annonce.","You are the seller of this listing.","Eres el vendedor de este anuncio."); return; }
+  const message=document.querySelector("#saleInquiryMessage").value.trim();
+  if(message.length<10) return;
+  const btn=e.target.querySelector("button[type=submit]"); btn.disabled=true;
+  const {error}=await db.from("boat_sale_inquiries").insert({
+    boat_id:saleInquiryTarget.id,
+    buyer_id:currentUser.id,
+    seller_id:saleInquiryTarget.client_id,
+    buyer_email:currentUser.email||null,
+    message
+  });
+  btn.disabled=false;
+  if(error){ msg.textContent=friendlyError(error); return; }
+  msg.style.color="#18794e";
+  msg.textContent=saleText("Votre demande a été envoyée au vendeur.","Your inquiry has been sent to the seller.","Tu consulta ha sido enviada al vendedor.");
+  setTimeout(()=>closeModal("saleInquiryModal"),1000);
+});
 let boatDetailPhotoIndex = 0;
 window.stepBoatDetailPhoto = function(dir){
   const slides = [...document.querySelectorAll("[data-detail-slide]")];
@@ -1796,6 +1896,10 @@ document.querySelector("#listBoatBtn").addEventListener("click", ()=>{
   if(currentUser && currentProfile){ openDashboard(); return; }
   openAccountModal("create", "owner");
 });
+document.querySelector("#sellBoatBtn")?.addEventListener("click", ()=>{
+  if(currentUser && currentProfile){ openDashboard(); return; }
+  openAccountModal("create", "owner");
+});
 document.querySelector("#homeProsViewAll")?.addEventListener("click", ()=>{
   showProviderCategories();
   openModal("providerModal");
@@ -1806,6 +1910,7 @@ document.querySelectorAll("[data-role]").forEach(el=>{
 });
 document.querySelector("#footerBecomePro").addEventListener("click", ()=>openAccountModal("create","provider"));
 document.querySelector("#footerAddBoat").addEventListener("click", ()=>openAccountModal("create","owner"));
+document.querySelector("#footerSellBoat")?.addEventListener("click", ()=>openAccountModal("create","owner"));
 document.querySelector("#footerFindSkipper").addEventListener("click", ()=>{showProviderResults("skipper");openModal("providerModal")});
 document.querySelector("#footerFindProvider").addEventListener("click", ()=>{showProviderCategories();openModal("providerModal")});
 document.querySelector("#footerContact").addEventListener("click", async ()=>{
@@ -2498,14 +2603,25 @@ async function renderBoatsManager(main, refreshFn){
     const {data} = await db.from("boats").select("*").eq("client_id", currentUser.id).order("created_at",{ascending:false});
     const rows = data || [];
     myBoatsCache = rows;
+    const {data: inquiryRows} = await db.from("boat_sale_inquiries").select("*").eq("seller_id", currentUser.id).order("created_at",{ascending:false}).limit(30);
+    const saleInquiryHtml = (inquiryRows||[]).length ? `<div style="margin:18px 0"><h3>${esc(saleText("Demandes d'achat reçues","Purchase inquiries","Consultas de compra"))}</h3>${(inquiryRows||[]).map(q=>{const boat=rows.find(x=>String(x.id)===String(q.boat_id));return `<article class="request-card"><div class="request-top"><div><h3>${esc(boat?normalizeBoatTitle(boat):saleText("Bateau","Boat","Barco"))}</h3><div class="muted">${new Date(q.created_at).toLocaleDateString()} · ${esc(q.buyer_email||"")}</div></div><span class="status-pill ${q.status==="new"?"ok":""}">${esc(q.status==="new"?saleText("Nouveau","New","Nuevo"):q.status)}</span></div><p style="white-space:pre-wrap">${esc(q.message||"")}</p>${q.buyer_email?`<a class="small-btn fill" href="mailto:${esc(q.buyer_email)}">${esc(saleText("Répondre par e-mail","Reply by email","Responder por e-mail"))}</a>`:""}</article>`;}).join("")}</div>` : "";
+
     const editing = editingBoatId ? rows.find(b=>String(b.id)===String(editingBoatId)) : null;
     const b = editing || {};
     main.innerHTML = `
       <div class="note-box">${esc(t("rental.text"))}</div>
       ${rows.length ? `<h3>${esc(t("dash.navBoats"))} (${rows.length})</h3>${rows.map(bt=>myBoatCard(bt)).join("")}` : `<div class="empty-note">${esc(t("dash.noBoats"))}</div>`}
+      ${saleInquiryHtml}
       <h3 style="margin-top:24px">${editing ? esc(t("dash.editBoat")) : esc(t("join.ownerCta"))}</h3>
       <form id="addBoatForm" style="margin-top:16px">
         <div class="field"><label>${esc(t("account.nameLabel"))}</label><input id="boatNameInput" required value="${esc(b.name||"")}"></div>
+        <div class="field"><label>${esc(saleText("TYPE D'ANNONCE","LISTING TYPE","TIPO DE ANUNCIO"))}</label>
+          <select id="boatListingTypeInput">
+            <option value="rental" ${(b.listing_type||"rental")==="rental"?"selected":""}>${esc(saleText("Location","Rental","Alquiler"))}</option>
+            <option value="sale" ${b.listing_type==="sale"?"selected":""}>${esc(saleText("Vente","Sale","Venta"))}</option>
+            <option value="both" ${b.listing_type==="both"?"selected":""}>${esc(saleText("Location + vente","Rental + sale","Alquiler + venta"))}</option>
+          </select>
+        </div>
         <div class="field"><label>${esc(t("boatDetail.brand"))}</label><input id="boatBrandInput" value="${esc(b.brand||"")}"></div>
         <div class="field"><label>${esc(t("boatDetail.model"))}</label><input id="boatModelInput" value="${esc(b.model||"")}"></div>
         <div class="field"><label>${esc(t("boatDetail.type"))}</label>
@@ -2524,6 +2640,9 @@ async function renderBoatsManager(main, refreshFn){
         <div class="field"><label>${esc(t("boatDetail.cabinsField"))}</label><input id="boatCabinsInput" type="number" min="0" step="1" value="${b.cabins??""}"></div>
         <div class="field"><label>${esc(t("boatDetail.berths"))}</label><input id="boatBerthsInput" type="number" min="0" step="1" value="${b.berths??""}"></div>
         <div class="field"><label>${esc(t("boatDetail.year"))}</label><input id="boatYearInput" type="number" min="1950" max="${new Date().getFullYear()}" step="1" value="${b.year_built??""}"></div>
+        <div class="field"><label>${esc(saleText("PRIX DE VENTE (€)","SALE PRICE (€)","PRECIO DE VENTA (€)"))}</label><input id="boatSalePriceInput" type="number" min="0" step="100" value="${b.sale_price??""}" placeholder="Ex. 45000"></div>
+        <div class="field"><label>${esc(saleText("HEURES MOTEUR","ENGINE HOURS","HORAS DE MOTOR"))}</label><input id="boatEngineHoursInput" type="number" min="0" step="1" value="${b.engine_hours??""}"></div>
+        <div class="field"><label>${esc(saleText("STATUT DE VENTE","SALE STATUS","ESTADO DE VENTA"))}</label><select id="boatSaleStatusInput"><option value="available" ${(b.sale_status||"available")==="available"?"selected":""}>${esc(saleText("Disponible","Available","Disponible"))}</option><option value="reserved" ${b.sale_status==="reserved"?"selected":""}>${esc(saleText("Réservé","Reserved","Reservado"))}</option><option value="sold" ${b.sale_status==="sold"?"selected":""}>${esc(saleText("Vendu","Sold","Vendido"))}</option></select></div>
         <div class="field"><label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input id="boatSkipperInput" type="checkbox" style="width:auto" ${b.skipper_included?"checked":""}> ${esc(t("boatDetail.skipperIncluded"))}</label></div>
         <div class="field"><label>${esc(t("boatDetail.engineType"))}</label><input id="boatEngineTypeInput" value="${esc(b.engine_type||"")}"></div>
         <div class="field"><label>${esc(t("boatDetail.engineCount"))}</label><input id="boatEngineCountInput" type="number" min="0" step="1" value="${b.engine_count??""}"></div>
@@ -2596,6 +2715,10 @@ async function renderBoatsManager(main, refreshFn){
       const photoUrls = keptPhotoUrls.concat(newUrls);
       const payload = {
         name: document.querySelector("#boatNameInput").value.trim(),
+        listing_type: document.querySelector("#boatListingTypeInput").value,
+        sale_price: Number(document.querySelector("#boatSalePriceInput").value) || null,
+        engine_hours: Number(document.querySelector("#boatEngineHoursInput").value) || null,
+        sale_status: document.querySelector("#boatSaleStatusInput").value,
         brand: document.querySelector("#boatBrandInput").value.trim(),
         model: document.querySelector("#boatModelInput").value.trim(),
         boat_type: document.querySelector("#boatTypeInput").value,
@@ -2642,6 +2765,7 @@ function myBoatCard(b){
         <h3>${esc(b.name||"Bateau")}</h3>
         <div class="muted">${esc(b.model||"")}${b.home_port?" · "+esc(b.home_port):""}</div>
         <div class="muted">${boatSpecsLine(b)||""}</div>
+        <div class="muted">${b.listing_type==="sale"?esc(saleText("À vendre","For sale","En venta")):b.listing_type==="both"?esc(saleText("Location + vente","Rental + sale","Alquiler + venta")):esc(saleText("Location","Rental","Alquiler"))}${b.sale_price?" · "+money(Number(b.sale_price)*100):""}</div>
       </div>
     </div>
     <div class="request-actions"><button class="small-btn" data-edit-boat="${b.id}">${esc(t("dash.editBoat"))}</button><button class="small-btn danger" data-delete-my-boat="${b.id}">${esc(t("dash.delete"))}</button></div>
@@ -4841,6 +4965,7 @@ async function loadLogbook(){
     document.querySelectorAll("#listingTabs button").forEach(b=>b.classList.toggle("active", b.dataset.activity===urlActivity));
   }
   if(urlActivity === "boat_rental"){ openBoatFinder(urlPort||""); }
+  if(urlActivity === "boat_sale"){ openBoatSaleFinder(urlPort||""); }
   if(urlActivity === "excursion"){ openExcursionFinder(urlPort||""); }
   const urlJoin = params.get("join");
   if(urlJoin === "owner" || urlJoin === "skipper" || urlJoin === "provider"){ openAccountModal("create", urlJoin); }
@@ -4853,7 +4978,7 @@ async function loadLogbook(){
   const urlPro = params.get("pro");
   if(urlPro) openDirectRequest(urlPro);
   const loadHomeContent = ()=>Promise.all([
-    preloadHomeBoats(), preloadHomeProviders(), loadListings(), loadTrustStats(),
+    preloadHomeBoats(), preloadHomeSales(), preloadHomeProviders(), loadListings(), loadTrustStats(),
     loadLogbook(), loadHeroSlides(), loadDestinationTiles(), loadPortActivities()
   ]).catch(error=>console.warn("SkipperNow home content:",error));
   const needsImmediateContent = Boolean(urlPort || urlActivity || urlPro);
