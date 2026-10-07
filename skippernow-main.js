@@ -885,13 +885,56 @@ document.querySelectorAll("#homeCategoryGrid .category-tile[data-tile]").forEach
   });
 });
 
+const DESTINATION_ZONES = {
+  "cote-azur":{
+    title:"Côte d’Azur",
+    subtitle:"Choisissez votre port ou votre ville sur la Côte d’Azur.",
+    places:["Cannes","Antibes","Golfe-Juan","Nice","Monaco","Saint-Tropez"]
+  },
+  "espagne":{
+    title:"Espagne",
+    subtitle:"Choisissez votre destination en Espagne.",
+    places:["Empuriabrava","Roses","Barcelone","Ibiza","Palma de Majorque","Marbella","Valence","Alicante"]
+  },
+  "floride":{
+    title:"Floride",
+    subtitle:"Choisissez votre zone en Floride.",
+    places:["Miami","Miami Beach","Coconut Grove","Fort Lauderdale","Palm Beach","Key West","Islamorada","Naples"]
+  },
+  "caraibes":{
+    title:"Caraïbes",
+    subtitle:"Choisissez votre île ou votre zone dans les Caraïbes.",
+    places:["Las Terrenas","Samaná","Punta Cana","Puerto Plata","Martinique","Guadeloupe","Saint-Barthélemy","Saint-Martin","Nassau","Exuma","Bimini"]
+  }
+};
+function chooseDestinationPlace(place){
+  portInput.value = place;
+  closeModal("destinationZoneModal");
+  switchActivityTab("skipper");
+  updateSeoMeta();
+  if(typeof highlightPortActivities === "function") highlightPortActivities(place);
+  document.querySelector("main").scrollIntoView({behavior:"smooth"});
+}
+function openDestinationZone(zoneKey){
+  const zone = DESTINATION_ZONES[zoneKey];
+  if(!zone) return;
+  const title = document.querySelector("#destinationZoneTitle");
+  const subtitle = document.querySelector("#destinationZoneSubtitle");
+  const choices = document.querySelector("#destinationZoneChoices");
+  if(title) title.textContent = zone.title;
+  if(subtitle) subtitle.textContent = zone.subtitle;
+  if(choices){
+    choices.innerHTML = zone.places.map(place=>`<button type="button" class="small-btn fill" data-destination-place="${esc(place)}" style="padding:13px 14px;text-align:center">${esc(place)}</button>`).join("");
+    choices.querySelectorAll("[data-destination-place]").forEach(btn=>{
+      btn.addEventListener("click", ()=>chooseDestinationPlace(btn.dataset.destinationPlace));
+    });
+  }
+  openModal("destinationZoneModal");
+}
 document.querySelectorAll("#portChips button").forEach(chip=>{
   chip.addEventListener("click", ()=>{
-    portInput.value = chip.dataset.port;
-    switchActivityTab("skipper");
-    updateSeoMeta();
-    if(typeof highlightPortActivities === "function") highlightPortActivities(chip.dataset.port);
-    document.querySelector("main").scrollIntoView({behavior:"smooth"});
+    if(chip.dataset.zone) openDestinationZone(chip.dataset.zone);
+    else if(chip.dataset.port) chooseDestinationPlace(chip.dataset.port);
   });
 });
 
