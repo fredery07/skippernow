@@ -693,3 +693,59 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
   #dashboardModal .kpi{padding:13px}
   #dashboardModal .kpi strong{font-size:22px}
 }
+
+.owner-hero-cta{
+  border:1px solid rgba(255,255,255,.58);
+  background:rgba(7,29,50,.78);
+  color:#fff;
+  border-radius:14px;
+  padding:10px 16px;
+  cursor:pointer;
+  min-height:48px;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  justify-content:center;
+  gap:2px;
+  box-shadow:0 8px 24px rgba(0,0,0,.15);
+  backdrop-filter:blur(7px);
+  transition:transform .18s,background .18s,border-color .18s;
+}
+.owner-hero-cta:hover{transform:translateY(-2px);background:rgba(7,29,50,.92);border-color:var(--aqua)}
+.owner-hero-cta span{font-size:14px;line-height:1.15}
+.owner-hero-cta small{font-size:10.5px;color:#d6eeee;font-weight:700}
+.owner-publish-banner{
+  margin:24px 0 8px;
+  display:grid;
+  grid-template-columns:auto minmax(0,1fr) auto;
+  gap:18px;
+  align-items:center;
+  padding:22px 24px;
+  border:1px solid #cde5e3;
+  border-radius:22px;
+  background:
+    radial-gradient(circle at 92% 8%,rgba(57,209,197,.16),transparent 30%),
+    linear-gradient(110deg,#f7fbfc 0%,#edf9f7 58%,#f8fbfc 100%);
+  box-shadow:0 12px 30px rgba(16,43,63,.07);
+}
+.owner-publish-icon{
+  width:58px;height:58px;border-radius:18px;
+  display:grid;place-items:center;
+  font-size:27px;
+  background:linear-gradient(145deg,#0a2b40,#117182);
+  box-shadow:0 8px 20px rgba(7,64,79,.16);
+}
+.owner-publish-kicker{display:block;color:#298d8d;font-size:10.5px;font-weight:900;letter-spacing:.08em;margin-bottom:4px}
+.owner-publish-copy h2{margin:0 0 5px;color:var(--navy);font-size:22px}
+.owner-publish-copy p{margin:0;color:var(--muted);line-height:1.5;font-size:14px}
+.owner-publish-btn{white-space:nowrap;margin:0}
+@media(max-width:760px){
+  .owner-publish-banner{grid-template-columns:auto 1fr}
+  .owner-publish-btn{grid-column:1/-1;width:100%}
+}
+@media(max-width:640px){
+  .owner-hero-cta{width:100%;align-items:center;text-align:center}
+  .owner-publish-banner{padding:17px;gap:12px}
+  .owner-publish-icon{width:48px;height:48px;border-radius:15px;font-size:22px}
+  .owner-publish-copy h2{font-size:19px}
+}
