@@ -905,6 +905,16 @@ const DESTINATION_ZONES = {
     title:"Caraïbes",
     subtitle:"Choisissez votre île ou votre zone dans les Caraïbes.",
     places:["Las Terrenas","Samaná","Punta Cana","Puerto Plata","Martinique","Guadeloupe","Saint-Barthélemy","Saint-Martin","Nassau","Exuma","Bimini"]
+  },
+  "italie":{
+    title:"Italie",
+    subtitle:"Choisissez votre destination en Italie.",
+    places:["Sanremo","Gênes","Portofino","La Spezia","Naples","Capri","Amalfi","Olbia","Porto Cervo","Cagliari","Palerme","Taormina"]
+  },
+  "croatie":{
+    title:"Croatie",
+    subtitle:"Choisissez votre destination en Croatie.",
+    places:["Pula","Rovinj","Zadar","Šibenik","Split","Trogir","Hvar","Korčula","Dubrovnik"]
   }
 };
 let selectedDestinationPlace = "";
