@@ -771,13 +771,14 @@ function haversineKm(a, b){
   return 2*R*Math.asin(Math.sqrt(h));
 }
 function portMatches(homePort, query){
-  const h = (homePort||"").toLowerCase();
-  const q = (query||"").trim().toLowerCase();
+  const h = normalizePortText(homePort);
+  const q = normalizePortText(query);
   if(!q) return true;
-  if(h.includes(q)) return true;
+  if(h.includes(q) || q.includes(h)) return true;
   for(const group of PORT_AREA_GROUPS){
-    const qInGroup = group.some(term=>q.includes(term) || term.includes(q));
-    if(qInGroup && group.some(term=>h.includes(term))) return true;
+    const normalizedGroup = group.map(normalizePortText);
+    const qInGroup = normalizedGroup.some(term=>q.includes(term) || term.includes(q));
+    if(qInGroup && normalizedGroup.some(term=>h.includes(term))) return true;
   }
   return false;
 }
@@ -822,8 +823,30 @@ function renderPortSuggestions(items){
     updateSeoMeta();
   });
 }
+function normalizePortText(value){
+  return String(value||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[’']/g," ").replace(/[-–—]/g," ").replace(/\s+/g," ").trim();
+}
+function destinationCatalogItems(){
+  if(typeof DESTINATION_ZONES === "undefined") return [];
+  const items = [];
+  Object.values(DESTINATION_ZONES).forEach(zone=>{
+    (zone.places||[]).forEach(name=>items.push({name,place:zone.country||zone.title}));
+  });
+  return items;
+}
 function localPortMatches(q){
-  return POPULAR_PORTS.filter(x=>(x[0]+" "+x[1]).toLowerCase().includes(q.toLowerCase())).slice(0,8).map(x=>({name:x[0],place:x[1]}));
+  const needle = normalizePortText(q);
+  const marinaItems = POPULAR_PORTS.map(x=>({name:x[0],place:x[1]}));
+  const all = [...destinationCatalogItems(), ...marinaItems];
+  const seen = new Set();
+  return all.filter(item=>{
+    const key = normalizePortText(item.name+" "+item.place);
+    if(needle && !key.includes(needle)) return false;
+    const dedupe = normalizePortText(item.name+"|"+item.place);
+    if(seen.has(dedupe)) return false;
+    seen.add(dedupe);
+    return true;
+  }).slice(0,10);
 }
 async function searchPorts(q){
   const local = localPortMatches(q);
@@ -888,32 +911,38 @@ document.querySelectorAll("#homeCategoryGrid .category-tile[data-tile]").forEach
 const DESTINATION_ZONES = {
   "cote-azur":{
     title:"Côte d’Azur",
-    subtitle:"Choisissez votre port ou votre ville sur la Côte d’Azur.",
-    places:["Cannes","Mandelieu-la-Napoule","Théoule-sur-Mer","Golfe-Juan","Juan-les-Pins","Antibes","Villeneuve-Loubet","Cagnes-sur-Mer","Nice","Villefranche-sur-Mer","Saint-Jean-Cap-Ferrat","Beaulieu-sur-Mer","Cap-d’Ail","Monaco","Roquebrune-Cap-Martin","Menton","Saint-Tropez","Sainte-Maxime","Port Grimaud"]
+    country:"France / Monaco",
+    subtitle:"Choisissez un vrai bassin nautique, port ou marina de la Côte d’Azur.",
+    places:["Mandelieu-la-Napoule","Théoule-sur-Mer","Cannes","Golfe-Juan","Juan-les-Pins","Antibes","Villeneuve-Loubet","Saint-Laurent-du-Var","Nice","Villefranche-sur-Mer","Saint-Jean-Cap-Ferrat","Beaulieu-sur-Mer","Cap-d’Ail","Monaco","Menton","Saint-Tropez","Sainte-Maxime","Port Grimaud","Cavalaire-sur-Mer"]
   },
   "espagne":{
     title:"Espagne",
-    subtitle:"Choisissez votre destination en Espagne.",
-    places:["Empuriabrava","Roses","Barcelone","Ibiza","Palma de Majorque","Marbella","Valence","Alicante"]
+    country:"Espagne",
+    subtitle:"Choisissez un port, une marina ou une destination nautique majeure en Espagne.",
+    places:["Empuriabrava","Roses","Barcelone","Sitges","Palma de Majorque","Alcúdia","Mahón","Ibiza","Dénia","Alicante","Valence","Marbella","Puerto Banús","Málaga"]
   },
   "floride":{
     title:"Floride",
-    subtitle:"Choisissez votre zone en Floride.",
-    places:["Miami","Miami Beach","Coconut Grove","Fort Lauderdale","Palm Beach","Key West","Islamorada","Naples"]
+    country:"Floride, États-Unis",
+    subtitle:"Choisissez une grande zone de plaisance, de charter ou de marina en Floride.",
+    places:["Miami","Miami Beach","Coconut Grove","Fort Lauderdale","Palm Beach","Jupiter","Key Largo","Islamorada","Marathon","Key West","Naples","Sarasota","St. Petersburg"]
   },
   "caraibes":{
     title:"Caraïbes",
-    subtitle:"Choisissez votre île ou votre zone dans les Caraïbes.",
-    places:["Las Terrenas","Samaná","Punta Cana","Puerto Plata","Martinique","Guadeloupe","Saint-Barthélemy","Saint-Martin","Nassau","Exuma","Bimini"]
+    country:"Caraïbes",
+    subtitle:"Choisissez une destination où la plaisance, les marinas ou le charter sont réellement présents.",
+    places:["Las Terrenas","Samaná","Cap Cana","Puerto Plata","Le Marin","Fort-de-France","Trois-Îlets","Pointe-à-Pitre","Saint-François","Deshaies","Gustavia","Marigot","Anse Marcel","Simpson Bay","Rodney Bay","Nassau","Exuma","Bimini"]
   },
   "italie":{
     title:"Italie",
-    subtitle:"Choisissez votre destination en Italie.",
+    country:"Italie",
+    subtitle:"Choisissez un port, une marina ou un bassin nautique majeur en Italie.",
     places:["Sanremo","Gênes","Portofino","La Spezia","Viareggio","Naples","Sorrente","Capri","Amalfi","Olbia","Porto Cervo","Cagliari","Palerme"]
   },
   "croatie":{
     title:"Croatie",
-    subtitle:"Choisissez votre destination en Croatie.",
+    country:"Croatie",
+    subtitle:"Choisissez une grande base de plaisance ou de charter en Croatie.",
     places:["Pula","Rovinj","Zadar","Biograd na Moru","Šibenik","Trogir","Kaštela","Split","Hvar","Dubrovnik"]
   }
 };
