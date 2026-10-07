@@ -700,6 +700,20 @@
   </div>
 </div>
 
+<div class="modal" data-nosnippet id="passwordRecoveryModal">
+  <div class="dialog">
+    <div class="dialog-top">
+      <div><small>SÉCURITÉ DU COMPTE</small><h2>Choisir un nouveau mot de passe</h2></div>
+      <button class="close" data-close="passwordRecoveryModal" type="button">×</button>
+    </div>
+    <p class="muted">Entrez votre nouveau mot de passe. Il doit contenir au moins 8 caractères.</p>
+    <div class="field"><label>NOUVEAU MOT DE PASSE</label><input id="recoveryPassword" type="password" minlength="8" autocomplete="new-password" placeholder="8 caractères minimum"></div>
+    <div class="field"><label>CONFIRMER LE MOT DE PASSE</label><input id="recoveryPasswordConfirm" type="password" minlength="8" autocomplete="new-password"></div>
+    <p class="error-text" id="recoveryMessage"></p>
+    <button class="primary wide" id="recoverySubmit" type="button">Enregistrer le nouveau mot de passe</button>
+  </div>
+</div>
+
 <div class="modal" data-nosnippet id="bookingModal">
   <div class="dialog">
     <div id="bookingForm">
@@ -817,7 +831,7 @@
 
 <script src="/supabase-js.min.js?v=2-20260917" defer></script>
 <script src="/analytics.js?v=20260920-visitor-region" defer></script>
-<script src="/skippernow-main.js?v=20261007-managed-boat-sales" defer></script>
+<script src="/skippernow-main.js?v=20261007-self-service-dashboard" defer></script>
 
 <script src="/service-flow.js?v=20260924-i18n" defer></script>
 <script src="/provider-dashboard-v2.js?v=20260929-contrast" defer></script>
