@@ -907,14 +907,35 @@ const DESTINATION_ZONES = {
     places:["Las Terrenas","Samaná","Punta Cana","Puerto Plata","Martinique","Guadeloupe","Saint-Barthélemy","Saint-Martin","Nassau","Exuma","Bimini"]
   }
 };
+let selectedDestinationPlace = "";
 function chooseDestinationPlace(place){
+  selectedDestinationPlace = place;
   portInput.value = place;
   closeModal("destinationZoneModal");
-  switchActivityTab("skipper");
   updateSeoMeta();
-  if(typeof highlightPortActivities === "function") highlightPortActivities(place);
-  document.querySelector("main").scrollIntoView({behavior:"smooth"});
+  const title = document.querySelector("#destinationActionTitle");
+  if(title) title.textContent = "Que recherchez-vous à " + place + " ?";
+  openModal("destinationActionModal");
 }
+document.querySelectorAll("[data-destination-action]").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    const place = selectedDestinationPlace || portInput.value.trim();
+    if(place) portInput.value = place;
+    closeModal("destinationActionModal");
+    const action = btn.dataset.destinationAction;
+    if(action === "skipper"){
+      showProviderResults("skipper");
+      openModal("providerModal");
+    }else if(action === "rental"){
+      openBoatFinder(place);
+    }else if(action === "sale"){
+      openBoatSaleFinder(place);
+    }else if(action === "services"){
+      showProviderCategories();
+      openModal("providerModal");
+    }
+  });
+});
 function openDestinationZone(zoneKey){
   const zone = DESTINATION_ZONES[zoneKey];
   if(!zone) return;
