@@ -52,9 +52,17 @@ nav{display:flex;align-items:center;justify-content:space-between;width:100%}
 .hero p{font-size:17.5px;line-height:1.6;color:#e4f0ef;max-width:580px;text-shadow:0 1px 10px rgba(0,0,0,.3)}
 .trust{display:flex;gap:24px;margin-top:26px;color:#e4f0ef;font-size:14px;flex-wrap:wrap;text-shadow:0 1px 8px rgba(0,0,0,.3)}
 .trust span:before{content:"✓";color:var(--brass-light);font-weight:900;margin-right:8px}
-.hero-cta{display:flex;gap:12px;margin-top:26px;flex-wrap:wrap;align-items:center}
+.hero-cta{display:flex;gap:10px;margin-top:26px;flex-wrap:nowrap;align-items:center}
+.hero-cta .primary,.hero-cta .secondary-light{white-space:nowrap;font-size:14px;padding:11px 14px}
 .hero-cta .primary{background:var(--aqua);color:var(--navy);box-shadow:0 10px 26px rgba(57,209,197,.24)}
-.hero-cta .secondary-light{padding:11px 16px;font-weight:700;font-size:14px;background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.45)}
+.hero-cta .secondary-light{font-weight:700;background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.45)}
+@media(max-width:760px){
+  .hero-cta{flex-wrap:wrap}
+  .hero-cta .primary,.hero-cta .secondary-light{flex:1 1 calc(50% - 10px)}
+}
+@media(max-width:460px){
+  .hero-cta .primary,.hero-cta .secondary-light{flex:1 1 100%}
+}
 .port-chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
 .port-chips button{border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.12);color:#fff;border-radius:999px;padding:8px 15px;font-size:13px;font-weight:800;cursor:pointer;backdrop-filter:blur(4px)}
 .port-chips button:hover{background:rgba(255,255,255,.24)}
