@@ -47,7 +47,7 @@
 }
 </script>
 <link rel="preload" as="image" href="/hero-main.avif" type="image/avif" fetchpriority="high">
-<link rel="stylesheet" href="/skippernow-main.css?v=20261007-owner-home-cta">
+<link rel="stylesheet" href="/skippernow-main.css?v=20261007-dashboard-refresh">
 
 </head>
 <body>
@@ -104,10 +104,6 @@
       <button class="secondary-light" id="heroBoats" type="button">🌊 Louer un bateau</button>
       <button class="secondary-light" id="heroBoatSales" type="button">⚓ Acheter un bateau</button>
       <button class="secondary-light" id="heroProviders" type="button">🛠️ Services nautiques</button>
-      <button class="owner-hero-cta" id="heroPublishBoat" type="button">
-        <span>🚤 <strong data-i18n="ownerHome.heroCta">Mettre mon bateau sur SkipperNow</strong></span>
-        <small data-i18n="ownerHome.heroCtaSub">Location ou vente · particulier ou agence</small>
-      </button>
     </div>
     <div class="port-chips" id="portChips">
       <button type="button" data-zone="cote-azur">🇫🇷 Côte d’Azur</button>
@@ -154,18 +150,6 @@
     </div>
     <button class="primary" id="quickRequestBtn" type="button" data-i18n="quickRequest.cta">Déposer une demande gratuite</button>
   </div>
-</div>
-
-<div class="shell">
-  <section class="owner-publish-banner" aria-labelledby="ownerPublishTitle">
-    <div class="owner-publish-icon" aria-hidden="true">🚤</div>
-    <div class="owner-publish-copy">
-      <span class="owner-publish-kicker" data-i18n="ownerHome.kicker">PROPRIÉTAIRES & AGENCES</span>
-      <h2 id="ownerPublishTitle" data-i18n="ownerHome.title">Vous avez un ou plusieurs bateaux ?</h2>
-      <p data-i18n="ownerHome.text">Publiez-les sur SkipperNow pour les proposer à la location ou à la vente. Que vous soyez propriétaire, loueur professionnel ou agence.</p>
-    </div>
-    <button class="primary owner-publish-btn" id="homePublishBoatBtn" type="button" data-i18n="ownerHome.cta">Publier un bateau</button>
-  </section>
 </div>
 
 <main class="shell">
@@ -846,7 +830,7 @@
 
 <script src="/supabase-js.min.js?v=2-20260917" defer></script>
 <script src="/analytics.js?v=20260920-visitor-region" defer></script>
-<script src="/skippernow-main.js?v=20261007-owner-home-cta" defer></script>
+<script src="/skippernow-main.js?v=20261007-owner-rental-copy" defer></script>
 
 <script src="/service-flow.js?v=20260924-i18n" defer></script>
 <script src="/provider-dashboard-v2.js?v=20260929-contrast" defer></script>
