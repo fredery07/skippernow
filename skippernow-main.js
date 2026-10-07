@@ -1555,6 +1555,7 @@ function boatListCardHtml(b, mode="rental"){
       ${photos.length ? photos.map((url,i)=>`<div class="boat-photo-slide ${i===0?"active":""}" style="background-image:url('${esc(url)}')"></div>`).join("") : `<div class="no-photo">⛵</div>`}
       ${photos.length > 1 ? `<div class="boat-card-dots">${photos.map((_,i)=>`<span class="${i===0?"active":""}"></span>`).join("")}</div>` : ""}
       ${mode==="sale" ? `<span class="sale-listing-badge">${esc(saleText("À VENDRE","FOR SALE","EN VENTA"))}</span>` : ""}
+      ${mode==="sale" && b.managed_by_platform ? `<span class="sale-listing-badge" style="top:48px;background:var(--navy);color:#fff">SKIPPERNOW</span>` : ""}
       <button type="button" class="boat-card-fav" data-favorite-btn="${b.id}" onclick="toggleBoatFavorite('${b.id}', event)">${isFavoriteBoat(b.id) ? "♥" : "♡"}</button>
     </div>
     <div class="boat-list-body">
@@ -1580,6 +1581,7 @@ function boatCardHtml(b, mode="rental"){
       ${photos.length ? photos.map((url,i)=>`<div class="boat-photo-slide ${i===0?"active":""}" style="background-image:url('${esc(url)}')"></div>`).join("") : `<div class="no-photo">⛵</div>`}
       ${photos.length > 1 ? `<div class="boat-card-dots">${photos.map((_,i)=>`<span class="${i===0?"active":""}"></span>`).join("")}</div>` : ""}
       <button type="button" class="boat-card-fav" data-favorite-btn="${b.id}" onclick="toggleBoatFavorite('${b.id}', event)">${isFavoriteBoat(b.id) ? "♥" : "♡"}</button>
+      ${mode==="sale" && b.managed_by_platform ? `<span class="sale-listing-badge" style="background:var(--navy);color:#fff">SKIPPERNOW</span>` : ""}
       ${isFeaturedNow ? `<span class="boat-card-featured">★ ${esc(t("card.featuredBadge"))}</span>` : ""}
       <span class="boat-card-price">${priceLabel}</span>
     </div>
@@ -1753,7 +1755,7 @@ window.openBoatDetail = async function(id, mode){
   const action = (currentUser && String(boat.client_id)===String(currentUser.id))
     ? `<div class="note-box">${esc(t("boatDetail.ownListing"))}</div>`
     : viewMode==="sale"
-      ? `<button class="primary wide" onclick="openSaleInquiry('${esc(boat.id)}')">${esc(saleText("Contacter le vendeur","Contact seller","Contactar al vendedor"))}</button>`
+      ? `<button class="primary wide" onclick="openSaleInquiry('${esc(boat.id)}')">${esc(boat.managed_by_platform ? saleText("Contacter SkipperNow","Contact SkipperNow","Contactar con SkipperNow") : saleText("Contacter le vendeur","Contact seller","Contactar al vendedor"))}</button>`
       : `<button class="primary wide" onclick="closeModal('boatDetailModal');openBookingFor('${esc(boat.client_id||"")}','${esc(String(boat.name||"Bateau").replace(/'/g,"\\'"))}','${esc(String(boat.home_port||"").replace(/'/g,"\\'"))}','boat_rental')">${esc(t("boatDetail.request"))}</button>`;
   content.innerHTML = `
     <div class="boat-detail-photo" style="margin:-26px -26px 0;height:230px;border-radius:22px 22px 0 0;overflow:hidden;${photos.length?"":"background:linear-gradient(135deg,#173b51,#3f9c9a)"}">
@@ -1768,6 +1770,7 @@ window.openBoatDetail = async function(id, mode){
       <div class="boat-card-port" style="margin-bottom:12px">📍 ${esc(boat.home_port||"—")}</div>
       ${boatSpecsLine(boat) ? `<div class="boat-card-specs-line" style="margin-bottom:18px;font-size:14px">${boatSpecsLine(boat)}</div>` : ""}
       ${saleFacts}
+      ${viewMode==="sale" && boat.managed_by_platform ? `<div class="note-box" style="margin-bottom:14px"><strong>SkipperNow</strong> · ${esc(saleText("Annonce publiée et gérée par SkipperNow pour le compte du propriétaire.","Listing published and managed by SkipperNow on behalf of the owner.","Anuncio publicado y gestionado por SkipperNow por cuenta del propietario."))}</div>` : ""}
       <p class="muted">${esc(boat.description||t("boatDetail.noDescription"))}</p>
       ${boat.equipment ? `<div style="margin:14px 0"><strong style="font-size:13px">${esc(t("boatDetail.equipment"))}</strong><div class="tags" style="margin-top:6px">${boat.equipment.split(",").map(x=>x.trim()).filter(Boolean).map(x=>`<span class="tag">${esc(x)}</span>`).join("")}</div></div>` : ""}
       ${viewMode!=="sale" && boat.deposit_amount ? `<div class="note-box" style="margin-bottom:10px">${esc(t("boatDetail.deposit"))}: <strong>${money(Number(boat.deposit_amount)*100)}</strong></div>` : ""}
@@ -1785,7 +1788,7 @@ window.openSaleInquiry = function(boatId){
   closeModal("boatDetailModal");
   if(!currentUser){ openAccountModal("login"); return; }
   saleInquiryTarget = boat;
-  document.querySelector("#saleInquiryTitle").textContent = saleText("Contacter le vendeur — ","Contact seller — ","Contactar al vendedor — ") + normalizeBoatTitle(boat);
+  document.querySelector("#saleInquiryTitle").textContent = (boat.managed_by_platform ? saleText("Contacter SkipperNow — ","Contact SkipperNow — ","Contactar con SkipperNow — ") : saleText("Contacter le vendeur — ","Contact seller — ","Contactar al vendedor — ")) + normalizeBoatTitle(boat);
   document.querySelector("#saleInquiryMessage").value = saleText("Bonjour, je souhaite avoir plus d'informations sur ce bateau et organiser une visite.","Hello, I would like more information about this boat and to arrange a viewing.","Hola, me gustaría recibir más información sobre este barco y organizar una visita.");
   document.querySelector("#saleInquiryMsg").textContent = "";
   openModal("saleInquiryModal");
@@ -3505,13 +3508,21 @@ document.querySelector("#userSearch").addEventListener("input", (e)=>{
 });
     bindProfileActions();
   }else if(panel === "boats"){
+    const [{data:managedOwners},{data:saleInquiries}] = await Promise.all([
+      db.from("boat_managed_owners").select("*"),
+      db.from("boat_sale_inquiries").select("*").order("created_at",{ascending:false}).limit(50)
+    ]);
+    const managedByBoat=Object.fromEntries((managedOwners||[]).map(row=>[String(row.boat_id),row]));
     const ownerFilter = adminBoatsFilterOwnerId ? boats.filter(b=>String(b.client_id)===String(adminBoatsFilterOwnerId)) : boats;
     const ownerName = adminBoatsFilterOwnerId ? (byId[String(adminBoatsFilterOwnerId)]?.full_name || "—") : "";
-    main.innerHTML = (adminBoatsFilterOwnerId ? `<div class="note-box">${esc(t("dash.boatsOf"))} <strong>${esc(ownerName)}</strong> — <a href="#" id="clearBoatsFilter">${esc(t("dash.clearFilter"))}</a></div>` : "")
-      + (ownerFilter.length ? ownerFilter.map(b=>adminBoatCard(b, byId)).join("") : `<div class="empty-note">—</div>`);
+    main.innerHTML = adminManagedBoatFormHtml()
+      + (adminBoatsFilterOwnerId ? `<div class="note-box">${esc(t("dash.boatsOf"))} <strong>${esc(ownerName)}</strong> — <a href="#" id="clearBoatsFilter">${esc(t("dash.clearFilter"))}</a></div>` : "")
+      + (ownerFilter.length ? ownerFilter.map(b=>adminBoatCard(b, byId, managedByBoat[String(b.id)])).join("") : `<div class="empty-note">—</div>`)
+      + adminManagedInquiriesHtml(saleInquiries||[], boats);
     const clearBtn = document.querySelector("#clearBoatsFilter");
     if(clearBtn) clearBtn.addEventListener("click", (e)=>{ e.preventDefault(); adminBoatsFilterOwnerId = null; renderAdminPanel("boats"); });
     bindAdminBoatActions();
+    await bindAdminManagedBoatForm();
   }else if(panel === "content"){
     renderContentPanel(ports);
   }else if(panel === "hero"){
@@ -4042,7 +4053,89 @@ ${!p.verified ? `<button class="small-btn fill" data-approve="${p.id}">${esc(t("
     </div>
   </article>`;
 }
-function adminBoatCard(b, byId){
+
+function adminManagedBoatFormHtml(){
+  return `<section class="request-card" style="border:1px solid var(--aqua);margin-bottom:18px">
+    <div class="request-top"><div><h3 style="margin:0">Publier un bateau pour un propriétaire</h3><div class="muted">L'équipe SkipperNow publie et gère l'annonce. Le propriétaire n'a pas besoin de créer de compte.</div></div><span class="tag">SkipperNow</span></div>
+    <form id="adminManagedBoatForm" style="margin-top:14px">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px">
+        <div class="field"><label>NOM DU PROPRIÉTAIRE *</label><input id="managedOwnerName" required></div>
+        <div class="field"><label>TÉLÉPHONE</label><input id="managedOwnerPhone" inputmode="tel"></div>
+        <div class="field"><label>EMAIL</label><input id="managedOwnerEmail" type="email"></div>
+        <div class="field"><label>NOM DE L'ANNONCE *</label><input id="managedBoatName" required placeholder="Ex. Jeanneau Cap Camarat 7.5 WA"></div>
+        <div class="field"><label>MARQUE</label><input id="managedBoatBrand"></div>
+        <div class="field"><label>MODÈLE</label><input id="managedBoatModel"></div>
+        <div class="field"><label>TYPE</label><select id="managedBoatType"><option value="motorboat">Bateau à moteur</option><option value="sailboat">Voilier</option><option value="rib">Semi-rigide</option><option value="catamaran">Catamaran</option></select></div>
+        <div class="field"><label>PORT / LOCALISATION *</label><input id="managedBoatPort" required></div>
+        <div class="field"><label>ANNÉE</label><input id="managedBoatYear" type="number" min="1950" max="${new Date().getFullYear()}"></div>
+        <div class="field"><label>LONGUEUR (m)</label><input id="managedBoatLength" type="number" min="0" step="0.1"></div>
+        <div class="field"><label>PRIX DE VENTE (€) *</label><input id="managedBoatSalePrice" type="number" min="1" step="100" required></div>
+        <div class="field"><label>HEURES MOTEUR</label><input id="managedBoatEngineHours" type="number" min="0" step="1"></div>
+      </div>
+      <div class="field"><label>DESCRIPTION</label><textarea id="managedBoatDescription" rows="4" placeholder="État, entretien, équipements, travaux récents…"></textarea></div>
+      <div class="field"><label>PHOTOS</label><input id="managedBoatPhotos" type="file" accept="image/*" multiple></div>
+      <div class="field"><label>NOTE INTERNE PROPRIÉTAIRE</label><textarea id="managedOwnerNotes" rows="2" placeholder="Informations privées visibles uniquement par l'équipe SkipperNow"></textarea></div>
+      <button class="primary wide" type="submit">Publier au nom de SkipperNow</button>
+      <p class="ok-text" id="managedBoatMsg"></p>
+    </form>
+  </section>`;
+}
+async function bindAdminManagedBoatForm(){
+  const form=document.querySelector("#adminManagedBoatForm");
+  if(!form) return;
+  form.addEventListener("submit", async e=>{
+    e.preventDefault();
+    const btn=form.querySelector('button[type="submit"]'), msg=document.querySelector("#managedBoatMsg");
+    btn.disabled=true; msg.style.color=""; msg.textContent="Publication en cours…";
+    try{
+      const files=[...(document.querySelector("#managedBoatPhotos")?.files||[])].slice(0,12);
+      const photoUrls=[];
+      for(const file of files){
+        const path=`${currentUser.id}/managed-sale-${Date.now()}-${Math.random().toString(36).slice(2,8)}-${file.name.replace(/[^a-zA-Z0-9.\-_]/g,"_")}`;
+        const {error:uploadError}=await db.storage.from("mission-photos").upload(path,file);
+        if(uploadError) throw uploadError;
+        photoUrls.push(db.storage.from("mission-photos").getPublicUrl(path).data.publicUrl);
+      }
+      const n=value=>{const x=Number(value);return Number.isFinite(x)&&x>0?x:null;};
+      const payload={
+        owner_name:document.querySelector("#managedOwnerName").value.trim(),
+        owner_phone:document.querySelector("#managedOwnerPhone").value.trim()||null,
+        owner_email:document.querySelector("#managedOwnerEmail").value.trim()||null,
+        owner_notes:document.querySelector("#managedOwnerNotes").value.trim()||null,
+        name:document.querySelector("#managedBoatName").value.trim(),
+        brand:document.querySelector("#managedBoatBrand").value.trim()||null,
+        model:document.querySelector("#managedBoatModel").value.trim()||null,
+        boat_type:document.querySelector("#managedBoatType").value,
+        home_port:document.querySelector("#managedBoatPort").value.trim(),
+        year_built:n(document.querySelector("#managedBoatYear").value),
+        length_m:n(document.querySelector("#managedBoatLength").value),
+        sale_price:n(document.querySelector("#managedBoatSalePrice").value),
+        engine_hours:n(document.querySelector("#managedBoatEngineHours").value),
+        description:document.querySelector("#managedBoatDescription").value.trim()||null,
+        photo_urls:photoUrls
+      };
+      const {error}=await db.rpc("admin_create_managed_boat",{p_payload:payload});
+      if(error) throw error;
+      msg.style.color="#08794e";
+      msg.textContent="Annonce publiée par SkipperNow pour le compte du propriétaire.";
+      await renderAdminPanel("boats");
+    }catch(error){
+      msg.style.color="#b42318";
+      msg.textContent=friendlyError(error);
+      btn.disabled=false;
+    }
+  });
+}
+function adminManagedInquiriesHtml(rows, boats){
+  if(!rows?.length) return "";
+  const byBoat=Object.fromEntries((boats||[]).map(b=>[String(b.id),b]));
+  return `<div class="dash-section-title" style="margin-top:22px">Demandes d'achat reçues (${rows.length})</div>${rows.map(q=>{
+    const boat=byBoat[String(q.boat_id)];
+    return `<article class="request-card"><div class="request-top"><div><h3>${esc(boat?normalizeBoatTitle(boat):"Bateau")}</h3><div class="muted">${new Date(q.created_at).toLocaleString(currentLang)} · ${esc(q.buyer_email||"")}</div></div><span class="status-pill ${q.status==="new"?"ok":""}">${esc(q.status==="new"?"Nouveau":q.status)}</span></div><p style="white-space:pre-wrap">${esc(q.message||"")}</p>${q.buyer_email?`<a class="small-btn fill" href="mailto:${esc(q.buyer_email)}">Répondre par e-mail</a>`:""}</article>`;
+  }).join("")}`;
+}
+
+function adminBoatCard(b, byId, managedOwner){
   const owner = byId[String(b.client_id)];
   const photo = b.photo_url || (Array.isArray(b.photo_urls) && b.photo_urls[0]) || "";
   const isFeaturedNow = b.featured && b.featured_until && new Date(b.featured_until) > new Date();
@@ -4051,10 +4144,11 @@ function adminBoatCard(b, byId){
     <div class="request-top">
       ${photo ? `<img loading="lazy" src="${esc(photo)}" style="width:88px;height:88px;object-fit:cover;border-radius:12px;flex-shrink:0" onclick="window.open('${esc(photo)}','_blank')">` : `<div style="width:88px;height:88px;border-radius:12px;background:var(--mist);display:grid;place-items:center;font-size:28px;flex-shrink:0">⛵</div>`}
       <div>
-        <h3>${esc(b.name||"—")}${b.verified ? verifiedBoatBadgeHtml() : ""}${isFeaturedNow ? ` <span class="verified-badge" style="background:#fff4d6;color:#8a6d1a">★ ${esc(t("dash.featuredBadge"))}</span>` : ""}</h3>
+        <h3>${esc(b.name||"—")}${b.verified ? verifiedBoatBadgeHtml() : ""}${b.managed_by_platform ? ` <span class="verified-badge" style="background:#e8f3ff;color:#174a75">SkipperNow · pour le propriétaire</span>` : ""}${isFeaturedNow ? ` <span class="verified-badge" style="background:#fff4d6;color:#8a6d1a">★ ${esc(t("dash.featuredBadge"))}</span>` : ""}</h3>
         <div class="muted">${esc(b.model||"")}${b.boat_type?" · "+esc(boatTypeLabel(b.boat_type)):""} · ${esc(b.home_port||"—")}</div>
         <div class="muted">${b.length_m?b.length_m+" m · ":""}${b.capacity?b.capacity+" pers. · ":""}${b.cabins!=null?b.cabins+" cabines · ":""}${b.year_built?b.year_built:""}</div>
-        <div class="muted">${esc(t("dash.owner"))}: ${esc(owner?.full_name||"—")} · ${esc(owner?.contact_email||owner?.email||"—")}${owner?.phone?` · 📞 ${esc(owner.phone)}`:""}${b.skipper_included?` · ${esc(t("boatDetail.skipperIncluded"))}`:""}</div>
+        <div class="muted">${esc(t("dash.owner"))}: ${b.managed_by_platform && managedOwner ? `${esc(managedOwner.owner_name||"—")}${managedOwner.owner_email?` · ${esc(managedOwner.owner_email)}`:""}${managedOwner.owner_phone?` · 📞 ${esc(managedOwner.owner_phone)}`:""}` : `${esc(owner?.full_name||"—")} · ${esc(owner?.contact_email||owner?.email||"—")}${owner?.phone?` · 📞 ${esc(owner.phone)}`:""}`}${b.skipper_included?` · ${esc(t("boatDetail.skipperIncluded"))}`:""}</div>
+        ${b.managed_by_platform && managedOwner?.notes ? `<div class="muted" style="margin-top:4px"><strong>Note interne :</strong> ${esc(managedOwner.notes)}</div>` : ""}
         ${b.description ? `<div class="muted" style="margin-top:4px">${esc(b.description)}</div>` : ""}
         ${Array.isArray(b.photo_urls) && b.photo_urls.length > 1 ? `<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">${b.photo_urls.map(u=>`<img loading="lazy" src="${esc(u)}" style="width:48px;height:48px;object-fit:cover;border-radius:8px;cursor:pointer" onclick="window.open('${esc(u)}','_blank')">`).join("")}</div>` : ""}
         ${isFeaturedNow ? `<div class="muted" style="margin-top:6px;color:#8a6d1a;font-weight:700">${esc(t("dash.featuredUntil"))} ${new Date(b.featured_until).toLocaleDateString()} (${daysLeft} ${esc(t("dash.daysLeft"))})</div>` : ""}
