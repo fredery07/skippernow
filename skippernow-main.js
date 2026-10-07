@@ -2098,6 +2098,22 @@ document.querySelector("#forgotPasswordBtn").addEventListener("click", async ()=
   msg.textContent = error ? t("account.forgotError") + error.message : t("account.forgotSent");
 });
 
+document.querySelector("#recoverySubmit")?.addEventListener("click", async ()=>{
+  const pass=document.querySelector("#recoveryPassword").value;
+  const confirmPass=document.querySelector("#recoveryPasswordConfirm").value;
+  const msg=document.querySelector("#recoveryMessage");
+  if(pass.length<8){ msg.textContent=saleText("Le mot de passe doit contenir au moins 8 caractères.","Password must be at least 8 characters.","La contraseña debe tener al menos 8 caracteres."); return; }
+  if(pass!==confirmPass){ msg.textContent=saleText("Les deux mots de passe ne correspondent pas.","Passwords do not match.","Las contraseñas no coinciden."); return; }
+  const btn=document.querySelector("#recoverySubmit"); btn.disabled=true;
+  const {error}=await db.auth.updateUser({password:pass});
+  btn.disabled=false;
+  msg.style.color=error?"#b42318":"#08794e";
+  msg.textContent=error?friendlyError(error):saleText("Mot de passe modifié. Vous pouvez maintenant vous connecter.","Password changed. You can now sign in.","Contraseña modificada. Ya puedes iniciar sesión.");
+  if(!error){
+    setTimeout(()=>{ closeModal("passwordRecoveryModal"); openDashboard(); },700);
+  }
+});
+
 async function loadProfile(){
   if(!currentUser){ currentProfile = null; return; }
   const {data} = await db.from("profiles").select("*").eq("id", currentUser.id).maybeSingle();
@@ -2652,7 +2668,7 @@ async function renderClientDashboard(){
     {id:"requests", label:t("dash.navRequests")},
     {id:"messages", label:t("dash.navMessages")},
     {id:"support", label:t("dash.navSupport")},
-    {id:"boats", label:t("dash.navBoats")},
+    {id:"boats", label:saleText("Mes annonces","My listings","Mis anuncios")},
     {id:"profile", label:t("dash.navProfile")}
   ], "requests");
   bindDashNav(renderClientPanel);
@@ -2714,11 +2730,26 @@ async function renderBoatsManager(main, refreshFn){
 
     const editing = editingBoatId ? rows.find(b=>String(b.id)===String(editingBoatId)) : null;
     const b = editing || {};
+    const rentalCount = rows.filter(x=>["rental","both"].includes(x.listing_type||"rental")).length;
+    const saleCount = rows.filter(x=>["sale","both"].includes(x.listing_type)).length;
+    const availableSaleCount = rows.filter(x=>["sale","both"].includes(x.listing_type) && (x.sale_status||"available")==="available").length;
+    const showForm = Boolean(editing) || rows.length===0;
     main.innerHTML = `
-      <div class="note-box">${esc(t("rental.text"))}</div>
-      ${rows.length ? `<h3>${esc(t("dash.navBoats"))} (${rows.length})</h3>${rows.map(bt=>myBoatCard(bt)).join("")}` : `<div class="empty-note">${esc(t("dash.noBoats"))}</div>`}
+      <div class="note-box">${esc(saleText("Gérez ici tous vos bateaux, qu'ils soient à louer, à vendre ou les deux. Chaque annonce peut être modifiée séparément.","Manage all your boats here, whether for rent, for sale, or both. Each listing can be edited separately.","Gestiona aquí todos tus barcos, ya sean de alquiler, venta o ambos. Cada anuncio se puede modificar por separado."))}</div>
+      <div class="kpi-grid" style="margin-bottom:16px">
+        <div class="kpi"><div class="kpi-top"><span>${esc(saleText("Total annonces","Total listings","Total anuncios"))}</span></div><strong>${rows.length}</strong></div>
+        <div class="kpi"><div class="kpi-top"><span>${esc(saleText("En location","For rent","En alquiler"))}</span></div><strong>${rentalCount}</strong></div>
+        <div class="kpi"><div class="kpi-top"><span>${esc(saleText("À vendre","For sale","En venta"))}</span></div><strong>${saleCount}</strong></div>
+        <div class="kpi"><div class="kpi-top"><span>${esc(saleText("Ventes disponibles","Sales available","Ventas disponibles"))}</span></div><strong>${availableSaleCount}</strong></div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:12px">
+        <h3 style="margin:0">${esc(saleText("Mes annonces","My listings","Mis anuncios"))} (${rows.length})</h3>
+        <button class="small-btn fill" type="button" id="showAddBoatForm">+ ${esc(saleText("Ajouter un bateau","Add a boat","Añadir un barco"))}</button>
+      </div>
+      ${rows.length ? `<div id="myBoatCards">${rows.map(bt=>myBoatCard(bt)).join("")}</div>` : `<div class="empty-note">${esc(t("dash.noBoats"))}</div>`}
       ${saleInquiryHtml}
-      <h3 style="margin-top:24px">${editing ? esc(t("dash.editBoat")) : esc(t("join.ownerCta"))}</h3>
+      <section id="boatEditorSection" style="${showForm?"":"display:none;"}margin-top:24px">
+      <h3>${editing ? esc(saleText("Modifier cette annonce","Edit this listing","Modificar este anuncio")) : esc(saleText("Ajouter un bateau","Add a boat","Añadir un barco"))}</h3>
       <form id="addBoatForm" style="margin-top:16px">
         <div class="field"><label>${esc(t("account.nameLabel"))}</label><input id="boatNameInput" required value="${esc(b.name||"")}"></div>
         <div class="field"><label>${esc(saleText("TYPE D'ANNONCE","LISTING TYPE","TIPO DE ANUNCIO"))}</label>
@@ -2767,11 +2798,16 @@ async function renderBoatsManager(main, refreshFn){
         <div id="boatPhotosPreview" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"></div>
         <button class="primary wide" type="submit">${editing ? esc(t("dash.saveSettings")) : esc(t("join.ownerCta"))}</button>
         ${editing ? `<button class="small-btn wide" type="button" id="cancelEditBoat" style="margin-top:8px">${esc(t("dash.cancel"))}</button>` : ""}
-      </form>`;
+      </form></section>`;
     bindMyBoatActions(refreshFn);
+    document.querySelector("#showAddBoatForm")?.addEventListener("click", ()=>{
+      editingBoatId = null;
+      const editor=document.querySelector("#boatEditorSection");
+      if(editor){ editor.style.display="block"; editor.scrollIntoView({behavior:"smooth",block:"start"}); }
+    });
     document.querySelectorAll("[data-edit-boat]").forEach(btn=>btn.addEventListener("click", ()=>{
       editingBoatId = btn.dataset.editBoat;
-      refreshFn();
+      refreshFn().then?.(()=>document.querySelector("#boatEditorSection")?.scrollIntoView({behavior:"smooth",block:"start"}));
     }));
     const cancelBtn = document.querySelector("#cancelEditBoat");
     if(cancelBtn) cancelBtn.addEventListener("click", ()=>{ editingBoatId = null; refreshFn(); });
@@ -2874,7 +2910,10 @@ function myBoatCard(b){
         <div class="muted">${b.listing_type==="sale"?esc(saleText("À vendre","For sale","En venta")):b.listing_type==="both"?esc(saleText("Location + vente","Rental + sale","Alquiler + venta")):esc(saleText("Location","Rental","Alquiler"))}${b.sale_price?" · "+money(Number(b.sale_price)*100):""}</div>
       </div>
     </div>
-    <div class="request-actions"><button class="small-btn" data-edit-boat="${b.id}">${esc(t("dash.editBoat"))}</button><button class="small-btn danger" data-delete-my-boat="${b.id}">${esc(t("dash.delete"))}</button></div>
+    <div class="request-actions">
+      <button class="small-btn fill" data-edit-boat="${b.id}">${esc(saleText("Modifier l'annonce","Edit listing","Modificar anuncio"))}</button>
+      <button class="small-btn danger" data-delete-my-boat="${b.id}">${esc(t("dash.delete"))}</button>
+    </div>
   </article>`;
 }
 function bindMyBoatActions(refreshFn){
@@ -2952,7 +2991,7 @@ async function renderProDashboard(){
     {id:"messages", label:t("dash.navMessages")},
     {id:"support", label:t("dash.navSupport")}
   ];
-  if(isBoatRentalPro) navItems.push({id:"boats", label:t("dash.navBoats")});
+  if(isBoatRentalPro) navItems.push({id:"boats", label:saleText("Mes annonces","My listings","Mis anuncios")});
   if(isProvider) navItems.push({id:"excursions", label:t("dash.navExcursions")});
   navItems.push({id:"myLink", label:t("dash.navMyLink")});
   navItems.push({id:"profile", label:t("dash.navProfile")}, {id:"availability", label:t("dash.navAvailability")});
@@ -4758,6 +4797,13 @@ function profileForm(profile){
     ${["skipper","provider"].includes(profile?.role) ? `<div class="field"><label>${esc(t("account.siretLabel"))}</label><input id="profileSiret" value="${esc(profile?.siret||"")}"></div>
     <div class="field"><label>${esc(t("account.insuranceLabel"))}</label><input id="profileInsurance" placeholder="${esc(t("account.insurancePlaceholder"))}" value="${esc(profile?.insurance_info||"")}"></div>` : ""}
     ${showPayout ? `<div class="note-box"><p>${esc(t("dash.payoutSetupNote"))}</p><button class="small-btn" type="button" id="profilePayoutLink">${esc(t("dash.managePayoutDetails"))}</button></div>` : ""}
+    <div class="note-box" style="margin-top:14px">
+      <strong>${esc(saleText("Sécurité du compte","Account security","Seguridad de la cuenta"))}</strong>
+      <div class="field" style="margin-top:10px"><label>${esc(saleText("Nouveau mot de passe","New password","Nueva contraseña"))}</label><input id="profileNewPassword" type="password" minlength="8" placeholder="${esc(saleText("8 caractères minimum","At least 8 characters","Mínimo 8 caracteres"))}"></div>
+      <div class="field"><label>${esc(saleText("Confirmer le mot de passe","Confirm password","Confirmar contraseña"))}</label><input id="profileNewPasswordConfirm" type="password" minlength="8"></div>
+      <button class="small-btn" type="button" id="changePasswordBtn">${esc(saleText("Changer mon mot de passe","Change my password","Cambiar mi contraseña"))}</button>
+      <p class="ok-text" id="changePasswordMsg"></p>
+    </div>
     <button class="primary wide" id="saveProfileBtn">${esc(t("dash.saveSettings"))}</button>
     <p class="ok-text" id="profileMsg"></p>`;
 }
@@ -4795,6 +4841,19 @@ function bindProfilePortAutocomplete(){
 function bindProfileForm(){
   bindProfilePortAutocomplete();
   document.querySelector("#profilePayoutLink")?.addEventListener("click", ()=>document.querySelector('.dash-side [data-panel="payments"]')?.click());
+  document.querySelector("#changePasswordBtn")?.addEventListener("click", async ()=>{
+    const pass=document.querySelector("#profileNewPassword")?.value||"";
+    const confirmPass=document.querySelector("#profileNewPasswordConfirm")?.value||"";
+    const msg=document.querySelector("#changePasswordMsg");
+    if(pass.length<8){ msg.style.color="#b42318"; msg.textContent=saleText("Le mot de passe doit contenir au moins 8 caractères.","Password must be at least 8 characters.","La contraseña debe tener al menos 8 caracteres."); return; }
+    if(pass!==confirmPass){ msg.style.color="#b42318"; msg.textContent=saleText("Les deux mots de passe ne correspondent pas.","Passwords do not match.","Las contraseñas no coinciden."); return; }
+    const btn=document.querySelector("#changePasswordBtn"); btn.disabled=true;
+    const {error}=await db.auth.updateUser({password:pass});
+    btn.disabled=false;
+    msg.style.color=error?"#b42318":"#08794e";
+    msg.textContent=error?friendlyError(error):saleText("Mot de passe modifié.","Password changed.","Contraseña modificada.");
+    if(!error){ document.querySelector("#profileNewPassword").value=""; document.querySelector("#profileNewPasswordConfirm").value=""; }
+  });
   document.querySelector("#saveProfileBtn").addEventListener("click", async ()=>{
     const btn = document.querySelector("#saveProfileBtn");
     const msg = document.querySelector("#profileMsg");
@@ -5187,11 +5246,11 @@ async function loadLogbook(){
 db.auth.onAuthStateChange(async (event, session)=>{
   if(event === "SIGNED_OUT"){ currentUser = null; currentProfile = null; refreshAccountButton(); return; }
   if(event === "PASSWORD_RECOVERY"){
-    const newPassword = prompt("Nouveau mot de passe (8 caractères minimum) :");
-    if(newPassword && newPassword.length >= 8){
-      const {error} = await db.auth.updateUser({password:newPassword});
-      alert(error ? "Erreur : " + error.message : "Mot de passe modifié.");
-    }
+    currentUser = session?.user || currentUser;
+    document.querySelector("#recoveryMessage").textContent="";
+    document.querySelector("#recoveryPassword").value="";
+    document.querySelector("#recoveryPasswordConfirm").value="";
+    openModal("passwordRecoveryModal");
     return;
   }
   if(session?.user){
