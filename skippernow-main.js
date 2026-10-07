@@ -889,7 +889,7 @@ const DESTINATION_ZONES = {
   "cote-azur":{
     title:"Côte d’Azur",
     subtitle:"Choisissez votre port ou votre ville sur la Côte d’Azur.",
-    places:["Cannes","Antibes","Golfe-Juan","Nice","Monaco","Saint-Tropez"]
+    places:["Cannes","Mandelieu-la-Napoule","Théoule-sur-Mer","Golfe-Juan","Juan-les-Pins","Antibes","Villeneuve-Loubet","Cagnes-sur-Mer","Nice","Villefranche-sur-Mer","Saint-Jean-Cap-Ferrat","Beaulieu-sur-Mer","Cap-d’Ail","Monaco","Roquebrune-Cap-Martin","Menton","Saint-Tropez","Sainte-Maxime","Port Grimaud"]
   },
   "espagne":{
     title:"Espagne",
