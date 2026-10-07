@@ -123,7 +123,11 @@ end;
 $$;
 
 revoke all on function public.admin_create_managed_boat(jsonb) from public;
+revoke execute on function public.admin_create_managed_boat(jsonb) from anon;
 grant execute on function public.admin_create_managed_boat(jsonb) to authenticated;
+
+create index if not exists boat_managed_owners_created_by_idx
+  on public.boat_managed_owners (created_by);
 
 create index if not exists boats_managed_by_platform_idx
   on public.boats (managed_by_platform)
