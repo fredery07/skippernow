@@ -909,12 +909,12 @@ const DESTINATION_ZONES = {
   "italie":{
     title:"Italie",
     subtitle:"Choisissez votre destination en Italie.",
-    places:["Sanremo","Gênes","Portofino","La Spezia","Naples","Capri","Amalfi","Olbia","Porto Cervo","Cagliari","Palerme","Taormina"]
+    places:["Sanremo","Gênes","Portofino","La Spezia","Viareggio","Naples","Sorrente","Capri","Amalfi","Olbia","Porto Cervo","Cagliari","Palerme"]
   },
   "croatie":{
     title:"Croatie",
     subtitle:"Choisissez votre destination en Croatie.",
-    places:["Pula","Rovinj","Zadar","Šibenik","Split","Trogir","Hvar","Korčula","Dubrovnik"]
+    places:["Pula","Rovinj","Zadar","Biograd na Moru","Šibenik","Trogir","Kaštela","Split","Hvar","Dubrovnik"]
   }
 };
 let selectedDestinationPlace = "";
