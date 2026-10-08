@@ -2725,40 +2725,25 @@ async function renderBoatsManager(main, refreshFn){
     const {data} = await db.from("boats").select("*").eq("client_id", currentUser.id).order("created_at",{ascending:false});
     const rows = data || [];
     myBoatsCache = rows;
-    const {data: inquiryRows} = await db.from("boat_sale_inquiries").select("*").eq("seller_id", currentUser.id).order("created_at",{ascending:false}).limit(30);
-    const saleInquiryHtml = (inquiryRows||[]).length ? `<div style="margin:18px 0"><h3>${esc(saleText("Demandes d'achat reçues","Purchase inquiries","Consultas de compra"))}</h3>${(inquiryRows||[]).map(q=>{const boat=rows.find(x=>String(x.id)===String(q.boat_id));return `<article class="request-card"><div class="request-top"><div><h3>${esc(boat?normalizeBoatTitle(boat):saleText("Bateau","Boat","Barco"))}</h3><div class="muted">${new Date(q.created_at).toLocaleDateString()} · ${esc(q.buyer_email||"")}</div></div><span class="status-pill ${q.status==="new"?"ok":""}">${esc(q.status==="new"?saleText("Nouveau","New","Nuevo"):q.status)}</span></div><p style="white-space:pre-wrap">${esc(q.message||"")}</p>${q.buyer_email?`<a class="small-btn fill" href="mailto:${esc(q.buyer_email)}">${esc(saleText("Répondre par e-mail","Reply by email","Responder por e-mail"))}</a>`:""}</article>`;}).join("")}</div>` : "";
-
     const editing = editingBoatId ? rows.find(b=>String(b.id)===String(editingBoatId)) : null;
     const b = editing || {};
-    const rentalCount = rows.filter(x=>["rental","both"].includes(x.listing_type||"rental")).length;
-    const saleCount = rows.filter(x=>["sale","both"].includes(x.listing_type)).length;
-    const availableSaleCount = rows.filter(x=>["sale","both"].includes(x.listing_type) && (x.sale_status||"available")==="available").length;
+    const rentalCount = rows.length;
     const showForm = Boolean(editing) || rows.length===0;
     main.innerHTML = `
-      <div class="note-box">${esc(saleText("Gérez ici vos bateaux à louer. Les ventes exceptionnelles sont gérées uniquement par SkipperNow.","Manage your rental boats here. Exceptional sales are exclusively managed by SkipperNow.","Gestiona aquí tus barcos de alquiler. Las ventas excepcionales son gestionadas exclusivamente por SkipperNow."))}</div>
-      <div class="kpi-grid" style="margin-bottom:16px">
-        <div class="kpi"><div class="kpi-top"><span>${esc(saleText("Total annonces","Total listings","Total anuncios"))}</span></div><strong>${rows.length}</strong></div>
+      <div class="note-box">${esc(saleText("Gérez ici tous vos bateaux proposés à la location.","Manage all your rental boat listings here.","Gestiona aquí todos tus barcos disponibles en alquiler."))}</div>
+      <div class="kpi-grid rental-only-kpis" style="margin-bottom:16px">
+        <div class="kpi"><div class="kpi-top"><span>${esc(saleText("Total bateaux","Total boats","Total barcos"))}</span></div><strong>${rows.length}</strong></div>
         <div class="kpi"><div class="kpi-top"><span>${esc(saleText("En location","For rent","En alquiler"))}</span></div><strong>${rentalCount}</strong></div>
-        <div class="kpi"><div class="kpi-top"><span>${esc(saleText("À vendre","For sale","En venta"))}</span></div><strong>${saleCount}</strong></div>
-        <div class="kpi"><div class="kpi-top"><span>${esc(saleText("Ventes disponibles","Sales available","Ventas disponibles"))}</span></div><strong>${availableSaleCount}</strong></div>
       </div>
       <div style="display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:12px">
         <h3 style="margin:0">${esc(saleText("Mes annonces","My listings","Mis anuncios"))} (${rows.length})</h3>
         <button class="small-btn fill" type="button" id="showAddBoatForm">+ ${esc(saleText("Ajouter un bateau","Add a boat","Añadir un barco"))}</button>
       </div>
       ${rows.length ? `<div id="myBoatCards">${rows.map(bt=>myBoatCard(bt)).join("")}</div>` : `<div class="empty-note">${esc(t("dash.noBoats"))}</div>`}
-      ${saleInquiryHtml}
       <section id="boatEditorSection" style="${showForm?"":"display:none;"}margin-top:24px">
       <h3>${editing ? esc(saleText("Modifier cette annonce","Edit this listing","Modificar este anuncio")) : esc(saleText("Ajouter un bateau","Add a boat","Añadir un barco"))}</h3>
       <form id="addBoatForm" style="margin-top:16px">
         <div class="field"><label>${esc(t("account.nameLabel"))}</label><input id="boatNameInput" required value="${esc(b.name||"")}"></div>
-        <div class="field"><label>${esc(saleText("TYPE D'ANNONCE","LISTING TYPE","TIPO DE ANUNCIO"))}</label>
-          <select id="boatListingTypeInput">
-            <option value="rental" ${(b.listing_type||"rental")==="rental"?"selected":""}>${esc(saleText("Location","Rental","Alquiler"))}</option>
-            
-            
-          </select>
-        </div>
         <div class="field"><label>${esc(t("boatDetail.brand"))}</label><input id="boatBrandInput" value="${esc(b.brand||"")}"></div>
         <div class="field"><label>${esc(t("boatDetail.model"))}</label><input id="boatModelInput" value="${esc(b.model||"")}"></div>
         <div class="field"><label>${esc(t("boatDetail.type"))}</label>
@@ -2904,7 +2889,7 @@ function myBoatCard(b){
         <h3>${esc(b.name||"Bateau")}</h3>
         <div class="muted">${esc(b.model||"")}${b.home_port?" · "+esc(b.home_port):""}</div>
         <div class="muted">${boatSpecsLine(b)||""}</div>
-        <div class="muted">${b.listing_type==="sale"?esc(saleText("À vendre","For sale","En venta")):b.listing_type==="both"?esc(saleText("Location + vente","Rental + sale","Alquiler + venta")):esc(saleText("Location","Rental","Alquiler"))}${b.sale_price?" · "+money(Number(b.sale_price)*100):""}</div>
+        <div class="muted">${esc(saleText("Location","Rental","Alquiler"))}</div>
       </div>
     </div>
     <div class="request-actions">
