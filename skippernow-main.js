@@ -170,7 +170,7 @@ const I18N = {
     "account.roleClient":"Client","account.roleClientDesc":"Réserver un skipper, un prestataire ou un bateau",
     "account.roleSkipper":"Skipper","account.roleSkipperDesc":"Recevoir des demandes de sortie et de convoyage",
     "account.roleProvider":"Prestataire","account.roleProviderDesc":"Nettoyage, quai, chantier ou marin à la journée",
-    "account.roleOwner":"Loueur / Propriétaire","account.roleOwnerDesc":"Proposer un ou plusieurs bateaux à la location ou à la vente",
+    "account.roleOwner":"Loueur / Propriétaire","account.roleOwnerDesc":"Proposer un ou plusieurs bateaux à la location",
     "account.nameLabel":"PRÉNOM ET NOM","account.namePlaceholder":"Votre nom","account.phoneLabel":"TÉLÉPHONE","account.photoLabel":"PHOTO DE PROFIL","account.photoReminder":"⚠️ Pensez à ajouter une photo de profil : les fiches sans photo inspirent moins confiance et sont moins souvent contactées.","account.diplomaLabel":"DIPLÔME / CERTIFICATION","account.diplomaCurrent":"Voir le document actuel","account.diplomaNote":"Photo ou PDF de votre diplôme (permis, brevet, carte professionnelle...). Utilisé pour la vérification par l'équipe SkipperNow, non affiché publiquement.","account.diplomaTypeLabel":"TYPE DE DIPLÔME / CERTIFICATION (affiché publiquement)","account.diplomaTypePlaceholder":"Ex. Permis côtier, Brevet 200, Carte professionnelle...","account.photoRequiredError":"Une photo de profil est obligatoire pour publier votre fiche.","account.phoneRequiredError":"Un numéro de téléphone est obligatoire pour publier votre fiche.","account.profileCompletion":"Profil complété","dash.leaveReview":"Laisser un avis","dash.reviewRatingLabel":"NOTE","dash.reviewCommentLabel":"COMMENTAIRE (OPTIONNEL)","dash.reviewSubmit":"Envoyer mon avis","dash.reviewNeedStars":"Merci de choisir une note.","card.reviewsSingle":"avis","card.reviewsPlural":"avis","card.diplomaBadgePrefix":"Diplôme vérifié :","card.sendMessage":"Envoyer un message",
     "account.experienceLabel":"ANNÉES D'EXPÉRIENCE","account.languagesLabel":"LANGUES PARLÉES","account.languagesPlaceholder":"Ex : Français, English, Español",
     "account.skillsLabel":"COMPÉTENCES / TYPES DE BATEAUX MAÎTRISÉS","account.skillsPlaceholder":"Ex : Voilier, Catamaran, Yacht à moteur, Convoyage",
@@ -1323,7 +1323,7 @@ async function openBoatSaleFinder(presetPort){
   const finderPort = document.querySelector("#boatSalePortInput");
   if(presetPort) finderPort.value = presetPort;
   else if(portInput.value.trim()) finderPort.value = portInput.value.trim();
-  const {data,error} = await db.from("boats").select("*").in("listing_type",["sale","both"]).eq("sale_status","available").order("featured",{ascending:false}).order("created_at",{ascending:false});
+  const {data,error} = await db.from("boats").select("*").eq("managed_by_platform",true).eq("listing_type","sale").eq("sale_status","available").order("featured",{ascending:false}).order("created_at",{ascending:false});
   if(error){ box.innerHTML = `<div class="empty-note">${esc(friendlyError(error))}</div>`; return; }
   saleBoatCache = data || [];
   renderBoatSaleResults();
@@ -1651,7 +1651,7 @@ function renderHomeSaleBoatStrip(){
   startBoatCardCarousels();
 }
 async function preloadHomeSales(){
-  const {data,error} = await db.from("boats").select("*").in("listing_type",["sale","both"]).eq("sale_status","available").order("featured",{ascending:false}).order("created_at",{ascending:false}).limit(4);
+  const {data,error} = await db.from("boats").select("*").eq("managed_by_platform",true).eq("listing_type","sale").eq("sale_status","available").order("featured",{ascending:false}).order("created_at",{ascending:false}).limit(4);
   if(error){ console.warn("SkipperNow home sales:",error); saleBoatCache=[]; renderHomeSaleBoatStrip(); return; }
   saleBoatCache = data || [];
   renderHomeSaleBoatStrip();
@@ -2735,7 +2735,7 @@ async function renderBoatsManager(main, refreshFn){
     const availableSaleCount = rows.filter(x=>["sale","both"].includes(x.listing_type) && (x.sale_status||"available")==="available").length;
     const showForm = Boolean(editing) || rows.length===0;
     main.innerHTML = `
-      <div class="note-box">${esc(saleText("Gérez ici tous vos bateaux, qu'ils soient à louer, à vendre ou les deux. Chaque annonce peut être modifiée séparément.","Manage all your boats here, whether for rent, for sale, or both. Each listing can be edited separately.","Gestiona aquí todos tus barcos, ya sean de alquiler, venta o ambos. Cada anuncio se puede modificar por separado."))}</div>
+      <div class="note-box">${esc(saleText("Gérez ici vos bateaux à louer. Les ventes exceptionnelles sont gérées uniquement par SkipperNow.","Manage your rental boats here. Exceptional sales are exclusively managed by SkipperNow.","Gestiona aquí tus barcos de alquiler. Las ventas excepcionales son gestionadas exclusivamente por SkipperNow."))}</div>
       <div class="kpi-grid" style="margin-bottom:16px">
         <div class="kpi"><div class="kpi-top"><span>${esc(saleText("Total annonces","Total listings","Total anuncios"))}</span></div><strong>${rows.length}</strong></div>
         <div class="kpi"><div class="kpi-top"><span>${esc(saleText("En location","For rent","En alquiler"))}</span></div><strong>${rentalCount}</strong></div>
@@ -2755,8 +2755,8 @@ async function renderBoatsManager(main, refreshFn){
         <div class="field"><label>${esc(saleText("TYPE D'ANNONCE","LISTING TYPE","TIPO DE ANUNCIO"))}</label>
           <select id="boatListingTypeInput">
             <option value="rental" ${(b.listing_type||"rental")==="rental"?"selected":""}>${esc(saleText("Location","Rental","Alquiler"))}</option>
-            <option value="sale" ${b.listing_type==="sale"?"selected":""}>${esc(saleText("Vente","Sale","Venta"))}</option>
-            <option value="both" ${b.listing_type==="both"?"selected":""}>${esc(saleText("Location + vente","Rental + sale","Alquiler + venta"))}</option>
+            
+            
           </select>
         </div>
         <div class="field"><label>${esc(t("boatDetail.brand"))}</label><input id="boatBrandInput" value="${esc(b.brand||"")}"></div>
@@ -2777,9 +2777,6 @@ async function renderBoatsManager(main, refreshFn){
         <div class="field"><label>${esc(t("boatDetail.cabinsField"))}</label><input id="boatCabinsInput" type="number" min="0" step="1" value="${b.cabins??""}"></div>
         <div class="field"><label>${esc(t("boatDetail.berths"))}</label><input id="boatBerthsInput" type="number" min="0" step="1" value="${b.berths??""}"></div>
         <div class="field"><label>${esc(t("boatDetail.year"))}</label><input id="boatYearInput" type="number" min="1950" max="${new Date().getFullYear()}" step="1" value="${b.year_built??""}"></div>
-        <div class="field"><label>${esc(saleText("PRIX DE VENTE (€)","SALE PRICE (€)","PRECIO DE VENTA (€)"))}</label><input id="boatSalePriceInput" type="number" min="0" step="100" value="${b.sale_price??""}" placeholder="Ex. 45000"></div>
-        <div class="field"><label>${esc(saleText("HEURES MOTEUR","ENGINE HOURS","HORAS DE MOTOR"))}</label><input id="boatEngineHoursInput" type="number" min="0" step="1" value="${b.engine_hours??""}"></div>
-        <div class="field"><label>${esc(saleText("STATUT DE VENTE","SALE STATUS","ESTADO DE VENTA"))}</label><select id="boatSaleStatusInput"><option value="available" ${(b.sale_status||"available")==="available"?"selected":""}>${esc(saleText("Disponible","Available","Disponible"))}</option><option value="reserved" ${b.sale_status==="reserved"?"selected":""}>${esc(saleText("Réservé","Reserved","Reservado"))}</option><option value="sold" ${b.sale_status==="sold"?"selected":""}>${esc(saleText("Vendu","Sold","Vendido"))}</option></select></div>
         <div class="field"><label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input id="boatSkipperInput" type="checkbox" style="width:auto" ${b.skipper_included?"checked":""}> ${esc(t("boatDetail.skipperIncluded"))}</label></div>
         <div class="field"><label>${esc(t("boatDetail.engineType"))}</label><input id="boatEngineTypeInput" value="${esc(b.engine_type||"")}"></div>
         <div class="field"><label>${esc(t("boatDetail.engineCount"))}</label><input id="boatEngineCountInput" type="number" min="0" step="1" value="${b.engine_count??""}"></div>
@@ -2857,10 +2854,10 @@ async function renderBoatsManager(main, refreshFn){
       const photoUrls = keptPhotoUrls.concat(newUrls);
       const payload = {
         name: document.querySelector("#boatNameInput").value.trim(),
-        listing_type: document.querySelector("#boatListingTypeInput").value,
-        sale_price: Number(document.querySelector("#boatSalePriceInput").value) || null,
-        engine_hours: Number(document.querySelector("#boatEngineHoursInput").value) || null,
-        sale_status: document.querySelector("#boatSaleStatusInput").value,
+        listing_type: "rental",
+        sale_price: null,
+        engine_hours: null,
+        sale_status: "available",
         brand: document.querySelector("#boatBrandInput").value.trim(),
         model: document.querySelector("#boatModelInput").value.trim(),
         boat_type: document.querySelector("#boatTypeInput").value,
@@ -5234,7 +5231,7 @@ async function loadLogbook(){
   const urlPro = params.get("pro");
   if(urlPro) openDirectRequest(urlPro);
   const loadHomeContent = ()=>Promise.all([
-    preloadHomeBoats(), preloadHomeSales(), preloadHomeProviders(), loadListings(), loadTrustStats(),
+    preloadHomeBoats(), preloadHomeProviders(), loadListings(), loadTrustStats(),
     loadLogbook(), loadHeroSlides(), loadDestinationTiles(), loadPortActivities()
   ]).catch(error=>console.warn("SkipperNow home content:",error));
   const needsImmediateContent = Boolean(urlPort || urlActivity || urlPro);
