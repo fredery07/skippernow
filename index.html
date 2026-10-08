@@ -93,7 +93,7 @@
   <div class="shell hero-inner">
     <div class="eyebrow" data-i18n="hero.eyebrow">UNE PLATEFORME. TOUT LE NAUTISME.</div>
     <h1 data-i18n="hero.title">La mer commence ici.</h1>
-    <p data-i18n="hero.subtitle">Louez, achetez, trouvez un skipper ou réservez un service nautique, partout où vous naviguez.</p>
+    <p data-i18n="hero.subtitle">Louez un bateau, trouvez un skipper ou réservez un service nautique, partout où vous naviguez.</p>
     <div class="trust">
       <span data-i18n="hero.trust1">Profils vérifiés</span>
       <span data-i18n="hero.trust2">Réponse rapide</span>
@@ -102,7 +102,6 @@
     <div class="hero-cta">
       <button class="primary" id="heroSkipper" type="button">🧭 Trouver un skipper</button>
       <button class="secondary-light" id="heroBoats" type="button">🌊 Louer un bateau</button>
-      <button class="secondary-light" id="heroBoatSales" type="button">⚓ Acheter un bateau</button>
       <button class="secondary-light" id="heroProviders" type="button">🛠️ Services nautiques</button>
     </div>
     <div class="port-chips" id="portChips">
@@ -170,17 +169,6 @@
       <button class="back-link" id="viewAllBoatsBtn" type="button" style="margin-top:4px;padding:0"><span>Voir les bateaux à louer</span> →</button>
       <button class="owner-cta-link" id="listBoatBtn" type="button">
         <span data-i18n="rental.ctaShort">Vous êtes propriétaire ? Publier mon bateau</span>
-        <span aria-hidden="true">→</span>
-      </button>
-    </div>
-    <div class="rental-box sale-market-box">
-      <span class="pill-link">⚓ <span>BATEAUX À VENDRE</span></span>
-      <h3>Acheter un bateau</h3>
-      <p class="muted" style="margin:2px 0 14px;font-size:14px">Découvrez les bateaux d'occasion et professionnels proposés à la vente sur SkipperNow.</p>
-      <div id="homeSaleBoatStrip"><div class="empty-note">Aucun bateau à vendre pour le moment.</div></div>
-      <button class="back-link" id="viewAllBoatSalesBtn" type="button" style="margin-top:4px;padding:0">Voir tous les bateaux à vendre →</button>
-      <button class="owner-cta-link" id="sellBoatBtn" type="button">
-        <span>Vous vendez un bateau ? Publier une annonce</span>
         <span aria-hidden="true">→</span>
       </button>
     </div>
@@ -422,13 +410,11 @@
         <a id="footerFindSkipper" data-i18n="footer.findSkipper">Trouver un skipper</a>
         <a id="footerFindProvider" data-i18n="footer.findProvider">Trouver un prestataire</a>
         <a id="footerFindBoat">Louer un bateau</a>
-        <a id="footerFindBoatSale">Acheter un bateau</a>
       </div>
       <div>
         <h4 data-i18n="footer.pros">Professionnels</h4>
         <a id="footerBecomePro" data-i18n="footer.becomePro">Devenir prestataire</a>
         <a id="footerAddBoat" data-i18n="footer.addBoat">Publier un bateau</a>
-        <a id="footerSellBoat">Mettre un bateau en vente</a>
       </div>
       <div>
         <h4>Destinations</h4>
@@ -539,7 +525,6 @@
     <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:18px">
       <button class="primary" type="button" data-destination-action="skipper">🧭 Trouver un skipper</button>
       <button class="small-btn fill" type="button" data-destination-action="rental">🌊 Louer un bateau</button>
-      <button class="small-btn fill" type="button" data-destination-action="sale">⚓ Acheter un bateau</button>
       <button class="small-btn fill" type="button" data-destination-action="services">🛠️ Services nautiques</button>
     </div>
   </div>
@@ -662,7 +647,7 @@
       <button class="choice-card active" data-role="client" type="button"><span>👤</span><b data-i18n="account.roleClient">Client</b><small data-i18n="account.roleClientDesc">Réserver un skipper, un prestataire ou un bateau</small></button>
       <button class="choice-card" data-role="skipper" type="button"><span>🧭</span><b data-i18n="account.roleSkipper">Skipper</b><small data-i18n="account.roleSkipperDesc">Recevoir des demandes de sortie et de convoyage</small></button>
       <button class="choice-card" data-role="provider" type="button"><span>🛠️</span><b data-i18n="account.roleProvider">Prestataire</b><small data-i18n="account.roleProviderDesc">Nettoyage, quai, chantier ou marin à la journée</small></button>
-      <button class="choice-card" data-role="owner" type="button"><span>🚤</span><b data-i18n="account.roleOwner">Propriétaire</b><small data-i18n="account.roleOwnerDesc">Louer ou vendre mon bateau</small></button>
+      <button class="choice-card" data-role="owner" type="button"><span>🚤</span><b data-i18n="account.roleOwner">Propriétaire</b><small data-i18n="account.roleOwnerDesc">Proposer mon bateau à la location</small></button>
     </div>
     <div class="field" id="nameField">
       <label data-i18n="account.nameLabel">PRÉNOM ET NOM</label>
