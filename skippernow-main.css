@@ -693,3 +693,10 @@ footer a{display:block;color:#d7e9e8;text-decoration:none;margin:7px 0;backgroun
   #dashboardModal .kpi{padding:13px}
   #dashboardModal .kpi strong{font-size:22px}
 }
+
+.rental-only-kpis{grid-template-columns:repeat(2,minmax(0,1fr));max-width:520px}
+.rental-kpi-btn{font:inherit;text-align:left;cursor:pointer;width:100%;appearance:none}
+.rental-kpi-btn:hover{transform:translateY(-2px);border-color:#7dd9d1;box-shadow:0 10px 26px rgba(16,43,63,.09)}
+.rental-kpi-btn.active{border-color:#59cfc5;box-shadow:0 0 0 3px rgba(57,209,197,.12),0 10px 26px rgba(16,43,63,.08)}
+.rental-kpi-btn.active:after{content:"";position:absolute;right:14px;top:14px;width:8px;height:8px;border-radius:50%;background:var(--aqua)}
+@media(max-width:640px){.rental-only-kpis{grid-template-columns:1fr 1fr;max-width:none}}
