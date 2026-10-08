@@ -2722,7 +2722,7 @@ async function renderClientPanel(panel){
   }
 }
 async function renderBoatsManager(main, refreshFn){
-    const {data} = await db.from("boats").select("*").eq("client_id", currentUser.id).order("created_at",{ascending:false});
+    const {data} = await db.from("boats").select("*").eq("client_id", currentUser.id).in("listing_type",["rental","both"]).order("created_at",{ascending:false});
     const rows = data || [];
     myBoatsCache = rows;
     const editing = editingBoatId ? rows.find(b=>String(b.id)===String(editingBoatId)) : null;
@@ -2732,11 +2732,11 @@ async function renderBoatsManager(main, refreshFn){
     main.innerHTML = `
       <div class="note-box">${esc(saleText("Gérez ici tous vos bateaux proposés à la location.","Manage all your rental boat listings here.","Gestiona aquí todos tus barcos disponibles en alquiler."))}</div>
       <div class="kpi-grid rental-only-kpis" style="margin-bottom:16px">
-        <div class="kpi"><div class="kpi-top"><span>${esc(saleText("Total bateaux","Total boats","Total barcos"))}</span></div><strong>${rows.length}</strong></div>
-        <div class="kpi"><div class="kpi-top"><span>${esc(saleText("En location","For rent","En alquiler"))}</span></div><strong>${rentalCount}</strong></div>
+        <button type="button" class="kpi rental-kpi-btn active" data-boat-list-filter="all" aria-pressed="true"><div class="kpi-top"><span>${esc(saleText("Total annonces","Total listings","Total anuncios"))}</span></div><strong>${rows.length}</strong></button>
+        <button type="button" class="kpi rental-kpi-btn" data-boat-list-filter="rental" aria-pressed="false"><div class="kpi-top"><span>${esc(saleText("En location","For rent","En alquiler"))}</span></div><strong>${rentalCount}</strong></button>
       </div>
       <div style="display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:12px">
-        <h3 style="margin:0">${esc(saleText("Mes annonces","My listings","Mis anuncios"))} (${rows.length})</h3>
+        <h3 style="margin:0" id="myBoatListTitle">${esc(saleText("Mes annonces","My listings","Mis anuncios"))} (${rows.length})</h3>
         <button class="small-btn fill" type="button" id="showAddBoatForm">+ ${esc(saleText("Ajouter un bateau","Add a boat","Añadir un barco"))}</button>
       </div>
       ${rows.length ? `<div id="myBoatCards">${rows.map(bt=>myBoatCard(bt)).join("")}</div>` : `<div class="empty-note">${esc(t("dash.noBoats"))}</div>`}
@@ -2782,6 +2782,24 @@ async function renderBoatsManager(main, refreshFn){
         ${editing ? `<button class="small-btn wide" type="button" id="cancelEditBoat" style="margin-top:8px">${esc(t("dash.cancel"))}</button>` : ""}
       </form></section>`;
     bindMyBoatActions(refreshFn);
+    document.querySelectorAll("[data-boat-list-filter]").forEach(btn=>btn.addEventListener("click", ()=>{
+      const filter=btn.dataset.boatListFilter;
+      document.querySelectorAll("[data-boat-list-filter]").forEach(other=>{
+        const active=other===btn;
+        other.classList.toggle("active",active);
+        other.setAttribute("aria-pressed",active?"true":"false");
+      });
+      const visibleRows = filter==="rental" ? rows.filter(x=>["rental","both"].includes(x.listing_type||"rental")) : rows;
+      const cards=document.querySelector("#myBoatCards");
+      if(cards) cards.innerHTML = visibleRows.length ? visibleRows.map(bt=>myBoatCard(bt)).join("") : `<div class="empty-note">${esc(t("dash.noBoats"))}</div>`;
+      const title=document.querySelector("#myBoatListTitle");
+      if(title) title.textContent = (filter==="rental" ? saleText("Bateaux en location","Boats for rent","Barcos en alquiler") : saleText("Mes annonces","My listings","Mis anuncios")) + " (" + visibleRows.length + ")";
+      bindMyBoatActions(refreshFn);
+      document.querySelectorAll("[data-edit-boat]").forEach(editBtn=>editBtn.addEventListener("click", ()=>{
+        editingBoatId = editBtn.dataset.editBoat;
+        refreshFn().then?.(()=>document.querySelector("#boatEditorSection")?.scrollIntoView({behavior:"smooth",block:"start"}));
+      }));
+    }));
     document.querySelector("#showAddBoatForm")?.addEventListener("click", ()=>{
       editingBoatId = null;
       const editor=document.querySelector("#boatEditorSection");
