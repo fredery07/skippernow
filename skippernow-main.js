@@ -2992,7 +2992,7 @@ async function renderProDashboard(){
     {id:"support", label:t("dash.navSupport")}
   ];
   if(isBoatRentalPro) navItems.push({id:"boats", label:saleText("Mes annonces","My listings","Mis anuncios")});
-  if(isProvider) navItems.push({id:"excursions", label:t("dash.navExcursions")});
+  if(isProvider) navItems.push({id:"excursions", label:t("dash.navExcursions")}, {id:"nucDocs",label:"⚓ Documents NUC"});
   navItems.push({id:"myLink", label:t("dash.navMyLink")});
   navItems.push({id:"profile", label:t("dash.navProfile")}, {id:"availability", label:t("dash.navAvailability")});
   body.innerHTML = dashShell(navItems, "requests");
@@ -3035,6 +3035,8 @@ async function renderProPanel(panel){
     bindProfileReminderLink();
   }else if(panel === "excursions"){
     await renderExcursionsManager(main);
+  }else if(panel === "nucDocs"){
+    await renderNucOwnerPanel(main);
   }else if(panel === "myLink"){
     const link = location.origin + "/?pro=" + currentUser.id;
     const qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=" + encodeURIComponent(link);
@@ -3134,12 +3136,12 @@ async function renderExcursionsManager(main){
       <div id="excPreviewBox" style="margin:6px 0 14px;${(Array.isArray(s.photo_urls)&&s.photo_urls[0])?"":"display:none"}">
         <div class="hero-admin-thumb hero-admin-thumb--big" id="excPreviewImg" style="background-image:url('${esc((s.photo_urls&&s.photo_urls[0])||"")}')"></div>
       </div>
-      <label style="display:flex;align-items:center;gap:8px;font-weight:700;font-size:13.5px;margin-bottom:14px"><input id="excActiveInput" type="checkbox" ${editing ? (s.active?"checked":"") : "checked"}> ${esc(t("dash.heroActive"))}</label>
+      <label style="display:flex;align-items:center;gap:8px;font-weight:700;font-size:13.5px;margin-bottom:14px"><input id="excActiveInput" type="checkbox" ${editing && s.active?"checked":""}> ${esc(t("dash.heroActive"))}</label>
       <div style="display:flex;gap:10px">
         <button class="primary wide" type="submit">${esc(t("dash.contentSave"))}</button>
         ${editing ? `<button type="button" class="secondary" id="excCancelEdit">${esc(t("dash.contentCancel")||"Annuler")}</button>` : ""}
       </div>
-      <div id="excFormMsg" class="muted" style="margin-top:8px"></div>
+      <div class="note-box">Publication après validation des documents obligatoires par SkipperNow. Déposez vos justificatifs dans « Documents NUC » après avoir enregistré votre excursion.</div><div id="excFormMsg" class="muted" style="margin-top:8px"></div>
     </form>`;
   bindExcursionsForm(s);
   main.querySelectorAll("[data-edit-exc]").forEach(btn=>btn.addEventListener("click", ()=>{ editingExcId = btn.dataset.editExc; renderExcursionsManager(main); }));
@@ -3207,6 +3209,7 @@ async function renderAdminDashboard(){
     {id:"commissions", label:t("dash.navCommissions"), group:t("dash.groupFinance")},
     {id:"users", label:t("dash.navUsers"), group:t("dash.groupAccounts")},
     {id:"boats", label:t("dash.navBoatsAdmin"), group:t("dash.groupAccounts")},
+    {id:"nucReviews", label:"⚓ Contrôle NUC",group:t("dash.groupAccounts")},
     {id:"content", label:t("dash.navContent"), group:t("dash.groupContent")},
     {id:"hero", label:t("dash.navHero"), group:t("dash.groupContent")},
     {id:"destinations", label:t("dash.navDestinations"), group:t("dash.groupContent")},
@@ -3400,6 +3403,7 @@ async function renderAdminPanel(panel){
   const newUsers = profiles.filter(p => p.created_at && new Date(p.created_at) > weekAgo).length;
   const openDisputes = missions.filter(m => m.dispute_status === "open").length;
 
+  if(panel === "nucReviews"){ await renderNucAdminPanel(main); return; }
   if(panel === "overview"){
     const priorityItems = [
       ...pending.slice(0,5).map(p=>({type:"validation",level:"warn",title:p.full_name||"—",sub:t("dash.priorityValidation")+" · "+(p.role==="skipper"?t("account.roleSkipper"):t("account.roleProvider")),id:p.id})),
@@ -5262,3 +5266,45 @@ db.auth.onAuthStateChange(async (event, session)=>{
     if(urlPro) openDirectRequest(urlPro);
   }
 });
+
+
+/* Documentation NUC — uploads privately stored; server validation is authoritative. */
+const nucDocKinds={registration:"Enregistrement / immatriculation",navigation_permit:"Permis de navigation NUC",armament_permit:"Permis d'armement (si applicable)",commercial_insurance:"Assurance commerciale",captain_certificate:"Titre professionnel du capitaine",safety_certificate:"Documents de sécurité",other:"Autre justificatif"};
+function nucStatus(st){return ({pending:"À examiner",approved:"Validé",rejected:"Refusé",expired:"Expiré"})[st]||st;}
+async function renderNucOwnerPanel(main){
+ if(!currentUser)return;
+ const [{data:ex,error:err},{data:docs,error:derr}]=await Promise.all([
+  db.from("excursions").select("id,title,port,active,compliance_status,compliance_rejection_reason").eq("provider_id",currentUser.id).order("created_at",{ascending:false}),
+  db.from("excursion_compliance_documents").select("*").eq("owner_id",currentUser.id).order("created_at",{ascending:false})
+ ]);
+ if(err||derr){main.textContent=(err||derr).message;return;}
+ const rows=ex||[], files=docs||[];
+ main.innerHTML='<h3>⚓ Documents et contrôle des excursions</h3><p class="muted">Les sorties commerciales ne peuvent être proposées avant validation. Les documents sont privés. Pour les activités hors régime NUC, contactez SkipperNow afin de vérifier le régime local applicable.</p>'+
+ (rows.length?rows.map(e=>'<div class="request-card"><strong>'+esc(e.title)+'</strong> · '+esc(e.port||'')+' · '+esc(nucStatus(e.compliance_status))+(e.compliance_rejection_reason?'<p>'+esc(e.compliance_rejection_reason)+'</p>':'')+'<div style="font-size:13px;margin:8px 0">Publication : '+(e.active?'Active':'Non publiée')+'</div>'+files.filter(d=>d.excursion_id===e.id).map(d=>'<div style="padding:5px 0">'+esc(nucDocKinds[d.document_type])+' — '+esc(nucStatus(d.review_status))+(d.expires_on?' · expire le '+esc(d.expires_on):'')+'</div>').join('')+'<form data-nuc-upload="'+esc(e.id)+'" style="margin-top:12px"><label>Type de document</label><select name="kind">'+Object.entries(nucDocKinds).map(([k,v])=>'<option value="'+k+'">'+esc(v)+'</option>').join('')+'</select><label>Date de fin de validité (si indiquée)</label><input name="expiry" type="date"><label>Justificatif PDF ou image (10 Mo max.)</label><input name="document" type="file" accept=".pdf,image/jpeg,image/png,image/webp" required><button type="submit" class="small-btn fill" style="margin-top:8px">Envoyer pour contrôle</button><p class="muted" data-upload-msg></p></form></div>').join(''):'<p class="empty-note">Créez d’abord une excursion dans « Mes excursions » pour transmettre les pièces justificatives.</p>');
+ main.querySelectorAll('[data-nuc-upload]').forEach(form=>form.addEventListener('submit',async ev=>{
+  ev.preventDefault();const msg=form.querySelector('[data-upload-msg]');const btn=form.querySelector('button[type=submit]');const f=form.elements.document.files[0];
+  if(!f||f.size>10485760||!['application/pdf','image/jpeg','image/png','image/webp'].includes(f.type)){msg.textContent='Fichier PDF ou image, 10 Mo maximum.';return;}
+  btn.disabled=true;msg.textContent='Envoi en cours…';
+  const excId=form.dataset.nucUpload;
+  const safe=f.name.replace(/[^a-z0-9._-]/gi,'_');
+  const path=currentUser.id+'/'+excId+'/'+crypto.randomUUID()+'-'+safe;
+  const up=await db.storage.from('excursion-compliance').upload(path,f,{contentType:f.type});
+  if(up.error){msg.textContent=up.error.message;btn.disabled=false;return;}
+  const insert=await db.from('excursion_compliance_documents').insert({excursion_id:excId,owner_id:currentUser.id,document_type:form.elements.kind.value,storage_path:path,expires_on:form.elements.expiry.value||null});
+  if(insert.error){await db.storage.from('excursion-compliance').remove([path]);msg.textContent=insert.error.message;btn.disabled=false;return;}
+  await renderNucOwnerPanel(main);
+ }));
+}
+async function renderNucAdminPanel(main){
+ const [{data:ex,error:err},{data:docs,error:derr}]=await Promise.all([
+ db.from('excursions').select('id,title,port,provider_id,active,compliance_status,compliance_rejection_reason').order('created_at',{ascending:false}),
+ db.from('excursion_compliance_documents').select('*').order('created_at',{ascending:false})
+ ]);
+ if(err||derr){main.textContent=(err||derr).message;return;}
+ const rows=ex||[], files=docs||[];
+ main.innerHTML='<h3>⚓ Vérification des excursions</h3><p class="muted">Contrôler la validité des documents, les qualifications et le régime juridique applicable avant validation. Ce contrôle interne ne remplace pas une autorisation maritime.</p>'+
+ (rows.length?rows.map(e=>'<div class="request-card"><h4>'+esc(e.title)+' — '+esc(e.port||'')+'</h4><p>'+esc(nucStatus(e.compliance_status))+' · '+(e.active?'Publiée':'Non publiée')+'</p>'+files.filter(d=>d.excursion_id===e.id).map(d=>'<div style="border-top:1px solid #ddd;padding:8px 0"><strong>'+esc(nucDocKinds[d.document_type])+'</strong> · '+esc(nucStatus(d.review_status))+(d.expires_on?' · '+esc(d.expires_on):'')+' <button class="small-btn" type="button" data-nuc-view="'+esc(d.id)+'">Consulter</button> <button class="small-btn" type="button" data-nuc-doc="'+esc(d.id)+'" data-nuc-status="approved">Accepter</button> <button class="small-btn" type="button" data-nuc-doc="'+esc(d.id)+'" data-nuc-status="rejected">Refuser</button></div>').join('')+'<p><button type="button" class="small-btn fill" data-nuc-exc="'+esc(e.id)+'" data-nuc-decision="approved">Valider l’excursion</button> <button type="button" class="small-btn" data-nuc-exc="'+esc(e.id)+'" data-nuc-decision="rejected">Refuser / suspendre</button></p></div>').join(''):'<p class="empty-note">Aucune excursion à vérifier.</p>');
+ main.querySelectorAll('[data-nuc-view]').forEach(btn=>btn.addEventListener('click',async()=>{const d=files.find(x=>x.id===btn.dataset.nucView);if(!d)return;const {data,error}=await db.storage.from('excursion-compliance').createSignedUrl(d.storage_path,60);if(error)return alert(error.message);window.open(data.signedUrl,'_blank','noopener,noreferrer');}));
+ main.querySelectorAll('[data-nuc-doc]').forEach(btn=>btn.addEventListener('click',async()=>{const decision=btn.dataset.nucStatus;const reason=decision==='rejected'?prompt('Motif du refus (obligatoire)'):null;if(decision==='rejected'&&!reason?.trim())return;const {error}=await db.from('excursion_compliance_documents').update({review_status:decision,checked_by:currentUser.id,checked_at:new Date().toISOString(),rejection_reason:reason||null}).eq('id',btn.dataset.nucDoc);if(error)alert(error.message);else await renderNucAdminPanel(main);}));
+ main.querySelectorAll('[data-nuc-exc]').forEach(btn=>btn.addEventListener('click',async()=>{const decision=btn.dataset.nucDecision;const reason=decision==='rejected'?prompt('Motif du refus / suspension (obligatoire)'):null;if(decision==='rejected'&&!reason?.trim())return;const changes={compliance_status:decision,compliance_reviewed_by:currentUser.id,compliance_reviewed_at:new Date().toISOString(),compliance_rejection_reason:reason||null,active:false};const {error}=await db.from('excursions').update(changes).eq('id',btn.dataset.nucExc);if(error)alert(error.message);else await renderNucAdminPanel(main);}));
+}
