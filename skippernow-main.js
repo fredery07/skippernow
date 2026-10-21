@@ -59,13 +59,18 @@ async function enablePushNotifications(){
       if(!json.endpoint || !json.keys?.p256dh || !json.keys?.auth){
         throw new Error("Abonnement push incomplet.");
       }
-      const {error} = await db.from("push_subscriptions").upsert({
-        user_id: authData.user.id,
-        endpoint: json.endpoint,
-        p256dh: json.keys.p256dh,
-        auth: json.keys.auth
-      }, {onConflict:"endpoint"});
-      if(error) throw error;
+      // Avoid an UPSERT on the globally unique endpoint: it can conflict
+      // with an endpoint owned by a different account, which RLS must reject.
+      const {data: existing, error: lookupError} = await db.from("push_subscriptions")
+        .select("id").eq("user_id", authData.user.id).eq("endpoint", json.endpoint).maybeSingle();
+      if(lookupError) throw lookupError;
+      const payload = {p256dh: json.keys.p256dh, auth: json.keys.auth};
+      const result = existing
+        ? await db.from("push_subscriptions").update(payload).eq("id", existing.id).eq("user_id", authData.user.id)
+        : await db.from("push_subscriptions").insert({
+            user_id: authData.user.id, endpoint: json.endpoint, ...payload
+          });
+      if(result.error) throw result.error;
     };
     try{
       await saveSubscription(sub);
