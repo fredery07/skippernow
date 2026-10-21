@@ -49,13 +49,38 @@ async function enablePushNotifications(){
         applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
       });
     }
-    const json = sub.toJSON();
-    await db.from("push_subscriptions").upsert({
-      user_id: currentUser.id,
-      endpoint: json.endpoint,
-      p256dh: json.keys.p256dh,
-      auth: json.keys.auth
-    }, {onConflict:"endpoint"});
+    // Always use the verified Supabase auth identity, not a cached profile.
+    const {data: authData, error: authError} = await db.auth.getUser();
+    if(authError || !authData?.user?.id || authData.user.id !== currentUser.id){
+      throw new Error("Session expirée ou compte différent : reconnectez-vous à SkipperNow.");
+    }
+    const saveSubscription = async (subscription) => {
+      const json = subscription.toJSON();
+      if(!json.endpoint || !json.keys?.p256dh || !json.keys?.auth){
+        throw new Error("Abonnement push incomplet.");
+      }
+      const {error} = await db.from("push_subscriptions").upsert({
+        user_id: authData.user.id,
+        endpoint: json.endpoint,
+        p256dh: json.keys.p256dh,
+        auth: json.keys.auth
+      }, {onConflict:"endpoint"});
+      if(error) throw error;
+    };
+    try{
+      await saveSubscription(sub);
+    }catch(error){
+      // A browser can retain an endpoint linked to a previously signed-in user.
+      // RLS must stay enabled: renew the browser subscription instead of taking
+      // ownership of another user's record.
+      if(!/row-level security|42501/i.test(String(error?.message || error))) throw error;
+      await sub.unsubscribe();
+      sub = await reg.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
+      });
+      await saveSubscription(sub);
+    }
     localStorage.setItem("skippernow-push-enabled", "1");
     return true;
   }catch(e){ console.error(e); return false; }
