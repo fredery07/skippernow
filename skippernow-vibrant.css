@@ -94,3 +94,19 @@ main.shell > .shell{padding:0!important}
 main.shell .trust-stats{margin-top:18px!important}
 main.shell .quick-request-bar{margin-top:16px!important}
 @media(max-width:760px){main.shell #rentalHub{margin-top:12px!important}}
+
+/* Accessibility repair: free request CTA must remain highly visible */
+.quick-request-bar #quickRequestBtn,
+.quick-request-bar button.primary{
+ background:linear-gradient(120deg,#0bc8bc,#2de5cc)!important;
+ color:#052b3e!important;
+ border:2px solid #06a99e!important;
+ box-shadow:0 8px 22px rgba(0,125,140,.24)!important;
+ font-weight:850!important;
+ opacity:1!important;
+ text-shadow:none!important;
+ min-width:240px;
+}
+.quick-request-bar #quickRequestBtn:hover{background:#67f2de!important;color:#002f40!important}
+.quick-request-bar #quickRequestBtn:focus-visible{outline:3px solid #ffcb5a!important;outline-offset:3px}
+@media(max-width:650px){.quick-request-bar #quickRequestBtn{width:100%;min-width:0}}
