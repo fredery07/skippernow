@@ -46,3 +46,23 @@ main.shell{max-width:1220px}
 @media(min-width:1000px){.hero-inner{max-width:1200px}.hero{padding-top:62px}}
 @media(max-width:820px){.hero{padding:46px 0 35px}.hero-inner{width:calc(100% - 30px)}.hero .hero-cta{grid-template-columns:1fr}.hero .hero-cta .sn-action{min-height:72px}.sn-new-how .steps,.sn-why-grid{grid-template-columns:1fr 1fr}.hero h1{font-size:clamp(44px,8vw,64px)}}
 @media(max-width:560px){.hero .hero-cta{gap:9px}.hero .trust{gap:10px}.sn-new-how .steps,.sn-why-grid{grid-template-columns:1fr}.sn-new-how .step{padding:7px 0}.hero .sn-hero-subtitle{font-size:16px}}
+
+/* Premium illustration-aligned layout: yacht photography, tighter fold */
+.hero{min-height:0!important;padding:38px 0 26px!important}
+.hero-inner{max-width:1220px!important}
+.hero .hero-bg{opacity:0!important}
+.hero .hero-bg.sn-hero-cover{opacity:1!important;background-position:center 56%!important;filter:saturate(1.12) contrast(1.04)!important}
+.hero .hero-shade{background:linear-gradient(90deg,rgba(1,26,44,.85) 0%,rgba(1,29,49,.62) 45%,rgba(1,35,49,.16) 95%)!important}
+.hero h1{font-size:clamp(48px,5.8vw,76px)!important;margin:8px 0 10px!important}
+.hero .sn-hero-subtitle{margin:7px 0 12px!important}
+.hero .trust{margin:14px 0 17px!important}
+.hero .hero-cta{margin:13px 0 16px!important}
+.hero .hero-cta .sn-action{min-height:76px!important;padding:12px 14px!important}
+.hero .port-chips{margin:10px auto 0!important}
+@media(min-width:1100px){.hero .hero-inner{width:calc(100% - 90px)}}
+@media(max-width:820px){.hero{padding:34px 0 28px!important}.hero .hero-cta{grid-template-columns:1fr!important}.hero .hero-shade{background:linear-gradient(90deg,rgba(2,29,46,.82),rgba(2,29,46,.3))!important}}
+/* Let how-it-works and real listing galleries tell the story ahead of search. */
+.sn-new-how{margin-top:16px!important}
+.sn-why{background:#faf7f1;border-radius:20px;padding-left:18px;padding-right:18px}
+.sn-feature-head{background:#eaf4f7;padding:26px 16px 0;border-radius:20px 20px 0 0}
+.rental-hub{background:#eaf4f7;padding:10px 15px 20px;border-radius:0 0 20px 20px}
