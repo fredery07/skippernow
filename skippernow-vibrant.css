@@ -61,3 +61,23 @@ main.shell .card{border-radius:20px;overflow:hidden;border:1px solid #dfefed;bac
 main.shell .card:hover{box-shadow:0 13px 33px #174c6526}
 main.shell section h2{letter-spacing:-.025em}
 @media(max-width:750px){main.shell .rental-box{padding:18px}main.shell .how{padding:24px 17px}main.shell .how .step{padding:13px}main.shell .tile-browse{padding:20px 12px}}
+
+/* Premium lagoon refresh v4: brighter hero and high-contrast action cards */
+.hero{background:#08465c!important}
+.hero .hero-bg{filter:saturate(1.44) contrast(1.11) brightness(1.14)!important}
+.hero .hero-shade{background:linear-gradient(105deg,rgba(1,29,51,.68) 0%,rgba(1,70,86,.28) 51%,rgba(0,141,147,.05) 100%)!important}
+.hero .hero-inner h1{color:#fff!important;text-shadow:0 4px 22px #00304496}
+.hero .hero-inner>p{color:#f1ffff!important;text-shadow:0 2px 10px #06384c99}
+.hero .eyebrow{color:#ffdc8b!important;text-shadow:0 2px 12px #002a4f}
+.hero .trust span{color:white!important;text-shadow:0 2px 8px #003b52}
+.hero .hero-cta>button{background:#fff!important;color:#07324e!important;border:1px solid #effffb!important;box-shadow:0 10px 25px #002d4990!important;position:relative;overflow:hidden;min-height:69px!important;font-size:16px!important;border-radius:17px!important}
+.hero .hero-cta>button::before{content:"";position:absolute;left:0;top:0;bottom:0;width:6px;background:linear-gradient(#13ded0,#0892b0)}
+.hero .hero-cta>button:first-child{background:linear-gradient(135deg,#25e0ce,#00b5bd)!important;color:#002f47!important}
+.hero .hero-cta>button:nth-child(2){background:linear-gradient(135deg,#fffef8,#e8faf8)!important}
+.hero .hero-cta>button:nth-child(3){background:linear-gradient(135deg,#fffdf4,#fff1ce)!important}
+.hero .hero-cta>button:nth-child(3)::before{background:#e6b958}
+.hero .hero-cta>button:hover{transform:translateY(-4px)!important;box-shadow:0 16px 34px #002a43a8!important}
+.hero .port-chips button{background:rgba(3,66,87,.80)!important;border:1px solid rgba(161,244,235,.75)!important;box-shadow:0 3px 13px #002c4144!important;color:white!important}
+.hero .port-chips button:hover{background:#08a6a9!important;border-color:#d4fff4!important}
+.search-wrap .search-card{box-shadow:0 20px 42px #0d75832a!important}
+@media(max-width:600px){.hero .hero-cta>button{min-height:57px!important}}
