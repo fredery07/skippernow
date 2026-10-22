@@ -5292,6 +5292,10 @@ async function loadLogbook(){
       window.openBookingFor(null,"Demande ouverte — "+btn.textContent.trim(),urlPort||"",activity,"","provider");
     });
   }
+  if(urlActivity === "skipper"){
+    showProviderResults("skipper");
+    openModal("providerModal");
+  }
   if(urlActivity === "boat_rental"){ openBoatFinder(urlPort||""); }
   if(urlActivity === "boat_sale"){ openBoatSaleFinder(urlPort||""); }
   if(urlActivity === "excursion"){ openExcursionFinder(urlPort||""); }
