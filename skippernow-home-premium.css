@@ -76,3 +76,16 @@ main.shell{max-width:1220px}
 .hero .sn-action-copy strong{font-family:Georgia,serif;font-size:clamp(16px,1.6vw,20px)}
 .hero .sn-action-arrow{margin-left:auto}
 @media(max-width:560px){.hero .hero-cta .sn-action{min-height:130px!important}.hero .sn-action-photo{height:70px}}
+
+/* Repair broken remote hero and unstyled navigation; keep all buttons functional */
+.hero .hero-bg.sn-hero-cover{background-image:url('/hero-main.avif')!important;background-size:cover!important;background-position:center 48%!important}
+.hero .hero-shade{background:linear-gradient(90deg,rgba(3,25,43,.72) 0%,rgba(3,30,46,.34) 63%,rgba(3,29,44,.12))!important}
+.sn-top-links{display:flex;align-items:center;justify-content:center;gap:22px;flex:1;margin:0 20px}
+.sn-top-links button{appearance:none;-webkit-appearance:none;background:transparent;border:0;box-shadow:none;color:#102c45;padding:9px 3px;font:600 13px/1.3 system-ui,sans-serif;cursor:pointer;white-space:nowrap}
+.sn-top-links button:hover{color:#078b91}
+.hero .hero-cta .sn-action{min-height:138px!important}
+.hero .hero-cta .sn-action-detail{min-height:60px;box-sizing:border-box}
+.hero .hero-cta .sn-action-copy strong{font-size:clamp(15px,1.45vw,18px)!important;line-height:1.13}
+.hero .hero-cta .sn-action-copy small{font-size:11px;line-height:1.2}
+@media(max-width:1050px){.sn-top-links{gap:10px;margin:0 10px}.sn-top-links button{font-size:11px}}
+@media(max-width:780px){.sn-top-links{display:none}}
