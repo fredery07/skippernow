@@ -22,8 +22,8 @@ function launch(){
    grid.innerHTML=options.map(([code,label])=>'<button type="button" data-activity="'+code+'" style="padding:16px;text-align:left;background:#f7faf9;border:1px solid #d7e1dc;border-radius:12px;font:inherit;font-weight:700">'+label+'</button>').join("");
    const close=()=>{layer.remove();const url=new URL(location.href);url.searchParams.delete("activity");url.searchParams.delete("source");history.replaceState(null,"",url.pathname+url.search+url.hash);};
    layer.querySelector("[data-close]").onclick=close;
-   grid.querySelectorAll("[data-activity]").forEach(b=>b.onclick=()=>{
-     const selected=b.dataset.activity,label=b.textContent.trim();
+   const chooseCategory=(selected,label)=>{
+
      const title=layer.querySelector("h2");
      title.textContent=label;
      layer.querySelector("p").textContent="Comment souhaitez-vous trouver votre professionnel ?";
@@ -39,8 +39,10 @@ function launch(){
        if(typeof showProviderResults!=="function"||typeof openModal!=="function"){alert("La liste des professionnels est indisponible.");return;}
        close();showProviderResults(selected);openModal("providerModal");
      };
-   });
+   };
+   grid.querySelectorAll("[data-activity]").forEach(b=>b.onclick=()=>chooseCategory(b.dataset.activity,b.textContent.trim()));
    document.body.appendChild(layer);
+   window.snServiceChoiceBack=(selected,label)=>{if(document.getElementById("snServiceChooser"))return; const url=new URL(location.href);url.searchParams.set("activity","service");history.replaceState(null,"",url.pathname+url.search+url.hash);launch();setTimeout(()=>{const item=document.querySelector("#snServiceChooser [data-activity=\""+selected+"\"]");if(item)item.click();},180);};
  };
  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",()=>setTimeout(kick,100),{once:true});else setTimeout(kick,100);
 }
