@@ -1,0 +1,23 @@
+/* Brighter SkipperNow palette — preserve layout and functional controls */
+:root{--aqua:#25d6c1;--brass-light:#f5c96f}
+body{background:linear-gradient(180deg,#f9fcfc 0%,#eafafa 50%,#fffaf0 100%)}
+header{background:#fffefa;box-shadow:0 3px 18px #0f566015}
+.hero{background:linear-gradient(120deg,#053b65 0%,#078b9a 68%,#20b8a9 100%)}
+.hero .hero-bg{filter:saturate(1.26) contrast(1.05) brightness(1.06)}
+.hero .hero-shade{background:linear-gradient(90deg,rgba(4,35,65,.72) 0%,rgba(0,79,101,.44) 52%,rgba(11,146,151,.16) 100%)}
+.hero .eyebrow{color:#ffdc91}
+.hero .trust span{color:#fff}
+.hero .hero-cta button.primary,.primary{background:linear-gradient(135deg,#22d5c5,#08b8bc);color:#063047;border-color:#14bcb6}
+.hero .hero-cta button.secondary-light{background:#ffffffef;border:1px solid #e4d5b0;color:#064b60;box-shadow:0 6px 18px #002e3e25}
+.hero .port-chips button{background:#076d83af;border:1px solid #8ae8df8a;color:#fff}
+.search-card,.rental-box,.card{box-shadow:0 8px 26px #146c7b14}
+.quick-request-bar{background:linear-gradient(110deg,#e1faf6,#fff2d9);border-color:#b3e5dc}
+.launch-banner{background:linear-gradient(100deg,#e0f8f5,#fff2d7);color:#0d465d}
+h2,h3{color:#082d49}
+.rental-hub .rental-box{border-color:#b7eae4}
+#homeProvidersSection{background:linear-gradient(145deg,#fff,#e8faf8)}
+.how{background:linear-gradient(125deg,#063d60,#086b79);box-shadow:0 9px 28px #08395318}
+.trust-process{background:linear-gradient(120deg,#effbf8,#fff7e8)}
+button{transition:transform .17s ease,box-shadow .17s ease}
+button:hover{filter:saturate(1.07)}
+@media(prefers-reduced-motion:reduce){button{transition:none}}
