@@ -23,10 +23,22 @@ function launch(){
    const close=()=>{layer.remove();const url=new URL(location.href);url.searchParams.delete("activity");url.searchParams.delete("source");history.replaceState(null,"",url.pathname+url.search+url.hash);};
    layer.querySelector("[data-close]").onclick=close;
    grid.querySelectorAll("[data-activity]").forEach(b=>b.onclick=()=>{
-     if(typeof window.openBookingFor!=="function"){alert("Le formulaire est en cours de chargement. Actualisez la page.");return;}
-     const selected=b.dataset.activity,label=b.textContent;
-     close();
-     window.openBookingFor(null,"Demande ouverte — "+label,params.get("port")||"",selected,"","provider");
+     const selected=b.dataset.activity,label=b.textContent.trim();
+     const title=layer.querySelector("h2");
+     title.textContent=label;
+     layer.querySelector("p").textContent="Comment souhaitez-vous trouver votre professionnel ?";
+     grid.innerHTML='<button type="button" data-path="open" style="padding:20px;text-align:left;background:#e1faf3;border:1px solid #29bba4;border-radius:14px;font:inherit"><strong>📝 Déposer ma demande</strong><div style="margin-top:7px;font-size:14px">Recevoir plusieurs devis sans choisir de professionnel.</div></button><button type="button" data-path="profiles" style="padding:20px;text-align:left;background:#f7faf9;border:1px solid #d7e1dc;border-radius:14px;font:inherit"><strong>👥 Voir les prestataires</strong><div style="margin-top:7px;font-size:14px">Comparer les profils et contacter directement un professionnel.</div></button>';
+     const back=document.createElement("button");back.type="button";back.textContent="← Changer de prestation";back.style.cssText="margin-top:16px;padding:9px;border:0;background:transparent;cursor:pointer;color:#0d6373";
+     back.onclick=()=>{layer.remove();const url=new URL(location.href);url.searchParams.set("activity","service");history.replaceState(null,"",url.pathname+url.search+url.hash);launch();};
+     grid.after(back);
+     grid.querySelector('[data-path="open"]').onclick=()=>{
+       if(typeof window.openBookingFor!=="function"){alert("Le formulaire est indisponible. Réactualisez la page.");return;}
+       close();window.openBookingFor(null,"Demande ouverte — "+label,params.get("port")||"",selected,"","provider");
+     };
+     grid.querySelector('[data-path="profiles"]').onclick=()=>{
+       if(typeof showProviderResults!=="function"||typeof openModal!=="function"){alert("La liste des professionnels est indisponible.");return;}
+       close();showProviderResults(selected);openModal("providerModal");
+     };
    });
    document.body.appendChild(layer);
  };
