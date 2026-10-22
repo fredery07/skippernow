@@ -1181,10 +1181,9 @@ document.querySelector("#heroSkipper").addEventListener("click", ()=>{
   openModal("providerModal");
 });
 document.querySelector("#heroProviders").addEventListener("click", ()=>{
-  showProviderCategories();
-  openModal("providerModal");
+  window.location.assign("/?activity=service&source=home_choice");
 });
-document.querySelector("#quickRequestBtn")?.addEventListener("click", openQuickRequest);
+document.querySelector("#quickRequestBtn")?.addEventListener("click", ()=>window.location.assign("/?activity=service&source=home_choice"));
 document.querySelectorAll(".provider-service").forEach(btn=>{
   btn.addEventListener("click", ()=>{
     if(PROVIDER_SUBCATEGORIES[btn.dataset.activity]) showProviderSubcategories(btn.dataset.activity);
