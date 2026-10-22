@@ -89,3 +89,10 @@ main.shell{max-width:1220px}
 .hero .hero-cta .sn-action-copy small{font-size:11px;line-height:1.2}
 @media(max-width:1050px){.sn-top-links{gap:10px;margin:0 10px}.sn-top-links button{font-size:11px}}
 @media(max-width:780px){.sn-top-links{display:none}}
+
+/* Approved direction: simple interactive buttons, no substitute photos */
+.hero .hero-cta .sn-action{flex-direction:row!important;align-items:center!important;min-height:74px!important;padding:12px 14px!important;gap:12px!important}
+.hero .sn-action-photo{display:none!important}
+.hero .sn-action-detail{padding:0!important;width:100%}
+.hero .sn-action-copy{min-width:0}
+.hero .sn-action-arrow{margin-left:auto}
