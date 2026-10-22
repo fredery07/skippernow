@@ -110,3 +110,13 @@ main.shell .quick-request-bar{margin-top:16px!important}
 .quick-request-bar #quickRequestBtn:hover{background:#67f2de!important;color:#002f40!important}
 .quick-request-bar #quickRequestBtn:focus-visible{outline:3px solid #ffcb5a!important;outline-offset:3px}
 @media(max-width:650px){.quick-request-bar #quickRequestBtn{width:100%;min-width:0}}
+
+/* Compact hero buttons and useful top navigation */
+.hero .hero-cta{gap:11px!important;margin:17px auto 13px!important}
+.hero .hero-cta>button{flex:0 1 195px!important;min-height:51px!important;padding:10px 13px!important;font-size:14px!important;border-radius:12px!important}
+.sn-header-links{display:flex;align-items:center;justify-content:center;gap:24px;flex:1;min-width:0;padding:0 18px}
+.sn-header-links button{appearance:none;border:0;background:transparent;color:#0c344e;font-size:13px;font-weight:750;padding:10px 2px;white-space:nowrap;cursor:pointer}
+.sn-header-links button:hover,.sn-header-links button:focus-visible{color:#008e97;text-decoration:underline;text-underline-offset:5px}
+@media(max-width:900px){.sn-header-links{gap:10px;padding:0 8px}.sn-header-links button{font-size:11px}}
+@media(max-width:720px){.sn-header-links{display:none}}
+@media(max-width:600px){.hero .hero-cta>button{flex:1 1 100%!important;min-height:48px!important}}
