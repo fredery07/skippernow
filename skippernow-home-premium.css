@@ -96,3 +96,23 @@ main.shell{max-width:1220px}
 .hero .sn-action-detail{padding:0!important;width:100%}
 .hero .sn-action-copy{min-width:0}
 .hero .sn-action-arrow{margin-left:auto}
+
+/* Proper HTML/CSS recreation of approved homepage visual — no screenshot overlay. */
+header .shell{max-width:1400px!important}
+.hero{background:#0b354e!important;padding:45px 0 23px!important}
+.hero .hero-bg.sn-hero-cover{background-image:url("https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?auto=format&fit=crop&w=2200&q=85")!important;background-position:center 50%!important;background-size:cover!important;opacity:1!important}
+.hero .hero-shade{background:linear-gradient(90deg,rgba(2,23,44,.81) 0%,rgba(2,30,46,.52) 45%,rgba(3,34,45,.16) 100%)!important}
+.hero-inner{max-width:1300px!important;width:calc(100% - 70px)!important}
+.hero h1{font-family:Georgia,serif!important;font-size:clamp(46px,5.5vw,76px)!important;letter-spacing:-.04em!important;line-height:1.05!important}
+.hero .hero-cta{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:12px!important}
+.hero .hero-cta .sn-action{background:#fff!important;border-radius:14px!important;box-shadow:0 6px 22px #001c2938!important;min-height:80px!important;display:flex!important;flex-direction:row!important;align-items:center!important;padding:10px 13px!important}
+.hero .sn-action-detail{display:flex!important;align-items:center!important;gap:12px!important;width:100%}
+.hero .sn-action-icon{display:grid!important;place-items:center!important;flex:0 0 55px!important;width:55px!important;height:55px!important;border-radius:13px!important;background:#d9f1f0!important;color:#10354d!important;font-size:25px!important}
+.hero .sn-action-copy{flex:1!important}
+.hero .sn-action-copy strong{font-family:Georgia,serif!important;color:#092740!important;font-weight:700!important;font-size:clamp(15px,1.55vw,21px)!important}
+.hero .sn-action-arrow{background:#008b95!important;display:grid!important;place-items:center!important;width:37px!important;height:37px!important;border-radius:50%!important;color:#fff!important;font-size:24px!important}
+.hero .port-chips{justify-content:center!important;margin-top:13px!important}
+.sn-top-links button{border:none!important;box-shadow:none!important;background:transparent!important;appearance:none!important;font-size:13px!important;font-weight:650!important}
+.sn-new-how{background:#fff!important;margin-top:12px!important;padding:25px 15px!important}
+.sn-why{background:#f8f6f1!important}
+@media(max-width:830px){.hero-inner{width:calc(100% - 32px)!important}.hero .hero-cta{grid-template-columns:1fr!important}.sn-top-links{display:none!important}}
