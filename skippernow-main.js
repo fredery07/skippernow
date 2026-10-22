@@ -2326,6 +2326,27 @@ window.openBookingFor = function(targetId, name, homePort, activity, subcategory
   document.querySelector("#bookingPhotos").value = "";
   document.querySelector("#bookingPhotosPreview").innerHTML = "";
   openModal("bookingModal");
+  // Open-service requests return to the two choices instead of closing the journey.
+  const modal = document.querySelector("#bookingModal");
+  let returnBtn = modal?.querySelector("[data-sn-return-choice]");
+  if(!returnBtn && modal){
+    returnBtn=document.createElement("button");
+    returnBtn.type="button";
+    returnBtn.dataset.snReturnChoice="1";
+    returnBtn.textContent="← Retour aux deux options";
+    returnBtn.style.cssText="display:block;margin:0 0 14px;padding:10px 14px;border:1px solid #cadad9;border-radius:10px;background:#fff;color:#123b4a;font-weight:700;cursor:pointer";
+    const heading=modal.querySelector("#bookingTargetName");
+    (heading?.parentElement||modal.firstElementChild||modal).prepend(returnBtn);
+  }
+  if(returnBtn){
+    const openService=!targetId && activity && activity!=="skipper" && activity!=="boat_rental";
+    returnBtn.style.display=openService?"block":"none";
+    returnBtn.onclick=()=>{
+      closeModal("bookingModal");
+      if(typeof window.snServiceChoiceBack==="function") window.snServiceChoiceBack(activity,name);
+      else location.href="/?activity=service&source=home_choice";
+    };
+  }
   trackBookingEvent("booking_opened", {
     activity: activity || activeActivity,
     has_target: Boolean(targetId),
