@@ -66,3 +66,13 @@ main.shell{max-width:1220px}
 .sn-why{background:#faf7f1;border-radius:20px;padding-left:18px;padding-right:18px}
 .sn-feature-head{background:#eaf4f7;padding:26px 16px 0;border-radius:20px 20px 0 0}
 .rental-hub{background:#eaf4f7;padding:10px 15px 20px;border-radius:0 0 20px 20px}
+
+/* Visual cards matching the approved mockup, while preserving real clickable buttons */
+.hero .hero-cta{align-items:stretch!important}
+.hero .hero-cta .sn-action{display:flex!important;flex-direction:column!important;align-items:stretch!important;padding:6px!important;overflow:hidden;gap:0!important;min-height:142px!important;border-radius:15px!important}
+.hero .sn-action-photo{height:75px;width:100%;display:block;flex:none;background-size:cover;background-position:center;border-radius:10px 10px 7px 7px;background-color:#dbeef1}
+.hero .sn-action-detail{display:flex;align-items:center;gap:10px;padding:8px 8px 5px}
+.hero .sn-action-icon{height:43px;width:43px;font-size:20px}
+.hero .sn-action-copy strong{font-family:Georgia,serif;font-size:clamp(16px,1.6vw,20px)}
+.hero .sn-action-arrow{margin-left:auto}
+@media(max-width:560px){.hero .hero-cta .sn-action{min-height:130px!important}.hero .sn-action-photo{height:70px}}
