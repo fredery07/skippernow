@@ -2478,6 +2478,27 @@ document.querySelector("#bookingSubmit").addEventListener("click", async ()=>{
       photoUrls.push(pub.publicUrl);
     }
 
+    // Open cleaning requests are marketplace listings, not assigned missions.
+    // Direct requests continue through the existing mission/payment workflow.
+    if(!bookingContext.targetId && (bookingContext.activity || activeActivity) === "cleaning"){
+      const {data: openRequest,error: openError} = await db.from("provider_requests").insert({
+        client_id: currentUser.id,
+        provider_id: null,
+        activity: "cleaning",
+        port: requestedPort,
+        boat_name: boatType || "Bateau",
+        task_description: details,
+        desired_date: requestedDate || null,
+        photo_urls: photoUrls,
+        status: "open"
+      }).select("id").single();
+      if(openError){msg.style.color="#b42318";msg.textContent=friendlyError(openError);submitBtn.disabled=false;return;}
+      trackBookingEvent("booking_created",{activity:"cleaning",source:"open_request",request_id:openRequest.id});
+      bookingContext.sent=true;clearBookingDraft();
+      document.querySelector("#bookingForm").style.display="none";
+      document.querySelector("#bookingSuccess").style.display="block";
+      return;
+    }
     const missionPayload = {
       client_id: currentUser.id,
       port: requestedPort,
