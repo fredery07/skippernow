@@ -48,6 +48,7 @@
 </script>
 <link rel="preload" as="image" href="/hero-main.avif" type="image/avif" fetchpriority="high">
 <link rel="stylesheet" href="/skippernow-main.css?v=20261008-rental-only-dashboard">
+<link rel="stylesheet" href="/skippernow-home-premium.css?v=20261022-v1">
 
 </head>
 <body>
@@ -93,16 +94,16 @@
   <div class="shell hero-inner">
     <div class="eyebrow" data-i18n="hero.eyebrow">UNE PLATEFORME. TOUT LE NAUTISME.</div>
     <h1 data-i18n="hero.title">La mer commence ici.</h1>
-    <p data-i18n="hero.subtitle">Louez un bateau, trouvez un skipper ou réservez un service nautique, partout où vous naviguez.</p>
+    <p class="sn-hero-subtitle">Bateaux, skippers et services nautiques.<br>Trouvez le bon professionnel ou recevez plusieurs devis, en quelques clics.</p>
     <div class="trust">
       <span data-i18n="hero.trust1">Profils vérifiés</span>
       <span data-i18n="hero.trust2">Réponse rapide</span>
       <span data-i18n="hero.trust3">Paiement sécurisé</span>
     </div>
     <div class="hero-cta">
-      <button class="primary" id="heroSkipper" type="button">🧭 Trouver un skipper</button>
-      <button class="secondary-light" id="heroBoats" type="button">🌊 Louer un bateau</button>
-      <button class="secondary-light" id="heroProviders" type="button">🛠️ Services nautiques</button>
+      <button class="sn-action" id="heroBoats" type="button"><span class="sn-action-icon">⛵</span><span class="sn-action-copy"><strong>Louer un bateau</strong><small>Voiliers, yachts, catamarans…</small></span><span class="sn-action-arrow">→</span></button>
+      <button class="sn-action" id="heroSkipper" type="button"><span class="sn-action-icon">⚓</span><span class="sn-action-copy"><strong>Réserver un skipper</strong><small>Des professionnels pour naviguer</small></span><span class="sn-action-arrow">→</span></button>
+      <button class="sn-action" id="heroProviders" type="button"><span class="sn-action-icon">🛠</span><span class="sn-action-copy"><strong>Demander une prestation</strong><small>Déposer ma demande ou voir les prestataires</small></span><span class="sn-action-arrow">→</span></button>
     </div>
     <div class="port-chips" id="portChips">
       <button type="button" data-zone="cote-azur">🇫🇷 Côte d’Azur</button>
@@ -153,6 +154,26 @@
 
 <main class="shell">
 
+  <section class="how sn-new-how" aria-label="Comment fonctionne SkipperNow">
+    <h2>Comment fonctionne SkipperNow ?</h2>
+    <p class="sn-how-sub">Un bateau, un skipper ou un service nautique, en trois étapes simples.</p>
+    <div class="steps">
+      <article class="step"><b>1</b><span class="sn-step-icon">▤</span><div><h4>Décrivez votre besoin</h4><p>Indiquez votre projet et vos préférences.</p></div></article>
+      <article class="step"><b>2</b><span class="sn-step-icon">☏</span><div><h4>Recevez des propositions</h4><p>Consultez les offres des professionnels concernés.</p></div></article>
+      <article class="step"><b>3</b><span class="sn-step-icon">✓</span><div><h4>Choisissez et réservez</h4><p>Validez le prix avant de procéder au paiement.</p></div></article>
+    </div>
+  </section>
+  <section class="sn-why" aria-label="Pourquoi choisir SkipperNow">
+    <h2>Pourquoi choisir SkipperNow ?</h2>
+    <p>Une plateforme pensée pour simplifier vos projets nautiques.</p>
+    <div class="sn-why-grid">
+      <article><span>🛡️</span><div><strong>Professionnels vérifiés</strong><p>Des profils contrôlés avant leur validation.</p></div></article>
+      <article><span>⛵</span><div><strong>Tout le nautisme</strong><p>Bateaux, skippers et services au même endroit.</p></div></article>
+      <article><span>👥</span><div><strong>Demande ou choix direct</strong><p>Recevez des devis ou contactez un professionnel.</p></div></article>
+      <article><span>🔒</span><div><strong>Paiement sécurisé</strong><p>Vous validez votre prix avant de payer.</p></div></article>
+    </div>
+  </section>
+  <div class="sn-feature-head"><h2>Professionnels et bateaux à la une</h2><p>Découvrez les profils et annonces réellement présents sur SkipperNow.</p></div>
   <section class="rental-hub" id="rentalHub">
     <div class="rental-box" id="homeProvidersSection">
       <span class="pill-link">✓ <span data-i18n="providersShowcase.badge">PRESTATAIRES INSCRITS</span></span>
@@ -181,15 +202,6 @@
 <section class="tile-browse" style="margin-top:44px">
     <h2 data-i18n="browseByPort.title">Nos destinations phares</h2>
     <div class="tile-scroll-row" id="portTileRow"></div>
-  </section>
-
-  <section class="how" style="margin-top:36px">
-    <h2 data-i18n="how.title">Comment ça marche ?</h2>
-    <div class="steps">
-      <article class="step"><b>1</b><h4 data-i18n="how.step1Title">Trouvez</h4><p data-i18n="how.step1Text">Choisissez un skipper, un bateau, un service ou une expérience.</p></article>
-      <article class="step"><b>2</b><h4 data-i18n="how.step2Title">Réservez</h4><p data-i18n="how.step2Text">Envoyez votre demande et échangez avec le professionnel.</p></article>
-      <article class="step"><b>3</b><h4 data-i18n="how.step3Title">Profitez</h4><p data-i18n="how.step3Text">Paiement sécurisé et service réalisé en toute simplicité.</p></article>
-    </div>
   </section>
 
   <section class="trust-process" aria-labelledby="trustProcessTitle">
