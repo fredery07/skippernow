@@ -120,3 +120,8 @@ header .shell{max-width:1400px!important}
 /* October 22: yacht marina photo background, mockup-inspired without overlaying a screenshot */
 .hero .hero-bg.sn-hero-cover{background-image:url("https://images.unsplash.com/photo-1775822993886-bb598906bca3?auto=format&fit=crop&w=2200&q=85")!important;background-position: 55% 54%!important;background-size:cover!important;opacity:1!important;filter:saturate(1.13) contrast(1.04)!important}
 .hero .hero-shade{background:linear-gradient(90deg,rgba(4,27,44,.75) 0%,rgba(4,29,44,.48) 48%,rgba(4,30,44,.1) 100%)!important}
+
+/* Verified Monaco superyacht background; retain HTML-based interactive UI */
+.hero #heroBgContainer .hero-bg.sn-hero-cover{background-image:url("https://images.unsplash.com/photo-1776934121312-e256a6339bc1?auto=format&fit=crop&w=2200&q=85")!important;background-size:cover!important;background-position:center 58%!important;opacity:1!important;filter:saturate(1.12) contrast(1.06)!important}
+.hero #heroBgContainer .hero-bg:not(.sn-hero-cover){opacity:0!important}
+.hero .hero-shade{background:linear-gradient(90deg,rgba(3,27,43,.77) 0%,rgba(3,31,48,.5) 48%,rgba(3,32,50,.10) 100%)!important}
