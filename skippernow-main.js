@@ -5275,6 +5275,23 @@ async function loadLogbook(){
     activeActivity = urlActivity;
     document.querySelectorAll("#listingTabs button").forEach(b=>b.classList.toggle("active", b.dataset.activity===urlActivity));
   }
+  // Service landing page: let the customer choose the service before opening a request.
+  if(urlActivity === "service"){
+    const chooser=document.createElement("div");
+    chooser.id="snServiceChooser";
+    chooser.style.cssText="position:fixed;inset:0;z-index:9990;background:rgba(6,25,43,.65);display:flex;align-items:center;justify-content:center;padding:16px";
+    chooser.innerHTML='<section role="dialog" aria-modal="true" aria-label="Choisir une prestation" style="background:#fff;border-radius:22px;padding:28px;width:min(650px,100%);box-shadow:0 20px 65px #102d3a44"><div style="display:flex;justify-content:space-between;gap:12px;align-items:center"><h2 style="margin:0;color:#09283d">Quelle prestation recherchez-vous ?</h2><button type="button" data-sn-close aria-label="Fermer" style="padding:10px;border:1px solid #ddd;border-radius:10px;background:white">✕</button></div><p style="color:#526779;margin:12px 0 18px">Déposez votre demande gratuitement, sans choisir de professionnel.</p><div data-sn-services style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px"></div></section>';
+    document.body.appendChild(chooser);
+    const services=[["cleaning","🧽","Nettoyage de bateau"],["dock_service","⚓","Services à quai"],["shipyard","🔧","Entretien et réparations"],["day_sailor","👷","Marin à la journée"],["provisioning","📦","Avitaillement"]];
+    chooser.querySelector("[data-sn-services]").innerHTML=services.map(([value,icon,label])=>'<button type="button" data-sn-service="'+value+'" style="padding:18px 14px;text-align:left;background:#f9faf7;border:1px solid #dfdfd3;border-radius:14px;color:#09283d;font:inherit;font-weight:700;cursor:pointer">'+icon+' '+label+'</button>').join("");
+    const dismiss=()=>{chooser.remove();const url=new URL(location.href);url.searchParams.delete("activity");url.searchParams.delete("source");history.replaceState(null,"",url.pathname+url.search+url.hash);};
+    chooser.querySelector("[data-sn-close]").onclick=dismiss;
+    chooser.querySelectorAll("[data-sn-service]").forEach(btn=>btn.onclick=()=>{
+      const activity=btn.dataset.snService;
+      dismiss();activeActivity=activity;
+      window.openBookingFor(null,"Demande ouverte — "+btn.textContent.trim(),urlPort||"",activity,"","provider");
+    });
+  }
   if(urlActivity === "boat_rental"){ openBoatFinder(urlPort||""); }
   if(urlActivity === "boat_sale"){ openBoatSaleFinder(urlPort||""); }
   if(urlActivity === "excursion"){ openExcursionFinder(urlPort||""); }
