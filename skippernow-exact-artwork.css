@@ -1,0 +1,12 @@
+/* Exact artwork mode, loaded only after approved PNG is available. */
+.sn-artwork-surface{display:none;position:relative;width:100%;max-width:1600px;margin:0 auto;background:#e9f5f8}
+.sn-artwork-surface>img{display:block;width:100%;height:auto}
+.sn-artwork-hotspot{position:absolute;display:block;border:0;background:transparent;cursor:pointer;z-index:2}
+.sn-artwork-hotspot:hover{background:rgba(255,255,255,.07);border-radius:12px}
+.sn-artwork-hotspot:focus-visible{outline:3px solid #00b6b4;outline-offset:-4px}
+@media(min-width:880px){
+ body.sn-artwork-active>.sn-artwork-surface{display:block}
+ body.sn-artwork-active>header,body.sn-artwork-active>.hero,
+ body.sn-artwork-active>.search-wrap,body.sn-artwork-active>main{display:none!important}
+ body.sn-artwork-active{background:#eaf5f8}
+}
