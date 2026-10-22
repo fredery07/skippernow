@@ -32,3 +32,32 @@ button:hover{filter:saturate(1.07)}
 .hero .hero-cta>button:hover{transform:translateY(-3px)!important}
 .hero .port-chips{display:flex!important;justify-content:center!important;flex-wrap:wrap!important;gap:9px!important;margin:0 auto!important}
 @media(max-width:600px){.hero .hero-cta>button{flex:1 1 100%!important}.hero .trust{gap:10px!important}.hero .hero-inner{text-align:center!important}}
+
+/* Vibrant lower-page design: scoped below hero, retaining current layout and functionality */
+body{background:linear-gradient(180deg,#f8fdfd 0%,#edfafb 32%,#fff8ed 66%,#edf7fa 100%)}
+.search-wrap .search-card{background:linear-gradient(120deg,#ffffff 0%,#e8fbf7 100%);border:1px solid #b8e9e2;box-shadow:0 18px 42px rgba(5,88,108,.14);border-radius:24px}
+.search-wrap .field{border-radius:14px}
+.search-wrap .field:focus-within{outline:2px solid #28cbb8;outline-offset:2px}
+main.shell .rental-hub{gap:20px;margin-top:38px}
+main.shell .rental-box{background:linear-gradient(145deg,#fff 0%,#e6f8f8 100%);border:1px solid #bde4e1;border-radius:24px;box-shadow:0 14px 32px #124c661c;padding:26px}
+main.shell .rental-box:nth-child(2){background:linear-gradient(145deg,#fff 0%,#eef5ff 60%,#fff4df 100%);border-color:#d7e5ee}
+main.shell .rental-box h3{color:#063754;font-size:clamp(23px,2.2vw,32px)}
+main.shell .rental-box .pill-link{background:#ccf7ee;color:#075e65;border-radius:999px;padding:8px 13px}
+main.shell .rental-box:nth-child(2) .pill-link{background:#ffebc5;color:#825510}
+main.shell .rental-box .back-link{font-weight:800;color:#008e94!important}
+main.shell .rental-box .back-link:hover{text-decoration:underline}
+main.shell .launch-banner{padding:22px 26px;border:1px solid #b8e5dd;border-radius:20px;box-shadow:0 8px 22px #0e5d6112}
+main.shell .tile-browse{background:linear-gradient(135deg,#e2f6fc,#edf8f4);padding:28px 20px;border-radius:26px;border:1px solid #d1ebed}
+main.shell .tile-browse h2{color:#053b5d}
+main.shell .how{background:linear-gradient(125deg,#043952,#007f91 72%,#10b3ad);padding:34px;border-radius:26px;box-shadow:0 17px 36px #083c5d2b}
+main.shell .how h2{color:#fff}
+main.shell .how .step{background:rgba(255,255,255,.11);border:1px solid rgba(223,255,251,.21);border-radius:18px;padding:18px}
+main.shell .how .step b{background:#ffe6a8;color:#063f5a;border-radius:12px}
+main.shell .trust-process{background:linear-gradient(130deg,#e8fbf7,#fff7e7);padding:32px 24px;border:1px solid #c8e9e4;border-radius:26px}
+main.shell .trust-process-card{background:#fff;border:1px solid #d9edea;border-radius:18px;box-shadow:0 5px 18px #13586912}
+main.shell .trust-process-icon{background:#d5f4ed;color:#006979}
+main.shell .gallery-section,main.shell .tile-browse,main.shell .trust-process{margin-top:34px}
+main.shell .card{border-radius:20px;overflow:hidden;border:1px solid #dfefed;background:#fff;box-shadow:0 9px 27px #174c6518}
+main.shell .card:hover{box-shadow:0 13px 33px #174c6526}
+main.shell section h2{letter-spacing:-.025em}
+@media(max-width:750px){main.shell .rental-box{padding:18px}main.shell .how{padding:24px 17px}main.shell .how .step{padding:13px}main.shell .tile-browse{padding:20px 12px}}
