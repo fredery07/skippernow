@@ -2104,6 +2104,7 @@ document.querySelector("#authSubmit").addEventListener("click", async ()=>{
 
     const dbRole = selectedRole === "owner" ? "client" : selectedRole;
     const metadata = {full_name:name, role:dbRole, lang:currentLang};
+    if(selectedRole === "owner") metadata.account_type = "owner";
     if(selectedRole !== "client") metadata.home_port = portValue;
     if(selectedRole === "provider") metadata.provider_activity = activity;
     else if(selectedRole === "skipper") metadata.provider_activity = "skipper";
@@ -2753,6 +2754,15 @@ async function logout(){
 }
 
 async function renderClientDashboard(){
+  // Owners currently retain the database role "client"; recognize their
+  // original owner signup and existing rental listings without changing auth.
+  const signupOwner = currentUser?.user_metadata?.account_type === "owner" ||
+    (currentUser?.user_metadata?.home_port && currentUser?.user_metadata?.role === "client");
+  const {data:ownerBoats,error:boatsError} = await db.from("boats").select("id").eq("client_id",currentUser.id).in("listing_type",["rental","both"]).limit(1);
+  if(signupOwner || (!boatsError && ownerBoats?.length)){
+    await renderOwnerDashboard();
+    return;
+  }
   const body = document.querySelector("#dashboardBody");
   body.innerHTML = dashShell([
     {id:"requests", label:t("dash.navRequests")},
@@ -2764,6 +2774,76 @@ async function renderClientDashboard(){
   bindDashNav(renderClientPanel);
   await renderClientPanel("requests");
 }
+const ownerLabel=(fr,en,es)=>saleText(fr,en,es);
+async function ownerDashboardData(){
+  const [{data:boats,error:boatError},{data:missions,error:missionError}]=await Promise.all([
+    db.from("boats").select("*").eq("client_id",currentUser.id).in("listing_type",["rental","both"]).order("created_at",{ascending:false}),
+    db.from("missions").select("*").eq("skipper_id",currentUser.id).order("created_at",{ascending:false})
+  ]);
+  return {boats:boats||[],missions:missions||[],boatError,missionError};
+}
+async function renderOwnerDashboard(){
+  const nav=[
+    {id:"owner-overview",label:ownerLabel("Vue d’ensemble","Overview","Resumen"),group:ownerLabel("GESTION LOCATIONS","RENTAL MANAGEMENT","GESTIÓN DE ALQUILERES")},
+    {id:"boats",label:ownerLabel("Mes bateaux","My boats","Mis barcos")},
+    {id:"owner-bookings",label:ownerLabel("Réservations reçues","Received bookings","Reservas recibidas")},
+    {id:"owner-calendar",label:ownerLabel("Planning","Calendar","Calendario")},
+    {id:"owner-revenue",label:ownerLabel("Revenus","Revenue","Ingresos"),group:ownerLabel("FINANCES","FINANCE","FINANZAS")},
+    {id:"messages",label:t("dash.navMessages"),group:ownerLabel("MON COMPTE","ACCOUNT","MI CUENTA")},
+    {id:"profile",label:t("dash.navProfile")},
+    {id:"support",label:t("dash.navSupport")}
+  ];
+  document.querySelector("#dashRole").textContent=ownerLabel("ESPACE LOUEUR","BOAT OWNER","ESPACIO PROPIETARIO");
+  document.querySelector("#dashTitle").textContent=ownerLabel("Tableau de bord loueur","Owner dashboard","Panel del propietario");
+  document.querySelector("#dashboardBody").innerHTML=dashShell(nav,"owner-overview");
+  bindDashNav(renderOwnerPanel);
+  await renderOwnerPanel("owner-overview");
+}
+async function renderOwnerPanel(panel){
+  refreshDashboardIdentity(panel);
+  const main=document.querySelector("#dashMain");
+  if(panel==="boats") {await renderBoatsManager(main,()=>renderOwnerPanel("boats"));return;}
+  if(panel==="messages"){await renderMessagesPanel("skipper_id");return;}
+  if(panel==="profile"){main.innerHTML=profileForm(currentProfile);bindProfileForm();return;}
+  if(panel==="support"){await openSupportThread();return;}
+  main.innerHTML='<div class="empty-note">Chargement…</div>';
+  const {boats,missions,boatError,missionError}=await ownerDashboardData();
+  if(boatError||missionError){
+    main.innerHTML='<div class="empty-note">'+esc(ownerLabel("Impossible de charger les données. Actualisez la page.","Unable to load data. Refresh the page.","No se pudieron cargar los datos. Actualiza la página."))+'</div>';return;
+  }
+  const paid=missions.filter(m=>["paid","payout_ready","transferred"].includes(m.payment_status));
+  const gross=paid.reduce((n,m)=>n+Number(m.amount_cents||0)+Number(m.urgent_fee_cents||0),0);
+  const completed=missions.filter(m=>m.status==="completed").length;
+  const pending=missions.filter(m=>["pending","quoted","accepted"].includes(m.status)).length;
+  const upcoming=missions.filter(m=>m.starts_at&&new Date(m.starts_at)>=new Date()&&!["completed","cancelled","declined","rejected"].includes(m.status)).sort((a,b)=>new Date(a.starts_at)-new Date(b.starts_at));
+  const kpi=(label,value,sub)=>`<div class="request-card" style="padding:18px;min-width:0;border:1px solid #d5e5e7;border-radius:16px"><div class="muted" style="font-weight:700;font-size:13px">${esc(label)}</div><strong style="display:block;font-size:27px;margin:8px 0;color:#07394b">${esc(String(value))}</strong><small class="muted">${esc(sub)}</small></div>`;
+  const metrics=`<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:12px;margin:16px 0 22px">
+    ${kpi(ownerLabel("Bateaux enregistrés","Listed boats","Barcos registrados"),boats.length,ownerLabel("Annonces à gérer","Listings to manage","Anuncios para gestionar"))}
+    ${kpi(ownerLabel("Demandes en attente","Pending requests","Solicitudes pendientes"),pending,ownerLabel("Réservations reçues","Booking requests","Reservas recibidas"))}
+    ${kpi(ownerLabel("Missions terminées","Completed jobs","Servicios terminados"),completed,ownerLabel("Historique","History","Historial"))}
+    ${kpi(ownerLabel("Montants payés","Paid amounts","Importes pagados"),money(gross),ownerLabel("Montant brut, hors frais","Gross before fees","Bruto antes de comisiones"))}
+  </div>`;
+  const action=(target,label)=>`<button type="button" class="small-btn fill" data-owner-target="${target}">${esc(label)}</button>`;
+  const welcome=`<section style="background:linear-gradient(120deg,#07384b,#087f8c);padding:22px;border-radius:18px;color:white;margin-bottom:16px">
+     <small style="color:#c4f3f0;letter-spacing:.08em;font-weight:800">${esc(ownerLabel("CENTRE DE LOCATION","RENTAL CENTER","CENTRO DE ALQUILER"))}</small>
+     <h3 style="color:white;margin:10px 0;font-size:23px">${esc(ownerLabel("Gérez vos locations depuis un seul espace","Manage your rentals in one place","Gestiona tus alquileres en un solo lugar"))}</h3>
+     <p style="color:#e2f3f3;margin:0 0 16px">${esc(ownerLabel("Vos annonces, demandes, échéances et revenus sont regroupés ici.","Listings, requests, schedule and earnings in one place.","Tus anuncios, reservas, calendario e ingresos en un solo lugar."))}</p>
+     <div style="display:flex;gap:8px;flex-wrap:wrap">${action("boats",ownerLabel("Gérer mes bateaux","Manage boats","Gestionar barcos"))} ${action("owner-bookings",ownerLabel("Voir les réservations","View bookings","Ver reservas"))}</div>
+  </section>`;
+  const cards=items=>items.length?items.map(m=>requestCard(m,"pro",new Set())).join(""):`<div class="empty-note">${esc(ownerLabel("Aucune réservation pour le moment.","No bookings yet.","Todavía no hay reservas."))}</div>`;
+  if(panel==="owner-overview"){
+    main.innerHTML=welcome+metrics+`<div class="panel-head"><h3>${esc(ownerLabel("Dernières demandes","Latest requests","Últimas solicitudes"))}</h3></div><div class="request-list">${cards(missions.slice(0,5))}</div>`;
+  }else if(panel==="owner-bookings"){
+    main.innerHTML=`<h3>${esc(ownerLabel("Réservations reçues","Received bookings","Reservas recibidas"))}</h3><p class="muted">${esc(ownerLabel("Demandes liées à votre compte loueur.","Requests linked to your owner account.","Solicitudes vinculadas a tu cuenta."))}</p><div class="request-list">${cards(missions)}</div>`;
+  }else if(panel==="owner-calendar"){
+    main.innerHTML=`<h3>${esc(ownerLabel("Prochaines réservations","Upcoming bookings","Próximas reservas"))}</h3><div class="request-list">${cards(upcoming)}</div>`;
+  }else if(panel==="owner-revenue"){
+    main.innerHTML=`<h3>${esc(ownerLabel("Suivi financier","Financial overview","Resumen financiero"))}</h3><div class="note-box">${esc(ownerLabel("Les montants correspondent aux paiements enregistrés, avant commission et versement. Ils ne représentent pas nécessairement votre solde disponible.","Figures reflect recorded payments before fees and payouts, not available balance.","Los importes reflejan pagos registrados antes de comisiones y transferencias."))}</div>${metrics}<div class="request-list">${cards(paid)}</div>`;
+  }
+  main.querySelectorAll("[data-owner-target]").forEach(btn=>btn.addEventListener("click",()=>main.closest(".dash-shell").querySelector(`.dash-side [data-panel="${btn.dataset.ownerTarget}"]`)?.click()));
+  bindRequestActions();
+}
+
 function clientProfileCompletionNotice(){
   if(currentProfile?.phone && currentProfile?.home_port) return "";
   const copy = ({
