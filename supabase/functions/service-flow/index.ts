@@ -98,12 +98,15 @@ Deno.serve(async req=>{
       if(old) return reply({ok:true,...old});
       if(m.status!=="in_progress" || m.payment_status!=="paid") throw new Error("Mission non éligible");
       const file=form.get("photo");
-      if(!(file instanceof File) || file.size<16 || file.size>8*1024*1024) throw new Error("Photo requise, 8 Mo maximum");
-      const bytes=new Uint8Array(await file.arrayBuffer()); const type=photoType(bytes);
-      const path=m.id+"/"+crypto.randomUUID()+"."+type.split("/")[1];
-      await checked(await db.storage.from("completion-proofs").upload(path,bytes,{contentType:type,upsert:false}));
+      let path=null;
+      if(file instanceof File && file.size>0){
+        if(file.size<16 || file.size>8*1024*1024) throw new Error("Photo invalide, 8 Mo maximum");
+        const bytes=new Uint8Array(await file.arrayBuffer()); const type=photoType(bytes);
+        path=m.id+"/"+crypto.randomUUID()+"."+type.split("/")[1];
+        await checked(await db.storage.from("completion-proofs").upload(path,bytes,{contentType:type,upsert:false}));
+      }
       try{return reply({ok:true,...await rpc(db,"submit_service_completion",{p_mission:m.id,p_actor:user.id,p_photo:path})});}
-      catch(e){await db.storage.from("completion-proofs").remove([path]);throw e;}
+      catch(e){if(path)await db.storage.from("completion-proofs").remove([path]);throw e;}
     }
     const input=await req.json();
     if(input.action==="set_enabled"){
