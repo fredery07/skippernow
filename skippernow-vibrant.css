@@ -210,3 +210,34 @@ header #loginBtn:focus-visible,
   header #signupBtn{padding:10px 9px!important;font-size:11px!important}
   header .nav-actions{gap:4px!important}
 }
+
+
+/* Mobile account modal: remain usable with Safari's dynamic viewport and keyboard. */
+@media (max-width: 640px) {
+  #accountModal {
+    padding: max(8px, env(safe-area-inset-top)) 10px max(8px, env(safe-area-inset-bottom));
+    align-items: center;
+  }
+  #accountModal .dialog {
+    box-sizing: border-box;
+    max-width: 100%;
+    max-height: calc(100vh - 20px);
+    max-height: calc(100dvh - 20px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    padding: 18px;
+  }
+  #accountModal input,
+  #accountModal select {
+    font-size: 16px;
+  }
+  #accountModal .choice-grid {
+    gap: 8px;
+    margin: 12px 0;
+  }
+  #accountModal .choice-card {
+    min-width: 0;
+    padding: 10px;
+  }
+}
