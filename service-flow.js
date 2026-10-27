@@ -30,7 +30,7 @@ function serviceDialog(title){
 }
 function openServiceCompletion(id){
   const dialog=serviceDialog(sf("completeTitle"));
-  dialog.querySelector(".service-dialog-body").innerHTML=`<form><p>Confirmez que la prestation est terminée. Une photo peut être ajoutée, mais elle n'est pas obligatoire.</p><label>Photo facultative (JPEG, PNG, WebP · 8 Mo max.)<input name="photo" type="file" accept="image/jpeg,image/png,image/webp" style="display:block;margin:16px 0;max-width:100%"></label><p>La confirmation sera soumise à validation. Aucun versement immédiat ne sera déclenché par ce bouton.</p><button class="primary" type="submit">Terminer la prestation</button><p role="status"></p></form>`;
+  dialog.querySelector(".service-dialog-body").innerHTML=`<form><p>Confirmez que la prestation est terminée. Une photo peut être ajoutée, mais elle n'est pas obligatoire.</p><label>Photo facultative (JPEG, PNG, WebP · 8 Mo max.)<input name="photo" type="file" accept="image/jpeg,image/png,image/webp" style="display:block;margin:16px 0;max-width:100%"></label><p>La confirmation sera soumise à validation. Aucun versement immédiat ne sera déclenché par ce bouton.</p><button class="primary" type="submit" style="background:#13b8c6;color:#062b3e;border:2px solid #13b8c6;font-weight:800;box-shadow:0 5px 14px rgba(19,184,198,.25)">✅ Confirmer la fin de prestation</button><p role="status"></p></form>`;
   dialog.querySelector("form").onsubmit=async e=>{
     e.preventDefault();const button=e.target.querySelector('[type="submit"]');const status=e.target.querySelector('[role="status"]');
     const photo=e.target.elements.namedItem("photo").files[0];
