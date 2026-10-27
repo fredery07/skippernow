@@ -3298,7 +3298,7 @@ async function renderAdminDashboard(){
     {id:"disputes", label:t("dash.navDisputes"), group:t("dash.groupFinance")},
     {id:"commissions", label:t("dash.navCommissions"), group:t("dash.groupFinance")},
     {id:"users", label:t("dash.navUsers"), group:t("dash.groupAccounts")},
-    {id:"boats", label:t("dash.navBoatsAdmin"), group:t("dash.groupAccounts")},
+
     {id:"nucReviews", label:"⚓ Contrôle NUC",group:t("dash.groupAccounts")},
     {id:"content", label:t("dash.navContent"), group:t("dash.groupContent")},
     {id:"hero", label:t("dash.navHero"), group:t("dash.groupContent")},
@@ -4181,7 +4181,7 @@ ${!p.verified ? `<button class="small-btn fill" data-approve="${p.id}">${esc(t("
       ${(isProfessional && p.verified) ? (p.featured ? `<button class="small-btn" data-unfeature="${p.id}">${esc(t("dash.unfeature"))}</button>` : `<button class="small-btn" data-feature="${p.id}">${esc(t("dash.markFeatured"))}</button>`) : ""}
       ${(p.suspended && String(p.id)!==String(currentUser.id)) ? `<button class="small-btn danger" data-delete-user="${p.id}">${esc(t("dash.delete"))}</button>` : ""}
       <button class="small-btn" data-view-profile="${p.id}">${esc(t("card.viewProfile"))}</button>
-      ${p.role === "client" ? `<button class="small-btn" data-view-boats="${p.id}">${esc(t("dash.viewUserBoats"))}</button>` : ""}
+      
       ${p.role !== "admin" ? `<button class="small-btn" data-message-user="${p.id}">${esc(t("dash.navMessages"))}</button>` : ""}
     </div>
   </article>`;
