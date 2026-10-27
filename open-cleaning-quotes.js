@@ -33,14 +33,31 @@ async function showCleaningQuotes(){
  }catch(e){console.error(e);alert("Impossible de récupérer les offres : "+e.message);}
  finally{busy=false;}
 }
-function mount(){
+async function mount(){
  const p=(typeof currentProfile!=="undefined")?currentProfile:null;
  const area=document.getElementById("dashMain");
- if(!area||!p||p.role!=="client"||area.querySelector("[data-sn-cleaning-quotes]"))return;
- const button=document.createElement("button");button.type="button";button.dataset.snCleaningQuotes="1";
- button.className="small-btn fill";button.style.cssText="margin:12px 0;padding:12px";
- button.textContent="🧽 Mes demandes de nettoyage et devis";
- button.onclick=showCleaningQuotes;area.prepend(button);
+ if(!area||!p||p.role!=="client"||area.dataset.snCleaningChecked||area.querySelector("[data-sn-cleaning-quotes]"))return;
+ // Only show this client-side service shortcut on the requests tab.
+ const active=document.querySelector('.dash-side [data-panel="requests"].active');
+ if(!active)return;
+ area.dataset.snCleaningChecked="pending";
+ const user=(typeof currentUser!=="undefined")?currentUser:null;
+ if(!user?.id)return;
+ try{
+   const {data,error}=await db.from("provider_requests").select("id").eq("client_id",user.id).limit(1);
+   if(error)throw error;
+   if(!data?.length)return; // No dockside requests: keep boat-owner dashboard clean.
+   if(!area.isConnected||document.getElementById("dashMain")!==area)return;
+   const button=document.createElement("button");
+   button.type="button";button.dataset.snCleaningQuotes="1";
+   button.className="small-btn fill";button.style.cssText="margin:12px 0;padding:12px";
+   button.textContent="🧽 Mes demandes de nettoyage et devis";
+   button.onclick=showCleaningQuotes;area.prepend(button);
+ }catch(e){
+   console.warn("Unable to check cleaning requests:",e);
+ }finally{
+   area.dataset.snCleaningChecked="1";
+ }
 }
 const root=document.getElementById("dashboardModal")||document.body;
 new MutationObserver(()=>{if(!window.__snCleaningMountPending){window.__snCleaningMountPending=true;requestAnimationFrame(()=>{window.__snCleaningMountPending=false;mount();});}}).observe(root,{childList:true,subtree:true});
