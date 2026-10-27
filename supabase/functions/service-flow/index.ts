@@ -148,6 +148,7 @@ Deno.serve(async req=>{
     const m=await missionFor(db,input.missionId,user,isAdmin);
     if(input.action==="proof"){
       const c=await checked(await db.from("service_completions").select("photo_path").eq("mission_id",m.id).single());
+      if(!c.photo_path) return reply({error:"Aucune photo n’a été ajoutée à cette prestation."},404);
       return reply(await checked(await db.storage.from("completion-proofs").createSignedUrl(c.photo_path,120)));
     }
     if(!isAdmin) return reply({error:"Administrateur requis"},403);
