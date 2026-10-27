@@ -30,12 +30,14 @@ function serviceDialog(title){
 }
 function openServiceCompletion(id){
   const dialog=serviceDialog(sf("completeTitle"));
-  dialog.querySelector(".service-dialog-body").innerHTML=`<form><p>${esc(sf("completeIntro"))}</p><label>${esc(sf("photoRequired"))}<input name="photo" type="file" accept="image/jpeg,image/png,image/webp" required style="display:block;margin:16px 0;max-width:100%"></label><p>${esc(sf("completeDelay"))}</p><button class="primary" type="submit">${esc(sf("confirmPhoto"))}</button><p role="status"></p></form>`;
+  dialog.querySelector(".service-dialog-body").innerHTML=`<form><p>Confirmez que la prestation est terminée. Une photo peut être ajoutée, mais elle n'est pas obligatoire.</p><label>Photo facultative (JPEG, PNG, WebP · 8 Mo max.)<input name="photo" type="file" accept="image/jpeg,image/png,image/webp" style="display:block;margin:16px 0;max-width:100%"></label><p>La confirmation sera soumise à validation. Aucun versement immédiat ne sera déclenché par ce bouton.</p><button class="primary" type="submit">Terminer la prestation</button><p role="status"></p></form>`;
   dialog.querySelector("form").onsubmit=async e=>{
-    e.preventDefault(); const button=e.target.querySelector('[type="submit"]');const status=e.target.querySelector('[role="status"]');
-    const photo=e.target.photo.files[0];if(!photo || photo.size>8388608){status.textContent=sf("photoTooLarge");return;}
-    button.disabled=true;status.textContent=sf("savingProof");
-    const form=new FormData();form.append("missionId",id);form.append("photo",photo);
+    e.preventDefault();const button=e.target.querySelector('[type="submit"]');const status=e.target.querySelector('[role="status"]');
+    const photo=e.target.elements.namedItem("photo").files[0];
+    if(photo && photo.size>8388608){status.textContent=sf("photoTooLarge");return;}
+    button.disabled=true;status.textContent="Enregistrement de la fin de prestation…";
+    const form=new FormData();form.append("missionId",id);
+    if(photo)form.append("photo",photo);
     try{await serviceRequest("complete",id,form);dialog.close();await openDashboard();}
     catch(error){status.textContent=error.message;button.disabled=false;}
   };
