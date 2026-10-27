@@ -2068,20 +2068,52 @@ window.openLegal = function(key){
 document.querySelectorAll("[data-legal]").forEach(a=>a.addEventListener("click", ()=>openLegal(a.dataset.legal)));
 
 document.querySelector("#authSubmit").addEventListener("click", async ()=>{
+  const submit = document.querySelector("#authSubmit");
   const msg = document.querySelector("#authMessage");
+  if(submit.disabled) return; // Prevent duplicate requests on slow mobile connections.
   const email = document.querySelector("#accountEmail").value.trim().toLowerCase();
   const password = document.querySelector("#accountPassword").value;
   const name = document.querySelector("#accountName").value.trim();
   const portValue = document.querySelector("#accountPort").value.trim();
   const activity = document.querySelector("#accountActivity").value;
+  msg.style.color = "#b42318";
+  msg.textContent = "";
 
   if(!email || password.length < 8){ msg.textContent = t("account.errMissing"); return; }
+  if(authMode !== "login"){
+    if(!name){ msg.textContent = t("account.errName"); return; }
+    if(["skipper","provider","owner"].includes(selectedRole) && !portValue){ msg.textContent = t("account.errPort"); return; }
+  }
 
-  if(authMode === "login"){
-    msg.textContent = "";
-    const {data, error} = await db.auth.signInWithPassword({email, password});
-    if(error){
-      msg.textContent = error.message.toLowerCase().includes("email not confirmed") ? t("account.emailNotConfirmed") : t("account.loginError");
+  submit.disabled = true;
+  submit.setAttribute("aria-busy","true");
+  const modeAtSubmit = authMode;
+  try{
+    if(modeAtSubmit === "login"){
+      const {data, error} = await db.auth.signInWithPassword({email, password});
+      if(error) throw error;
+      if(!data?.user) throw new Error("Missing authenticated user");
+      currentUser = data.user;
+      await loadProfile();
+      closeModal("accountModal");
+      refreshAccountButton();
+      if(sessionStorage.getItem("skippernow-quick-request")) openQuickRequest();
+      else openDashboard();
+      return;
+    }
+
+    const dbRole = selectedRole === "owner" ? "client" : selectedRole;
+    const metadata = {full_name:name, role:dbRole, lang:currentLang};
+    if(selectedRole !== "client") metadata.home_port = portValue;
+    if(selectedRole === "provider") metadata.provider_activity = activity;
+    else if(selectedRole === "skipper") metadata.provider_activity = "skipper";
+
+    const {data, error} = await db.auth.signUp({email, password, options:{data:metadata}});
+    if(error) throw error;
+    if(!data?.user) throw new Error("Missing signup user");
+    if(!data.session){
+      msg.style.color = "#08794e";
+      msg.textContent = t("account.signupSuccess");
       return;
     }
     currentUser = data.user;
@@ -2090,32 +2122,19 @@ document.querySelector("#authSubmit").addEventListener("click", async ()=>{
     refreshAccountButton();
     if(sessionStorage.getItem("skippernow-quick-request")) openQuickRequest();
     else openDashboard();
-    return;
+  }catch(error){
+    console.error("SkipperNow authentication failed:", error);
+    msg.style.color = "#b42318";
+    const message = String(error?.message || "").toLowerCase();
+    msg.textContent = modeAtSubmit === "login" && message.includes("email not confirmed")
+      ? t("account.emailNotConfirmed")
+      : modeAtSubmit === "login" && (message.includes("invalid login credentials") || message.includes("invalid credentials"))
+        ? t("account.loginError")
+        : friendlyError(error);
+  }finally{
+    submit.disabled = false;
+    submit.removeAttribute("aria-busy");
   }
-
-  if(!name){ msg.textContent = t("account.errName"); return; }
-  if(["skipper","provider","owner"].includes(selectedRole) && !portValue){ msg.textContent = t("account.errPort"); return; }
-
-  const dbRole = selectedRole === "owner" ? "client" : selectedRole;
-  const metadata = {
-    full_name: name,
-    role: dbRole,
-    lang: currentLang
-  };
-  // A client account needs only the three visible signup values. Keep the
-  // existing professional/owner metadata for the roles that collect it.
-  if(selectedRole !== "client") metadata.home_port = portValue;
-  if(selectedRole === "provider") metadata.provider_activity = activity;
-  else if(selectedRole === "skipper") metadata.provider_activity = "skipper";
-  const {data, error} = await db.auth.signUp({email, password, options:{data: metadata}});
-  if(error){ msg.textContent = friendlyError(error); return; }
-  if(!data.session){ msg.style.color = "#08794e"; msg.textContent = t("account.signupSuccess"); return; }
-  currentUser = data.user;
-  await loadProfile();
-  closeModal("accountModal");
-  refreshAccountButton();
-  if(sessionStorage.getItem("skippernow-quick-request")) openQuickRequest();
-  else openDashboard();
 });
 
 document.querySelector("#forgotPasswordBtn").addEventListener("click", async ()=>{
