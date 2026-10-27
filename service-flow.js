@@ -42,10 +42,12 @@ function openServiceCompletion(id){
     catch(error){status.textContent=error.message;button.disabled=false;}
   };
 }
+window.openServiceCompletion = openServiceCompletion;
 async function showServiceProof(id){
   const dialog=serviceDialog(sf("proofTitle"));const body=dialog.querySelector(".service-dialog-body");body.textContent=sf("loading");
   try{const result=await serviceRequest("proof",id);const img=document.createElement("img");img.alt=sf("proofAlt");img.style.cssText="width:100%;height:auto";img.src=result.signedUrl;body.replaceChildren(img);}catch(error){body.textContent=error.message;}
 }
+window.showServiceProof = showServiceProof;
 function serviceSummary(c,j,enabled){
   if(j?.state==="transferred") return sf("transferred");
   if(j) return sf("payoutPending");
