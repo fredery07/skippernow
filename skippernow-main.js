@@ -3575,6 +3575,8 @@ async function renderAdminPanel(panel){
 
   if(panel === "nucReviews"){ await renderNucAdminPanel(main); return; }
   if(panel === "overview"){
+    const {count: completedAllTime, error: completedCountError} = await db.from("missions").select("id", {count:"exact",head:true}).eq("status","completed");
+    const completedTotal = completedCountError ? missions.filter(m=>m.status==="completed").length : (completedAllTime ?? 0);
     const priorityItems = [
       ...pending.slice(0,5).map(p=>({type:"validation",level:"warn",title:p.full_name||"—",sub:t("dash.priorityValidation")+" · "+(p.role==="skipper"?t("account.roleSkipper"):t("account.roleProvider")),id:p.id})),
       ...missions.filter(m=>m.dispute_status==="open").slice(0,5).map(m=>({type:"dispute",level:"danger",title:(byId[m.skipper_id]?.full_name||byId[m.client_id]?.full_name||"—"),sub:t("dash.priorityDispute")+" · "+money(m.amount_cents||0),id:m.id})),
@@ -3586,6 +3588,7 @@ async function renderAdminPanel(panel){
         ${priorityItems.length ? priorityItems.map(it=>`<div class="priority-row" tabindex="0" role="button" data-admin-panel="${it.type==="validation"?"users":it.type==="dispute"?"disputes":"payouts"}"><span class="pr-dot ${it.level}"></span><div class="pr-body"><div class="pr-title">${esc(it.title)}</div><div class="pr-sub">${esc(it.sub)}</div></div></div>`).join("") : `<div class="priority-empty">${esc(t("dash.priorityEmpty"))}</div>`}
       </div>
       <div class="kpi-grid">
+        <div class="kpi kpi--good" tabindex="0" role="button" data-admin-panel="missions"><div class="kpi-top"><span>${esc(saleText("Prestations terminées depuis la création","Completed jobs since launch","Servicios terminados desde el inicio"))}</span><span class="kpi-icon">${NAV_ICONS.missions}</span></div><strong>${completedTotal}</strong><div class="kpi-trend">${esc(saleText("Toutes dates confondues","All-time total","Total histórico"))}</div></div>
         <div class="kpi" tabindex="0" role="button" data-admin-panel="missions"><div class="kpi-top"><span>${esc(t("dash.kpiActiveMissions"))}</span><span class="kpi-icon">${NAV_ICONS.missions}</span></div><strong>${activeMissions.length}</strong></div>
         <div class="kpi" tabindex="0" role="button" data-admin-panel="payments"><div class="kpi-top"><span>${esc(t("dash.kpiHeldFunds"))}</span><span class="kpi-icon">${NAV_ICONS.payments}</span></div><strong>${money(heldFunds)}</strong></div>
         <div class="kpi ${toPayout.length?'kpi--warn':''}" tabindex="0" role="button" data-admin-panel="payouts"><div class="kpi-top"><span>${esc(t("dash.kpiToPayout"))}</span><span class="kpi-icon">${NAV_ICONS.payouts}</span></div><strong>${toPayout.length}</strong></div>
