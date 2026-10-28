@@ -241,3 +241,74 @@ header #loginBtn:focus-visible,
     padding: 10px;
   }
 }
+
+
+/* 2026-10-28 — Consistent high contrast across SkipperNow dashboard roles. */
+#dashboardModal .dash-side button:not(.logout-btn) {
+  color:#f0f8fa !important;
+  -webkit-text-fill-color:#f0f8fa !important;
+}
+#dashboardModal .dash-side button.active,
+#dashboardModal .dash-side button:hover {
+  color:#ffffff !important;
+  -webkit-text-fill-color:#ffffff !important;
+}
+#dashboardModal .dash-side .dash-side-group {
+  color:#afcbd3 !important;
+  letter-spacing:.08em;
+}
+#dashboardModal .dash-main .field label {
+  color:#345663 !important;
+}
+#dashboardModal .dash-main .field input,
+#dashboardModal .dash-main .field select,
+#dashboardModal .dash-main .field textarea {
+  color:#102b3f !important;
+  -webkit-text-fill-color:#102b3f !important;
+  background:#ffffff !important;
+  border:1px solid #b9cdd3 !important;
+  border-radius:10px;
+}
+#dashboardModal .dash-main .field textarea {
+  display:block;
+  box-sizing:border-box;
+  width:100%;
+  max-width:100%;
+  min-height:90px;
+  padding:12px;
+  line-height:1.5;
+}
+#dashboardModal .dash-main input::placeholder,
+#dashboardModal .dash-main textarea::placeholder {
+  color:#617780 !important;
+  opacity:1;
+}
+#dashboardModal .dash-main .muted,
+#dashboardModal .dash-main small:not(.kpi-top small) {
+  color:#506873;
+}
+#dashboardModal .dash-main button.primary,
+#dashboardModal .dash-main button.small-btn.fill,
+#dashboardModal .dash-main button.search-btn {
+  color:#ffffff !important;
+  -webkit-text-fill-color:#ffffff !important;
+  background:linear-gradient(110deg,#07394e,#087d89) !important;
+  border-color:#07596b !important;
+  text-shadow:none !important;
+}
+#dashboardModal .dash-main button.primary:hover,
+#dashboardModal .dash-main button.small-btn.fill:hover {
+  background:linear-gradient(110deg,#07526b,#0a939a) !important;
+}
+#dashboardModal .dash-main button.primary:disabled,
+#dashboardModal .dash-main button.small-btn.fill:disabled {
+  opacity:.55;
+  cursor:not-allowed;
+}
+#dashboardModal .dash-main button:focus-visible,
+#dashboardModal .dash-side button:focus-visible,
+#dashboardModal .dash-main input:focus-visible,
+#dashboardModal .dash-main textarea:focus-visible {
+  outline:3px solid #d59b21 !important;
+  outline-offset:2px;
+}
