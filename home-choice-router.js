@@ -46,5 +46,13 @@ function launch(){
  };
  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",()=>setTimeout(kick,100),{once:true});else setTimeout(kick,100);
 }
+// Reuse the exact service-category chooser from the homepage CTA.
+window.openSkipperNowServiceChooser=function(){
+ const url=new URL(location.href);
+ url.searchParams.set("activity","service");
+ url.searchParams.set("source","home_choice");
+ history.replaceState(null,"",url.pathname+url.search+url.hash);
+ launch();
+};
 launch();
 })();
