@@ -2789,6 +2789,7 @@ async function renderOwnerDashboard(){
     {id:"owner-overview",label:ownerLabel("Vue d’ensemble","Overview","Resumen"),group:ownerLabel("GESTION LOCATIONS","RENTAL MANAGEMENT","GESTIÓN DE ALQUILERES")},
     {id:"boats",label:ownerLabel("Mes bateaux","My boats","Mis barcos")},
     {id:"owner-bookings",label:ownerLabel("Réservations reçues","Received bookings","Reservas recibidas")},
+    {id:"quotes",label:ownerLabel("Mes devis","My quotes","Mis presupuestos")},
     {id:"owner-calendar",label:ownerLabel("Planning","Calendar","Calendario")},
     {id:"owner-availability",label:ownerLabel("Calendrier & tarifs","Availability & rates","Calendario y tarifas")},
     {id:"owner-revenue",label:ownerLabel("Revenus","Revenue","Ingresos"),group:ownerLabel("FINANCES","FINANCE","FINANZAS")},
@@ -2804,6 +2805,7 @@ async function renderOwnerDashboard(){
 }
 async function renderOwnerPanel(panel){
   refreshDashboardIdentity(panel);
+  if(panel==="quotes"){await renderClientPanel("quotes");return;}
   const main=document.querySelector("#dashMain");
   if(panel==="boats") {await renderBoatsManager(main,()=>renderOwnerPanel("boats"));return;}
   if(panel==="owner-availability"){if(typeof window.renderOwnerAvailability==="function")await window.renderOwnerAvailability(main);else main.innerHTML="<div class=\"empty-note\">Actualisez la page pour charger le calendrier.</div>";return;}
