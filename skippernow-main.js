@@ -2747,7 +2747,8 @@ function bindDashNav(renderFn){
 }
 async function logout(){
   unsubscribeThreadChannel();
-  await db.auth.signOut();
+  const {error}=await db.auth.signOut();
+  if(error){alert(saleText("Déconnexion impossible. Réessayez.","Unable to sign out. Please try again.","No se pudo cerrar sesión."));return;}
   currentUser = null; currentProfile = null;
   closeModal("dashboardModal");
   refreshAccountButton();
@@ -2766,6 +2767,7 @@ async function renderClientDashboard(){
   const body = document.querySelector("#dashboardBody");
   body.innerHTML = dashShell([
     {id:"requests", label:t("dash.navRequests")},
+    {id:"quotes", label:saleText("Mes devis","My quotes","Mis presupuestos")},
     {id:"messages", label:t("dash.navMessages")},
     {id:"support", label:t("dash.navSupport")},
     {id:"boats", label:saleText("Mes annonces","My listings","Mis anuncios")},
@@ -2872,6 +2874,18 @@ function clientProfileCompletionNotice(){
 async function renderClientPanel(panel){
   refreshDashboardIdentity(panel);
   const main = document.querySelector("#dashMain");
+  if(panel === "quotes"){
+    main.innerHTML = '<div class="empty-note">Chargement des devis…</div>';
+    const {data,error}=await db.from("missions").select("*").eq("client_id",currentUser.id).in("status",["quoted","accepted","paid","in_progress","awaiting_validation","completed"]).order("created_at",{ascending:false});
+    if(error){main.innerHTML='<div class="empty-note">'+esc(saleText("Impossible de charger les devis. Réessayez.","Unable to load quotes. Please try again.","No se pudieron cargar los presupuestos."))+'</div>';return;}
+    const rows=data||[];
+    main.innerHTML='<h3>'+esc(saleText("Mes devis","My quotes","Mis presupuestos"))+'</h3><p class="muted">'+esc(saleText("Retrouvez ici les devis associés à vos demandes et réglez ceux en attente.","Find quotes associated with your requests and pay those pending.","Consulta los presupuestos de tus solicitudes."))+'</p>'+ (rows.length?rows.map(m=>requestCard(m,"client",new Set())).join(""):'<div class="empty-note">'+esc(t("dash.noRequests"))+'</div>');
+    bindRequestActions();
+    if(typeof window.showCleaningQuotes==="function"){
+      const btn=document.createElement("button");btn.className="small-btn fill";btn.type="button";btn.textContent=saleText("Voir les devis de nettoyage","View cleaning quotes","Ver presupuestos de limpieza");btn.addEventListener("click",window.showCleaningQuotes);main.prepend(btn);
+    }
+    return;
+  }
   if(panel === "requests"){
     // Un compte "client" peut aussi être propriétaire de bateau : il doit
     // donc voir à la fois les demandes qu'il a envoyées (client_id) ET les
