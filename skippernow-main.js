@@ -1315,7 +1315,7 @@ async function openBoatFinder(presetPort, presetType){
   if(presetPort) finderPort.value = presetPort;
   else if(portInput.value.trim()) finderPort.value = portInput.value.trim();
   if(presetType) document.querySelector("#boatFinderTypeInput").value = presetType;
-  const {data, error} = await db.from("boats").select("*").in("listing_type",["rental","both"]).order("created_at",{ascending:false});
+  const {data, error} = await db.from("boats").select("*").in("listing_type",["rental","both"]).eq("rental_available",true).order("created_at",{ascending:false});
   if(error){ box.innerHTML = `<div class="empty-note">${esc(friendlyError(error))}</div>`; return; }
   boatCache = data || [];
   renderBoatResults();
@@ -1659,11 +1659,11 @@ function renderHomeBoatStrip(){
 }
 async function preloadHomeBoats(){
   const nowIso = new Date().toISOString();
-  const {data:featuredData} = await db.from("boats").select("*").in("listing_type",["rental","both"]).eq("featured", true).gt("featured_until", nowIso).order("featured_until",{ascending:true}).limit(4);
+  const {data:featuredData} = await db.from("boats").select("*").in("listing_type",["rental","both"]).eq("rental_available",true).eq("featured", true).gt("featured_until", nowIso).order("featured_until",{ascending:true}).limit(4);
   const featured = featuredData || [];
   let list = featured;
   if(list.length < 4){
-    const {data:recentData} = await db.from("boats").select("*").in("listing_type",["rental","both"]).order("created_at",{ascending:false}).limit(4 + featured.length);
+    const {data:recentData} = await db.from("boats").select("*").in("listing_type",["rental","both"]).eq("rental_available",true).order("created_at",{ascending:false}).limit(4 + featured.length);
     const featuredIds = new Set(featured.map(b=>String(b.id)));
     const recent = (recentData||[]).filter(b=>!featuredIds.has(String(b.id)));
     list = featured.concat(recent).slice(0,4);
@@ -2817,6 +2817,19 @@ async function renderOwnerPanel(panel){
   const pending=missions.filter(m=>["pending","quoted","accepted"].includes(m.status)).length;
   const upcoming=missions.filter(m=>m.starts_at&&new Date(m.starts_at)>=new Date()&&!["completed","cancelled","declined","rejected"].includes(m.status)).sort((a,b)=>new Date(a.starts_at)-new Date(b.starts_at));
   const kpi=(label,value,sub)=>`<div class="request-card" style="padding:18px;min-width:0;border:1px solid #d5e5e7;border-radius:16px"><div class="muted" style="font-weight:700;font-size:13px">${esc(label)}</div><strong style="display:block;font-size:27px;margin:8px 0;color:#07394b">${esc(String(value))}</strong><small class="muted">${esc(sub)}</small></div>`;
+  const readiness=[
+    {ok:Boolean(currentProfile?.full_name&&currentProfile?.phone&&currentProfile?.home_port),label:ownerLabel("Compléter mon profil et mes coordonnées","Complete my profile","Completar mi perfil"),target:"profile"},
+    {ok:boats.length>0,label:ownerLabel("Ajouter mon premier bateau","List my first boat","Publicar mi primer barco"),target:"boats"},
+    {ok:boats.some(b=>b.photo_url||Array.isArray(b.photo_urls)&&b.photo_urls.length),label:ownerLabel("Ajouter des photos à mon annonce","Add boat photos","Añadir fotos"),target:"boats"},
+    {ok:boats.some(b=>Number(b.price_per_day)>0||Number(b.price_half_day)>0),label:ownerLabel("Renseigner mes tarifs de location","Set rental prices","Indicar precios"),target:"boats"}
+  ];
+  const done=readiness.filter(x=>x.ok).length;
+  const onboarding=`<section class="note-box" style="margin-bottom:16px;background:#f2fbfa;border:1px solid #b8e4dd;border-radius:16px;padding:18px">
+    <div style="display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap"><strong style="font-size:17px;color:#07394b">${esc(ownerLabel("Bien démarrer sur SkipperNow","Getting started on SkipperNow","Primeros pasos en SkipperNow"))}</strong><span class="tag">${done}/${readiness.length}</span></div>
+    <p style="color:#436371;margin:8px 0 12px">${esc(ownerLabel("Suivez ces étapes pour mettre votre bateau en location et recevoir vos premières demandes.","Follow these steps to publish your boat and start receiving requests.","Sigue estos pasos para publicar tu barco y recibir solicitudes."))}</p>
+    <div style="height:8px;background:#c8dddd;border-radius:20px;overflow:hidden;margin-bottom:12px"><div style="height:100%;width:${done/readiness.length*100}%;background:#0b9c8d"></div></div>
+    <div style="display:grid;gap:8px">${readiness.map(x=>`<button type="button" data-owner-target="${x.target}" style="width:100%;text-align:left;padding:11px 13px;background:white;border:1px solid #c8dde0;border-radius:10px;color:#123b4b;font-weight:700;cursor:pointer">${x.ok?"✅":"○"} ${esc(x.label)} ${x.ok?"":" →"}</button>`).join("")}</div>
+  </section>`;
   const metrics=`<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:12px;margin:16px 0 22px">
     ${kpi(ownerLabel("Bateaux enregistrés","Listed boats","Barcos registrados"),boats.length,ownerLabel("Annonces à gérer","Listings to manage","Anuncios para gestionar"))}
     ${kpi(ownerLabel("Demandes en attente","Pending requests","Solicitudes pendientes"),pending,ownerLabel("Réservations reçues","Booking requests","Reservas recibidas"))}
@@ -2832,7 +2845,7 @@ async function renderOwnerPanel(panel){
   </section>`;
   const cards=items=>items.length?items.map(m=>requestCard(m,"pro",new Set())).join(""):`<div class="empty-note">${esc(ownerLabel("Aucune réservation pour le moment.","No bookings yet.","Todavía no hay reservas."))}</div>`;
   if(panel==="owner-overview"){
-    main.innerHTML=welcome+metrics+`<div class="panel-head"><h3>${esc(ownerLabel("Dernières demandes","Latest requests","Últimas solicitudes"))}</h3></div><div class="request-list">${cards(missions.slice(0,5))}</div>`;
+    main.innerHTML=welcome+(done<readiness.length?onboarding:"")+metrics+`<div class="panel-head"><h3>${esc(ownerLabel("Dernières demandes","Latest requests","Últimas solicitudes"))}</h3></div><div class="request-list">${cards(missions.slice(0,5))}</div>`;
   }else if(panel==="owner-bookings"){
     main.innerHTML=`<h3>${esc(ownerLabel("Réservations reçues","Received bookings","Reservas recibidas"))}</h3><p class="muted">${esc(ownerLabel("Demandes liées à votre compte loueur.","Requests linked to your owner account.","Solicitudes vinculadas a tu cuenta."))}</p><div class="request-list">${cards(missions)}</div>`;
   }else if(panel==="owner-calendar"){
@@ -3078,15 +3091,25 @@ function myBoatCard(b){
         <div class="muted">${esc(b.model||"")}${b.home_port?" · "+esc(b.home_port):""}</div>
         <div class="muted">${boatSpecsLine(b)||""}</div>
         <div class="muted">${esc(saleText("Location","Rental","Alquiler"))}</div>
+        <span class="tag" style="display:inline-block;margin-top:7px;background:${b.rental_available===false?"#fff0e4":"#e3f7ee"};color:${b.rental_available===false?"#8b3a0e":"#086748"}">${esc(b.rental_available===false?saleText("Indisponible","Unavailable","No disponible"):saleText("Disponible","Available","Disponible"))}</span>
       </div>
     </div>
     <div class="request-actions">
+      <button class="small-btn" type="button" data-toggle-rental-availability="${esc(b.id)}" data-next-availability="${b.rental_available===false?"true":"false"}">${esc(b.rental_available===false?saleText("Rendre disponible","Make available","Marcar disponible"):saleText("Mettre indisponible","Mark unavailable","Marcar no disponible"))}</button>
       <button class="small-btn fill" data-edit-boat="${b.id}">${esc(saleText("Modifier l'annonce","Edit listing","Modificar anuncio"))}</button>
       <button class="small-btn danger" data-delete-my-boat="${b.id}">${esc(t("dash.delete"))}</button>
     </div>
   </article>`;
 }
 function bindMyBoatActions(refreshFn){
+  document.querySelectorAll("[data-toggle-rental-availability]").forEach(btn=>btn.addEventListener("click",async()=>{
+    const available=btn.dataset.nextAvailability==="true";
+    btn.disabled=true;
+    const {error}=await db.from("boats").update({rental_available:available}).eq("id",btn.dataset.toggleRentalAvailability).eq("client_id",currentUser.id);
+    if(error){alert(friendlyError(error));btn.disabled=false;return;}
+    await refreshFn();
+  }));
+
   document.querySelectorAll("[data-delete-my-boat]").forEach(btn=>btn.addEventListener("click", async ()=>{
     if(!confirm(t("dash.delete")+" ?")) return;
     const {error} = await db.from("boats").delete().eq("id", btn.dataset.deleteMyBoat);
