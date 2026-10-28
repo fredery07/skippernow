@@ -315,7 +315,8 @@ function conversionCopy(){
 }
 function openConversionRequest(source){
   try{if(typeof trackBookingEvent==="function") trackBookingEvent("conversion_cta_clicked",{source});}catch(_e){}
-  if(typeof openQuickRequest==="function") openQuickRequest();
+  if(typeof window.openSkipperNowServiceChooser==="function") window.openSkipperNowServiceChooser();
+  else window.location.assign("/?activity=service&source=home_choice");
 }
 async function mountConversionProfiles(anchor){
   if(!anchor || document.querySelector("#conversionProfiles")) return;
