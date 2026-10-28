@@ -3097,6 +3097,7 @@ function myBoatCard(b){
       </div>
     </div>
     <div class="request-actions">
+      <button class="small-btn" type="button" data-owner-boat-calendar="${esc(b.id)}">${esc(saleText("📅 Calendrier & tarifs","📅 Calendar & rates","📅 Calendario y tarifas"))}</button>
       <button class="small-btn" type="button" data-toggle-rental-availability="${esc(b.id)}" data-next-availability="${b.rental_available===false?"true":"false"}">${esc(b.rental_available===false?saleText("Rendre disponible","Make available","Marcar disponible"):saleText("Mettre indisponible","Mark unavailable","Marcar no disponible"))}</button>
       <button class="small-btn fill" data-edit-boat="${b.id}">${esc(saleText("Modifier l'annonce","Edit listing","Modificar anuncio"))}</button>
       <button class="small-btn danger" data-delete-my-boat="${b.id}">${esc(t("dash.delete"))}</button>
@@ -3104,6 +3105,10 @@ function myBoatCard(b){
   </article>`;
 }
 function bindMyBoatActions(refreshFn){
+  document.querySelectorAll("[data-owner-boat-calendar]").forEach(btn=>btn.addEventListener("click",()=>{
+    const nav=document.querySelector('#dashboardModal .dash-side [data-panel="owner-availability"]');
+    if(nav)nav.click();
+  }));
   document.querySelectorAll("[data-toggle-rental-availability]").forEach(btn=>btn.addEventListener("click",async()=>{
     const available=btn.dataset.nextAvailability==="true";
     btn.disabled=true;
