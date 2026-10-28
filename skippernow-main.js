@@ -2788,6 +2788,7 @@ async function renderOwnerDashboard(){
     {id:"boats",label:ownerLabel("Mes bateaux","My boats","Mis barcos")},
     {id:"owner-bookings",label:ownerLabel("Réservations reçues","Received bookings","Reservas recibidas")},
     {id:"owner-calendar",label:ownerLabel("Planning","Calendar","Calendario")},
+    {id:"owner-availability",label:ownerLabel("Calendrier & tarifs","Availability & rates","Calendario y tarifas")},
     {id:"owner-revenue",label:ownerLabel("Revenus","Revenue","Ingresos"),group:ownerLabel("FINANCES","FINANCE","FINANZAS")},
     {id:"messages",label:t("dash.navMessages"),group:ownerLabel("MON COMPTE","ACCOUNT","MI CUENTA")},
     {id:"profile",label:t("dash.navProfile")},
@@ -2803,6 +2804,7 @@ async function renderOwnerPanel(panel){
   refreshDashboardIdentity(panel);
   const main=document.querySelector("#dashMain");
   if(panel==="boats") {await renderBoatsManager(main,()=>renderOwnerPanel("boats"));return;}
+  if(panel==="owner-availability"){if(typeof window.renderOwnerAvailability==="function")await window.renderOwnerAvailability(main);else main.innerHTML="<div class=\"empty-note\">Actualisez la page pour charger le calendrier.</div>";return;}
   if(panel==="messages"){await renderMessagesPanel("skipper_id");return;}
   if(panel==="profile"){main.innerHTML=profileForm(currentProfile);bindProfileForm();return;}
   if(panel==="support"){await openSupportThread();return;}
