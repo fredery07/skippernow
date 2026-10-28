@@ -33,6 +33,7 @@ async function showCleaningQuotes(){
  }catch(e){console.error(e);alert("Impossible de récupérer les offres : "+e.message);}
  finally{busy=false;}
 }
+window.showCleaningQuotes = showCleaningQuotes;
 async function mount(){
  const p=(typeof currentProfile!=="undefined")?currentProfile:null;
  const area=document.getElementById("dashMain");
