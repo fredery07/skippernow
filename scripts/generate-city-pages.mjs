@@ -44,7 +44,13 @@ const STATIC_ES_PAGES = [
   "alquiler-barcos-barcelona",
   "alquiler-barcos-ibiza",
   "alquiler-barcos-palma-de-mallorca",
-  "alquiler-barcos-marbella"
+  "alquiler-barcos-marbella",
+  "patron-barco-barcelona",
+  "servicios-nauticos-barcelona",
+  "patron-barco-ibiza",
+  "servicios-nauticos-ibiza",
+  "patron-barco-palma-de-mallorca",
+  "servicios-nauticos-palma-de-mallorca"
 ];
 
 // Pages Floride/États-Unis écrites à la main (contenu SEO riche, en anglais) :
@@ -57,7 +63,13 @@ const STATIC_US_PAGES = [
   "boat-rental-key-west",
   "boat-rental-islamorada",
   "boat-rental-palm-beach",
-  "boat-rental-naples"
+  "boat-rental-naples",
+  "boat-captain-miami",
+  "marine-services-miami",
+  "boat-captain-fort-lauderdale",
+  "marine-services-fort-lauderdale",
+  "boat-captain-key-west",
+  "marine-services-key-west"
 ];
 
 // Pages Bahamas écrites à la main (contenu SEO riche, en anglais) : même
