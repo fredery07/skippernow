@@ -1,6 +1,3 @@
-Warning: truncated output (original token count: 127978)
-Total output lines: 5540
-
 "use strict";
 
 const SUPABASE_URL = "https://pzvlarwsfvhenrniepkw.supabase.co";
@@ -301,7 +298,4380 @@ const I18N = {
     "search.dateLabel":"DATE","search.durationLabel":"DURATION","search.submit":"Search",
     "duration.half":"Half day","duration.day":"Full day","duration.multi":"Several days","duration.daysLabel":"NUMBER OF DAYS",
     "rental.badge":"BOAT RENTALS","rental.title":"List my boat for rent","providersShowcase.badge":"REGISTERED PROVIDERS","providersShowcase.title":"Verified professionals available","providersShowcase.subtitle":"Discover only profiles genuinely approved by SkipperNow.","providersShowcase.viewAll":"View professionals","providersShowcase.empty":"No provider registered yet.",
-    "categories.badge":"CATEGORIES","categories.title":"What do you need?","categories.skipperDesc":"Trips, rentals, deliveries and boat familiarisation.","categories.daySailorDesc":"Hands-on help, handling, short delivery trips.","categories.providersDesc":"Cleaning, maintenance, mechanics, provisioning and dockside services.","categories.boatRentalTitle":"Boat Rental","categories.boatRentalDesc":"Find the right boat for your destination.","categories.experienceTitle":"Experiences on the Water","categories.experienceDesc":"Excursions, trips and unforgettable experiences on …97978 tokens truncated…" data-approve="${p.id}">${esc(t("dash.approve"))}</button>` : `<button class="small-btn danger" data-suspend="${p.id}">${esc(t("dash.suspend"))}</button>`}
+    "categories.badge":"CATEGORIES","categories.title":"What do you need?","categories.skipperDesc":"Trips, rentals, deliveries and boat familiarisation.","categories.daySailorDesc":"Hands-on help, handling, short delivery trips.","categories.providersDesc":"Cleaning, maintenance, mechanics, provisioning and dockside services.","categories.boatRentalTitle":"Boat Rental","categories.boatRentalDesc":"Find the right boat for your destination.","categories.experienceTitle":"Experiences on the Water","categories.experienceDesc":"Excursions, trips and unforgettable experiences on the water.","browseByType.title":"The ideal boat for every occasion","browseByPort.title":"Our flagship destinations","boatType.motor":"Motorboat","boatType.sailboat":"Sailboat","boatType.rib":"RIB","boatType.catamaran":"Catamaran",
+    "results.compactJoin.skipper":"Are you a skipper in this area? Join SkipperNow and get your first requests.",
+    "results.compactJoin.day_sailor":"Do you offer help on board in this area? Join SkipperNow and get your first requests.",
+    "results.compactJoin.cleaning":"Do you offer marine services in this area? Join SkipperNow and get your first requests.",
+    "rental.text":"Create an owner account, add photos, specifications, home port and availability. You can then offer your boat with or without a skipper.",
+    "rental.cta":"List my boat for rent","rental.ctaShort":"Are you a boat owner? List your boat for rent","rental.examplesBadge":"AVAILABLE BOATS",
+    "rental.examplesTitle":"Boats available","rental.examplesSubtitle":"Find your next boat, wherever SkipperNow is present.","rental.viewAll":"View all listings","rental.empty":"No boats published yet. Be the first owner to list yours!","rental.emptyTitle":"The first listings are coming","rental.emptyText":"SkipperNow is gradually opening new ports. You can already list your boat for free.","rental.emptyCta":"List my boat",
+    "results.skippersHeading":"Available skippers","results.skippersSub":"Verified professionals near your departure port",
+    "results.daySailorsHeading":"Available day sailors","results.daySailorsSub":"Hands-on help and one-off jobs near your departure port",
+    "results.cleaningHeading":"Available service providers","results.cleaningSub":"Cleaning, dock services and maintenance near your departure port",
+    "results.count.cleaning.one":"1 service provider","results.count.cleaning.other":"{n} service providers",
+    "results.emptyCleaningText":"No verified service provider at this port yet. Do you offer cleaning or dock services on the Côte d'Azur? Join SkipperNow now.",
+    "results.empty":"No verified profile for this search.",
+    "results.emptyTitle":"Be one of the first!",
+    "results.emptySkipperText":"No verified skipper at this port yet. Are you a professional skipper on the Côte d'Azur? Join SkipperNow now.",
+    "results.emptyDaySailorText":"No day sailor available yet. Do you offer help on board or one-off jobs? Sign up.",
+    "results.emptyCtaDaySailor":"Become a day sailor",
+    "results.count.skipper.one":"1 skipper","results.count.skipper.other":"{n} skippers",
+    "results.count.day_sailor.one":"1 day sailor","results.count.day_sailor.other":"{n} day sailors",
+    "tabs.skippers":"Skippers","tabs.daySailors":"Day sailors","tabs.cleaning":"Marine services",
+    "card.experience":"year(s) of experience","card.newOnPlatform":"New on SkipperNow","card.priceOnRequest":"On request","card.priceNote":"price confirmed before booking","card.priceFrom":"From","card.verifiedBadge":"Verified","card.featuredBadge":"Featured",
+    "card.superSkipperBadge":"Super Skipper","card.recommendedProviderBadge":"Recommended provider",
+    "boatDetail.verifiedBadge":"Verified boat",
+    "dash.verifyBoat":"Verify boat","dash.unverifyBoat":"Remove verification","dash.boatVerifyChecklist":"Before verifying this boat, confirm you have checked:\n\n✓ Photos are real and recent\n✓ The boat's insurance is up to date\n✓ Details (model, year, capacity) are consistent\n\nClick OK to confirm verification.","dash.markFeatured":"Feature","dash.unfeature":"Remove feature",
+    "stats.missions":"jobs completed","stats.pros":"verified professionals","stats.rating":"average rating","launch.banner":"Priority launch on the French Riviera: Cannes, Antibes, Nice, Monaco and Saint-Tropez.","seaCarousel.caption":"Your best days at sea start here",
+    "trustProcess.title":"A safer booking, step by step","trustProcess.subtitle":"Clear rules that protect clients and professionals alike.","trustProcess.verifyTitle":"Profiles reviewed","trustProcess.verifyText":"Professional profiles are reviewed before appearing as verified.","trustProcess.quoteTitle":"Approve the price before paying","trustProcess.quoteText":"The professional proposes a price and you decide before payment.","trustProcess.contactTitle":"Contact details protected","trustProcess.contactText":"Conversations stay on SkipperNow to reduce circumvention and abuse.",
+    "quickRequest.title":"Can't find exactly what you need?","quickRequest.subtitle":"Post a request and available professionals can reply with their price.","quickRequest.cta":"Post a free request","quickRequest.openTitle":"Open request to professionals","quickRequest.cardText":"No matching profile? Send your request to available professionals.",
+    "card.available":"Available","card.unavailable":"Unavailable","card.unavailableOn":"Unavailable on","card.viewProfile":"View profile",
+    "how.title":"How does it work?",
+    "how.step1Title":"Find","how.step1Text":"Choose a skipper, boat, service or experience.",
+    "how.step2Title":"Book","how.step2Text":"Send your request and connect with the professional.",
+    "how.step3Title":"Enjoy","how.step3Text":"Secure payment and a simple experience from start to finish.",
+    "gallery.title":"The SkipperNow experience","gallery.subtitle":"Unforgettable days at sea, anywhere in the world",
+    "logbook.title":"Logbook","logbook.subtitle":"The French Riviera, port by port — the route our skippers follow","logbook.seeSkippers":"See skippers →","logbook.nm":"nm","activities.title":"Experiences on the Water","activities.subtitle":"Discover trips and experiences around your destination.","activities.discover":"Discover →","activities.filterShowing":"Outings in","activities.reserve":"Find a skipper →",
+    "join.title":"Join SkipperNow",
+    "join.ownerTitle":"Owner","join.ownerText":"Add your boat and receive rental requests.","join.ownerCta":"Add my boat",
+    "join.skipperTitle":"Skipper","join.skipperText":"Create your profile and receive job requests.","join.skipperCta":"Become a skipper",
+    "join.providerTitle":"Service provider","join.providerText":"Offer your marine services to boaters and owners.","join.providerCta":"Become a service provider",
+    "footer.tagline":"The worldwide platform for boating: skippers, boats, marine services and experiences.","seoFooter.title":"Our destinations worldwide",
+    "footer.platform":"Platform","footer.findSkipper":"Find a skipper","footer.findProvider":"Find a service provider","footer.findBoat":"Find a boat",
+    "footer.pros":"Professionals","footer.becomePro":"Become a service provider","footer.addBoat":"List a boat for rent",
+    "footer.infoTitle":"Information","footer.about":"About","footer.contact":"Contact","footer.terms":"Terms of service","footer.privacy":"Privacy","footer.mentions":"Legal notice","footer.cookies":"Cookies","footer.rights":"All rights reserved.",
+    "legal.eyebrow":"LEGAL INFORMATION",
+    "legal.mentionsTitle":"Legal notice","legal.mentionsBody":"Publisher: SkipperNow, operated by Fredery Therond, sole trader (entrepreneur individuel), registered under no. SIRET 881 423 446 00049 (SIREN 881 423 446), registered office at 5 rue Sévigné, 06110 Le Cannet, France.\n\nPublication director: Fredery Therond.\n\nHosting: GitHub, Inc.\n\nContact: skippernow@outlook.fr.",
+    "legal.cguTitle":"Terms of service","legal.cguBody":"1. Purpose — These terms of service (\"Terms\") set out the terms and conditions under which SkipperNow provides its platform connecting clients, skippers, marine service providers and boat owners (the \"Platform\"), as well as the rights and obligations of the parties.\n\n2. Definitions — \"User\" means any person registered on the Platform, whether acting as a Client or as a Skipper/Provider. \"Client\" means the user seeking a marine service. \"Skipper/Provider\" means the user offering a service or boat rental. \"Job\" means the service agreed between a Client and a Skipper/Provider via the Platform.\n\n3. Acceptance — Registering on the Platform implies full acceptance of these Terms. Any User who does not accept these terms must refrain from using the Platform.\n\n4. Access to the Platform — Registration is reserved for adults with full legal capacity. Skippers/Providers warrant that they hold the qualifications, certifications and insurance required by the regulations applicable to their activity.\n\n5. User account — Each User warrants the accuracy, currency and truthfulness of the information provided upon registration and undertakes to keep it up to date, including their phone number so they can be reached in an emergency.\n\n6. SkipperNow's role — SkipperNow acts solely as a technical intermediary connecting Users. SkipperNow is not a party to contracts entered into between Clients and Skippers/Providers and does not take part in the actual performance of Jobs.\n\n7. User conduct — Each User commits to fair, good-faith use of the Platform, to not bypassing the built-in messaging or payment tools, and to complying with SkipperNow's Community Guidelines.\n\n8. Intellectual property — The Platform, its structure, content and components (text, logos, database) are protected by intellectual property law and remain the property of SkipperNow or its partners.\n\n9. Liability — SkipperNow uses reasonable efforts to ensure the Platform runs smoothly but cannot guarantee continuous availability. SkipperNow cannot be held liable for the proper performance of Jobs, the quality of services provided by Skippers/Providers, or damages arising from their relationship with Clients.\n\n10. Suspension and termination — SkipperNow reserves the right to suspend or delete, without notice, the account of any User who breaches these Terms or the Community Guidelines.\n\n11. Personal data — The processing of Users' personal data is described in the Privacy Policy, which forms an integral part of these Terms.\n\n12. Changes — SkipperNow may amend these Terms at any time. Users will be notified by appropriate means, and continued use of the Platform after notification constitutes acceptance of the amended Terms.\n\n13. Governing law and disputes — These Terms are governed by French law. In the event of a dispute, an amicable solution will be sought before any legal action. Failing that, in accordance with Articles L.616-1 et seq. of the French Consumer Code, every consumer has the right to refer the matter free of charge to a consumer mediator. French courts have exclusive jurisdiction.",
+    "legal.cgvTitle":"Terms of sale","legal.cgvBody":"1. Scope — These terms of sale (\"Terms of Sale\") apply to any booking of a marine service, skipper service or boat rental made through the SkipperNow Platform.\n\n2. Services covered — This includes services offered by Skippers/Providers listed on the Platform: accompanied sailing, boat rental with or without a skipper, sailing lessons, boat delivery and similar marine services.\n\n3. Pricing — Prices are freely set by each Skipper/Provider or owner. The total price shown to the Client before payment includes the SkipperNow service commission, clearly indicated and shown separately from the service price.\n\n4. Booking — A booking is confirmed once the Client's payment is validated. A summary of the Job (dates, service, price, contact details) is then accessible from both parties' account.\n\n5. Payment — Payment is collected by SkipperNow on behalf of the Skipper/Provider via its secure payment provider (Stripe). Funds are held by SkipperNow until the Job is completed, then paid out to the Skipper/Provider, minus the service commission.\n\n6. Commission — SkipperNow charges a commission on every transaction made through the Platform, with the rate shown before booking confirmation.\n\n7. Billing — A summary receipt is automatically generated for each paid service and remains available and downloadable from the user account.\n\n8. Cancellation and refunds — Applicable cancellation and refund terms are set out in the Cancellation Policy and Refund Policy, which form an integral part of these Terms of Sale.\n\n9. No right of withdrawal — In accordance with Article L.221-28(9) of the French Consumer Code, the statutory right of withdrawal does not apply to leisure services that must be supplied on a specific date or at a specific frequency, such as the marine services offered on the Platform.\n\n10. Complaints — Any complaint regarding a service must first be addressed to the relevant Skipper/Provider via the Platform's messaging system, then, failing resolution, to SkipperNow at skippernow@outlook.fr.\n\n11. Governing law — These Terms of Sale are governed by French law.",
+    "legal.privacyTitle":"Privacy policy","legal.privacyBody":"1. Data controller — The controller for personal data collected on the Platform is Fredery Therond, operating SkipperNow as a sole trader (SIRET 881 423 446 00049), reachable at skippernow@outlook.fr.\n\n2. Data collected — SkipperNow collects: identity and contact data (name, email, phone number); profile data (photo, bio, qualifications); professional verification documents for Skippers/Providers (certifications, licenses); login and usage data on the Platform; payment data, processed directly by our payment provider Stripe and never stored in plain text by SkipperNow.\n\n3. Purposes — This data is used to: enable the creation and management of the user account; connect Clients and Skippers/Providers; allow a User to be contacted, including in an emergency during a Job; manage bookings and payments; verify the qualifications declared by Skippers/Providers; ensure Platform security and prevent fraud; comply with applicable legal and regulatory obligations.\n\n4. Legal basis — Processing is based, depending on the case, on the performance of the contract between the User and SkipperNow, on the User's consent, on SkipperNow's legitimate interest in ensuring Platform security, or on compliance with legal obligations.\n\n5. Recipients — Data is accessible to the SkipperNow team and, where applicable, shared with our technical providers (hosting, payment) strictly to the extent necessary to perform their services. Data is never sold or transferred to third parties for commercial purposes.\n\n6. Retention period — Data is retained for the duration of the contractual relationship, then archived for the periods required by applicable legal and accounting obligations, before deletion or anonymization.\n\n7. User rights — In accordance with the General Data Protection Regulation (GDPR), every User has the right to access, rectify, erase, restrict, object to and port their data, exercisable at any time via skippernow@outlook.fr. Every User also has the right to lodge a complaint with the French data protection authority (CNIL).\n\n8. Security — SkipperNow implements reasonable technical and organizational measures to protect Users' data against unauthorized access, loss or disclosure.\n\n9. Confidentiality — Users' personal information, including contact details, is only visible to the SkipperNow team and, strictly to the extent necessary to carry out a Job, to the other party involved in that Job.",
+    "legal.cancellationTitle":"Cancellation policy","legal.cancellationBody":"1. Cancellation before payment — The Client may cancel a booking request freely and at no cost as long as the Job has not yet been paid for, directly from their account.\n\n2. Cancellation after payment — Once payment has been made, cancellation by the Client is subject to the specific terms set by the Skipper/Provider or boat owner concerned, shown on the listing page before booking. Absent specific terms, the Client is invited to contact the Skipper/Provider via the Platform's messaging system to agree on cancellation arrangements.\n\n3. Cancellation by the professional — If the Skipper/Provider or owner cancels a Job that has already been paid for, the Client is fully refunded without unjustified delay.\n\n4. Force majeure — In the event of cancellation due to dangerous weather conditions or any other case of force majeure preventing the Job from being carried out safely, no penalty is due by the Client, and a refund or rescheduling of the Job is offered.\n\n5. Procedure — Any cancellation request must be made from the user account or reported to skippernow@outlook.fr so it can be processed as quickly as possible.",
+    "legal.refundTitle":"Refund policy","legal.refundBody":"1. Grounds for refund — A Client may request a full or partial refund where a service was not performed, was cancelled by the professional after payment, or differs significantly from the listing description.\n\n2. Procedure — Refund requests are made from the Client's account within a reasonable time after the Job ends, stating the reason and, where possible, supporting evidence (messages, photos, description of the situation).\n\n3. Review — Each request is reviewed individually by the SkipperNow team, which may request further details from both parties before deciding.\n\n4. Decision — SkipperNow may approve a full refund, a partial refund proportionate to the harm found, or deny the request if unjustified, giving reasons for its decision.\n\n5. Processing — Approved refunds are initiated via our payment provider Stripe. The time for funds to actually arrive depends on standard banking timelines, generally a few business days.\n\n6. Service commission — Where a full refund is attributable to the professional or to SkipperNow, the service commission charged by SkipperNow on the relevant transaction is also refunded to the Client.",
+    "legal.cookiesTitle":"Cookie policy","legal.cookiesBody":"1. What is a cookie — A cookie is a small file placed on your device when browsing the Platform, used to remember certain information between visits.\n\n2. Strictly necessary cookies — These cookies are essential to the Platform's operation (account login, security, remembering your chosen language). They cannot be disabled without affecting how the site works.\n\n3. Audience measurement cookies — SkipperNow may use cookies to measure Platform traffic and usage in order to improve it. This data is processed in aggregate form and is not intended to individually identify Users for commercial purposes.\n\n4. Advertising cookies — No third-party advertising cookies are currently used on the Platform.\n\n5. Retention period — Cookies placed have a limited lifespan, not exceeding 13 months, in line with CNIL recommendations.\n\n6. Managing cookies — You can configure your browser at any time to accept, refuse, or be warned before cookies are placed. Refusing certain cookies may affect some Platform features.",
+    "legal.communityTitle":"Community guidelines","legal.communityBody":"1. Accuracy of information — Every User commits to providing accurate, up-to-date information on their profile, qualifications and listings, including contact details that allow them to be reached in an emergency.\n\n2. Mutual respect — Exchanges between Users, whether via the built-in messaging or during a Job, must remain courteous and respectful. Discriminatory, abusive or threatening language is strictly prohibited.\n\n3. Fair use of the Platform — Users commit to not bypassing the Platform to avoid service fees, including by encouraging the other party to complete a booking initiated on SkipperNow outside the Platform.\n\n4. Honoring commitments — Every User commits to honoring accepted bookings and to notifying the other party as soon as possible in the event of unforeseen circumstances.\n\n5. Safety at sea — Skippers/Providers commit to carrying out their activity in strict compliance with applicable maritime regulations and safety rules, and to never endanger Clients' safety.\n\n6. Reporting — Any User who observes conduct contrary to these guidelines is invited to report it to the SkipperNow team at skippernow@outlook.fr.\n\n7. Sanctions — Any breach of these guidelines may result, depending on severity, in a warning, a temporary suspension, or permanent deletion of the User's account.",
+    "providerModal.eyebrow":"MARINE SERVICES","providerModal.title":"Find a service provider","providerModal.intro":"Choose the service you need near your port.",
+    "activity.cleaning":"Boat preparation and dock services","activity.cleaningDesc":"Cleaning, rinsing, provisioning, mooring and departure assistance.",
+    "activity.shipyard":"Shipyard and maintenance","activity.shipyardDesc":"Antifouling, painting, minor repairs, launching.",
+    "activity.daySailor":"Day sailor","activity.daySailorDesc":"Hands-on help, handling, short delivery trips.",
+    "activity.skipper":"Professional skipper","activity.skipperDesc":"Trips, rentals, deliveries and boat familiarisation.",
+    "activity.boatRentalPro":"Boat rental provider","activity.boatRentalProDesc":"Boat rentals, including boats owned by third parties.",
+    "activity.provisioning":"Groceries & Onboard Provisioning","activity.provisioningDesc":"Groceries, drinks, ice and everyday essentials delivered directly to the boat.",
+    "providerModal.subIntro":"Choose the category that matches your need.",
+    "sub.provisioning.freshProduce":"Fresh fruits & vegetables","sub.provisioning.groceries":"Pantry & dry goods","sub.provisioning.drinks":"Drinks","sub.provisioning.ice":"Ice","sub.provisioning.breakfast":"Breakfast & pastries","sub.provisioning.hygiene":"Personal care & cleaning","sub.provisioning.custom":"Custom Request",
+    "booking.provisioningPlaceholder":"E.g. 3 packs of water, 2 juice bottles, sodas, coffee… specify your need for {sub}, the port and preferred delivery time.",
+    "results.noProvider":"No service provider available for this service yet.",
+    "boatFinder.eyebrow":"BOAT RENTALS","boatFinder.title":"Available boats","boatFinder.empty":"No boats match your search.","boatFinder.allTypes":"All types","boatFinder.minCapacity":"Min. capacity","boatFinder.skipperAny":"With or without a captain","boatFinder.skipperWith":"With a captain","boatFinder.skipperWithout":"Without a captain",
+    "boatDetail.model":"Model","boatDetail.port":"Home port","boatDetail.length":"Length","boatDetail.halfDay":"Half day","boatDetail.fullDay":"Full day",
+    "boatDetail.type":"Boat type","boatDetail.typeSailboat":"Sailboat","boatDetail.typeMotorboat":"Motor yacht","boatDetail.typeRib":"RIB / inflatable","boatDetail.typeCatamaran":"Catamaran",
+    "boatDetail.capacity":"Capacity (people)","boatDetail.pax":"pax","boatDetail.cabinsField":"Number of cabins","boatDetail.cabins":"cabins","boatDetail.cabin":"cabin","boatDetail.year":"Year",
+    "boatDetail.skipperIncluded":"Skipper included","boatDetail.skipperIncludedTag":"Skipper included","boatDetail.skipperOptionalTag":"Skipper optional",
+    "boatDetail.onRequest":"On request","boatDetail.perDaySuffix":" /day","boatDetail.perHalfDaySuffix":" /half-day","boatDetail.description":"Description","boatDetail.noDescription":"No description provided.","boatDetail.photos":"Photos (up to 6)",
+    "boatDetail.request":"Request a booking","boatDetail.close":"Close","boatDetail.ownListing":"This is your own listing — you can't book it.",
+    "boatDetail.brand":"Brand","boatDetail.width":"Beam","boatDetail.draft":"Draft","boatDetail.berths":"Berths",
+    "boatDetail.engineType":"Engine type","boatDetail.engineCount":"Number of engines","boatDetail.enginePower":"Power (hp)","boatDetail.fuelType":"Fuel type",
+    "boatDetail.fuelTank":"Fuel tank","boatDetail.waterTank":"Water tank","boatDetail.priceHalfDay":"Half-day rate","boatDetail.priceFullDay":"Full-day rate",
+    "boatDetail.deposit":"Security deposit","boatDetail.equipment":"Equipment","boatDetail.equipmentPlaceholder":"E.g. GPS, mooring line, paddle board, life jackets...",
+    "boatDetail.rules":"Boat rules","boatDetail.cancellationPolicy":"Cancellation policy",
+    "account.eyebrow":"MY ACCOUNT","account.createTitle":"Create your activity on SkipperNow","account.loginTitle":"Log in to SkipperNow",
+    "account.tabCreate":"Create an account","account.tabLogin":"Log in","common.back":"Back",
+    "account.roleClient":"Client","account.roleClientDesc":"Book a skipper, a service provider or a boat",
+    "account.roleSkipper":"Skipper","account.roleSkipperDesc":"Receive trip and delivery requests",
+    "account.roleProvider":"Service provider","account.roleProviderDesc":"Cleaning, dock, shipyard or day crew",
+    "account.roleOwner":"Rental company / Owner","account.roleOwnerDesc":"List one or more boats for rent",
+    "account.nameLabel":"FULL NAME","account.namePlaceholder":"Your name","account.phoneLabel":"PHONE","account.photoLabel":"PROFILE PHOTO","account.photoReminder":"⚠️ Remember to add a profile photo: listings without a photo inspire less trust and get fewer contacts.","account.diplomaLabel":"DIPLOMA / CERTIFICATION","account.diplomaCurrent":"View current document","account.diplomaNote":"Photo or PDF of your certification (license, professional card...). Used for verification by the SkipperNow team, not shown publicly.","account.diplomaTypeLabel":"DIPLOMA / CERTIFICATION TYPE (shown publicly)","account.diplomaTypePlaceholder":"E.g. Coastal license, Master 200, Professional card...","account.photoRequiredError":"A profile photo is required to publish your listing.","account.phoneRequiredError":"A phone number is required to publish your listing.","account.profileCompletion":"Profile completed","dash.leaveReview":"Leave a review","dash.reviewRatingLabel":"RATING","dash.reviewCommentLabel":"COMMENT (OPTIONAL)","dash.reviewSubmit":"Submit my review","dash.reviewNeedStars":"Please choose a rating.","card.reviewsSingle":"review","card.reviewsPlural":"reviews","card.diplomaBadgePrefix":"Verified diploma:","card.sendMessage":"Send a message",
+    "account.experienceLabel":"YEARS OF EXPERIENCE","account.languagesLabel":"LANGUAGES SPOKEN","account.languagesPlaceholder":"E.g. French, English, Spanish",
+    "account.skillsLabel":"SKILLS / BOAT TYPES MASTERED","account.skillsPlaceholder":"E.g. Sailboat, Catamaran, Motor yacht, Delivery",
+    "account.travelRadiusLabel":"TRAVEL RADIUS","account.priceHalfDayLabel":"HALF-DAY RATE","account.priceHourLabel":"HOURLY RATE (optional)","account.travelFeeLabel":"TRAVEL FEE",
+    "account.siretLabel":"BUSINESS REGISTRATION NUMBER","account.insuranceLabel":"PROFESSIONAL INSURANCE","account.insurancePlaceholder":"Insurer and policy number",
+    "account.emailLabel":"EMAIL","account.passwordLabel":"PASSWORD","account.passwordPlaceholder":"At least 8 characters",
+    "account.portLabel":"HOME PORT — CITY, COUNTRY","account.portPlaceholder":"E.g. Port Vauban, Antibes, France","account.zoneLabel":"CITY / SERVICE AREA","account.zonePlaceholder":"E.g. Antibes, Cannes, Golfe-Juan…","account.portHelp":"Pick a suggestion from the list so your city is properly recognised.",
+    "account.activityLabel":"SERVICE OFFERED","account.createSubmit":"Create my account","account.loginSubmit":"Log in","account.forgot":"Forgot password?",
+    "account.errMissing":"Fill in all fields and use at least 8 characters for the password.",
+    "account.errName":"Please enter your name.","account.errPort":"Please enter your home port.",
+    "account.loginError":"Incorrect email or password. Use \u201cForgot password\u201d if needed.",
+    "error.generic":"Something went wrong. Please try again.","error.phoneFormat":"The phone number contains invalid characters. Please retype it manually (digits, spaces, + and - only).","error.duplicate":"This information is already used by another account.","error.invalidCredentials":"Incorrect email or password.","error.emailTaken":"This email is already linked to an account.","error.network":"Connection problem. Check your internet connection and try again.","error.permission":"You don't have permission to perform this action.","error.session":"Your session has expired. Please log in again.","error.missingField":"A required field is missing.","action.savedSuccess":"✓ Your information has been saved successfully.",
+    "account.emailNotConfirmed":"Your email address is not confirmed yet. Open the message from SkipperNow.",
+    "account.signupSuccess":"Account created. Check your email, then come back to log in.",
+    "account.forgotNeedEmail":"Enter your email address first.","account.forgotSent":"Email sent. Please also check your spam folder.",
+    "account.forgotError":"Could not send the email: ",
+    "booking.eyebrowRequest":"BOOKING REQUEST","booking.defaultTarget":"Selected professional",
+    "booking.port":"Port","booking.price":"Price","booking.priceTbd":"To be agreed with the professional",
+    "booking.nameLabel":"YOUR NAME","booking.phoneLabel":"PHONE","booking.boatLabel":"BOAT TYPE","booking.boatOptionalLabel":"BOAT TYPE (OPTIONAL)","booking.boatPlaceholder":"E.g. Cap Camarat 9.0",
+    "booking.detailsLabel":"DESCRIBE YOUR NEED","booking.detailsPlaceholder":"Cleaning, trip, delivery, number of people…","booking.rentalDetailsLabel":"NOTES (OPTIONAL)","booking.rentalDetailsPlaceholder":"Number of passengers, preferred time, special requests…","booking.photosLabel":"PHOTOS (OPTIONAL)",
+    "booking.paymentNote":"The professional will propose a price. You only pay after accepting the quote.",
+    "booking.submit":"Send request","booking.successTitle":"Request sent",
+    "booking.successText":"The professional can now review your request and propose a price.","booking.successCta":"View my request",
+    "booking.needLogin":"Log in before sending a request.","booking.needClient":"A client account is required to send a request.",
+    "booking.needBoat":"Please enter the boat type.","booking.needPort":"Please enter the port or city.","booking.needDate":"Please choose a date.","booking.needFutureDate":"Please choose an upcoming date.","booking.needDays":"Please enter the number of days (minimum 2).","booking.needDetails":"Please describe your need briefly.","booking.sending":"Sending…","dash.requestSent":"Sent","dash.requestReceived":"Received",
+    "dash.clientEyebrow":"CLIENT AREA","dash.clientTitle":"My bookings",
+    "dash.proEyebrow":"PROFESSIONAL AREA","dash.proTitle":"My jobs",
+    "dash.adminEyebrow":"ADMINISTRATION","dash.adminTitle":"SkipperNow dashboard",
+    "dash.navRequests":"My requests","dash.navBoats":"My boats","dash.viewUserBoats":"View their boats","dash.editBoat":"Edit listing","dash.boatsOf":"Boats owned by","dash.clearFilter":"View all boats","dash.navProfile":"My profile","dash.navAvailability":"Availability","dash.logout":"Log out","dash.navMessages":"Messages","dash.noMessages":"No conversations yet.","dash.noUnreadMessages":"No new messages.","dash.messagePlaceholder":"Write your message…","dash.send":"Send","dash.loading":"Loading…","dash.deleteMessage":"Delete","dash.confirmDeleteMessage":"Delete this message?","dash.deleteConversation":"Delete conversation","dash.confirmDeleteConversation":"Delete this whole conversation? This cannot be undone.","dash.tabUnread":"Unread","dash.tabAll":"All","dash.navSupport":"Contact support","dash.noSupport":"Support is not available right now.","dash.supportIntro":"A question or an issue? Message the SkipperNow team directly.",
+    "booking.privacyNote":"For your safety, personal contact details (phone, email) are never shared directly between client and professional.",
+    "dash.navForms":"Forms",
+    "dash.navOverview":"Overview","dash.navTraffic":"Analytics","dash.kpiVisitorsToday":"Visitors today","dash.kpiVisitors7d":"Visitors (7d)","dash.kpiVisitors30d":"Visitors (30d)","dash.kpiVisitorsYear":"Visitors (1 year)","dash.performance30d":"Results for the last 30 days","dash.kpiAccounts30d":"New accounts","dash.kpiRequests30d":"Requests sent","dash.kpiCompleted30d":"Completed jobs","dash.kpiConversion30d":"Visitors who joined","dash.topPagesTitle":"Pages visited (last 30 days)","dash.noViewsYet":"No visits recorded yet.","dash.visitorsTrackingNote":"Unique visitors are only reliable since tracking was set up, on {date}. Older page views are counted as page views but not as unique visitors.","dash.trackingSinceUnknown":"unknown date","dash.pageViews30d":"{count} page view(s) in 30 days","dash.originTitle":"Visitor origin (30 days)","dash.countryProbable":"Likely country","dash.timezones":"Time zones","dash.originPrivacyNote":"Approximate location based on browser language and time zone, without GPS or storing IP addresses. Older visits have no location.","dash.originEmpty":"The first locations will appear with new visits.","dash.visitorCount":"{count} visitor(s)","dash.viewCount":"{count} view(s)","dash.navValidations":"Approvals","dash.navMissions":"Jobs","dash.navUsers":"Users","dash.navSettings":"Settings",
+    "dash.bookingFunnelTitle":"Booking funnel (30 days)","dash.bookingOpened":"Forms opened","dash.bookingLoginRequired":"Login required","dash.bookingSubmitted":"Submissions attempted","dash.bookingCreated":"Requests created","dash.bookingFailed":"Submission failures",
+    "dash.noRequests":"No requests yet.","dash.noBoats":"No boats added yet.","dash.noMissions":"No jobs yet.",
+    "dash.kpiUsers":"Users","dash.kpiPending":"To approve","dash.kpiMissions":"Jobs","dash.kpiRevenue":"Total commission",
+    "dash.navPayments":"Payments","dash.navPayouts":"Payouts","dash.navRefunds":"Refunds","dash.navCommissions":"Commissions","dash.navBoatsAdmin":"Boats",
+    "dash.groupActivity":"Activity","dash.groupFinance":"Finance","dash.groupAccounts":"Accounts","dash.priorityQueueTitle":"Needs attention","dash.priorityEmpty":"Nothing urgent — all caught up.","dash.priorityValidation":"Profile to verify","dash.priorityDispute":"Open dispute","dash.priorityPayout":"Payout to prepare","dash.kpiTrendWeek":"last 7 days",
+    "dash.groupContent":"Content","dash.navContent":"Ports & destinations","dash.contentAddPort":"Add a port","dash.contentPortName":"Port name","dash.contentPortLat":"Latitude","dash.contentPortLng":"Longitude","dash.contentPortDesc":"Description","dash.contentPortOrder":"Display order","dash.contentPortActive":"Visible on site","dash.contentSave":"Save","dash.contentDelete":"Delete","dash.contentEdit":"Edit","dash.contentCancel":"Cancel","dash.contentNoPorts":"No ports yet.","dash.contentSaved":"Saved.","dash.contentDeleted":"Port deleted.","dash.contentConfirmDelete":"Delete this port? This cannot be undone.",
+    "dash.navHero":"Carousel photos","dash.heroAddSlide":"Add a photo","dash.heroImageUrl":"Image URL","dash.heroAlt":"Description (accessibility)","dash.heroOrder":"Display order","dash.heroActive":"Visible on site","dash.heroNoSlides":"No photos yet.","dash.heroPreview":"Preview","dash.heroUploadLabel":"Or upload a photo from your computer","dash.heroUploading":"Uploading...","dash.heroUploaded":"Photo uploaded.","dash.navDestinations":"Featured destinations","dash.destAddTile":"Add a destination","dash.destName":"Destination name","dash.destNoTiles":"No destinations yet.","dash.navActivities":"Outing ideas","dash.actAddTile":"Add an outing","dash.actPortName":"Related port","dash.actTitle":"Outing title","dash.actDesc":"Description","dash.actNoTiles":"No outings yet.","dash.navExcursions":"My excursions","dash.excAddTile":"Add an excursion","dash.excTitle":"Excursion title","dash.excDesc":"Description","dash.excIncluded":"What's included (meals, gear...)","dash.excPort":"Departure port","dash.excPrice":"Price per person","dash.excDuration":"Duration (hours)","dash.excMaxGuests":"Max guests","dash.excNoTiles":"No excursions yet.","dash.guests":"guests","dash.requestExcursion":"Request this excursion","dash.excGuestCount":"Number of guests","dash.excDateWanted":"Preferred date","dash.excRequestSent":"Your request has been sent to the agency.","dash.navMyLink":"My direct link","directReq.eyebrow":"DIRECT REQUEST","directReq.title":"Send my request","directReq.needAccount":"Log in or create an account to send your request.","directReq.portLabel":"Departure port","directReq.dateLabel":"Preferred date","directReq.descLabel":"Your request","directReq.submit":"Send my request","directReq.sent":"Your request has been sent.","directReq.requestLabel":"Direct request","directReq.dashboardExplain":"Share this link or QR code with a client you already know: in one click, they create an account (if needed) and their request is sent straight to you on SkipperNow.","directReq.copyLink":"Copy link","directReq.copied":"Link copied!","excFinder.eyebrow":"EXCURSIONS","excFinder.title":"Available excursions","excFinder.empty":"No excursion available for this port.","excFinder.perPerson":"/ person","dash.reqPhone":"Missing phone number","dash.reqDiploma":"Missing diploma","dash.reqPhoto":"Missing profile photo","dash.reqPhotoLink":"View photo","dash.missingBeforeApproval":"Required before approval","dash.profileIncompleteReminder":"Complete your profile to be visible and receive missions","dash.completeProfile":"Complete my profile","dash.featuredBadge":"Featured","dash.featuredUntil":"Featured until","dash.daysLeft":"days left","dash.featureFor":"Feature for...","dash.days":"days","dash.removeFeatured":"Remove from featured",
+    "dash.navDisputes":"Disputes","dash.noDisputes":"No open disputes.","dash.resolveDispute":"Mark as resolved","dash.disputeOpen":"Dispute open","dash.disputeResolved":"Dispute resolved",
+    "dash.reportProblem":"Report a problem","dash.viewInvoice":"Receipt and invoice",
+    "dispute.reasonPrompt":"Describe the problem",
+    "invoice.title":"Invoice","invoice.ref":"Reference","invoice.date":"Date","invoice.total":"Total paid","invoice.net":"Professional net","invoice.print":"Print",
+    "invoice.legalNote":"Summary document generated by SkipperNow, valid as a receipt. For a fully compliant invoice, contact support.",
+    "dash.kpiActiveMissions":"Active jobs","dash.kpiHeldFunds":"Secured funds","dash.kpiToPayout":"To pay out","dash.kpiPlatformRevenue":"Platform revenue",
+    "dash.kpiNewUsers":"New accounts (7d)","dash.kpiOpenDisputes":"Open disputes",
+    "dash.internalNoteLabel":"INTERNAL NOTE (admin only)","dash.saveNote":"Save note","dash.rejectDocument":"Reject document","dash.documentRejected":"Document rejected",
+    "dash.client":"Client","dash.professional":"Professional","dash.total":"Total","dash.commission":"Commission","dash.netPro":"Professional net","dash.paymentStatus":"Payment",
+    "dash.markPaidOut":"Mark as paid out","dash.approveRefund":"Approve refund","dash.rejectRefund":"Reject","dash.delete":"Delete",
+    "dash.paymentsNote":"Jobs paid by clients. The actual charge is executed by Stripe.","dash.payoutsNote":"Jobs ready to be paid out to professionals, or already paid out.",
+    "dash.noRefunds":"No refund requests.","dash.requestRefund":"Request a refund",
+    "dash.commissionGlobalTitle":"Default commission","dash.commissionProviderTitle":"Custom commission per professional",
+    "dash.chooseProvider":"Choose a professional","dash.customRate":"Custom rate (%)","dash.saveRate":"Save this rate",
+    "dash.stripeNote":"Real charges, refunds and payouts are executed by the Supabase Edge (Stripe) functions deployed server-side.",
+    "dash.missionsCount":"Related jobs","dash.suspended":"Suspended","dash.owner":"Owner",
+    "paymentStatus.unpaid":"Unpaid","paymentStatus.paid":"Paid","paymentStatus.transferred":"Paid out","paymentStatus.payout_ready":"Ready to pay out",
+    "paymentStatus.refund_requested":"Refund requested","paymentStatus.refunded":"Refunded","paymentStatus.refund_rejected":"Refund rejected",
+    "dash.accept":"Accept request","dash.decline":"Decline","dash.proposePrice":"Propose a price","dash.acceptQuote":"Accept quote",
+    "dash.refuseQuote":"Decline quote","dash.pay":"Pay now","dash.markDone":"Mark as completed","dash.validate":"Approve job",
+    "dash.cancel":"Cancel","dash.approve":"Approve profile","dash.suspend":"Suspend","dash.saveSettings":"Save settings",
+    "dash.settingsCommission":"Default commission (%)","dash.settingsUrgent":"Urgent request fee (€)","dash.settingsSupport":"Support email",
+    "dash.payoutSetupNote":"Enter your payout details only in Payments, using the secure form.","dash.managePayoutDetails":"Manage my details in Payments",
+    "dash.payoutDetailsNote":"These bank details are only visible to you and the administrator, never to clients.","dash.holderLabel":"ACCOUNT HOLDER","dash.ibanLabel":"IBAN","dash.bicLabel":"BIC","dash.noIban":"This professional hasn't entered their IBAN yet.",
+    "status.pending":"Waiting for price","status.quoted":"Price proposed","status.accepted":"Quote accepted","status.rejected":"Quote declined",
+    "status.paid":"Paid","status.in_progress":"In progress","status.awaiting_validation":"To approve","status.completed":"Completed","status.cancelled":"Cancelled",
+    "faq.greeting":"Hi! I can answer common questions about SkipperNow. Pick a question below or type your own.",
+    "faq.title":"SkipperNow Assistant","faq.inputPlaceholder":"Write your question…",
+    "faq.priceChip":"How much does it cost?","faq.bookingChip":"How do I book?","faq.becomeChip":"Become a skipper","faq.contactChip":"Talk to a human",
+    "faq.price":"Each professional sets their own price after your request — you only pay once you accept the quote, never before.",
+    "faq.booking":"Pick a port and date, select a skipper or service provider, then send your request. The professional will reply with a price.",
+    "faq.cancel":"You can cancel a request as long as it hasn't been paid, directly from your \"My requests\" area.",
+    "faq.refund":"Once a job is completed, you can request a refund from your client area if needed — the SkipperNow team reviews it.",
+    "faq.become":"Click \"Create an account\", choose Skipper or Service provider, enter your home port, and our team will review your profile.",
+    "faq.payment":"Payment is secure and only charged once you accept the quote.",
+    "faq.contact":"No problem, message us directly from the \"Contact support\" tab in your account, or by email via the Contact link at the bottom of the page.",
+    "faq.fallback":"I don't have a ready-made answer for that — the simplest is to contact the SkipperNow team directly via the \"Contact support\" tab in your account.",
+    "payment.eyebrow":"SECURE PAYMENT","payment.title":"Pay for the job","payment.amount":"Amount","payment.pay":"Pay",
+  },
+  es:{
+    "nav.login":"Iniciar sesión","nav.signup":"Crear una cuenta","nav.myAccount":"Mi cuenta",
+    "notif.unreadMessages":"mensaje(s) sin leer","notif.quotesReceived":"presupuesto(s) recibido(s) para revisar","notif.awaitingValidation":"servicio(s) por validar","notif.newRequests":"nueva(s) solicitud(es) disponible(s)",
+    "notif.pendingValidations":"perfil(es) pendiente(s) de validación","notif.adminNewRequests":"nueva(s) solicitud(es) de cliente por tratar","notif.refundRequests":"solicitud(es) de reembolso","notif.openDisputes":"disputa(s) abierta(s)","notif.empty":"Sin notificaciones por ahora.",
+    "push.unsupported":"Las notificaciones no son compatibles con este navegador.","push.enable":"Activar notificaciones","push.enabled":"¡Notificaciones activadas!",
+    "hero.eyebrow":"UNA PLATAFORMA. TODO EL MUNDO NÁUTICO.",
+    "seo.titleDefault":"SkipperNow | Skippers, barcos, servicios y experiencias en el mar","seo.descDefault":"Reserva un skipper, encuentra un barco, un servicio náutico o una experiencia en el mar con SkipperNow, en cualquier parte del mundo.",
+    "seo.title.skipper":"Encontrar un skipper en {port} | SkipperNow","seo.desc.skipper":"Reserva un skipper profesional verificado en {port}. Pago seguro, respuesta rápida, incluso a última hora.",
+    "seo.title.day_sailor":"Marinero por día en {port} | SkipperNow","seo.desc.day_sailor":"Encuentra un marinero disponible por día en {port} para trabajos puntuales (limpieza, avituallamiento, ayuda en el puerto...).",
+    "seo.title.cleaning":"Prestador náutico en {port} | SkipperNow","seo.desc.cleaning":"Encuentra un prestador náutico verificado en {port}: limpieza, mantenimiento, mecánica y más.",
+    "hero.title":"El mar empieza aquí.",
+    "hero.subtitle":"Alquila un barco, encuentra un skipper o reserva servicios náuticos dondequiera que navegues.",
+    "hero.trust1":"Perfiles verificados","hero.trust2":"Respuesta rápida","hero.trust3":"Pago seguro",
+    "hero.ctaProviders":"Servicios náuticos","hero.ctaBoats":"Encontrar un barco","hero.ctaSkipper":"Encontrar un skipper",
+    "search.portLabel":"PUERTO DE SALIDA — TODO EL MUNDO","search.portPlaceholder":"Ej. Cannes, Miami, Ibiza…",
+    "search.dateLabel":"FECHA","search.durationLabel":"DURACIÓN","search.submit":"Buscar",
+    "duration.half":"Medio día","duration.day":"Día completo","duration.multi":"Varios días","duration.daysLabel":"NÚMERO DE DÍAS",
+    "rental.badge":"ALQUILER DE BARCOS","rental.title":"Poner mi barco en alquiler","providersShowcase.badge":"PRESTADORES REGISTRADOS","providersShowcase.title":"Profesionales verificados disponibles","providersShowcase.subtitle":"Descubre únicamente perfiles realmente validados por SkipperNow.","providersShowcase.viewAll":"Ver profesionales","providersShowcase.empty":"Todavía no hay ningún prestador registrado.",
+    "categories.badge":"CATEGORÍAS","categories.title":"¿Qué necesitas?","categories.skipperDesc":"Salidas, alquiler, traslados y familiarización con el barco.","categories.daySailorDesc":"Ayuda a bordo, manipulación, traslados cortos.","categories.providersDesc":"Limpieza, mantenimiento, mecánica, avituallamiento y servicios en el muelle.","categories.boatRentalTitle":"Alquiler de barco","categories.boatRentalDesc":"Encuentra el barco ideal para tu destino.","categories.experienceTitle":"Experiencias en el mar","categories.experienceDesc":"Excursiones, salidas y experiencias inolvidables en el mar.","browseByType.title":"El barco ideal para cada ocasión","browseByPort.title":"Nuestros destinos estrella","boatType.motor":"Motor","boatType.sailboat":"Velero","boatType.rib":"Semirrígida","boatType.catamaran":"Catamarán",
+    "results.compactJoin.skipper":"¿Eres skipper en esta zona? Únete a SkipperNow y recibe tus primeras solicitudes.",
+    "results.compactJoin.day_sailor":"¿Ofreces ayuda a bordo en esta zona? Únete a SkipperNow y recibe tus primeras solicitudes.",
+    "results.compactJoin.cleaning":"¿Ofreces servicios náuticos en esta zona? Únete a SkipperNow y recibe tus primeras solicitudes.",
+    "rental.text":"Crea una cuenta de propietario, añade fotos, características, puerto base y disponibilidad. Luego podrás ofrecer tu barco con o sin skipper.",
+    "rental.cta":"Poner mi barco en alquiler","rental.ctaShort":"¿Eres propietario? Pon tu barco en alquiler","rental.examplesBadge":"BARCOS DISPONIBLES",
+    "rental.examplesTitle":"Barcos disponibles","rental.examplesSubtitle":"Encuentra tu próximo barco, allí donde SkipperNow está presente.","rental.viewAll":"Ver todos los anuncios","rental.empty":"Todavía no hay barcos publicados. ¡Sé el primer propietario en publicar el tuyo!","rental.emptyTitle":"Los primeros anuncios están llegando","rental.emptyText":"SkipperNow abre nuevos puertos progresivamente. Ya puedes publicar tu barco gratis.","rental.emptyCta":"Publicar mi barco",
+    "results.skippersHeading":"Skippers disponibles","results.skippersSub":"Profesionales verificados cerca de tu puerto de salida",
+    "results.daySailorsHeading":"Marineros por día disponibles","results.daySailorsSub":"Ayuda a bordo y trabajos puntuales cerca de tu puerto de salida",
+    "results.cleaningHeading":"Prestadores disponibles","results.cleaningSub":"Limpieza, servicios de puerto y mantenimiento cerca de tu puerto de salida",
+    "results.count.cleaning.one":"1 prestador","results.count.cleaning.other":"{n} prestadores",
+    "results.emptyCleaningText":"Todavía no hay prestador verificado en este puerto. ¿Ofreces limpieza o servicios de puerto en la Costa Azul? Únete a SkipperNow ahora.",
+    "results.empty":"Ningún perfil verificado para esta búsqueda.",
+    "results.emptyTitle":"¡Sé de los primeros!",
+    "results.emptySkipperText":"Todavía no hay skipper verificado en este puerto. ¿Eres skipper profesional en la Costa Azul? Únete a SkipperNow ahora.",
+    "results.emptyDaySailorText":"Todavía no hay marinero por día disponible. ¿Ofreces ayuda a bordo o servicios puntuales? Regístrate.",
+    "results.emptyCtaDaySailor":"Ser marinero por día",
+    "results.count.skipper.one":"1 skipper","results.count.skipper.other":"{n} skippers",
+    "results.count.day_sailor.one":"1 marinero por día","results.count.day_sailor.other":"{n} marineros por día",
+    "tabs.skippers":"Skippers","tabs.daySailors":"Marineros por día","tabs.cleaning":"Servicios náuticos",
+    "card.experience":"año(s) de experiencia","card.newOnPlatform":"Nuevo en SkipperNow","card.priceOnRequest":"A consultar","card.priceNote":"precio confirmado antes de la reserva","card.priceFrom":"Desde","card.verifiedBadge":"Verificado","card.featuredBadge":"Destacado",
+    "card.superSkipperBadge":"Super Skipper","card.recommendedProviderBadge":"Prestador recomendado",
+    "boatDetail.verifiedBadge":"Barco verificado",
+    "dash.verifyBoat":"Verificar barco","dash.unverifyBoat":"Quitar verificación","dash.boatVerifyChecklist":"Antes de verificar este barco, confirma que has comprobado:\n\n✓ Las fotos son reales y recientes\n✓ El seguro del barco está en vigor\n✓ Los datos (modelo, año, capacidad) son coherentes\n\nHaz clic en OK para confirmar la verificación.","dash.markFeatured":"Destacar","dash.unfeature":"Quitar destacado",
+    "stats.missions":"servicios realizados","stats.pros":"profesionales verificados","stats.rating":"valoración media","launch.banner":"Lanzamiento prioritario en la Costa Azul: Cannes, Antibes, Niza, Mónaco y Saint-Tropez.","seaCarousel.caption":"Tus mejores salidas al mar empiezan aquí",
+    "trustProcess.title":"Una reserva más segura, paso a paso","trustProcess.subtitle":"Reglas claras para proteger tanto a clientes como a profesionales.","trustProcess.verifyTitle":"Perfiles revisados","trustProcess.verifyText":"Los perfiles profesionales se revisan antes de aparecer como verificados.","trustProcess.quoteTitle":"Acepta el precio antes de pagar","trustProcess.quoteText":"El profesional propone su precio y tú decides antes del pago.","trustProcess.contactTitle":"Datos de contacto protegidos","trustProcess.contactText":"Las conversaciones permanecen en SkipperNow para reducir abusos y acuerdos externos.",
+    "quickRequest.title":"¿No encuentras exactamente lo que necesitas?","quickRequest.subtitle":"Publica una solicitud y los profesionales disponibles podrán responder con su precio.","quickRequest.cta":"Publicar una solicitud gratis","quickRequest.openTitle":"Solicitud abierta a profesionales","quickRequest.cardText":"¿Ningún perfil coincide? Envía tu necesidad a los profesionales disponibles.",
+    "card.available":"Disponible","card.unavailable":"No disponible","card.unavailableOn":"No disponible el","card.viewProfile":"Ver perfil",
+    "how.title":"¿Cómo funciona?",
+    "how.step1Title":"Encuentra","how.step1Text":"Elige un skipper, un barco, un servicio o una experiencia.",
+    "how.step2Title":"Reserva","how.step2Text":"Envía tu solicitud y contacta con el profesional.",
+    "how.step3Title":"Disfruta","how.step3Text":"Pago seguro y una experiencia sencilla de principio a fin.",
+    "gallery.title":"La experiencia SkipperNow","gallery.subtitle":"Salidas al mar inolvidables, en cualquier parte del mundo",
+    "logbook.title":"Cuaderno de bitácora","logbook.subtitle":"La Costa Azul, puerto a puerto — la ruta que siguen nuestros skippers","logbook.seeSkippers":"Ver skippers →","logbook.nm":"nm","activities.title":"Experiencias en el mar","activities.subtitle":"Descubre salidas y experiencias cerca de tu destino.","activities.discover":"Descubrir →","activities.filterShowing":"Salidas en","activities.reserve":"Buscar skipper →",
+    "join.title":"Únete a SkipperNow",
+    "join.ownerTitle":"Propietario","join.ownerText":"Añade tu barco y recibe solicitudes de alquiler.","join.ownerCta":"Añadir mi barco",
+    "join.skipperTitle":"Skipper","join.skipperText":"Crea tu perfil y recibe solicitudes de misión.","join.skipperCta":"Ser skipper",
+    "join.providerTitle":"Prestador","join.providerText":"Ofrece tus servicios náuticos a navegantes y propietarios.","join.providerCta":"Ser prestador",
+    "footer.tagline":"La plataforma mundial para la náutica: skippers, barcos, servicios y experiencias en el mar.","seoFooter.title":"Nuestros destinos en el mundo",
+    "footer.platform":"Plataforma","footer.findSkipper":"Buscar un skipper","footer.findProvider":"Encontrar un prestador de servicios","footer.findBoat":"Buscar un barco",
+    "footer.pros":"Profesionales","footer.becomePro":"Ser prestador","footer.addBoat":"Poner un barco en alquiler",
+    "footer.infoTitle":"Información","footer.about":"Acerca de","footer.contact":"Contacto","footer.terms":"Términos y condiciones","footer.privacy":"Privacidad","footer.mentions":"Aviso legal","footer.cookies":"Cookies","footer.rights":"Todos los derechos reservados.",
+    "legal.eyebrow":"INFORMACIÓN LEGAL",
+    "legal.mentionsTitle":"Aviso legal","legal.mentionsBody":"Editor del sitio: SkipperNow, operado por Fredery Therond, autónomo (entrepreneur individuel), registrado con el n.º SIRET 881 423 446 00049 (SIREN 881 423 446), con domicilio social en 5 rue Sévigné, 06110 Le Cannet, Francia.\n\nDirector de publicación: Fredery Therond.\n\nAlojamiento: GitHub, Inc.\n\nContacto: skippernow@outlook.fr.",
+    "legal.cguTitle":"Términos y condiciones de uso","legal.cguBody":"1. Objeto — Las presentes condiciones generales de uso (\"Condiciones\") tienen por objeto definir las modalidades y condiciones en las que SkipperNow pone a disposición su plataforma de conexión entre clientes, skippers, prestadores náuticos y propietarios de barcos (la \"Plataforma\"), así como los derechos y obligaciones de las partes.\n\n2. Definiciones — \"Usuario\" designa a toda persona registrada en la Plataforma, ya actúe como Cliente o como Skipper/Prestador. \"Cliente\" designa al usuario que busca un servicio náutico. \"Skipper/Prestador\" designa al usuario que ofrece un servicio o el alquiler de un barco. \"Servicio\" designa la prestación acordada entre un Cliente y un Skipper/Prestador a través de la Plataforma.\n\n3. Aceptación — El registro en la Plataforma implica la aceptación plena de las presentes Condiciones. El Usuario que no las acepte debe abstenerse de utilizar la Plataforma.\n\n4. Acceso a la Plataforma — El registro está reservado a personas mayores de edad con plena capacidad jurídica. Los Skippers/Prestadores garantizan que cuentan con las cualificaciones, titulaciones y seguros exigidos por la normativa aplicable a su actividad.\n\n5. Cuenta de usuario — Cada Usuario garantiza la exactitud, actualidad y veracidad de la información facilitada al registrarse y se compromete a mantenerla actualizada, en particular su número de teléfono, para poder ser contactado en caso de emergencia.\n\n6. Papel de SkipperNow — SkipperNow actúa exclusivamente como intermediario técnico que conecta a los Usuarios. SkipperNow no es parte de los contratos celebrados entre Clientes y Skippers/Prestadores ni interviene en la ejecución material de los Servicios.\n\n7. Comportamiento de los Usuarios — Cada Usuario se compromete a un uso leal y de buena fe de la Plataforma, a no eludir las herramientas de mensajería o pago integradas, y a respetar las Normas de la comunidad de SkipperNow.\n\n8. Propiedad intelectual — La Plataforma, su estructura, contenido y elementos (textos, logotipos, base de datos) están protegidos por el derecho de propiedad intelectual y siguen siendo propiedad de SkipperNow o de sus socios.\n\n9. Responsabilidad — SkipperNow emplea medios razonables para garantizar el buen funcionamiento de la Plataforma, pero no puede garantizar una disponibilidad continua. SkipperNow no puede ser considerada responsable de la correcta ejecución de los Servicios, de la calidad de las prestaciones ofrecidas por los Skippers/Prestadores, ni de los daños derivados de su relación con los Clientes.\n\n10. Suspensión y resolución — SkipperNow se reserva el derecho de suspender o eliminar, sin previo aviso, la cuenta de cualquier Usuario que incumpla estas Condiciones o las Normas de la comunidad.\n\n11. Datos personales — El tratamiento de los datos personales de los Usuarios se describe en la Política de privacidad, que forma parte integrante de estas Condiciones.\n\n12. Modificaciones — SkipperNow puede modificar estas Condiciones en cualquier momento. Los Usuarios serán informados por los medios adecuados, y el uso continuado de la Plataforma tras dicha notificación implicará la aceptación de las Condiciones modificadas.\n\n13. Ley aplicable y litigios — Estas Condiciones se rigen por el derecho francés. En caso de litigio, se buscará una solución amistosa antes de cualquier acción judicial. En su defecto, de conformidad con los artículos L.616-1 y siguientes del Código de consumo francés, todo consumidor tiene derecho a recurrir gratuitamente a un mediador de consumo. Los tribunales franceses tienen jurisdicción exclusiva.",
+    "legal.cgvTitle":"Condiciones generales de venta","legal.cgvBody":"1. Ámbito de aplicación — Las presentes condiciones generales de venta (\"Condiciones de venta\") se aplican a toda reserva de un servicio náutico, servicio de skipper o alquiler de barco realizada a través de la Plataforma SkipperNow.\n\n2. Servicios cubiertos — Se incluyen los servicios ofrecidos por los Skippers/Prestadores listados en la Plataforma: navegación acompañada, alquiler de barco con o sin skipper, clases de navegación, traslados de embarcaciones y servicios náuticos similares.\n\n3. Precios — Los precios los fijan libremente cada Skipper/Prestador o propietario. El precio total mostrado al Cliente antes del pago incluye la comisión de servicio de SkipperNow, indicada claramente y de forma separada del precio del servicio.\n\n4. Reserva — La reserva se confirma en cuanto se valida el pago del Cliente. A partir de ese momento, un resumen del Servicio (fechas, prestación, precio, datos de contacto) está disponible en la cuenta de ambas partes.\n\n5. Pago — El pago lo recauda SkipperNow por cuenta del Skipper/Prestador a través de su proveedor de pagos seguro (Stripe). Los fondos son retenidos por SkipperNow hasta la finalización del Servicio, y después se abonan al Skipper/Prestador, deduciendo la comisión de servicio.\n\n6. Comisión — SkipperNow cobra una comisión en cada transacción realizada a través de la Plataforma, cuyo porcentaje se muestra antes de confirmar la reserva.\n\n7. Facturación — Se genera automáticamente un recibo resumen para cada servicio pagado, disponible y descargable desde la cuenta de usuario.\n\n8. Cancelación y reembolsos — Las condiciones de cancelación y reembolso aplicables se detallan en la Política de cancelación y la Política de reembolso, que forman parte integrante de estas Condiciones de venta.\n\n9. Ausencia de derecho de desistimiento — De conformidad con el artículo L.221-28.9º del Código de consumo francés, el derecho de desistimiento no se aplica a los servicios de ocio que deban prestarse en una fecha o periodicidad determinada, como los servicios náuticos ofrecidos en la Plataforma.\n\n10. Reclamaciones — Toda reclamación relativa a un servicio debe dirigirse en primer lugar al Skipper/Prestador correspondiente a través de la mensajería de la Plataforma y, en caso de no resolverse, a SkipperNow mediante skippernow@outlook.fr.\n\n11. Ley aplicable — Estas Condiciones de venta se rigen por el derecho francés.",
+    "legal.privacyTitle":"Política de privacidad","legal.privacyBody":"1. Responsable del tratamiento — El responsable del tratamiento de los datos personales recopilados en la Plataforma es Fredery Therond, que opera SkipperNow como autónomo (SIRET 881 423 446 00049), contactable en skippernow@outlook.fr.\n\n2. Datos recopilados — SkipperNow recopila: datos de identidad y contacto (nombre, correo electrónico, número de teléfono); datos de perfil (foto, presentación, cualificaciones); documentos de verificación profesional de los Skippers/Prestadores (titulaciones, licencias); datos de conexión y uso de la Plataforma; datos de pago, procesados directamente por nuestro proveedor de pagos Stripe y nunca almacenados en texto plano por SkipperNow.\n\n3. Finalidades — Estos datos se utilizan para: permitir la creación y gestión de la cuenta de usuario; conectar a Clientes y Skippers/Prestadores; permitir contactar al usuario, incluso en caso de emergencia durante un Servicio; gestionar reservas y pagos; verificar las cualificaciones declaradas por los Skippers/Prestadores; garantizar la seguridad de la Plataforma y prevenir el fraude; cumplir las obligaciones legales y normativas aplicables.\n\n4. Base jurídica — Los tratamientos se basan, según el caso, en la ejecución del contrato entre el Usuario y SkipperNow, en el consentimiento del Usuario, en el interés legítimo de SkipperNow en garantizar la seguridad de la Plataforma, o en el cumplimiento de obligaciones legales.\n\n5. Destinatarios — Los datos son accesibles para el equipo de SkipperNow y, en su caso, se comparten con nuestros proveedores técnicos (alojamiento, pago) en la estricta medida necesaria para la prestación de sus servicios. Los datos nunca se venden ni ceden a terceros con fines comerciales.\n\n6. Plazo de conservación — Los datos se conservan durante la relación contractual y después se archivan durante los plazos exigidos por las obligaciones legales y contables aplicables, antes de su supresión o anonimización.\n\n7. Derechos de los Usuarios — De conformidad con el Reglamento General de Protección de Datos (RGPD), cada Usuario tiene derecho de acceso, rectificación, supresión, limitación, oposición y portabilidad de sus datos, ejercitable en cualquier momento a través de skippernow@outlook.fr. Cada Usuario tiene también derecho a presentar una reclamación ante la autoridad de protección de datos competente.\n\n8. Seguridad — SkipperNow aplica medidas técnicas y organizativas razonables para proteger los datos de los Usuarios frente a accesos no autorizados, pérdida o divulgación.\n\n9. Confidencialidad — La información personal de los Usuarios, incluidos sus datos de contacto, solo es visible para el equipo de SkipperNow y, en la estricta medida necesaria para realizar un Servicio, para la otra parte implicada en dicho Servicio.",
+    "legal.cancellationTitle":"Política de cancelación","legal.cancellationBody":"1. Cancelación antes del pago — El Cliente puede cancelar una solicitud de reserva libremente y sin coste mientras el Servicio aún no se haya pagado, directamente desde su cuenta.\n\n2. Cancelación después del pago — Una vez realizado el pago, la cancelación por parte del Cliente está sujeta a las condiciones específicas definidas por el Skipper/Prestador o el propietario del barco correspondiente, indicadas en la ficha del anuncio antes de la reserva. En ausencia de condiciones particulares, se invita al Cliente a contactar con el Skipper/Prestador a través de la mensajería de la Plataforma para acordar las condiciones de cancelación.\n\n3. Cancelación por parte del profesional — Si el Skipper/Prestador o el propietario cancela un Servicio ya pagado, el Cliente recibe el reembolso íntegro sin demora injustificada.\n\n4. Fuerza mayor — En caso de cancelación debida a condiciones meteorológicas peligrosas o a cualquier otro caso de fuerza mayor que impida realizar el Servicio con seguridad, el Cliente no deberá abonar ninguna penalización y se le ofrecerá un reembolso o un aplazamiento del Servicio.\n\n5. Procedimiento — Toda solicitud de cancelación debe realizarse desde la cuenta de usuario o comunicarse a skippernow@outlook.fr para que pueda tramitarse lo antes posible.",
+    "legal.refundTitle":"Política de reembolso","legal.refundBody":"1. Motivos de reembolso — Un Cliente puede solicitar un reembolso total o parcial cuando el servicio no se haya realizado, haya sido cancelado por el profesional tras el pago, o presente una diferencia significativa respecto a la descripción del anuncio.\n\n2. Procedimiento — La solicitud de reembolso se realiza desde la cuenta del Cliente en un plazo razonable tras la finalización del Servicio, indicando el motivo y, si es posible, pruebas justificativas (mensajes, fotos, descripción de la situación).\n\n3. Revisión — Cada solicitud es examinada individualmente por el equipo de SkipperNow, que puede solicitar información adicional a ambas partes antes de resolver.\n\n4. Decisión — SkipperNow puede aprobar un reembolso total, un reembolso parcial proporcional al perjuicio constatado, o denegar la solicitud si no está justificada, motivando su decisión.\n\n5. Tramitación — Los reembolsos aprobados se inician a través de nuestro proveedor de pagos Stripe. El plazo de recepción efectiva de los fondos depende de los plazos bancarios habituales, generalmente unos días hábiles.\n\n6. Comisión de servicio — En caso de reembolso íntegro imputable al profesional o a SkipperNow, la comisión de servicio percibida por SkipperNow sobre la transacción correspondiente también se reembolsa al Cliente.",
+    "legal.cookiesTitle":"Política de cookies","legal.cookiesBody":"1. Qué es una cookie — Una cookie es un pequeño archivo que se instala en su dispositivo al navegar por la Plataforma, y que permite recordar cierta información entre visitas.\n\n2. Cookies estrictamente necesarias — Estas cookies son indispensables para el funcionamiento de la Plataforma (inicio de sesión, seguridad, recordar el idioma elegido). No pueden desactivarse sin afectar al funcionamiento del sitio.\n\n3. Cookies de medición de audiencia — SkipperNow puede utilizar cookies para medir la afluencia y el uso de la Plataforma con el fin de mejorarla. Estos datos se tratan de forma agregada y no tienen como objetivo identificar individualmente a los Usuarios con fines comerciales.\n\n4. Cookies publicitarias — Actualmente no se utilizan cookies publicitarias de terceros en la Plataforma.\n\n5. Plazo de conservación — Las cookies instaladas tienen una duración limitada, que no supera los 13 meses, conforme a las recomendaciones de las autoridades de protección de datos.\n\n6. Gestión de cookies — Puede configurar su navegador en cualquier momento para aceptar, rechazar o ser avisado antes de que se instalen cookies. Rechazar determinadas cookies puede afectar a algunas funciones de la Plataforma.",
+    "legal.communityTitle":"Normas de la comunidad","legal.communityBody":"1. Exactitud de la información — Cada Usuario se compromete a proporcionar información exacta y actualizada en su perfil, cualificaciones y anuncios, incluidos los datos de contacto que permitan localizarlo en caso de emergencia.\n\n2. Respeto mutuo — Los intercambios entre Usuarios, ya sea a través de la mensajería integrada o durante un Servicio, deben ser corteses y respetuosos. Queda estrictamente prohibido cualquier comentario discriminatorio, injurioso o amenazante.\n\n3. Uso leal de la Plataforma — Los Usuarios se comprometen a no eludir la Plataforma para evitar las tarifas de servicio, en particular incitando a la otra parte a finalizar fuera de la Plataforma una reserva iniciada en SkipperNow.\n\n4. Cumplimiento de los compromisos — Cada Usuario se compromete a cumplir las reservas aceptadas y a avisar a la otra parte lo antes posible en caso de imprevistos.\n\n5. Seguridad en el mar — Los Skippers/Prestadores se comprometen a ejercer su actividad respetando estrictamente la normativa marítima y las normas de seguridad aplicables, y a no poner nunca en peligro la seguridad de los Clientes.\n\n6. Reporte — Todo Usuario que detecte un comportamiento contrario a estas normas debe reportarlo al equipo de SkipperNow a través de skippernow@outlook.fr.\n\n7. Sanciones — El incumplimiento de estas normas puede dar lugar, según su gravedad, a un aviso, una suspensión temporal o la eliminación definitiva de la cuenta del Usuario correspondiente.",
+    "providerModal.eyebrow":"SERVICIOS NÁUTICOS","providerModal.title":"Encontrar un prestador de servicios","providerModal.intro":"Elige el servicio que necesitas cerca de tu puerto.",
+    "activity.cleaning":"Preparación y servicios en el muelle","activity.cleaningDesc":"Limpieza, enjuague, aprovisionamiento, amarre y asistencia en la salida.",
+    "activity.shipyard":"Astillero y mantenimiento","activity.shipyardDesc":"Antifouling, pintura, pequeñas reparaciones, botadura.",
+    "activity.daySailor":"Marinero por día","activity.daySailorDesc":"Ayuda a bordo, manipulación, traslados cortos.",
+    "activity.skipper":"Skipper profesional","activity.skipperDesc":"Salidas, alquiler, traslados y familiarización con el barco.",
+    "activity.boatRentalPro":"Empresa de alquiler de barcos","activity.boatRentalProDesc":"Alquiler de barcos, incluidos los de propietarios terceros.",
+    "activity.provisioning":"Compras y avituallamiento a bordo","activity.provisioningDesc":"Alimentos, bebidas, hielo y productos del día a día entregados directamente al barco.",
+    "providerModal.subIntro":"Elige la categoría que corresponde a tu necesidad.",
+    "sub.provisioning.freshProduce":"Frutas y verduras frescas","sub.provisioning.groceries":"Despensa y productos secos","sub.provisioning.drinks":"Bebidas","sub.provisioning.ice":"Hielo","sub.provisioning.breakfast":"Desayuno y bollería","sub.provisioning.hygiene":"Higiene y limpieza","sub.provisioning.custom":"Pedido personalizado",
+    "booking.provisioningPlaceholder":"Ej. 3 packs de agua, 2 botellas de zumo, refrescos, café… indica tu necesidad de {sub}, el puerto y la hora de entrega deseada.",
+    "results.noProvider":"Todavía no hay prestadores disponibles para este servicio.",
+    "boatFinder.eyebrow":"ALQUILER DE BARCOS","boatFinder.title":"Barcos disponibles","boatFinder.empty":"Ningún barco coincide con tu búsqueda.","boatFinder.allTypes":"Todos los tipos","boatFinder.minCapacity":"Capacidad mín.","boatFinder.skipperAny":"Con o sin patrón","boatFinder.skipperWith":"Con patrón","boatFinder.skipperWithout":"Sin patrón",
+    "boatDetail.model":"Modelo","boatDetail.port":"Puerto base","boatDetail.length":"Eslora","boatDetail.halfDay":"Medio día","boatDetail.fullDay":"Día completo",
+    "boatDetail.type":"Tipo de barco","boatDetail.typeSailboat":"Velero","boatDetail.typeMotorboat":"Yate a motor","boatDetail.typeRib":"Semirrígida","boatDetail.typeCatamaran":"Catamarán",
+    "boatDetail.capacity":"Capacidad (personas)","boatDetail.pax":"pers.","boatDetail.cabinsField":"Número de cabinas","boatDetail.cabins":"cabinas","boatDetail.cabin":"cabina","boatDetail.year":"Año",
+    "boatDetail.skipperIncluded":"Skipper incluido","boatDetail.skipperIncludedTag":"Skipper incluido","boatDetail.skipperOptionalTag":"Skipper opcional",
+    "boatDetail.onRequest":"A consultar","boatDetail.perDaySuffix":" /día","boatDetail.perHalfDaySuffix":" /medio día","boatDetail.description":"Descripción","boatDetail.noDescription":"Sin descripción disponible.","boatDetail.photos":"Fotos (hasta 6)",
+    "boatDetail.request":"Solicitar una reserva","boatDetail.close":"Cerrar","boatDetail.ownListing":"Este es tu propio anuncio — no puedes reservarlo.",
+    "boatDetail.brand":"Marca","boatDetail.width":"Manga","boatDetail.draft":"Calado","boatDetail.berths":"Literas",
+    "boatDetail.engineType":"Tipo de motor","boatDetail.engineCount":"Número de motores","boatDetail.enginePower":"Potencia (cv)","boatDetail.fuelType":"Tipo de combustible",
+    "boatDetail.fuelTank":"Depósito de combustible","boatDetail.waterTank":"Depósito de agua","boatDetail.priceHalfDay":"Tarifa medio día","boatDetail.priceFullDay":"Tarifa día completo",
+    "boatDetail.deposit":"Depósito de garantía","boatDetail.equipment":"Equipamiento","boatDetail.equipmentPlaceholder":"Ej: GPS, línea de fondeo, paddle surf, chalecos...",
+    "boatDetail.rules":"Normas del barco","boatDetail.cancellationPolicy":"Política de cancelación",
+    "account.eyebrow":"MI CUENTA","account.createTitle":"Crea tu actividad en SkipperNow","account.loginTitle":"Iniciar sesión en SkipperNow",
+    "account.tabCreate":"Crear una cuenta","account.tabLogin":"Iniciar sesión","common.back":"Volver",
+    "account.roleClient":"Cliente","account.roleClientDesc":"Reservar un skipper, un prestador o un barco",
+    "account.roleSkipper":"Skipper","account.roleSkipperDesc":"Recibir solicitudes de salidas y traslados",
+    "account.roleProvider":"Prestador","account.roleProviderDesc":"Limpieza, puerto, astillero o marinero por día",
+    "account.roleOwner":"Alquiler / Propietario","account.roleOwnerDesc":"Publicar uno o varios barcos en alquiler",
+    "account.nameLabel":"NOMBRE COMPLETO","account.namePlaceholder":"Tu nombre","account.phoneLabel":"TELÉFONO","account.photoLabel":"FOTO DE PERFIL","account.photoReminder":"⚠️ No olvides añadir una foto de perfil: los anuncios sin foto generan menos confianza y reciben menos contactos.","account.diplomaLabel":"TÍTULO / CERTIFICACIÓN","account.diplomaCurrent":"Ver documento actual","account.diplomaNote":"Foto o PDF de tu titulación (licencia, tarjeta profesional...). Se usa para la verificación del equipo de SkipperNow, no se muestra públicamente.","account.diplomaTypeLabel":"TIPO DE TÍTULO / CERTIFICACIÓN (visible públicamente)","account.diplomaTypePlaceholder":"Ej. Licencia costera, Patrón 200, Tarjeta profesional...","account.photoRequiredError":"Es obligatoria una foto de perfil para publicar tu ficha.","account.phoneRequiredError":"Es obligatorio un número de teléfono para publicar tu ficha.","account.profileCompletion":"Perfil completado","dash.leaveReview":"Dejar una reseña","dash.reviewRatingLabel":"VALORACIÓN","dash.reviewCommentLabel":"COMENTARIO (OPCIONAL)","dash.reviewSubmit":"Enviar mi reseña","dash.reviewNeedStars":"Elige una valoración, por favor.","card.reviewsSingle":"reseña","card.reviewsPlural":"reseñas","card.diplomaBadgePrefix":"Diploma verificado:","card.sendMessage":"Enviar un mensaje","account.diplomaTypeLabel":"TIPO DE TÍTULO / CERTIFICACIÓN (visible públicamente)","account.diplomaTypePlaceholder":"Ej. Licencia costera, Patrón 200, Tarjeta profesional...","account.photoRequiredError":"Es obligatoria una foto de perfil para publicar tu ficha.","account.profileCompletion":"Perfil completado","dash.leaveReview":"Dejar una reseña","dash.reviewRatingLabel":"VALORACIÓN","dash.reviewCommentLabel":"COMENTARIO (OPCIONAL)","dash.reviewSubmit":"Enviar mi reseña","dash.reviewNeedStars":"Elige una valoración, por favor.","card.reviewsSingle":"reseña","card.reviewsPlural":"reseñas","card.diplomaBadgePrefix":"Diploma verificado:","card.sendMessage":"Enviar un mensaje","account.diplomaTypeLabel":"TIPO DE TÍTULO / CERTIFICACIÓN (visible públicamente)","account.diplomaTypePlaceholder":"Ej. Licencia costera, Patrón 200, Tarjeta profesional...","account.photoRequiredError":"Es obligatoria una foto de perfil para publicar tu ficha.","account.profileCompletion":"Perfil completado","dash.leaveReview":"Dejar una reseña","dash.reviewRatingLabel":"VALORACIÓN","dash.reviewCommentLabel":"COMENTARIO (OPCIONAL)","dash.reviewSubmit":"Enviar mi reseña","dash.reviewNeedStars":"Elige una valoración, por favor.","card.reviewsSingle":"reseña","card.reviewsPlural":"reseñas","card.diplomaBadgePrefix":"Diploma verificado:","card.sendMessage":"Enviar un mensaje",
+    "account.experienceLabel":"AÑOS DE EXPERIENCIA","account.languagesLabel":"IDIOMAS HABLADOS","account.languagesPlaceholder":"Ej: Francés, English, Español",
+    "account.skillsLabel":"HABILIDADES / TIPOS DE BARCO DOMINADOS","account.skillsPlaceholder":"Ej: Velero, Catamarán, Yate a motor, Traslado",
+    "account.travelRadiusLabel":"RADIO DE DESPLAZAMIENTO","account.priceHalfDayLabel":"TARIFA MEDIO DÍA","account.priceHourLabel":"TARIFA POR HORA (opcional)","account.travelFeeLabel":"GASTOS DE DESPLAZAMIENTO",
+    "account.siretLabel":"NÚMERO DE EMPRESA","account.insuranceLabel":"SEGURO PROFESIONAL","account.insurancePlaceholder":"Aseguradora y n.º de póliza",
+    "account.emailLabel":"EMAIL","account.passwordLabel":"CONTRASEÑA","account.passwordPlaceholder":"Mínimo 8 caracteres",
+    "account.portLabel":"PUERTO BASE — CIUDAD, PAÍS","account.portPlaceholder":"Ej. Port Vauban, Antibes, Francia","account.zoneLabel":"CIUDAD / ZONA DE ACTUACIÓN","account.zonePlaceholder":"Ej. Antibes, Cannes, Golfe-Juan…","account.portHelp":"Elige una sugerencia de la lista para que tu ciudad se reconozca correctamente.",
+    "account.activityLabel":"SERVICIO OFRECIDO","account.createSubmit":"Crear mi cuenta","account.loginSubmit":"Iniciar sesión","account.forgot":"¿Olvidaste tu contraseña?",
+    "account.errMissing":"Completa los campos y usa al menos 8 caracteres para la contraseña.",
+    "account.errName":"Indica tu nombre.","account.errPort":"Indica tu puerto principal.",
+    "account.loginError":"Email o contraseña incorrectos. Usa «¿Olvidaste tu contraseña?» si lo necesitas.",
+    "error.generic":"Se produjo un error. Por favor, inténtalo de nuevo.","error.phoneFormat":"El número de teléfono contiene caracteres no válidos. Vuelve a escribirlo manualmente (solo dígitos, espacios, + y -).","error.duplicate":"Esta información ya está siendo usada por otra cuenta.","error.invalidCredentials":"Email o contraseña incorrectos.","error.emailTaken":"Este email ya está asociado a una cuenta.","error.network":"Problema de conexión. Comprueba tu conexión a internet e inténtalo de nuevo.","error.permission":"No tienes permiso para realizar esta acción.","error.session":"Tu sesión ha caducado. Vuelve a iniciar sesión.","error.missingField":"Falta un campo obligatorio.","action.savedSuccess":"✓ Tu información se ha guardado correctamente.",
+    "account.emailNotConfirmed":"Tu dirección de email todavía no está confirmada. Abre el mensaje de SkipperNow.",
+    "account.signupSuccess":"Cuenta creada. Verifica tu email y vuelve para iniciar sesión.",
+    "account.forgotNeedEmail":"Indica primero tu dirección de email.","account.forgotSent":"Email enviado. Revisa también la carpeta de spam.",
+    "account.forgotError":"No se pudo enviar el email: ",
+    "booking.eyebrowRequest":"SOLICITUD DE RESERVA","booking.defaultTarget":"Profesional seleccionado",
+    "booking.port":"Puerto","booking.price":"Precio","booking.priceTbd":"A definir con el profesional",
+    "booking.nameLabel":"TU NOMBRE","booking.phoneLabel":"TELÉFONO","booking.boatLabel":"TIPO DE BARCO","booking.boatOptionalLabel":"TIPO DE BARCO (OPCIONAL)","booking.boatPlaceholder":"Ej. Cap Camarat 9.0",
+    "booking.detailsLabel":"DESCRIBE TU NECESIDAD","booking.detailsPlaceholder":"Limpieza, salida, traslado, número de personas…","booking.rentalDetailsLabel":"NOTAS (OPCIONAL)","booking.rentalDetailsPlaceholder":"Número de pasajeros, horario preferido, peticiones especiales…","booking.photosLabel":"FOTOS (OPCIONAL)",
+    "booking.paymentNote":"El profesional te propondrá un precio. Solo pagas después de aceptar el presupuesto.",
+    "booking.submit":"Enviar solicitud","booking.successTitle":"Solicitud enviada",
+    "booking.successText":"El profesional ya puede consultar tu solicitud y proponer un precio.","booking.successCta":"Ver mi solicitud",
+    "booking.needLogin":"Inicia sesión antes de enviar una solicitud.","booking.needClient":"Se necesita una cuenta de cliente para enviar una solicitud.",
+    "booking.needBoat":"Indica el tipo de barco.","booking.needPort":"Indica el puerto o la ciudad.","booking.needDate":"Elige una fecha.","booking.needFutureDate":"Elige una fecha futura.","booking.needDays":"Indica el número de días (mínimo 2).","booking.needDetails":"Describe brevemente tu necesidad.","booking.sending":"Enviando…","dash.requestSent":"Enviada","dash.requestReceived":"Recibida",
+    "dash.clientEyebrow":"ESPACIO CLIENTE","dash.clientTitle":"Mis reservas",
+    "dash.proEyebrow":"ESPACIO PROFESIONAL","dash.proTitle":"Mis servicios",
+    "dash.adminEyebrow":"ADMINISTRACIÓN","dash.adminTitle":"Panel de SkipperNow",
+    "dash.navRequests":"Mis solicitudes","dash.navBoats":"Mis barcos","dash.viewUserBoats":"Ver sus barcos","dash.editBoat":"Editar anuncio","dash.boatsOf":"Barcos de","dash.clearFilter":"Ver todos los barcos","dash.navProfile":"Mi perfil","dash.navAvailability":"Disponibilidad","dash.logout":"Cerrar sesión","dash.navMessages":"Mensajes","dash.noMessages":"Todavía no hay conversaciones.","dash.noUnreadMessages":"No hay mensajes nuevos.","dash.messagePlaceholder":"Escribe tu mensaje…","dash.send":"Enviar","dash.loading":"Cargando…","dash.deleteMessage":"Eliminar","dash.confirmDeleteMessage":"¿Eliminar este mensaje?","dash.deleteConversation":"Eliminar conversación","dash.confirmDeleteConversation":"¿Eliminar toda esta conversación? Esta acción no se puede deshacer.","dash.tabUnread":"No leídos","dash.tabAll":"Todos","dash.navSupport":"Contactar con soporte","dash.noSupport":"El soporte no está disponible en este momento.","dash.supportIntro":"¿Una pregunta o un problema? Escribe directamente al equipo de SkipperNow.",
+    "booking.privacyNote":"Por tu seguridad, los datos personales (teléfono, email) nunca se comparten directamente entre cliente y profesional.",
+    "dash.navForms":"Formularios",
+    "dash.navOverview":"Resumen","dash.navTraffic":"Estadísticas","dash.kpiVisitorsToday":"Visitantes hoy","dash.kpiVisitors7d":"Visitantes (7 d)","dash.kpiVisitors30d":"Visitantes (30 d)","dash.kpiVisitorsYear":"Visitantes (1 año)","dash.performance30d":"Resultados de los últimos 30 días","dash.kpiAccounts30d":"Nuevas cuentas","dash.kpiRequests30d":"Solicitudes enviadas","dash.kpiCompleted30d":"Servicios completados","dash.kpiConversion30d":"Visitantes registrados","dash.topPagesTitle":"Páginas visitadas (últimos 30 días)","dash.noViewsYet":"Todavía no hay visitas registradas.","dash.visitorsTrackingNote":"Los visitantes únicos solo son fiables desde la puesta en marcha del seguimiento, el {date}. Las páginas vistas más antiguas cuentan como páginas vistas pero no como visitantes únicos.","dash.trackingSinceUnknown":"fecha desconocida","dash.pageViews30d":"{count} página(s) vista(s) en 30 días","dash.originTitle":"Origen de los visitantes (30 días)","dash.countryProbable":"País probable","dash.timezones":"Zonas horarias","dash.originPrivacyNote":"Ubicación aproximada según el idioma y la zona horaria del navegador, sin GPS ni almacenamiento de la dirección IP. Las visitas antiguas no tienen ubicación.","dash.originEmpty":"Las primeras ubicaciones aparecerán con las nuevas visitas.","dash.visitorCount":"{count} visitante(s)","dash.viewCount":"{count} vista(s)","dash.navValidations":"Validaciones","dash.navMissions":"Servicios","dash.navUsers":"Usuarios","dash.navSettings":"Ajustes",
+    "dash.bookingFunnelTitle":"Embudo de reservas (30 días)","dash.bookingOpened":"Formularios abiertos","dash.bookingLoginRequired":"Inicio de sesión solicitado","dash.bookingSubmitted":"Envíos intentados","dash.bookingCreated":"Solicitudes creadas","dash.bookingFailed":"Errores de envío",
+    "dash.noRequests":"Todavía no hay solicitudes.","dash.noBoats":"Todavía no hay barcos añadidos.","dash.noMissions":"Todavía no hay servicios.",
+    "dash.kpiUsers":"Usuarios","dash.kpiPending":"Por validar","dash.kpiMissions":"Servicios","dash.kpiRevenue":"Comisión acumulada",
+    "dash.navPayments":"Cobros","dash.navPayouts":"Transferencias","dash.navRefunds":"Reembolsos","dash.navCommissions":"Comisiones","dash.navBoatsAdmin":"Barcos",
+    "dash.groupActivity":"Actividad","dash.groupFinance":"Finanzas","dash.groupAccounts":"Cuentas","dash.priorityQueueTitle":"Requiere atención","dash.priorityEmpty":"Nada urgente — todo al día.","dash.priorityValidation":"Perfil por validar","dash.priorityDispute":"Disputa abierta","dash.priorityPayout":"Transferencia por preparar","dash.kpiTrendWeek":"últimos 7 días",
+    "dash.groupContent":"Contenido","dash.navContent":"Puertos y destinos","dash.contentAddPort":"Añadir un puerto","dash.contentPortName":"Nombre del puerto","dash.contentPortLat":"Latitud","dash.contentPortLng":"Longitud","dash.contentPortDesc":"Descripción","dash.contentPortOrder":"Orden de visualización","dash.contentPortActive":"Visible en el sitio","dash.contentSave":"Guardar","dash.contentDelete":"Eliminar","dash.contentEdit":"Editar","dash.contentCancel":"Cancelar","dash.contentNoPorts":"Aún no hay puertos.","dash.contentSaved":"Guardado.","dash.contentDeleted":"Puerto eliminado.","dash.contentConfirmDelete":"¿Eliminar este puerto? Esta acción es definitiva.",
+    "dash.navHero":"Fotos del carrusel","dash.heroAddSlide":"Añadir una foto","dash.heroImageUrl":"URL de la imagen","dash.heroAlt":"Descripción (accesibilidad)","dash.heroOrder":"Orden de visualización","dash.heroActive":"Visible en el sitio","dash.heroNoSlides":"Aún no hay fotos.","dash.heroPreview":"Vista previa","dash.heroUploadLabel":"O subir una foto desde tu ordenador","dash.heroUploading":"Subiendo...","dash.heroUploaded":"Foto subida.","dash.navDestinations":"Destinos destacados","dash.destAddTile":"Añadir un destino","dash.destName":"Nombre del destino","dash.destNoTiles":"Aún no hay destinos.","dash.navActivities":"Ideas de salidas","dash.actAddTile":"Añadir una salida","dash.actPortName":"Puerto relacionado","dash.actTitle":"Título de la salida","dash.actDesc":"Descripción","dash.actNoTiles":"Aún no hay salidas.","dash.navExcursions":"Mis excursiones","dash.excAddTile":"Añadir una excursión","dash.excTitle":"Título de la excursión","dash.excDesc":"Descripción","dash.excIncluded":"Qué incluye (comida, material...)","dash.excPort":"Puerto de salida","dash.excPrice":"Precio por persona","dash.excDuration":"Duración (horas)","dash.excMaxGuests":"Plazas máximas","dash.excNoTiles":"Aún no hay excursiones.","dash.guests":"personas","dash.requestExcursion":"Solicitar esta excursión","dash.excGuestCount":"Número de personas","dash.excDateWanted":"Fecha deseada","dash.excRequestSent":"Tu solicitud ha sido enviada a la agencia.","dash.navMyLink":"Mi enlace directo","directReq.eyebrow":"SOLICITUD DIRECTA","directReq.title":"Enviar mi solicitud","directReq.needAccount":"Inicia sesión o crea una cuenta para enviar tu solicitud.","directReq.portLabel":"Puerto de salida","directReq.dateLabel":"Fecha deseada","directReq.descLabel":"Tu solicitud","directReq.submit":"Enviar mi solicitud","directReq.sent":"Tu solicitud ha sido enviada.","directReq.requestLabel":"Solicitud directa","directReq.dashboardExplain":"Comparte este enlace o código QR con un cliente que ya conoces: en un clic, crea una cuenta (si hace falta) y su solicitud te llega directamente en SkipperNow.","directReq.copyLink":"Copiar enlace","directReq.copied":"¡Enlace copiado!","excFinder.eyebrow":"EXCURSIONES","excFinder.title":"Excursiones disponibles","excFinder.empty":"No hay excursiones disponibles para este puerto.","excFinder.perPerson":"/ persona","dash.reqPhone":"Falta el teléfono","dash.reqDiploma":"Falta el diploma","dash.reqPhoto":"Falta la foto de perfil","dash.reqPhotoLink":"Ver foto","dash.missingBeforeApproval":"Necesario antes de validar","dash.profileIncompleteReminder":"Completa tu perfil para ser visible y recibir misiones","dash.completeProfile":"Completar mi perfil","dash.featuredBadge":"Destacado","dash.featuredUntil":"Destacado hasta","dash.daysLeft":"días restantes","dash.featureFor":"Destacar durante...","dash.days":"días","dash.removeFeatured":"Quitar destacado",
+    "dash.navDisputes":"Disputas","dash.noDisputes":"No hay disputas abiertas.","dash.resolveDispute":"Marcar como resuelto","dash.disputeOpen":"Disputa abierta","dash.disputeResolved":"Disputa resuelta",
+    "dash.reportProblem":"Reportar un problema","dash.viewInvoice":"Recibo y factura",
+    "dispute.reasonPrompt":"Describe el problema",
+    "invoice.title":"Factura","invoice.ref":"Referencia","invoice.date":"Fecha","invoice.total":"Total pagado","invoice.net":"Neto profesional","invoice.print":"Imprimir",
+    "invoice.legalNote":"Documento resumen generado por SkipperNow, válido como recibo. Para una factura con menciones legales completas, contacta con soporte.",
+    "dash.kpiActiveMissions":"Servicios activos","dash.kpiHeldFunds":"Fondos protegidos","dash.kpiToPayout":"Por transferir","dash.kpiPlatformRevenue":"Ingresos de la plataforma",
+    "dash.kpiNewUsers":"Nuevas cuentas (7d)","dash.kpiOpenDisputes":"Disputas abiertas",
+    "dash.internalNoteLabel":"NOTA INTERNA (solo admin)","dash.saveNote":"Guardar nota","dash.rejectDocument":"Rechazar documento","dash.documentRejected":"Documento rechazado",
+    "dash.client":"Cliente","dash.professional":"Profesional","dash.total":"Total","dash.commission":"Comisión","dash.netPro":"Neto profesional","dash.paymentStatus":"Pago",
+    "dash.markPaidOut":"Marcar como transferido","dash.approveRefund":"Aceptar el reembolso","dash.rejectRefund":"Rechazar","dash.delete":"Eliminar",
+    "dash.paymentsNote":"Servicios pagados por los clientes. El cobro real lo ejecuta Stripe.","dash.payoutsNote":"Servicios listos para transferir a los profesionales, o ya transferidos.",
+    "dash.noRefunds":"No hay solicitudes de reembolso.","dash.requestRefund":"Solicitar un reembolso",
+    "dash.commissionGlobalTitle":"Comisión por defecto","dash.commissionProviderTitle":"Comisión personalizada por profesional",
+    "dash.chooseProvider":"Elegir un profesional","dash.customRate":"Tasa personalizada (%)","dash.saveRate":"Guardar esta tasa",
+    "dash.stripeNote":"Los cobros, reembolsos y transferencias reales se ejecutan mediante las funciones Supabase Edge (Stripe) desplegadas en el servidor.",
+    "dash.missionsCount":"Servicios relacionados","dash.suspended":"Suspendido","dash.owner":"Propietario",
+    "paymentStatus.unpaid":"No pagado","paymentStatus.paid":"Pagado","paymentStatus.transferred":"Transferido","paymentStatus.payout_ready":"Listo para transferir",
+    "paymentStatus.refund_requested":"Reembolso solicitado","paymentStatus.refunded":"Reembolsado","paymentStatus.refund_rejected":"Reembolso rechazado",
+    "dash.accept":"Aceptar solicitud","dash.decline":"Rechazar","dash.proposePrice":"Proponer un precio","dash.acceptQuote":"Aceptar presupuesto",
+    "dash.refuseQuote":"Rechazar presupuesto","dash.pay":"Pagar ahora","dash.markDone":"Marcar como terminado","dash.validate":"Validar el servicio",
+    "dash.cancel":"Cancelar","dash.approve":"Validar el perfil","dash.suspend":"Suspender","dash.saveSettings":"Guardar ajustes",
+    "dash.settingsCommission":"Comisión por defecto (%)","dash.settingsUrgent":"Cargo por solicitud urgente (€)","dash.settingsSupport":"Email de asistencia",
+    "dash.payoutSetupNote":"Indica tus datos de cobro únicamente en Pagos, mediante el formulario seguro.","dash.managePayoutDetails":"Gestionar mis datos en Pagos",
+    "dash.payoutDetailsNote":"Estos datos bancarios solo son visibles para ti y para el administrador, nunca para los clientes.","dash.holderLabel":"TITULAR DE LA CUENTA","dash.ibanLabel":"IBAN","dash.bicLabel":"BIC","dash.noIban":"Este profesional todavía no ha indicado su IBAN.",
+    "status.pending":"Esperando precio","status.quoted":"Precio propuesto","status.accepted":"Presupuesto aceptado","status.rejected":"Presupuesto rechazado",
+    "status.paid":"Pagado","status.in_progress":"En curso","status.awaiting_validation":"Por validar","status.completed":"Terminado","status.cancelled":"Cancelado",
+    "faq.greeting":"¡Hola! Puedo responder preguntas frecuentes sobre SkipperNow. Elige una pregunta abajo o escribe la tuya.",
+    "faq.title":"Asistente SkipperNow","faq.inputPlaceholder":"Escribe tu pregunta…",
+    "faq.priceChip":"¿Cuánto cuesta?","faq.bookingChip":"¿Cómo reservo?","faq.becomeChip":"Ser skipper","faq.contactChip":"Hablar con alguien",
+    "faq.price":"Cada profesional fija su propio precio tras tu solicitud — solo pagas una vez aceptado el presupuesto, nunca antes.",
+    "faq.booking":"Elige un puerto y una fecha, selecciona un skipper o prestador, y envía tu solicitud. El profesional te responderá con un precio.",
+    "faq.cancel":"Puedes cancelar una solicitud mientras no esté pagada, directamente desde tu área «Mis solicitudes».",
+    "faq.refund":"Una vez terminado un servicio, puedes solicitar un reembolso desde tu área de cliente si lo necesitas — el equipo de SkipperNow lo revisa.",
+    "faq.become":"Haz clic en «Crear una cuenta», elige Skipper o Prestador, indica tu puerto principal, y nuestro equipo revisará tu perfil.",
+    "faq.payment":"El pago es seguro y solo se cobra una vez aceptas el presupuesto.",
+    "faq.contact":"Sin problema, escríbenos directamente desde la pestaña «Contactar con soporte» de tu cuenta, o por email con el enlace Contacto al final de la página.",
+    "faq.fallback":"No tengo una respuesta preparada para eso — lo más sencillo es contactar directamente con el equipo de SkipperNow desde la pestaña «Contactar con soporte» de tu cuenta.",
+    "payment.eyebrow":"PAGO SEGURO","payment.title":"Pagar el servicio","payment.amount":"Importe","payment.pay":"Pagar",
+  }
+};
+
+Object.assign(I18N.fr, {"flow.pending": "Le professionnel doit étudier votre demande et proposer son tarif.", "flow.pendingPro": "À vous de proposer un tarif pour cette demande.", "flow.quoted": "Tarif reçu : acceptez ou refusez le devis ci-dessous.", "flow.quotedPro": "Le client doit maintenant accepter votre devis.", "flow.accepted": "Devis accepté : réglez la prestation pour confirmer la réservation.", "flow.acceptedPro": "Devis accepté. Attendez la confirmation du paiement avant la prestation.", "flow.progress": "Paiement confirmé. La prestation peut être réalisée.", "flow.validation": "Le professionnel a terminé. Vérifiez la prestation puis validez-la.", "flow.validationPro": "Prestation terminée : en attente de validation par le client.", "flow.completed": "Prestation terminée. Merci de partager votre avis.", "flow.reviewed": "Prestation terminée · votre avis a été envoyé.", "flow.completedPro": "Prestation validée par le client.", "flow.cancelled": "Demande annulée. Aucun nouveau paiement à effectuer.", "flow.rejected": "Devis refusé. Vous pouvez échanger par message.", "flow.next": "Prochaine étape", "flow.prepared": "Paiement commencé : reprenez-le ci-dessous. Pour annuler, contactez le support.", "payment.processing": "Paiement en cours de confirmation. Ne payez pas une seconde fois ; consultez votre espace dans quelques instants.", "payment.confirmed": "Paiement confirmé. Retrouvez le suivi dans votre espace.", "payment.session": "Reconnectez-vous pour continuer le paiement.", "payment.unavailable": "Le paiement ne peut pas se charger. Actualisez la page ou contactez le support.", "payment.check": "Vérifier le paiement", "profile.quote": "Demander un devis", "profile.area": "Zone d’intervention", "profile.radius": "Jusqu’à {km} km autour de ce port", "profile.available": "Disponible pour recevoir des demandes · dates à confirmer avec le professionnel", "profile.unavailable": "Ne reçoit pas de nouvelles demandes pour le moment", "profile.reviews": "Avis après prestation", "profile.noReviews": "Pas encore d’avis après prestation.", "profile.reviewVerified": "Prestation terminée", "profile.reviewError": "Les avis ne peuvent pas être chargés pour le moment.", "profile.moreReviews": "Afficher plus d’avis", "review.stars": "{n} étoile(s) sur 5", "flow.refresh": "La demande a changé. Actualisez votre espace."});
+Object.assign(I18N.en, {"flow.pending": "The professional will review your request and propose a price.", "flow.pendingPro": "Your turn to propose a price for this request.", "flow.quoted": "Quote received: accept or decline it below.", "flow.quotedPro": "The client needs to accept your quote.", "flow.accepted": "Quote accepted: pay to confirm the booking.", "flow.acceptedPro": "Quote accepted. Wait for payment confirmation before the service.", "flow.progress": "Payment confirmed. The service can go ahead.", "flow.validation": "The professional has finished. Check the service, then approve it.", "flow.validationPro": "Service finished: awaiting client approval.", "flow.completed": "Service completed. Please share your review.", "flow.reviewed": "Service completed · your review has been submitted.", "flow.completedPro": "Service approved by the client.", "flow.cancelled": "Request cancelled. No new payment is due.", "flow.rejected": "Quote declined. You can discuss it by message.", "flow.next": "Next step", "flow.prepared": "Payment started: resume below. To cancel, contact support.", "payment.processing": "Payment confirmation is pending. Do not pay again; check your account shortly.", "payment.confirmed": "Payment confirmed. Track your booking in your account.", "payment.session": "Sign in again to continue payment.", "payment.unavailable": "Payment could not load. Refresh the page or contact support.", "payment.check": "Check payment", "profile.quote": "Request a quote", "profile.area": "Service area", "profile.radius": "Up to {km} km around this port", "profile.available": "Available for requests · confirm dates with the professional", "profile.unavailable": "Not accepting new requests at the moment", "profile.reviews": "Reviews after a service", "profile.noReviews": "No reviews after a service yet.", "profile.reviewVerified": "Completed service", "profile.reviewError": "Reviews could not be loaded right now.", "profile.moreReviews": "Show more reviews", "review.stars": "{n} star(s) out of 5", "flow.refresh": "The request has changed. Refresh your account."});
+Object.assign(I18N.es, {"flow.pending": "El profesional revisará tu solicitud y propondrá un precio.", "flow.pendingPro": "Te toca proponer un precio para esta solicitud.", "flow.quoted": "Presupuesto recibido: acéptalo o recházalo abajo.", "flow.quotedPro": "El cliente debe aceptar tu presupuesto.", "flow.accepted": "Presupuesto aceptado: paga para confirmar la reserva.", "flow.acceptedPro": "Presupuesto aceptado. Espera la confirmación del pago antes del servicio.", "flow.progress": "Pago confirmado. El servicio puede realizarse.", "flow.validation": "El profesional ha terminado. Revisa el servicio y valídalo.", "flow.validationPro": "Servicio terminado: pendiente de validación del cliente.", "flow.completed": "Servicio terminado. Comparte tu opinión.", "flow.reviewed": "Servicio terminado · tu reseña ha sido enviada.", "flow.completedPro": "Servicio validado por el cliente.", "flow.cancelled": "Solicitud cancelada. No hay ningún nuevo pago pendiente.", "flow.rejected": "Presupuesto rechazado. Puedes hablar por mensaje.", "flow.next": "Siguiente paso", "flow.prepared": "Pago iniciado: continúa abajo. Para cancelar, contacta con soporte.", "payment.processing": "Pago pendiente de confirmación. No pagues de nuevo; consulta tu espacio en unos instantes.", "payment.confirmed": "Pago confirmado. Consulta el seguimiento en tu espacio.", "payment.session": "Vuelve a iniciar sesión para continuar el pago.", "payment.unavailable": "No se pudo cargar el pago. Actualiza la página o contacta con soporte.", "payment.check": "Comprobar el pago", "profile.quote": "Pedir presupuesto", "profile.area": "Zona de servicio", "profile.radius": "Hasta {km} km alrededor de este puerto", "profile.available": "Disponible para solicitudes · confirma las fechas con el profesional", "profile.unavailable": "No acepta nuevas solicitudes por el momento", "profile.reviews": "Reseñas tras un servicio", "profile.noReviews": "Todavía no hay reseñas tras un servicio.", "profile.reviewVerified": "Servicio terminado", "profile.reviewError": "No se pueden cargar las reseñas ahora.", "profile.moreReviews": "Ver más reseñas", "review.stars": "{n} estrella(s) de 5", "flow.refresh": "La solicitud ha cambiado. Actualiza tu espacio."});
+
+let currentLang = localStorage.getItem("skippernow-language") || "fr";
+
+function t(key, vars){
+  let text = (I18N[currentLang] && I18N[currentLang][key]) ?? I18N.fr[key] ?? key;
+  if(vars) for(const k in vars) text = text.replace("{"+k+"}", vars[k]);
+  return text;
+}
+
+function profileRatingText(profile){
+  const rating = Number(profile?.rating_count || 0) > 0 ? Number(profile?.rating || 0) : 0;
+  return rating > 0 ? `★ ${rating.toFixed(1)}` : t("card.newOnPlatform");
+}
+function pluralKey(base, n){ return base + "." + (n === 1 ? "one" : "other"); }
+function tCount(base, n){ return t(pluralKey(base, n), {n}); }
+function friendlyError(err){
+  const raw = (err && err.message) ? String(err.message) : String(err || "");
+  const low = raw.toLowerCase();
+  if(low.includes("check constraint") && low.includes("phone")) return t("error.phoneFormat");
+  if(low.includes("duplicate key") || low.includes("already exists") || low.includes("unique constraint")) return t("error.duplicate");
+  if(low.includes("invalid login credentials")) return t("error.invalidCredentials");
+  if(low.includes("email not confirmed")) return t("account.emailNotConfirmed");
+  if(low.includes("already registered")) return t("error.emailTaken");
+  if(low.includes("failed to fetch") || low.includes("network")) return t("error.network");
+  if(low.includes("row-level security") || low.includes("permission denied") || low.includes("rls")) return t("error.permission");
+  if(low.includes("jwt") || low.includes("session")) return t("error.session");
+  if(low.includes("null value") || low.includes("not-null constraint")) return t("error.missingField");
+  return t("error.generic");
+}
+
+function applyStaticTranslations(){
+  document.documentElement.lang = currentLang;
+  const dateLang = currentLang === "en" ? "en-US" : currentLang === "es" ? "es-ES" : "fr-FR";
+  document.querySelectorAll('input[type="date"]').forEach(el=>el.lang = dateLang);
+  document.querySelectorAll("[data-i18n]").forEach(el=>{
+    el.innerHTML = t(el.getAttribute("data-i18n"));
+  });
+  document.querySelectorAll("[data-i18n-placeholder]").forEach(el=>{
+    el.placeholder = t(el.getAttribute("data-i18n-placeholder"));
+  });
+  document.querySelector("#languageSelect").value = currentLang;
+}
+
+document.querySelector("#languageSelect").addEventListener("change", e=>{
+  currentLang = e.target.value;
+  localStorage.setItem("skippernow-language", currentLang);
+  applyStaticTranslations();
+  refreshDynamicTexts();
+});
+
+let currentUser = null;
+let currentProfile = null;
+let activeActivity = "skipper";
+let bookingContext = {};
+
+const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
+
+function sanitizeContactInfo(text){
+  if(!text) return text;
+  let cleaned = text;
+  cleaned = cleaned.replace(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g, "[email masqué]");
+  cleaned = cleaned.replace(/(\+?\d[\s.\-]?){8,}/g, "[téléphone masqué]");
+  cleaned = cleaned.replace(/\b0\d(?:[\s.\-]?\d{2}){4}\b/g, "[téléphone masqué]");
+  return cleaned;
+}
+
+const money = cents => (Number(cents||0)/100).toLocaleString(currentLang==="en"?"en-GB":currentLang==="es"?"es-ES":"fr-FR",{style:"currency",currency:"EUR"});
+const moneyC = (cents, currency) => (Number(cents||0)/100).toLocaleString(currentLang==="en"?"en-GB":currentLang==="es"?"es-ES":"fr-FR",{style:"currency",currency:(currency||"eur").toUpperCase()});
+const openModal = id => document.querySelector("#"+id).classList.add("open");
+const closeModal = id => { document.querySelector("#"+id).classList.remove("open"); if(id === "dashboardModal") unsubscribeThreadChannel(); };
+document.querySelectorAll("[data-close]").forEach(btn=>btn.addEventListener("click",()=>closeModal(btn.dataset.close)));
+document.querySelectorAll(".modal").forEach(m=>m.addEventListener("click",e=>{if(e.target===m) m.classList.remove("open")}));
+
+const ACTIVITY_LABEL_KEY = {skipper:"activity.skipper",cleaning:"activity.cleaning",dock_service:"activity.cleaning",shipyard:"activity.shipyard",day_sailor:"activity.daySailor",boat_rental_pro:"activity.boatRentalPro",provisioning:"activity.provisioning"};
+function activityLabel(activity){ return t(ACTIVITY_LABEL_KEY[activity] || "activity.cleaning"); }
+function featuredBadgeHtml(p){
+  if(!p?.featured) return "";
+  const key = p.role === "skipper" ? "card.superSkipperBadge" : "card.recommendedProviderBadge";
+  return ` <span class="verified-badge" style="background:#fff4d6;color:#8a6d1a">⭐ ${esc(t(key))}</span>`;
+}
+function verifiedBoatBadgeHtml(){
+  return ` <span class="verified-badge" title="${esc(t("boatDetail.verifiedBadge"))}">✓ ${esc(t("boatDetail.verifiedBadge"))}</span>`;
+}
+
+const TAB_CONFIG = {
+  skipper:{icon:"⚓",headingKey:"results.skippersHeading",subKey:"results.skippersSub",countKey:"skipper",emptyTextKey:"results.emptySkipperText",ctaLabelKey:"join.skipperCta",ctaRole:"skipper"},
+  day_sailor:{icon:"👷",headingKey:"results.daySailorsHeading",subKey:"results.daySailorsSub",countKey:"day_sailor",emptyTextKey:"results.emptyDaySailorText",ctaLabelKey:"results.emptyCtaDaySailor",ctaRole:"provider"},
+  cleaning:{icon:"🧽",headingKey:"results.cleaningHeading",subKey:"results.cleaningSub",countKey:"cleaning",emptyTextKey:"results.emptyCleaningText",ctaLabelKey:"join.providerCta",ctaRole:"provider"}
+};
+
+const POPULAR_PORTS = [
+  ["Port de Cannes","Cannes, France",43.5513,7.0174],["Port Vauban","Antibes, France",43.5854,7.1282],
+  ["Vieux-Port de Golfe-Juan","Golfe-Juan, France",43.5616,7.0750],["Port de Nice","Nice, France",43.6933,7.2844],
+  ["Port Hercule","Monaco",43.7346,7.4252],["Port de Saint-Tropez","Saint-Tropez, France",43.2728,6.6386],
+  ["Marina Ibiza","Ibiza, Espagne",38.9107,1.4350],["Port de Palma","Palma de Majorque, Espagne",39.5662,2.6388],
+  ["Marina d'Empuriabrava","Empuriabrava, Espagne",42.2486,3.1214],["Port de Roses","Roses, Espagne",42.2622,3.1755],
+  ["Port Olímpic de Barcelona","Barcelone, Espagne",41.3874,2.1974],["Port de Palma de Mallorca","Palma de Majorque, Espagne",39.5662,2.6388],
+  ["Puerto Banús","Marbella, Espagne",36.4848,-4.9526],["Marina de Valencia","Valence, Espagne",39.4459,-0.3187],
+  ["Marina de Alicante","Alicante, Espagne",38.3416,-0.4818],
+  ["Port of Miami","Miami, États-Unis",25.7740,-80.1700],
+  ["Miami Beach Marina","Miami Beach, États-Unis",25.7712,-80.1370],["Dinner Key Marina","Coconut Grove, Miami, États-Unis",25.7274,-80.2378],
+  ["Venetian Marina & Yacht Club","Miami, États-Unis",25.7908,-80.1665],["Bahia Mar Marina","Fort Lauderdale, États-Unis",26.1141,-80.1092],
+  ["Key West","Key West, États-Unis",24.5551,-81.7800],["Islamorada","Islamorada, États-Unis",24.9277,-80.6277],
+  ["Palm Beach","Palm Beach, États-Unis",26.7056,-80.0364],["Naples","Naples, États-Unis",26.1420,-81.7948],
+  ["Marina Puerto Bahía","Las Terrenas, République dominicaine",19.1986,-69.4380],
+  ["Puerto de Samaná","Samaná, République dominicaine",19.2033,-69.3316],["Marina Cap Cana","Punta Cana, République dominicaine",18.5028,-68.3818],
+  ["Ocean World Marina","Puerto Plata, République dominicaine",19.7616,-70.6427],
+  ["Alimos Marina","Athènes, Grèce",37.9130,23.7080],["Mykonos Marina","Mykonos, Grèce",37.4453,25.3255],
+  ["Vlychada Marina","Santorin, Grèce",36.3373,25.4332],["Corfu Marina","Corfou, Grèce",39.6243,19.9217],
+  ["Marina di Portofino","Portofino, Italie",44.3033,9.2112],["Marina di Positano","Positano, Italie",40.6280,14.4860],
+  ["Marina di Porto Cervo","Porto Cervo, Italie",41.1361,9.5350],["Marina Grande Capri","Capri, Italie",40.5532,14.2371],
+  ["Nassau Harbour","Nassau, Bahamas",25.0797,-77.3407],["Georgetown Marina","Exuma, Bahamas",23.5167,-75.7597],
+  ["Grand Bahama Marina","Freeport, Bahamas",26.5285,-78.6958],["Marsh Harbour Marina","Marsh Harbour, Bahamas",26.5423,-77.0631],
+  ["Bimini Big Game Club","Bimini, Bahamas",25.7229,-79.2986],
+  ["Marina du Marin","Le Marin, Martinique",14.4702,-60.8688],
+  ["Port de Fort-de-France","Fort-de-France, Martinique",14.6012,-61.0698],
+  ["Marina de la Pointe du Bout","Les Trois-Îlets, Martinique",14.5567,-61.0558],
+  ["Marina Bas-du-Fort","Pointe-à-Pitre, Guadeloupe",16.2205,-61.5265],
+  ["Port de Saint-François","Saint-François, Guadeloupe",16.2520,-61.2745],
+  ["Port de Deshaies","Deshaies, Guadeloupe",16.3065,-61.7943],
+  ["Port de Gustavia","Gustavia, Saint-Barthélemy",17.8957,-62.8508],
+  ["Marina Fort Louis","Marigot, Saint-Martin",18.0689,-63.0875],
+  ["Marina Anse Marcel","Anse Marcel, Saint-Martin",18.1117,-63.0419],
+  ["Port Ouest","Le Port, La Réunion",-20.9373,55.2871],
+  ["Port de Saint-Gilles","Saint-Gilles-les-Bains, La Réunion",-21.0547,55.2237],
+  ["Marina Taina","Punaauia, Tahiti, Polynésie française",-17.5848,-149.6165],
+  ["Port de Papeete","Papeete, Tahiti, Polynésie française",-17.5400,-149.5700],
+  ["Marina de Bora Bora","Vaitape, Bora-Bora, Polynésie française",-16.5056,-151.7510]
+];
+const PORT_AREA_GROUPS = [
+  ["antibes","juan les pins","juan-les-pins","port gallice","port vauban"],
+  ["cannes","le cannet","la bocca"],
+  ["golfe-juan","golfe juan","vallauris"],
+  ["nice","villefranche","saint-jean-cap-ferrat","saint jean cap ferrat"],
+  ["monaco","monte-carlo","monte carlo","cap-d'ail","cap d'ail"],
+  ["saint-tropez","saint tropez","gassin","ramatuelle"],
+  ["le marin","fort-de-france","fort de france","trois-îlets","trois ilets","martinique"],
+  ["pointe-à-pitre","pointe a pitre","bas-du-fort","saint-françois","saint francois","deshaies","guadeloupe"],
+  ["gustavia","saint-barthélemy","saint barthelemy","st barth"],
+  ["marigot","anse marcel","saint-martin","saint martin","st martin"],
+  ["le port","saint-gilles","saint gilles","la réunion","la reunion"],
+  ["papeete","punaauia","tahiti","bora-bora","bora bora","polynésie","polynesie"]
+];
+const geocodeCache = new Map();
+async function geocodePlace(query){
+  const key = query.trim().toLowerCase();
+  if(!key) return null;
+  if(geocodeCache.has(key)) return geocodeCache.get(key);
+  try{
+    const url = "https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&q=" + encodeURIComponent(query);
+    const res = await fetch(url,{headers:{"Accept-Language":currentLang}});
+    const data = await res.json();
+    const result = data[0] ? {lat:Number(data[0].lat), lon:Number(data[0].lon)} : null;
+    geocodeCache.set(key, result);
+    return result;
+  }catch(_e){ geocodeCache.set(key, null); return null; }
+}
+function haversineKm(a, b){
+  const R = 6371, toRad = d => d*Math.PI/180;
+  const dLat = toRad(b.lat-a.lat), dLon = toRad(b.lon-a.lon);
+  const h = Math.sin(dLat/2)**2 + Math.cos(toRad(a.lat))*Math.cos(toRad(b.lat))*Math.sin(dLon/2)**2;
+  return 2*R*Math.asin(Math.sqrt(h));
+}
+function portMatches(homePort, query){
+  const h = normalizePortText(homePort);
+  const q = normalizePortText(query);
+  if(!q) return true;
+  if(h.includes(q) || q.includes(h)) return true;
+  for(const group of PORT_AREA_GROUPS){
+    const normalizedGroup = group.map(normalizePortText);
+    const qInGroup = normalizedGroup.some(term=>q.includes(term) || term.includes(q));
+    if(qInGroup && normalizedGroup.some(term=>h.includes(term))) return true;
+  }
+  return false;
+}
+async function portMatchesNearby(homePort, query, radiusKm){
+  if(portMatches(homePort, query)) return true;
+  if(!query.trim() || !homePort) return false;
+  const [qGeo, hGeo] = await Promise.all([geocodePlace(query), geocodePlace(homePort)]);
+  if(!qGeo || !hGeo) return false;
+  return haversineKm(qGeo, hGeo) <= radiusKm;
+}
+async function filterByPortNearby(items, portFilter, getHomePort, defaultRadiusKm, getRadiusKm){
+  if(!portFilter.trim()) return items;
+  const fast = items.filter(it=>portMatches(getHomePort(it), portFilter));
+  const fastIds = new Set(fast);
+  const remaining = items.filter(it=>!fastIds.has(it));
+  const checks = await Promise.all(remaining.map(async it=>{
+    const custom = getRadiusKm ? Number(getRadiusKm(it)) : NaN;
+    const radiusKm = custom > 0 ? custom : defaultRadiusKm;
+    return {it, ok: await portMatchesNearby(getHomePort(it), portFilter, radiusKm)};
+  }));
+  return fast.concat(checks.filter(c=>c.ok).map(c=>c.it));
+}
+function updateSeoMeta(){
+  const port = portInput.value.trim();
+  const titleTpl = t("seo.title."+activeActivity) || t("seo.titleDefault");
+  const descTpl = t("seo.desc."+activeActivity) || t("seo.descDefault");
+  const title = port ? titleTpl.replace("{port}", port) : t("seo.titleDefault");
+  const desc = port ? descTpl.replace("{port}", port) : t("seo.descDefault");
+  document.title = title;
+  const metaDesc = document.querySelector('meta[name="description"]');
+  if(metaDesc) metaDesc.setAttribute("content", desc);
+}
+const portInput = document.querySelector("#portInput");
+const portSuggestions = document.querySelector("#portSuggestions");
+let portSearchTimer;
+function renderPortSuggestions(items){
+  portSuggestions.innerHTML = items.map((x,i)=>`<button type="button" class="port-option" data-i="${i}"><strong>${esc(x.name)}</strong><small>${esc(x.place)}</small></button>`).join("");
+  portSuggestions.classList.toggle("open", items.length>0);
+  [...portSuggestions.querySelectorAll(".port-option")].forEach((btn,i)=>btn.onclick=()=>{
+    portInput.value = items[i].name;
+    portSuggestions.classList.remove("open");
+    updateSeoMeta();
+  });
+}
+function normalizePortText(value){
+  return String(value||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[’']/g," ").replace(/[-–—]/g," ").replace(/\s+/g," ").trim();
+}
+function destinationCatalogItems(){
+  if(typeof DESTINATION_ZONES === "undefined") return [];
+  const items = [];
+  Object.values(DESTINATION_ZONES).forEach(zone=>{
+    (zone.places||[]).forEach(name=>items.push({name,place:zone.country||zone.title}));
+  });
+  return items;
+}
+function localPortMatches(q){
+  const needle = normalizePortText(q);
+  const marinaItems = POPULAR_PORTS.map(x=>({name:x[0],place:x[1]}));
+  const all = [...destinationCatalogItems(), ...marinaItems];
+  const seen = new Set();
+  return all.filter(item=>{
+    const key = normalizePortText(item.name+" "+item.place);
+    if(needle && !key.includes(needle)) return false;
+    const dedupe = normalizePortText(item.name+"|"+item.place);
+    if(seen.has(dedupe)) return false;
+    seen.add(dedupe);
+    return true;
+  }).slice(0,10);
+}
+async function searchPorts(q){
+  const local = localPortMatches(q);
+  if(q.length < 3){ renderPortSuggestions(local); return; }
+  try{
+    const url = "https://nominatim.openstreetmap.org/search?format=jsonv2&limit=8&q=" + encodeURIComponent(q + " port marina");
+    const res = await fetch(url,{headers:{"Accept-Language":currentLang}});
+    const data = await res.json();
+    const remote = data.map(x=>({name:(x.name||x.display_name.split(",")[0]),place:x.display_name}));
+    const seen = new Set();
+    const merged = [...local, ...remote].filter(x=>{const k=(x.name+"|"+x.place).toLowerCase();if(seen.has(k))return false;seen.add(k);return true}).slice(0,10);
+    renderPortSuggestions(merged);
+  }catch(_e){ renderPortSuggestions(local); }
+}
+portInput.addEventListener("focus", ()=>{ if(!portInput.value) renderPortSuggestions(POPULAR_PORTS.slice(0,8).map(x=>({name:x[0],place:x[1]}))); });
+portInput.addEventListener("input", ()=>{ clearTimeout(portSearchTimer); portSearchTimer = setTimeout(()=>searchPorts(portInput.value.trim()),300); });
+portInput.addEventListener("blur", ()=>setTimeout(updateSeoMeta, 150));
+document.addEventListener("click", e=>{ if(!e.target.closest(".field")) portSuggestions.classList.remove("open"); });
+
+// Date du jour dans le fuseau LOCAL du visiteur (et non new Date().toISOString(),
+// qui renvoie la date UTC : un visiteur situé après UTC, par exemple en Polynésie
+// ou sur la côte ouest américaine en soirée, se verrait sinon interdire de choisir
+// "aujourd'hui" ou même "demain").
+function localDateStr(d){
+  const date = d || new Date();
+  const offsetMs = date.getTimezoneOffset() * 60000;
+  return new Date(date.getTime() - offsetMs).toISOString().slice(0,10);
+}
+
+const dateInput = document.querySelector("#dateInput");
+dateInput.min = localDateStr();
+dateInput.value = dateInput.min;
+
+document.querySelectorAll("#listingTabs button").forEach(btn=>{
+  btn.addEventListener("click", ()=>switchActivityTab(btn.dataset.activity));
+});
+async function switchActivityTab(activity){
+  activeActivity = activity;
+  document.querySelectorAll("#listingTabs button").forEach(b=>b.classList.toggle("active", b.dataset.activity===activity));
+  const heading = document.querySelector("#resultsHeading");
+  const sub = document.querySelector("#resultsSub");
+  const cfg = TAB_CONFIG[activity] || TAB_CONFIG.skipper;
+  if(heading) heading.textContent = t(cfg.headingKey);
+  if(sub) sub.textContent = t(cfg.subKey);
+  updateSeoMeta();
+  await loadListings();
+}
+
+document.querySelectorAll("#homeCategoryGrid .category-tile[data-activity]").forEach(tile=>{
+  tile.addEventListener("click", ()=>{
+    showProviderResults(tile.dataset.activity);
+    openModal("providerModal");
+  });
+});
+document.querySelectorAll("#homeCategoryGrid .category-tile[data-tile]").forEach(tile=>{
+  tile.addEventListener("click", ()=>{
+    if(tile.dataset.tile === "boat_rental") openBoatFinder();
+    else if(tile.dataset.tile === "experience") openExcursionFinder();
+  });
+});
+
+const DESTINATION_ZONES = {
+  "cote-azur":{
+    title:"Côte d’Azur",
+    country:"France / Monaco",
+    subtitle:"Choisissez un vrai bassin nautique, port ou marina de la Côte d’Azur.",
+    places:["Mandelieu-la-Napoule","Théoule-sur-Mer","Cannes","Golfe-Juan","Juan-les-Pins","Antibes","Villeneuve-Loubet","Saint-Laurent-du-Var","Nice","Villefranche-sur-Mer","Saint-Jean-Cap-Ferrat","Beaulieu-sur-Mer","Cap-d’Ail","Monaco","Menton","Saint-Tropez","Sainte-Maxime","Port Grimaud","Cavalaire-sur-Mer"]
+  },
+  "espagne":{
+    title:"Espagne",
+    country:"Espagne",
+    subtitle:"Choisissez un port, une marina ou une destination nautique majeure en Espagne.",
+    places:["Empuriabrava","Roses","Barcelone","Sitges","Palma de Majorque","Alcúdia","Mahón","Ibiza","Dénia","Alicante","Valence","Marbella","Puerto Banús","Málaga"]
+  },
+  "floride":{
+    title:"Floride",
+    country:"Floride, États-Unis",
+    subtitle:"Choisissez une grande zone de plaisance, de charter ou de marina en Floride.",
+    places:["Miami","Miami Beach","Coconut Grove","Fort Lauderdale","Palm Beach","Jupiter","Key Largo","Islamorada","Marathon","Key West","Naples","Sarasota","St. Petersburg"]
+  },
+  "caraibes":{
+    title:"Caraïbes",
+    country:"Caraïbes",
+    subtitle:"Choisissez une destination où la plaisance, les marinas ou le charter sont réellement présents.",
+    places:["Las Terrenas","Samaná","Cap Cana","Puerto Plata","Le Marin","Fort-de-France","Trois-Îlets","Pointe-à-Pitre","Saint-François","Deshaies","Gustavia","Marigot","Anse Marcel","Simpson Bay","Rodney Bay","Nassau","Exuma","Bimini"]
+  },
+  "italie":{
+    title:"Italie",
+    country:"Italie",
+    subtitle:"Choisissez un port, une marina ou un bassin nautique majeur en Italie.",
+    places:["Sanremo","Gênes","Portofino","La Spezia","Viareggio","Naples","Sorrente","Capri","Amalfi","Olbia","Porto Cervo","Cagliari","Palerme"]
+  },
+  "croatie":{
+    title:"Croatie",
+    country:"Croatie",
+    subtitle:"Choisissez une grande base de plaisance ou de charter en Croatie.",
+    places:["Pula","Rovinj","Zadar","Biograd na Moru","Šibenik","Trogir","Kaštela","Split","Hvar","Dubrovnik"]
+  }
+};
+let selectedDestinationPlace = "";
+function chooseDestinationPlace(place){
+  selectedDestinationPlace = place;
+  portInput.value = place;
+  closeModal("destinationZoneModal");
+  updateSeoMeta();
+  const title = document.querySelector("#destinationActionTitle");
+  if(title) title.textContent = "Que recherchez-vous à " + place + " ?";
+  openModal("destinationActionModal");
+}
+document.querySelectorAll("[data-destination-action]").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    const place = selectedDestinationPlace || portInput.value.trim();
+    if(place) portInput.value = place;
+    closeModal("destinationActionModal");
+    const action = btn.dataset.destinationAction;
+    if(action === "skipper"){
+      showProviderResults("skipper");
+      openModal("providerModal");
+    }else if(action === "rental"){
+      openBoatFinder(place);
+    }else if(action === "sale"){
+      openBoatSaleFinder(place);
+    }else if(action === "services"){
+      showProviderCategories();
+      openModal("providerModal");
+    }
+  });
+});
+function openDestinationZone(zoneKey){
+  const zone = DESTINATION_ZONES[zoneKey];
+  if(!zone) return;
+  const title = document.querySelector("#destinationZoneTitle");
+  const subtitle = document.querySelector("#destinationZoneSubtitle");
+  const choices = document.querySelector("#destinationZoneChoices");
+  if(title) title.textContent = zone.title;
+  if(subtitle) subtitle.textContent = zone.subtitle;
+  if(choices){
+    choices.innerHTML = zone.places.map(place=>`<button type="button" class="small-btn fill" data-destination-place="${esc(place)}" style="padding:13px 14px;text-align:center">${esc(place)}</button>`).join("");
+    choices.querySelectorAll("[data-destination-place]").forEach(btn=>{
+      btn.addEventListener("click", ()=>chooseDestinationPlace(btn.dataset.destinationPlace));
+    });
+  }
+  openModal("destinationZoneModal");
+}
+document.querySelectorAll("#portChips button").forEach(chip=>{
+  chip.addEventListener("click", ()=>{
+    if(chip.dataset.zone) openDestinationZone(chip.dataset.zone);
+    else if(chip.dataset.port) chooseDestinationPlace(chip.dataset.port);
+  });
+});
+
+async function loadTrustStats(){
+  const banner = document.querySelector("#launchBanner");
+  const stats = document.querySelector("#trustStats");
+  try{
+    const {data:ratedProfiles} = await db
+      .from("profiles")
+      .select("rating")
+      .not("rating", "is", null)
+      .gt("rating", 0);
+    const ratings = (ratedProfiles || []).map(p => Number(p.rating)).filter(n => Number.isFinite(n));
+    if(!ratings.length) return;
+    const avg = ratings.reduce((a,b)=>a+b,0) / ratings.length;
+    document.querySelector("#statRating").textContent = "★ " + avg.toFixed(1);
+    banner.style.display = "none";
+    stats.style.display = "";
+  }catch(_e){
+    // En cas d'erreur, on laisse simplement la bannière de lancement visible.
+  }
+}
+
+function providerActivityFilter(activity){
+  if(activity === "all_providers") return ["cleaning","dock_service","shipyard","boat_rental_pro"];
+  if(activity === "cleaning") return ["cleaning","dock_service","shipyard","boat_rental_pro"];
+  return [activity];
+}
+
+function startSeaCarousel(containerId){
+  const slides = [...document.querySelectorAll("#"+containerId+" .sea-slide")];
+  const dots = [...document.querySelectorAll("#"+containerId+" .sea-carousel-dots span")];
+  if(slides.length < 2) return;
+  loadDeferredBackground(slides[0]);
+  let index = 0;
+  setInterval(()=>{
+    slides[index].classList.remove("active");
+    dots[index]?.classList.remove("active");
+    index = (index + 1) % slides.length;
+    loadDeferredBackground(slides[index]);
+    slides[index].classList.add("active");
+    dots[index]?.classList.add("active");
+  }, 4000);
+}
+function loadDeferredBackground(element){
+  if(!element || !element.dataset.bg) return;
+  const image = `url("${element.dataset.bg.replaceAll('"','%22')}")`;
+  element.style.backgroundImage = element.dataset.bgOverlay === "join"
+    ? `linear-gradient(135deg,rgba(7,29,50,.94),rgba(13,102,114,.9)),${image}`
+    : image;
+  delete element.dataset.bg;
+}
+function observeDeferredBackgrounds(root=document){
+  const elements = [...root.querySelectorAll("[data-bg]")];
+  if(!elements.length) return;
+  if(!("IntersectionObserver" in window)){ elements.forEach(loadDeferredBackground); return; }
+  const observer = new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(!entry.isIntersecting) return;
+      loadDeferredBackground(entry.target);
+      observer.unobserve(entry.target);
+    });
+  },{rootMargin:"350px 0px"});
+  elements.forEach(element=>observer.observe(element));
+}
+function autoScrollTileRow(containerId){
+  const row = document.querySelector("#"+containerId);
+  if(!row) return;
+  setInterval(()=>{
+    const atEnd = row.scrollLeft + row.clientWidth >= row.scrollWidth - 5;
+    if(atEnd){
+      row.scrollTo({left:0, behavior:"smooth"});
+    }else{
+      const card = row.querySelector(".tile-scroll-card");
+      const step = card ? card.getBoundingClientRect().width + 14 : 200;
+      row.scrollBy({left:step, behavior:"smooth"});
+    }
+  }, 2800);
+}
+startSeaCarousel("seaCarousel");
+autoScrollTileRow("experienceCarousel");
+
+async function loadListings(){
+  const chosenDate = dateInput.value;
+  const portFilter = portInput.value.trim();
+  let query = db.from("profiles").select("*")
+    .eq("verified", true).eq("available", true);
+  if(activeActivity === "skipper"){
+    query = query.or("provider_activity.is.null,provider_activity.eq.skipper").in("role",["skipper","provider"]);
+  }else{
+    query = query.in("provider_activity", providerActivityFilter(activeActivity)).in("role",["skipper","provider"]);
+  }
+  const [profilesRes, blocksRes] = await Promise.all([
+    query,
+    db.from("skipper_unavailability").select("skipper_id").eq("unavailable_date", chosenDate)
+  ]);
+  const blocked = new Set((blocksRes.data||[]).map(x=>x.skipper_id));
+  let list = profilesRes.data || [];
+  if(portFilter) list = await filterByPortNearby(list, portFilter, p=>p.home_port, 25, p=>p.travel_radius_km);
+
+  const box = document.querySelector("#cards");
+  if(!box) return;
+  const emptyBox = document.querySelector("#emptyResults");
+  const countBox = document.querySelector("#resultCount");
+  const cfg = TAB_CONFIG[activeActivity] || TAB_CONFIG.skipper;
+  countBox.textContent = tCount("results.count." + cfg.countKey, list.length);
+  emptyBox.style.display = "none";
+  resultsCache = list;
+  const compactJoinCard = `
+    <article class="card compact-join-card">
+      <div class="compact-join-icon">${cfg.icon}</div>
+      <p>${esc(t("results.compactJoin." + activeActivity))}</p>
+      <button class="small-btn fill" type="button" data-role="${cfg.ctaRole}">${esc(t(cfg.ctaLabelKey))}</button>
+    </article>`;
+  const quickRequestCard = `
+    <article class="card compact-join-card quick-request-card">
+      <div class="compact-join-icon">📣</div>
+      <p>${esc(t("quickRequest.cardText"))}</p>
+      <button class="small-btn fill" type="button" data-quick-request>${esc(t("quickRequest.cta"))}</button>
+    </article>`;
+  const profileCards = list.map((p,i)=>{
+    const unavailable = blocked.has(p.id);
+    const bg = p.profile_photo_url ? `style="background-image:url('${esc(p.profile_photo_url)}')"` : "";
+    return `<article class="card">
+      <div class="photo" ${bg}>
+        ${p.profile_photo_url ? "" : `<div class="avatar">${cfg.icon}</div>`}
+        <span class="online ${unavailable?"off":""}">● ${unavailable ? esc(t("card.unavailableOn"))+" "+new Date(chosenDate+"T12:00:00").toLocaleDateString(currentLang) : esc(t("card.available"))}</span>
+      </div>
+      <div class="content">
+        <div class="name-row"><h3>${esc(p.full_name||"—")}<span class="ig-badge" title="${esc(t("card.verifiedBadge"))}"><svg width="16" height="16" viewBox="0 0 24 24" role="img" aria-label="${esc(t("card.verifiedBadge"))}"><circle cx="12" cy="12" r="12" fill="#3897f0"/><path d="M9.5 12.8l-2-2-1.4 1.4L9.5 15.6l7.4-7.4-1.4-1.4z" fill="#fff"/></svg></span>${featuredBadgeHtml(p)}</h3><span class="rating">${esc(profileRatingText(p))}</span></div>
+        <div class="meta">${esc(p.home_port||"—")} · ${p.experience_years ? p.experience_years+" "+esc(t("card.experience")) : esc(t("card.newOnPlatform"))}</div>
+        <p class="meta">${esc(p.bio||"")}</p>
+        <div class="tags"><span class="tag">${(ACTIVITY_ICON[p.provider_activity]||cfg.icon)} ${esc(activityLabel(p.provider_activity||activeActivity))}</span><span class="tag">${esc(p.languages||"Français")}</span></div>
+        <div class="price-row">
+          <div class="price">${p.price_from_cents ? `<strong>${esc(t("card.priceFrom"))} ${money(p.price_from_cents)}</strong>` : `<strong>${esc(t("card.priceOnRequest"))}</strong>`}<small>${esc(t("card.priceNote"))}</small></div>
+          <button class="ghost" ${unavailable?"disabled":""} onclick="openProfileDetail('${p.id}')">${unavailable ? esc(t("card.unavailable")) : esc(t("card.viewProfile"))}</button>
+        </div>
+      </div>
+    </article>`;
+  }).join("");
+  box.innerHTML = (list.length ? profileCards : quickRequestCard) + compactJoinCard;
+  box.querySelector(".compact-join-card [data-role]")?.addEventListener("click", (e)=>openAccountModal("create", e.currentTarget.dataset.role));
+  box.querySelector("[data-quick-request]")?.addEventListener("click", openQuickRequest);
+}
+
+document.querySelector("#searchForm").addEventListener("submit", e=>{
+  e.preventDefault();
+  loadListings();
+  document.querySelector("main").scrollIntoView({behavior:"smooth"});
+});
+
+document.querySelector("#heroSkipper").addEventListener("click", ()=>{
+  showProviderResults("skipper");
+  openModal("providerModal");
+});
+document.querySelector("#heroProviders").addEventListener("click", ()=>{
+  window.location.assign("/?activity=service&source=home_choice");
+});
+document.querySelector("#quickRequestBtn")?.addEventListener("click", ()=>window.location.assign("/?activity=service&source=home_choice"));
+document.querySelectorAll(".provider-service").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    if(PROVIDER_SUBCATEGORIES[btn.dataset.activity]) showProviderSubcategories(btn.dataset.activity);
+    else showProviderResults(btn.dataset.activity);
+  });
+});
+document.querySelector("#providerModalBack").addEventListener("click", ()=>{
+  if(providerBackTarget && providerBackTarget.type === "subcategories") showProviderSubcategories(providerBackTarget.activity);
+  else showProviderCategories();
+});
+function showProviderCategories(){
+  document.querySelector("#providerGrid").style.display = "grid";
+  document.querySelector("#providerResults").style.display = "none";
+  document.querySelector("#providerModalIntro").style.display = "block";
+  document.querySelector("#providerModalBack").style.display = "none";
+  providerBackTarget = null;
+}
+const PROVIDER_SUBCATEGORIES = {
+  provisioning: [
+    {key:"fresh_produce", icon:"🥬", labelKey:"sub.provisioning.freshProduce"},
+    {key:"groceries", icon:"🥖", labelKey:"sub.provisioning.groceries"},
+    {key:"drinks", icon:"🥤", labelKey:"sub.provisioning.drinks"},
+    {key:"ice", icon:"🧊", labelKey:"sub.provisioning.ice"},
+    {key:"breakfast", icon:"🥐", labelKey:"sub.provisioning.breakfast"},
+    {key:"hygiene", icon:"🧴", labelKey:"sub.provisioning.hygiene"},
+    {key:"custom", icon:"✏️", labelKey:"sub.provisioning.custom"}
+  ]
+};
+let providerBackTarget = null;
+let currentProviderSubcategory = null;
+function showProviderSubcategories(activity){
+  document.querySelector("#providerGrid").style.display = "none";
+  document.querySelector("#providerModalIntro").style.display = "none";
+  document.querySelector("#providerModalBack").style.display = "inline-flex";
+  providerBackTarget = null;
+  const box = document.querySelector("#providerResults");
+  box.style.display = "block";
+  const subs = PROVIDER_SUBCATEGORIES[activity] || [];
+  box.innerHTML = `<h3>${esc(activityLabel(activity))}</h3><p class="muted">${esc(t("providerModal.subIntro"))}</p>
+    <div class="provider-grid">${subs.map(sub=>`<button class="provider-service" type="button" data-sub-key="${esc(sub.key)}"><span class="provider-icon">${sub.icon}</span><b>${esc(t(sub.labelKey))}</b></button>`).join("")}</div>`;
+  box.querySelectorAll("[data-sub-key]").forEach(btn=>btn.addEventListener("click", ()=>{
+    providerBackTarget = {type:"subcategories", activity};
+    showProviderResults(activity, btn.dataset.subKey);
+  }));
+}
+async function showProviderResults(activity, subcategory){
+  document.querySelector("#providerGrid").style.display = "none";
+  document.querySelector("#providerModalIntro").style.display = "none";
+  document.querySelector("#providerModalBack").style.display = "inline-flex";
+  currentProviderSubcategory = subcategory || null;
+  const box = document.querySelector("#providerResults");
+  box.style.display = "block";
+  const subDef = subcategory && (PROVIDER_SUBCATEGORIES[activity]||[]).find(s=>s.key===subcategory);
+  const heading = activity === "all_providers" ? esc(t("tabs.cleaning")) : esc(activityLabel(activity)) + (subDef ? " – " + esc(t(subDef.labelKey)) : "");
+  box.innerHTML = `<h3>${heading}</h3><div class="empty-note">…</div>`;
+  const activityFilter = providerActivityFilter(activity);
+  let profileQuery = db.from("profiles").select("*").eq("verified", true).eq("available", true).in("role",["skipper","provider"]);
+  profileQuery = activity === "skipper" ? profileQuery.or("provider_activity.is.null,provider_activity.eq.skipper") : profileQuery.in("provider_activity", activityFilter);
+  const {data, error} = await profileQuery;
+  if(error){ box.querySelector(".empty-note").textContent = friendlyError(error); return; }
+  providerResultsCache = data || [];
+  box.innerHTML = `<h3>${heading}</h3>
+    <input id="providerPortFilter" type="search" name="q_port_providers" autocomplete="off" data-lpignore="true" data-1p-ignore="true" data-form-type="other" placeholder="${esc(t("search.portPlaceholder"))}" value="${esc(portInput.value)}" style="width:100%;margin:12px 0 16px;padding:11px 14px;border:1px solid var(--line);border-radius:12px">
+    <div id="providerResultsList"></div>`;
+  document.querySelector("#providerPortFilter").addEventListener("input", ()=>renderProviderResults(activity));
+  renderProviderResults(activity);
+}
+async function renderProviderResults(activity){
+  const listBox = document.querySelector("#providerResultsList");
+  if(!listBox) return;
+  const portFilter = (document.querySelector("#providerPortFilter")?.value || "").trim().toLowerCase();
+  const list = await filterByPortNearby(providerResultsCache, portFilter, p=>p.home_port, 25, p=>p.travel_radius_km);
+  resultsCache = resultsCache.concat(list);
+  listBox.innerHTML = list.length ? `<div class="result-list">${list.map(p=>`
+    <article class="result-card">
+      ${p.profile_photo_url ? `<img loading="lazy" class="result-photo" src="${esc(p.profile_photo_url)}" alt="${esc(p.full_name)}">` : `<div class="result-photo">${ACTIVITY_ICON[p.provider_activity]||"⚓"}</div>`}
+      <div>
+        <h3>${esc(p.full_name||"—")}</h3>
+        <span class="tag">${ACTIVITY_ICON[p.provider_activity]||"⚓"} ${esc(activityLabel(p.provider_activity))}</span>
+        <p><strong>${esc(p.home_port||"—")}</strong> · ${esc(profileRatingText(p))}</p>
+        <p>${esc(p.bio||"")}</p>
+        <button class="small-btn fill" onclick="openProfileDetail('${p.id}')">${esc(t("card.viewProfile"))}</button>
+      </div>
+    </article>`).join("")}</div>` : `<div class="empty-note">${esc(t("results.noProvider"))}</div>`;
+}
+window.showProviderCategories = showProviderCategories;
+
+let providerResultsCache = [];
+let boatCache = [];
+let saleBoatCache = [];
+let saleInquiryTarget = null;
+let resultsCache = [];
+let adminProfilesCache = [];
+let adminMissionsCache = [];
+let adminFormSessionsCache = [];
+let adminFormsInitialFilter = "all";
+let currentMessagesRoleColumn = null;
+let currentThreadChannel = null;
+function unsubscribeThreadChannel(){
+  if(currentThreadChannel){ db.removeChannel(currentThreadChannel); currentThreadChannel = null; }
+}
+let currentMessagesFilterMode = "unread";
+function bindMessagesFilterTabs(main, myRoleColumn){
+  main.querySelectorAll("[data-messages-filter]").forEach(btn=>btn.addEventListener("click", ()=>{
+    renderMessagesPanel(myRoleColumn, btn.dataset.messagesFilter);
+  }));
+}
+let adminBoatsFilterOwnerId = null;
+let editingBoatId = null;
+let myBoatsCache = [];
+document.querySelector("#heroBoats").addEventListener("click", ()=>openBoatFinder());
+document.querySelector("#viewAllBoatsBtn").addEventListener("click", ()=>openBoatFinder());
+document.querySelector("#footerFindBoat").addEventListener("click", ()=>openBoatFinder());
+document.querySelector("#heroBoatSales")?.addEventListener("click", ()=>openBoatSaleFinder());
+document.querySelector("#viewAllBoatSalesBtn")?.addEventListener("click", ()=>openBoatSaleFinder());
+document.querySelector("#footerFindBoatSale")?.addEventListener("click", ()=>openBoatSaleFinder());
+function debounce(fn, delay){
+  let timer;
+  return (...args)=>{
+    clearTimeout(timer);
+    timer = setTimeout(()=>fn(...args), delay);
+  };
+}
+async function openBoatFinder(presetPort, presetType){
+  openModal("boatFinderModal");
+  const box = document.querySelector("#boatFinderResults");
+  box.innerHTML = `<div class="empty-note">…</div>`;
+  const finderPort = document.querySelector("#boatFinderPortInput");
+  if(presetPort) finderPort.value = presetPort;
+  else if(portInput.value.trim()) finderPort.value = portInput.value.trim();
+  if(presetType) document.querySelector("#boatFinderTypeInput").value = presetType;
+  const {data, error} = await db.from("boats").select("*").in("listing_type",["rental","both"]).eq("rental_available",true).order("created_at",{ascending:false});
+  if(error){ box.innerHTML = `<div class="empty-note">${esc(friendlyError(error))}</div>`; return; }
+  boatCache = data || [];
+  renderBoatResults();
+  if(!finderPort.dataset.bound){
+    finderPort.dataset.bound = "1";
+    finderPort.addEventListener("input", debounce(renderBoatResults, 350));
+    document.querySelector("#boatFinderTypeInput").addEventListener("change", renderBoatResults);
+    document.querySelector("#boatFinderCapacityInput").addEventListener("input", debounce(renderBoatResults, 350));
+    document.querySelector("#boatFinderSkipperInput").addEventListener("change", renderBoatResults);
+  }
+}
+async function renderBoatResults(){
+  const box = document.querySelector("#boatFinderResults");
+  const portFilter = (document.querySelector("#boatFinderPortInput")?.value || "").trim().toLowerCase();
+  const typeFilter = document.querySelector("#boatFinderTypeInput")?.value || "";
+  const capacityFilter = Number(document.querySelector("#boatFinderCapacityInput")?.value) || 0;
+  const skipperFilter = document.querySelector("#boatFinderSkipperInput")?.value || "";
+  const byPort = await filterByPortNearby(boatCache, portFilter, b=>b.home_port, 25);
+  const list = byPort.filter(b=>{
+    if(typeFilter && b.boat_type !== typeFilter) return false;
+    if(capacityFilter && Number(b.capacity||0) < capacityFilter) return false;
+    if(skipperFilter === "with" && !b.skipper_included) return false;
+    if(skipperFilter === "without" && b.skipper_included) return false;
+    return true;
+  });
+  box.innerHTML = list.length ? list.map(b=>boatListCardHtml(b,"rental")).join("") : `<div class="empty-note">${esc(t("boatFinder.empty"))}</div>`;
+  startBoatCardCarousels();
+}
+function saleText(fr,en,es){ return currentLang === "en" ? en : currentLang === "es" ? es : fr; }
+async function openBoatSaleFinder(presetPort){
+  openModal("boatSaleFinderModal");
+  const box = document.querySelector("#boatSaleResults");
+  box.innerHTML = `<div class="empty-note">…</div>`;
+  const finderPort = document.querySelector("#boatSalePortInput");
+  if(presetPort) finderPort.value = presetPort;
+  else if(portInput.value.trim()) finderPort.value = portInput.value.trim();
+  const {data,error} = await db.from("boats").select("*").eq("managed_by_platform",true).eq("listing_type","sale").eq("sale_status","available").order("featured",{ascending:false}).order("created_at",{ascending:false});
+  if(error){ box.innerHTML = `<div class="empty-note">${esc(friendlyError(error))}</div>`; return; }
+  saleBoatCache = data || [];
+  renderBoatSaleResults();
+  if(!finderPort.dataset.bound){
+    finderPort.dataset.bound = "1";
+    finderPort.addEventListener("input", debounce(renderBoatSaleResults, 300));
+    document.querySelector("#boatSaleTypeInput").addEventListener("change", renderBoatSaleResults);
+    document.querySelector("#boatSaleMaxPriceInput").addEventListener("input", debounce(renderBoatSaleResults, 300));
+  }
+}
+async function renderBoatSaleResults(){
+  const box = document.querySelector("#boatSaleResults");
+  const portFilter = (document.querySelector("#boatSalePortInput")?.value || "").trim().toLowerCase();
+  const typeFilter = document.querySelector("#boatSaleTypeInput")?.value || "";
+  const maxPrice = Number(document.querySelector("#boatSaleMaxPriceInput")?.value) || 0;
+  const byPort = await filterByPortNearby(saleBoatCache, portFilter, b=>b.home_port, 50);
+  const list = byPort.filter(b=>{
+    if(typeFilter && b.boat_type !== typeFilter) return false;
+    if(maxPrice && Number(b.sale_price||0) > maxPrice) return false;
+    return true;
+  });
+  box.innerHTML = list.length ? list.map(b=>boatListCardHtml(b,"sale")).join("") : `<div class="empty-note">${esc(saleText("Aucun bateau à vendre ne correspond à votre recherche.","No boats for sale match your search.","Ningún barco en venta coincide con tu búsqueda."))}</div>`;
+  startBoatCardCarousels();
+}
+let excursionCache = [];
+let excursionRequestTarget = null;
+async function openExcursionFinder(presetPort){
+  openModal("excursionFinderModal");
+  const box = document.querySelector("#excFinderResults");
+  box.innerHTML = `<div class="empty-note">…</div>`;
+  const finderPort = document.querySelector("#excFinderPortInput");
+  if(presetPort) finderPort.value = presetPort;
+  else if(portInput.value.trim()) finderPort.value = portInput.value.trim();
+  const {data, error} = await db.from("excursions").select("*").eq("active", true).order("created_at",{ascending:false});
+  if(error){ box.innerHTML = `<div class="empty-note">${esc(friendlyError(error))}</div>`; return; }
+  excursionCache = data || [];
+  renderExcursionResults();
+  if(!finderPort.dataset.bound){
+    finderPort.dataset.bound = "1";
+    finderPort.addEventListener("input", debounce(renderExcursionResults, 350));
+  }
+}
+async function renderExcursionResults(){
+  const box = document.querySelector("#excFinderResults");
+  const portFilter = (document.querySelector("#excFinderPortInput")?.value || "").trim().toLowerCase();
+  const list = await filterByPortNearby(excursionCache, portFilter, x=>x.port, 25);
+  box.innerHTML = list.length ? list.map(x=>excursionCardHtml(x)).join("") : `<div class="empty-note">${esc(t("excFinder.empty"))}</div>`;
+  box.querySelectorAll("[data-request-exc]").forEach(btn=>btn.addEventListener("click", ()=>openExcursionRequest(btn.dataset.requestExc)));
+}
+function excursionCardHtml(x){
+  const photo = Array.isArray(x.photo_urls) && x.photo_urls[0] ? x.photo_urls[0] : "";
+  return `<article class="boat-card">
+    ${photo ? `<div class="boat-card-photo" style="background-image:url('${esc(photo)}')"></div>` : ""}
+    <div class="boat-card-body">
+      <h3>${esc(x.title)}</h3>
+      <div class="muted">${esc(x.port)} · ${esc(String(x.duration_hours))}h · ${esc(String(x.max_guests))} ${esc(t("dash.guests"))} max</div>
+      <p style="margin:8px 0">${esc(x.description||"")}</p>
+      ${x.included ? `<div class="muted" style="font-size:12.5px">${esc(x.included)}</div>` : ""}
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px">
+        <strong>${moneyC(x.price_cents, x.currency)} <span class="muted" style="font-weight:400">${esc(t("excFinder.perPerson"))}</span></strong>
+        <button class="small-btn fill" data-request-exc="${x.id}">${esc(t("dash.requestExcursion"))}</button>
+      </div>
+    </div>
+  </article>`;
+}
+function openExcursionRequest(excursionId){
+  excursionRequestTarget = excursionCache.find(x=>String(x.id)===String(excursionId));
+  if(!excursionRequestTarget) return;
+  document.querySelector("#excReqGuests").max = excursionRequestTarget.max_guests;
+  document.querySelector("#excRequestMsg").textContent = "";
+  openModal("excursionRequestModal");
+}
+const excReqDate = document.querySelector("#excReqDate");
+if (excReqDate) {
+  excReqDate.min = localDateStr();
+}
+document.querySelector("#excRequestForm")?.addEventListener("submit", async e=>{
+  e.preventDefault();
+  const msg = document.querySelector("#excRequestMsg");
+  if(!currentUser){ msg.style.color = "#b42318"; msg.textContent = t("booking.needAccount") || t("nav.login"); return; }
+  const x = excursionRequestTarget;
+  if(!x) return;
+  const guests = Number(document.querySelector("#excReqGuests").value);
+  const date = document.querySelector("#excReqDate").value;
+  const starts = new Date(date + "T10:00:00");
+  const ends = new Date(starts.getTime() + Number(x.duration_hours)*3600000);
+  const {error} = await db.from("missions").insert({
+    client_id: currentUser.id,
+    provider_id: x.provider_id,
+    excursion_id: x.id,
+    guest_count: guests,
+    port: x.port,
+    boat_type: x.title,
+    description: x.description,
+    photo_urls: x.photo_urls || null,
+    starts_at: starts.toISOString(),
+    ends_at: ends.toISOString(),
+    amount_cents: 0,
+    urgent_fee_cents: 0,
+    platform_fee_cents: 0,
+    currency: x.currency,
+    status: "pending",
+    payment_status: "unpaid"
+  });
+  if(error){ msg.style.color = "#b42318"; msg.textContent = friendlyError(error); return; }
+  msg.style.color = "";
+  msg.textContent = t("dash.excRequestSent");
+  setTimeout(()=>closeModal("excursionRequestModal"), 1400);
+});
+
+let directRequestTarget = null;
+async function openDirectRequest(proId){
+  const {data: pro, error} = await db.from("profiles").select("id,full_name,role,home_port").eq("id", proId).eq("verified", true).eq("suspended", false).maybeSingle();
+  if(error || !pro) return;
+  directRequestTarget = pro;
+  // A returning client who follows the professional's link must land on the
+  // request already sent, not on an empty form that could create a duplicate.
+  if(currentUser && currentProfile?.role === "client"){
+    const {data: existing} = await db.from("missions").select("id")
+      .eq("client_id", currentUser.id)
+      .or(`provider_id.eq.${pro.id},skipper_id.eq.${pro.id}`)
+      .in("status", ["pending","quoted","accepted","in_progress","awaiting_validation"])
+      .order("created_at", {ascending:false}).limit(1).maybeSingle();
+    if(existing){
+      closeModal("directRequestModal");
+      await openDashboard();
+      return;
+    }
+  }
+  document.querySelector("#directReqProName").textContent = t("directReq.title") + " — " + (pro.full_name || "");
+  document.querySelector("#directReqPort").value = pro.home_port || "";
+  const loggedOut = document.querySelector("#directReqLoggedOut");
+  const form = document.querySelector("#directReqForm");
+  if(currentUser){ loggedOut.style.display = "none"; form.style.display = ""; }
+  else{ loggedOut.style.display = ""; form.style.display = "none"; }
+  document.querySelector("#directReqMsg").textContent = "";
+  openModal("directRequestModal");
+}
+document.querySelector("#directReqLoginBtn")?.addEventListener("click", ()=>{
+  closeModal("directRequestModal");
+  openAccountModal("login");
+});
+document.querySelector("#directReqForm")?.addEventListener("submit", async e=>{
+  e.preventDefault();
+  const msg = document.querySelector("#directReqMsg");
+  if(!currentUser || !directRequestTarget) return;
+  const pro = directRequestTarget;
+  const port = document.querySelector("#directReqPort").value.trim();
+  const date = document.querySelector("#directReqDate").value;
+  const description = document.querySelector("#directReqDesc").value.trim();
+  const payload = {
+    client_id: currentUser.id,
+    port,
+    boat_type: t("directReq.requestLabel"),
+    description,
+    starts_at: date ? new Date(date + "T10:00:00").toISOString() : null,
+    amount_cents: 0,
+    urgent_fee_cents: 0,
+    platform_fee_cents: 0,
+    status: "pending",
+    payment_status: "unpaid"
+  };
+  if(pro.role === "provider") payload.provider_id = pro.id; else payload.skipper_id = pro.id;
+  const {error} = await db.from("missions").insert(payload);
+  if(error){ msg.style.color = "#b42318"; msg.textContent = friendlyError(error); return; }
+  msg.style.color = "";
+  msg.textContent = t("directReq.sent");
+  setTimeout(async ()=>{ closeModal("directRequestModal"); await openDashboard(); }, 900);
+});
+function boatTypeLabel(type){
+  const key = type === "motorboat" ? "boatDetail.typeMotorboat" : type === "rib" ? "boatDetail.typeRib" : type === "catamaran" ? "boatDetail.typeCatamaran" : "boatDetail.typeSailboat";
+  return t(key);
+}
+function boatSpecsChips(b){
+  const parts = [];
+  if(b.brand) parts.push(esc(b.brand));
+  if(b.boat_type) parts.push(boatTypeLabel(b.boat_type));
+  if(b.skipper_included !== null && b.skipper_included !== undefined) parts.push(t(b.skipper_included ? "boatDetail.skipperIncludedTag" : "boatDetail.skipperOptionalTag"));
+  if(b.capacity) parts.push(`${b.capacity} ${esc(t("boatDetail.pax"))}`);
+  if(b.cabins !== null && b.cabins !== undefined) parts.push(`${b.cabins} ${esc(t(b.cabins===1?"boatDetail.cabin":"boatDetail.cabins"))}`);
+  if(b.berths) parts.push(`${b.berths} ${esc(t("boatDetail.berths"))}`);
+  if(b.year_built) parts.push(String(b.year_built));
+  if(b.length_m) parts.push(`${esc(b.length_m)} m`);
+  return parts;
+}
+function boatSpecsLine(b){
+  return boatSpecsChips(b).join(" · ");
+}
+function isFavoriteBoat(id){
+  try{ return JSON.parse(localStorage.getItem("skippernow-boat-favorites")||"[]").includes(String(id)); }catch(_e){ return false; }
+}
+window.toggleBoatFavorite = function(id, ev){
+  ev.stopPropagation();
+  let favs = [];
+  try{ favs = JSON.parse(localStorage.getItem("skippernow-boat-favorites")||"[]"); }catch(_e){}
+  const key = String(id);
+  favs = favs.includes(key) ? favs.filter(x=>x!==key) : [...favs, key];
+  localStorage.setItem("skippernow-boat-favorites", JSON.stringify(favs));
+  const btn = document.querySelector(`[data-favorite-btn="${key}"]`);
+  if(btn) btn.textContent = favs.includes(key) ? "♥" : "♡";
+};
+function normalizeBoatTitle(b){
+  const composed = [b.brand, b.model].filter(Boolean).join(" ").trim();
+  if(composed) return composed;
+  if(b.name && b.name.trim()) return b.name.trim().replace(/\w\S*/g, w=>w[0].toUpperCase()+w.slice(1).toLowerCase());
+  return "Bateau";
+}
+function normalizePlaceLabel(place){
+  if(!place || !place.trim()) return "—";
+  return place.trim().replace(/\w\S*/g, w=>w[0].toUpperCase()+w.slice(1).toLowerCase());
+}
+function boatPriceLabel(b, mode="rental"){
+  if(mode === "sale"){
+    const sale = Number(b.sale_price||0);
+    return sale ? money(sale*100) : esc(saleText("Prix sur demande","Price on request","Precio a consultar"));
+  }
+  const day = Number(b.price_per_day||b.daily_price||b.price||0);
+  const half = Number(b.price_half_day||0);
+  if(day) return `${esc(t("card.priceFrom"))} ${money(day*100)}${esc(t("boatDetail.perDaySuffix"))}`;
+  if(half) return `${esc(t("card.priceFrom"))} ${money(half*100)}${esc(t("boatDetail.perHalfDaySuffix"))}`;
+  return esc(t("boatDetail.onRequest"));
+}
+function boatListCardHtml(b, mode="rental"){
+  const priceLabel = boatPriceLabel(b, mode);
+  const photos = (Array.isArray(b.photo_urls) && b.photo_urls.length ? b.photo_urls : (b.photo_url ? [b.photo_url] : []));
+  const specsLine = boatSpecsLine(b);
+  return `<article class="boat-list-card" onclick="openBoatDetail('${b.id}','${mode}')">
+    <div class="boat-list-photo" data-carousel="${b.id}">
+      ${photos.length ? photos.map((url,i)=>`<div class="boat-photo-slide ${i===0?"active":""}" style="background-image:url('${esc(url)}')"></div>`).join("") : `<div class="no-photo">⛵</div>`}
+      ${photos.length > 1 ? `<div class="boat-card-dots">${photos.map((_,i)=>`<span class="${i===0?"active":""}"></span>`).join("")}</div>` : ""}
+      ${mode==="sale" ? `<span class="sale-listing-badge">${esc(saleText("À VENDRE","FOR SALE","EN VENTA"))}</span>` : ""}
+      ${mode==="sale" && b.managed_by_platform ? `<span class="sale-listing-badge" style="top:48px;background:var(--navy);color:#fff">SKIPPERNOW</span>` : ""}
+      <button type="button" class="boat-card-fav" data-favorite-btn="${b.id}" onclick="toggleBoatFavorite('${b.id}', event)">${isFavoriteBoat(b.id) ? "♥" : "♡"}</button>
+    </div>
+    <div class="boat-list-body">
+      <div class="boat-list-top">
+        <h3 style="margin:0">${esc(normalizeBoatTitle(b))}${b.verified ? verifiedBoatBadgeHtml() : ""}</h3>
+      </div>
+      <div class="boat-card-port">📍 ${esc(normalizePlaceLabel(b.home_port))}</div>
+      ${b.description ? `<p class="boat-list-desc">${esc(b.description)}</p>` : ""}
+      <div class="boat-list-bottom">
+        ${specsLine ? `<div class="boat-card-specs-line">${specsLine}</div>` : "<span></span>"}
+        <strong>${priceLabel}</strong>
+      </div>
+    </div>
+  </article>`;
+}
+function boatCardHtml(b, mode="rental"){
+  const priceLabel = boatPriceLabel(b, mode);
+  const photos = (Array.isArray(b.photo_urls) && b.photo_urls.length ? b.photo_urls : (b.photo_url ? [b.photo_url] : []));
+  const chips = boatSpecsChips(b);
+  const isFeaturedNow = b.featured && b.featured_until && new Date(b.featured_until) > new Date();
+  return `<article class="boat-card" onclick="openBoatDetail('${b.id}','${mode}')">
+    <div class="boat-card-photo" data-carousel="${b.id}">
+      ${photos.length ? photos.map((url,i)=>`<div class="boat-photo-slide ${i===0?"active":""}" style="background-image:url('${esc(url)}')"></div>`).join("") : `<div class="no-photo">⛵</div>`}
+      ${photos.length > 1 ? `<div class="boat-card-dots">${photos.map((_,i)=>`<span class="${i===0?"active":""}"></span>`).join("")}</div>` : ""}
+      <button type="button" class="boat-card-fav" data-favorite-btn="${b.id}" onclick="toggleBoatFavorite('${b.id}', event)">${isFavoriteBoat(b.id) ? "♥" : "♡"}</button>
+      ${mode==="sale" && b.managed_by_platform ? `<span class="sale-listing-badge" style="background:var(--navy);color:#fff">SKIPPERNOW</span>` : ""}
+      ${isFeaturedNow ? `<span class="boat-card-featured">★ ${esc(t("card.featuredBadge"))}</span>` : ""}
+      <span class="boat-card-price">${priceLabel}</span>
+    </div>
+    <div class="boat-card-body">
+      <h3>${esc(normalizeBoatTitle(b))}${b.verified ? verifiedBoatBadgeHtml() : ""}</h3>
+      <div class="boat-card-port">📍 ${esc(normalizePlaceLabel(b.home_port))}</div>
+      ${chips.length ? `<div class="boat-card-specs-line">${chips.map(c=>`<span class="spec-chip">${c}</span>`).join("")}</div>` : ""}
+    </div>
+  </article>`;
+}
+let activeCardIntervals = [];
+function stopBoatCardCarousels(){
+  activeCardIntervals.forEach(id=>clearInterval(id));
+  activeCardIntervals = [];
+}
+function startBoatCardCarousels(){
+  stopBoatCardCarousels();
+  document.querySelectorAll("[data-carousel]").forEach(box=>{
+    const slides = [...box.querySelectorAll(".boat-photo-slide")];
+    const dots = [...box.querySelectorAll(".boat-card-dots span")];
+    if(slides.length < 2) return;
+    let index = 0;
+    const intervalId = setInterval(()=>{
+      slides[index].classList.remove("active");
+      dots[index]?.classList.remove("active");
+      index = (index + 1) % slides.length;
+      slides[index].classList.add("active");
+      dots[index]?.classList.add("active");
+    }, 2800);
+    activeCardIntervals.push(intervalId);
+  });
+}
+function renderHomeBoatStrip(){
+  const box = document.querySelector("#homeBoatStrip");
+  const list = boatCache.slice(0,4);
+  box.innerHTML = list.length ? `<div class="boat-grid${list.length===1?" boat-grid--single":""}">${list.map(b=>boatCardHtml(b,"rental")).join("")}</div>` : `
+    <div class="home-empty-state">
+      <span class="home-empty-state-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M3 15.5h18l-2.4 3.2a3 3 0 0 1-2.4 1.2H7.8a3 3 0 0 1-2.4-1.2L3 15.5Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M7 15.5 9.2 8h5.9l2 7.5M12 8V4m0 0 3.2 2.1M12 4 8.8 6.1" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+      <span class="home-empty-state-copy"><strong>${esc(t("rental.emptyTitle"))}</strong><span>${esc(t("rental.emptyText"))}</span></span>
+      <button id="emptyListBoatBtn" type="button">${esc(t("rental.emptyCta"))}</button>
+    </div>`;
+  document.querySelector("#emptyListBoatBtn")?.addEventListener("click", ()=>document.querySelector("#listBoatBtn")?.click());
+  startBoatCardCarousels();
+}
+async function preloadHomeBoats(){
+  const nowIso = new Date().toISOString();
+  const {data:featuredData} = await db.from("boats").select("*").in("listing_type",["rental","both"]).eq("rental_available",true).eq("featured", true).gt("featured_until", nowIso).order("featured_until",{ascending:true}).limit(4);
+  const featured = featuredData || [];
+  let list = featured;
+  if(list.length < 4){
+    const {data:recentData} = await db.from("boats").select("*").in("listing_type",["rental","both"]).eq("rental_available",true).order("created_at",{ascending:false}).limit(4 + featured.length);
+    const featuredIds = new Set(featured.map(b=>String(b.id)));
+    const recent = (recentData||[]).filter(b=>!featuredIds.has(String(b.id)));
+    list = featured.concat(recent).slice(0,4);
+  }
+  boatCache = list;
+  renderHomeBoatStrip();
+}
+function renderHomeSaleBoatStrip(){
+  const box = document.querySelector("#homeSaleBoatStrip");
+  if(!box) return;
+  const list = saleBoatCache.slice(0,4);
+  box.innerHTML = list.length ? `<div class="boat-grid${list.length===1?" boat-grid--single":""}">${list.map(b=>boatCardHtml(b,"sale")).join("")}</div>` : `<div class="home-empty-state"><span class="home-empty-state-icon">⚓</span><span class="home-empty-state-copy"><strong>${esc(saleText("Les premières ventes arrivent","First boats for sale coming soon","Próximamente los primeros barcos en venta"))}</strong><span>${esc(saleText("Publiez gratuitement votre bateau dès maintenant.","List your boat for free now.","Publica tu barco gratis ahora."))}</span></span><button id="emptySellBoatBtn" type="button">${esc(saleText("Vendre mon bateau","Sell my boat","Vender mi barco"))}</button></div>`;
+  document.querySelector("#emptySellBoatBtn")?.addEventListener("click", ()=>document.querySelector("#sellBoatBtn")?.click());
+  startBoatCardCarousels();
+}
+async function preloadHomeSales(){
+  const {data,error} = await db.from("boats").select("*").eq("managed_by_platform",true).eq("listing_type","sale").eq("sale_status","available").order("featured",{ascending:false}).order("created_at",{ascending:false}).limit(4);
+  if(error){ console.warn("SkipperNow home sales:",error); saleBoatCache=[]; renderHomeSaleBoatStrip(); return; }
+  saleBoatCache = data || [];
+  renderHomeSaleBoatStrip();
+}
+let homeProvidersCache = [];
+let homeProvidersIndex = 0;
+async function preloadHomeProviders(){
+  const {data,error} = await db.from("profiles")
+    .select("id,full_name,role,provider_activity,home_port,profile_photo_url,rating,rating_count,featured,created_at")
+    .eq("verified", true)
+    .eq("available", true)
+    .in("role",["skipper","provider"])
+    .order("featured",{ascending:false})
+    .order("created_at",{ascending:false})
+    .limit(8);
+  if(error){ console.warn("SkipperNow home providers:",error); homeProvidersCache = []; renderHomeProvidersStrip(); return; }
+  homeProvidersCache = data || [];
+  renderHomeProvidersStrip();
+}
+function renderHomeProvidersStrip(){
+  const box = document.querySelector("#homeProvidersStrip");
+  if(!box) return;
+  if(!homeProvidersCache.length){
+    box.innerHTML = `<div class="home-empty-state"><span class="home-empty-state-icon" aria-hidden="true">⚓</span><span class="home-empty-state-copy"><strong>${esc(t("providersShowcase.empty"))}</strong><span>${esc(t("join.providerText"))}</span></span><button id="emptyJoinProviderBtn" type="button">${esc(t("join.providerCta"))}</button></div>`;
+    document.querySelector("#emptyJoinProviderBtn")?.addEventListener("click",()=>openAccountModal("create","provider"));
+    return;
+  }
+  homeProvidersIndex = 0;
+  resultsCache = resultsCache.concat(homeProvidersCache);
+  box.innerHTML = `
+    <div class="provider-spotlight" id="providerSpotlightPhoto">
+      <span class="provider-spotlight-badge">✓ ${esc(t("card.verifiedBadge"))}</span>
+      <span class="provider-spotlight-rating" id="providerSpotlightRating"></span>
+    </div>
+    <div class="provider-spotlight-body">
+      <h4 id="providerSpotlightName"></h4>
+      <div class="muted" id="providerSpotlightMeta"></div>
+      <button class="small-btn fill" id="providerSpotlightCta" type="button" style="margin-top:10px">${esc(t("card.viewProfile"))}</button>
+    </div>
+    <div class="boat-card-dots" id="providerSpotlightDots" style="position:static;margin-top:10px;justify-content:flex-start"></div>`;
+  renderProviderSpotlight();
+  if(homeProvidersCache.length > 1 && !box.dataset.carouselRunning){
+    box.dataset.carouselRunning = "1";
+    setInterval(()=>{
+      const photo = document.querySelector("#providerSpotlightPhoto");
+      if(photo) photo.style.opacity = "0";
+      setTimeout(()=>{
+        homeProvidersIndex = (homeProvidersIndex + 1) % homeProvidersCache.length;
+        renderProviderSpotlight();
+        if(photo) photo.style.opacity = "1";
+      }, 250);
+    }, 3400);
+  }
+}
+document.querySelector("#viewAllProvidersBtn")?.addEventListener("click",()=>{
+  showProviderCategories();
+  openModal("providerModal");
+});
+const ACTIVITY_ICON = {skipper:"⚓",cleaning:"🧽",dock_service:"🧽",shipyard:"🛠️",day_sailor:"👷",boat_rental_pro:"🚤",provisioning:"🛒"};
+function renderProviderSpotlight(){
+  const p = homeProvidersCache[homeProvidersIndex];
+  if(!p) return;
+  const photo = document.querySelector("#providerSpotlightPhoto");
+  if(!photo) return;
+  const activity = p.provider_activity || "skipper";
+  photo.style.backgroundImage = p.profile_photo_url ? `url('${esc(p.profile_photo_url)}')` : "";
+  const iconEl = photo.querySelector(".ph-icon");
+  if(iconEl) iconEl.remove();
+  if(!p.profile_photo_url) photo.insertAdjacentHTML("afterbegin", `<div class="ph-icon">${ACTIVITY_ICON[activity]||"⚓"}</div>`);
+  document.querySelector("#providerSpotlightName").textContent = p.full_name || "—";
+  document.querySelector("#providerSpotlightMeta").textContent = `${activityLabel(activity)} · ${p.home_port||"—"}`;
+  document.querySelector("#providerSpotlightRating").textContent = profileRatingText(p);
+  const cta = document.querySelector("#providerSpotlightCta");
+  if(cta) cta.onclick = ()=>openProfileDetail(p.id);
+  const dots = document.querySelector("#providerSpotlightDots");
+  if(dots) dots.innerHTML = homeProvidersCache.map((_,i)=>`<span class="${i===homeProvidersIndex?"active":""}"></span>`).join("");
+}
+window.openBoatDetail = async function(id, mode){
+  let boat = [...boatCache,...saleBoatCache].find(b=>String(b.id)===String(id));
+  if(!boat){
+    const {data} = await db.from("boats").select("*").eq("id",id).maybeSingle();
+    boat = data;
+  }
+  if(!boat) return;
+  const viewMode = mode || (boat.listing_type==="sale" ? "sale" : "rental");
+  closeModal("boatFinderModal");
+  closeModal("boatSaleFinderModal");
+  const content = document.querySelector("#boatDetailContent");
+  const half = Number(boat.price_half_day||0), day = Number(boat.price_per_day||boat.daily_price||boat.price||0), sale = Number(boat.sale_price||0);
+  const photos = (Array.isArray(boat.photo_urls) && boat.photo_urls.length ? boat.photo_urls : (boat.photo_url ? [boat.photo_url] : []));
+  const saleFacts = viewMode==="sale" ? `
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:18px">
+      <div style="border:1px solid var(--line);border-radius:14px;padding:12px;text-align:center"><div style="color:var(--muted);font-size:11px;font-weight:800;text-transform:uppercase">${esc(saleText("Prix de vente","Sale price","Precio de venta"))}</div><div class="sale-price" style="margin-top:4px">${sale?money(sale*100):esc(saleText("Sur demande","On request","A consultar"))}</div></div>
+      ${boat.engine_hours!=null ? `<div style="border:1px solid var(--line);border-radius:14px;padding:12px;text-align:center"><div style="color:var(--muted);font-size:11px;font-weight:800;text-transform:uppercase">${esc(saleText("Heures moteur","Engine hours","Horas de motor"))}</div><div style="font-size:18px;font-weight:900;margin-top:4px">${esc(boat.engine_hours)} h</div></div>` : ""}
+      ${boat.year_built ? `<div style="border:1px solid var(--line);border-radius:14px;padding:12px;text-align:center"><div style="color:var(--muted);font-size:11px;font-weight:800;text-transform:uppercase">${esc(saleText("Année","Year","Año"))}</div><div style="font-size:18px;font-weight:900;margin-top:4px">${esc(boat.year_built)}</div></div>` : ""}
+    </div>` : `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px">
+      <div style="border:1px solid var(--line);border-radius:14px;padding:12px;text-align:center"><div style="color:var(--muted);font-size:11px;font-weight:800;text-transform:uppercase">${esc(t("boatDetail.halfDay"))}</div><div style="font-size:18px;font-weight:900;margin-top:4px">${half?money(half*100):esc(t("boatDetail.onRequest"))}</div></div>
+      <div style="border:1px solid var(--line);border-radius:14px;padding:12px;text-align:center"><div style="color:var(--muted);font-size:11px;font-weight:800;text-transform:uppercase">${esc(t("boatDetail.fullDay"))}</div><div style="font-size:18px;font-weight:900;margin-top:4px">${day?money(day*100):esc(t("boatDetail.onRequest"))}</div></div>
+    </div>`;
+  const action = (currentUser && String(boat.client_id)===String(currentUser.id))
+    ? `<div class="note-box">${esc(t("boatDetail.ownListing"))}</div>`
+    : viewMode==="sale"
+      ? `<button class="primary wide" onclick="openSaleInquiry('${esc(boat.id)}')">${esc(boat.managed_by_platform ? saleText("Contacter SkipperNow","Contact SkipperNow","Contactar con SkipperNow") : saleText("Contacter le vendeur","Contact seller","Contactar al vendedor"))}</button>`
+      : `<button class="primary wide" onclick="closeModal('boatDetailModal');openBookingFor('${esc(boat.client_id||"")}','${esc(String(boat.name||"Bateau").replace(/'/g,"\\'"))}','${esc(String(boat.home_port||"").replace(/'/g,"\\'"))}','boat_rental')">${esc(t("boatDetail.request"))}</button>`;
+  content.innerHTML = `
+    <div class="boat-detail-photo" style="margin:-26px -26px 0;height:230px;border-radius:22px 22px 0 0;overflow:hidden;${photos.length?"":"background:linear-gradient(135deg,#173b51,#3f9c9a)"}">
+      ${photos.length ? photos.map((url,i)=>`<div class="boat-photo-slide ${i===0?"active":""}" data-detail-slide style="background-image:url('${esc(url)}')"></div>`).join("") : `<div style="position:absolute;inset:0;display:grid;place-items:center;font-size:42px;color:rgba(255,255,255,.85)">⛵</div>`}
+      ${photos.length > 1 ? `<button type="button" class="boat-carousel-arrow prev" onclick="stepBoatDetailPhoto(-1)">‹</button><button type="button" class="boat-carousel-arrow next" onclick="stepBoatDetailPhoto(1)">›</button><div class="boat-card-dots" data-detail-dots>${photos.map((_,i)=>`<span class="${i===0?"active":""}"></span>`).join("")}</div>` : ""}
+      <button class="close" type="button" onclick="closeModal('boatDetailModal')" style="position:absolute;top:14px;right:14px;background:rgba(255,255,255,.92);z-index:3">×</button>
+      ${viewMode==="sale" ? `<span class="sale-listing-badge">${esc(saleText("À VENDRE","FOR SALE","EN VENTA"))}</span>` : ""}
+    </div>
+    <div style="padding-top:18px">
+      <small style="color:var(--muted);font-weight:800;letter-spacing:.05em;text-transform:uppercase;font-size:11px">${esc(viewMode==="sale"?saleText("VENTE DE BATEAUX","BOATS FOR SALE","BARCOS EN VENTA"):t("boatFinder.eyebrow"))}</small>
+      <h2 style="margin:4px 0 6px">${esc(normalizeBoatTitle(boat))}${boat.verified ? verifiedBoatBadgeHtml() : ""}</h2>
+      <div class="boat-card-port" style="margin-bottom:12px">📍 ${esc(boat.home_port||"—")}</div>
+      ${boatSpecsLine(boat) ? `<div class="boat-card-specs-line" style="margin-bottom:18px;font-size:14px">${boatSpecsLine(boat)}</div>` : ""}
+      ${saleFacts}
+      ${viewMode==="sale" && boat.managed_by_platform ? `<div class="note-box" style="margin-bottom:14px"><strong>SkipperNow</strong> · ${esc(saleText("Annonce publiée et gérée par SkipperNow pour le compte du propriétaire.","Listing published and managed by SkipperNow on behalf of the owner.","Anuncio publicado y gestionado por SkipperNow por cuenta del propietario."))}</div>` : ""}
+      <p class="muted">${esc(boat.description||t("boatDetail.noDescription"))}</p>
+      ${boat.equipment ? `<div style="margin:14px 0"><strong style="font-size:13px">${esc(t("boatDetail.equipment"))}</strong><div class="tags" style="margin-top:6px">${boat.equipment.split(",").map(x=>x.trim()).filter(Boolean).map(x=>`<span class="tag">${esc(x)}</span>`).join("")}</div></div>` : ""}
+      ${viewMode!=="sale" && boat.deposit_amount ? `<div class="note-box" style="margin-bottom:10px">${esc(t("boatDetail.deposit"))}: <strong>${money(Number(boat.deposit_amount)*100)}</strong></div>` : ""}
+      ${viewMode!=="sale" && boat.cancellation_policy ? `<p class="muted"><strong>${esc(t("boatDetail.cancellationPolicy"))}:</strong> ${esc(boat.cancellation_policy)}</p>` : ""}
+      ${boat.rules_text ? `<p class="muted"><strong>${esc(t("boatDetail.rules"))}:</strong> ${esc(boat.rules_text)}</p>` : ""}
+      ${action}
+      ${boat.listing_type==="both" ? `<button class="small-btn wide" style="margin-top:9px" onclick="openBoatDetail('${esc(boat.id)}','${viewMode==="sale"?"rental":"sale"}')">${esc(viewMode==="sale"?saleText("Voir les tarifs de location","See rental rates","Ver tarifas de alquiler"):saleText("Voir le prix de vente","See sale price","Ver precio de venta"))}</button>` : ""}
+    </div>`;
+  boatDetailPhotoIndex = 0;
+  openModal("boatDetailModal");
+};
+window.openSaleInquiry = function(boatId){
+  const boat = [...saleBoatCache,...boatCache].find(b=>String(b.id)===String(boatId));
+  if(!boat) return;
+  closeModal("boatDetailModal");
+  if(!currentUser){ openAccountModal("login"); return; }
+  saleInquiryTarget = boat;
+  document.querySelector("#saleInquiryTitle").textContent = (boat.managed_by_platform ? saleText("Contacter SkipperNow — ","Contact SkipperNow — ","Contactar con SkipperNow — ") : saleText("Contacter le vendeur — ","Contact seller — ","Contactar al vendedor — ")) + normalizeBoatTitle(boat);
+  document.querySelector("#saleInquiryMessage").value = saleText("Bonjour, je souhaite avoir plus d'informations sur ce bateau et organiser une visite.","Hello, I would like more information about this boat and to arrange a viewing.","Hola, me gustaría recibir más información sobre este barco y organizar una visita.");
+  document.querySelector("#saleInquiryMsg").textContent = "";
+  openModal("saleInquiryModal");
+};
+document.querySelector("#saleInquiryForm")?.addEventListener("submit", async e=>{
+  e.preventDefault();
+  const msg=document.querySelector("#saleInquiryMsg");
+  if(!currentUser || !saleInquiryTarget) return;
+  if(String(currentUser.id)===String(saleInquiryTarget.client_id)){ msg.textContent=saleText("Vous êtes le vendeur de cette annonce.","You are the seller of this listing.","Eres el vendedor de este anuncio."); return; }
+  const message=document.querySelector("#saleInquiryMessage").value.trim();
+  if(message.length<10) return;
+  const btn=e.target.querySelector("button[type=submit]"); btn.disabled=true;
+  const {error}=await db.from("boat_sale_inquiries").insert({
+    boat_id:saleInquiryTarget.id,
+    buyer_id:currentUser.id,
+    seller_id:saleInquiryTarget.client_id,
+    buyer_email:currentUser.email||null,
+    message
+  });
+  btn.disabled=false;
+  if(error){ msg.textContent=friendlyError(error); return; }
+  msg.style.color="#18794e";
+  msg.textContent=saleText("Votre demande a été envoyée au vendeur.","Your inquiry has been sent to the seller.","Tu consulta ha sido enviada al vendedor.");
+  setTimeout(()=>closeModal("saleInquiryModal"),1000);
+});
+let boatDetailPhotoIndex = 0;
+window.stepBoatDetailPhoto = function(dir){
+  const slides = [...document.querySelectorAll("[data-detail-slide]")];
+  const dots = [...document.querySelectorAll("[data-detail-dots] span")];
+  if(!slides.length) return;
+  slides[boatDetailPhotoIndex].classList.remove("active");
+  dots[boatDetailPhotoIndex]?.classList.remove("active");
+  boatDetailPhotoIndex = (boatDetailPhotoIndex + dir + slides.length) % slides.length;
+  slides[boatDetailPhotoIndex].classList.add("active");
+  dots[boatDetailPhotoIndex]?.classList.add("active");
+};
+window.openProfileDetail = function(id, adminView){
+  const p = (adminView ? adminProfilesCache : resultsCache).find(x=>String(x.id)===String(id));
+  if(!p) return;
+  closeModal("providerModal");
+  closeModal("boatFinderModal");
+  const content = document.querySelector("#profileDetailContent");
+  if(p.role === "client"){
+    content.innerHTML = `<button class="close" type="button" onclick="closeModal('profileDetailModal')">×</button>
+      ${p.profile_photo_url ? `<img class="dash-avatar" src="${esc(p.profile_photo_url)}" alt="">` : ""}
+      <small class="muted">${esc(roleLabel(p))}</small>
+      <h2>${esc(p.full_name||"—")}</h2>
+      <div class="boat-card-port">📍 ${esc(p.home_port||"—")}</div>
+      <p class="muted">${esc(p.bio||t("boatDetail.noDescription"))}</p>`;
+    openModal("profileDetailModal");
+    return;
+  }
+  const activity = p.provider_activity || "skipper";
+  const canRequest = p.available !== false && !p.suspended;
+  const photoStyle = p.profile_photo_url ? `background-image:url('${esc(p.profile_photo_url)}')` : "background:linear-gradient(135deg,#173b51,#3f9c9a)";
+  content.innerHTML = `
+    <div style="margin:-26px -26px 0;height:200px;${photoStyle};background-size:cover;background-position:center;border-radius:22px 22px 0 0;position:relative">
+      ${p.profile_photo_url ? "" : `<div style="position:absolute;inset:0;display:grid;place-items:center;font-size:42px;color:rgba(255,255,255,.85)">⚓</div>`}
+      <button class="close" type="button" onclick="closeModal('profileDetailModal')" style="position:absolute;top:14px;right:14px;background:rgba(255,255,255,.92)">×</button>
+    </div>
+    <div style="padding-top:18px">
+      <small style="color:var(--muted);font-weight:800;letter-spacing:.05em;text-transform:uppercase;font-size:11px">${esc(activityLabel(activity))}</small>
+      <div class="name-row" style="margin:4px 0 6px"><h2 style="margin:0">${esc(p.full_name||"—")}${p.verified ? `<span class="ig-badge" title="${esc(t("card.verifiedBadge"))}"><svg width="18" height="18" viewBox="0 0 24 24" role="img" aria-label="${esc(t("card.verifiedBadge"))}"><circle cx="12" cy="12" r="12" fill="#3897f0"/><path d="M9.5 12.8l-2-2-1.4 1.4L9.5 15.6l7.4-7.4-1.4-1.4z" fill="#fff"/></svg></span>` : ""}${featuredBadgeHtml(p)}</h2></div>
+      <div class="boat-card-port" style="margin-bottom:6px">📍 ${esc(p.home_port||"—")}</div>
+      <div class="meta" style="margin-bottom:14px">${esc(profileRatingText(p))}${p.rating_count ? ` (${p.rating_count} ${esc(t(p.rating_count>1 ? "card.reviewsPlural" : "card.reviewsSingle"))})` : ""} · ${p.experience_years||0} ${esc(t("card.experience"))}${p.languages?" · "+esc(p.languages):""}</div>
+      <div class="profile-facts"><div><strong>${esc(t("profile.area"))}</strong>${esc(p.home_port||"—")}${p.travel_radius_km ? `<p>${esc(t("profile.radius",{km:p.travel_radius_km}))}</p>` : ""}</div><div><strong>${esc(t("dash.navAvailability"))}</strong>${esc(t(canRequest ? "profile.available" : "profile.unavailable"))}</div></div>
+      <p class="muted" style="line-height:1.6">${esc(p.bio||t("boatDetail.noDescription"))}</p>
+      ${p.skills ? `<div style="margin:14px 0"><strong style="font-size:13px">${esc(t("account.skillsLabel"))}</strong><div class="tags" style="margin-top:6px">${p.skills.split(",").map(x=>x.trim()).filter(Boolean).map(x=>`<span class="tag">${esc(x)}</span>`).join("")}</div></div>` : ""}
+      ${(p.price_half_day_cents || p.price_hour_cents || p.travel_fee_cents) ? `<div class="muted" style="margin-bottom:10px">
+        ${p.price_half_day_cents ? `${esc(t("account.priceHalfDayLabel"))}: <strong>${money(p.price_half_day_cents)}</strong><br>` : ""}
+        ${p.price_hour_cents ? `${esc(t("account.priceHourLabel"))}: <strong>${money(p.price_hour_cents)}</strong><br>` : ""}
+        ${p.travel_fee_cents ? `${esc(t("account.travelFeeLabel"))}: <strong>${money(p.travel_fee_cents)}</strong>` : ""}
+      </div>` : ""}
+      <div class="note-box" style="margin-top:14px">${p.price_from_cents ? `${esc(t("card.priceFrom"))} <strong>${money(p.price_from_cents)}</strong> — ${esc(t("card.priceNote"))}` : esc(t("card.priceOnRequest"))}</div>
+      ${p.verified && profileNeedsDiploma(p) && p.diploma_type ? `<div class="tag" style="display:inline-block;margin-top:10px">🎓 ${esc(t("card.diplomaBadgePrefix"))} ${esc(p.diploma_type)}</div>` : ""}
+      ${adminView && p.diploma_url ? `<div class="muted" style="margin-top:10px"><a href="${esc(p.diploma_url)}" target="_blank">${esc(t("account.diplomaCurrent"))}</a></div>` : ""}
+      ${adminView ? ""
+        : (currentUser && String(p.id)===String(currentUser.id))
+          ? `<div class="note-box" style="margin-top:18px">${esc(t("boatDetail.ownListing"))}</div>`
+          : `<div class="profile-actions">
+              <button ${canRequest ? "" : "disabled"} class="primary wide" style="flex:1;min-width:160px" onclick="closeModal('profileDetailModal');openBookingFor('${p.id}','${esc(String(p.full_name||"").replace(/'/g,"\\'"))}','${esc(String(p.home_port||"").replace(/'/g,"\\'"))}','${activity}','${esc(currentProviderSubcategory||"")}','${esc(p.role||"")}')">${esc(t("profile.quote"))}</button>
+              <button class="ghost wide" style="flex:1;min-width:160px" onclick="messageProfile('${p.id}')">${esc(t("card.sendMessage"))}</button>
+            </div>`}
+    </div>`;
+  content.insertAdjacentHTML("beforeend", `<section><h3>${esc(t("profile.reviews"))}</h3><div id="profileReviews" aria-live="polite">${esc(t("dash.loading"))}</div></section>`);
+  loadProfileReviews(p.id, document.querySelector("#profileReviews"));
+  openModal("profileDetailModal");
+};
+async function loadProfileReviews(profileId, box, offset=0){
+  const {data,error}=await db.from("reviews").select("rating,comment,created_at").eq("skipper_id",profileId).order("created_at",{ascending:false}).range(offset,offset+9);
+  if(!box.isConnected) return;
+  box.querySelector("button")?.remove();
+  if(error){box.insertAdjacentHTML("beforeend",`<p>${esc(t("profile.reviewError"))}</p>`);return;}
+  if(!offset) box.innerHTML="";
+  if(!data?.length && !offset) box.textContent=t("profile.noReviews");
+  for(const review of data||[]){
+    box.insertAdjacentHTML("beforeend",`<article class="profile-review"><strong>${"★".repeat(Math.min(5,Math.max(1,Number(review.rating))))} · ${esc(t("profile.reviewVerified"))}</strong><div class="muted">${esc(new Date(review.created_at).toLocaleDateString(currentLang))}</div>${review.comment ? `<p>${esc(review.comment)}</p>` : ""}</article>`);
+  }
+  if(data?.length===10){const more=document.createElement("button");more.className="ghost";more.textContent=t("profile.moreReviews");more.onclick=()=>{more.disabled=true;loadProfileReviews(profileId,box,offset+10);};box.append(more);}
+}
+window.closeModal = closeModal;
+window.messageProfile = async function(targetId){
+  closeModal("profileDetailModal");
+  if(!currentUser){ openAccountModal("login"); return; }
+  await openDashboard();
+  const roleCol = currentProfile?.role === "admin" ? "both" : ["skipper","provider"].includes(currentProfile?.role) ? "skipper_id" : "client_id";
+  await renderMessagesPanel(roleCol);
+  document.querySelectorAll(".dash-side button").forEach(b=>b.classList.toggle("active", b.dataset.panel==="messages"));
+  const list = document.querySelector("#conversationList");
+  const thread = document.querySelector("#conversationThread");
+  if(list) list.style.display = "none";
+  if(thread) thread.style.display = "block";
+  await openConversationThread(currentUser.id, targetId);
+};
+
+let authMode = "create";
+let selectedRole = "client";
+
+function trackSignupStarted(source){
+  try{
+    if(typeof window.skTrackEvent === "function"){
+      window.skTrackEvent("signup_started", {source:source || "account_modal",stage:"form_opened",role:selectedRole});
+    }
+  }catch(_e){}
+}
+
+function setAuthMode(mode){
+  authMode = mode;
+  document.querySelector("#authModeCreate").classList.toggle("active", mode==="create");
+  document.querySelector("#authModeLogin").classList.toggle("active", mode==="login");
+  document.querySelector("#roleChoice").style.display = mode==="create" ? "grid" : "none";
+  document.querySelector("#nameField").style.display = mode==="create" ? "block" : "none";
+  document.querySelector("#forgotPasswordBtn").style.display = mode==="login" ? "block" : "none";
+  document.querySelector("#accountTitle").textContent = mode==="create" ? t("account.createTitle") : t("account.loginTitle");
+  document.querySelector("#authSubmit").textContent = mode==="create" ? t("account.createSubmit") : t("account.loginSubmit");
+  document.querySelector("#authMessage").textContent = "";
+  refreshRoleFields();
+}
+function setRole(role){
+  selectedRole = role;
+  document.querySelectorAll("#roleChoice .choice-card").forEach(c=>c.classList.toggle("active", c.dataset.role===role));
+  refreshRoleFields();
+}
+function refreshRoleFields(){
+  const needsPort = authMode==="create" && ["skipper","provider","owner"].includes(selectedRole);
+  document.querySelector("#portField").style.display = needsPort ? "block" : "none";
+  document.querySelector("#activityField").style.display = (authMode==="create" && selectedRole==="provider") ? "block" : "none";
+  if(authMode==="create" && selectedRole==="skipper") document.querySelector("#accountActivity").value = "skipper";
+  const portLabel = document.querySelector("#portField label");
+  const portInputField = document.querySelector("#accountPort");
+  if(selectedRole==="provider"){
+    portLabel.textContent = t("account.zoneLabel");
+    portInputField.placeholder = t("account.zonePlaceholder");
+  }else{
+    portLabel.textContent = t("account.portLabel");
+    portInputField.placeholder = t("account.portPlaceholder");
+  }
+}
+document.querySelector("#authModeCreate").addEventListener("click", ()=>{
+  const startsSignup = authMode !== "create";
+  setAuthMode("create");
+  if(startsSignup) trackSignupStarted("account_tab");
+});
+document.querySelector("#authModeLogin").addEventListener("click", ()=>setAuthMode("login"));
+document.querySelectorAll("#roleChoice .choice-card").forEach(card=>card.addEventListener("click", ()=>setRole(card.dataset.role)));
+
+let accountPortSearchTimer;
+function bindAccountPortAutocomplete(){
+  const input = document.querySelector("#accountPort");
+  const box = document.querySelector("#accountPortSuggestions");
+  if(!input || !box || input.dataset.bound) return;
+  input.dataset.bound = "1";
+  const render = (items)=>{
+    box.innerHTML = items.map((x,i)=>`<button type="button" class="port-option" data-i="${i}"><strong>${esc(x.name)}</strong><small>${esc(x.place)}</small></button>`).join("");
+    box.classList.toggle("open", items.length>0);
+    [...box.querySelectorAll(".port-option")].forEach((btn,i)=>btn.onclick=()=>{
+      input.value = items[i].place && items[i].place !== items[i].name ? `${items[i].name}, ${items[i].place}` : items[i].name;
+      box.classList.remove("open");
+    });
+  };
+  input.addEventListener("focus", ()=>{
+    const q = input.value.trim();
+    render(q ? localPortMatches(q) : POPULAR_PORTS.slice(0,8).map(x=>({name:x[0],place:x[1]})));
+  });
+  input.addEventListener("input", ()=>{
+    clearTimeout(accountPortSearchTimer);
+    accountPortSearchTimer = setTimeout(()=>render(localPortMatches(input.value.trim())),180);
+  });
+  document.addEventListener("click", e=>{
+    if(!e.target.closest("#portField")) box.classList.remove("open");
+  });
+}
+bindAccountPortAutocomplete();
+
+function openAccountModal(mode, role){
+  const nextMode = mode || "create";
+  setAuthMode(nextMode);
+  if(role) setRole(role);
+  openModal("accountModal");
+  if(nextMode === "create") trackSignupStarted("account_modal");
+}
+document.querySelector("#loginBtn").addEventListener("click", ()=>{
+  if(currentUser){ openDashboard(); return; }
+  openAccountModal("login");
+});
+document.querySelector("#signupBtn").addEventListener("click", ()=>{
+  if(currentUser){ openDashboard(); return; }
+  openAccountModal("create", "client");
+});
+document.querySelector("#listBoatBtn").addEventListener("click", ()=>{
+  if(currentUser && currentProfile){ openDashboard(); return; }
+  openAccountModal("create", "owner");
+});
+document.querySelector("#sellBoatBtn")?.addEventListener("click", ()=>{
+  if(currentUser && currentProfile){ openDashboard(); return; }
+  openAccountModal("create", "owner");
+});
+document.querySelector("#homeProsViewAll")?.addEventListener("click", ()=>{
+  showProviderCategories();
+  openModal("providerModal");
+});
+document.querySelectorAll("[data-role]").forEach(el=>{
+  if(el.closest("#roleChoice")) return;
+  el.addEventListener("click", ()=>openAccountModal("create", el.dataset.role));
+});
+document.querySelector("#footerBecomePro").addEventListener("click", ()=>openAccountModal("create","provider"));
+document.querySelector("#footerAddBoat").addEventListener("click", ()=>openAccountModal("create","owner"));
+document.querySelector("#footerSellBoat")?.addEventListener("click", ()=>openAccountModal("create","owner"));
+document.querySelector("#footerFindSkipper").addEventListener("click", ()=>{showProviderResults("skipper");openModal("providerModal")});
+document.querySelector("#footerFindProvider").addEventListener("click", ()=>{showProviderCategories();openModal("providerModal")});
+document.querySelector("#footerContact").addEventListener("click", async ()=>{
+  const {data} = await db.from("platform_settings").select("support_email").eq("id",1).maybeSingle();
+  window.location.href = "mailto:" + (data?.support_email || "contact@skippernow.com");
+});
+document.querySelector("#goHome").addEventListener("click", ()=>window.scrollTo({top:0,behavior:"smooth"}));
+
+const LEGAL_SECTIONS = ["mentions","cgu","cgv","privacy","cancellation","refund","cookies","community"];
+function renderLegalTabs(active){
+  document.querySelector("#legalTabs").innerHTML = LEGAL_SECTIONS.map(k=>`<button type="button" class="tag" data-legal-tab="${k}" style="cursor:pointer;border:1px solid var(--line)${k===active?";background:var(--navy);color:#fff":""}">${esc(t("legal."+k+"Title"))}</button>`).join("");
+  document.querySelectorAll("[data-legal-tab]").forEach(btn=>btn.addEventListener("click", ()=>openLegal(btn.dataset.legalTab)));
+}
+window.openLegal = function(key){
+  document.querySelector("#legalTitle").textContent = t("legal."+key+"Title");
+  document.querySelector("#legalContent").textContent = t("legal."+key+"Body");
+  renderLegalTabs(key);
+  openModal("legalModal");
+};
+document.querySelectorAll("[data-legal]").forEach(a=>a.addEventListener("click", ()=>openLegal(a.dataset.legal)));
+
+document.querySelector("#authSubmit").addEventListener("click", async ()=>{
+  const submit = document.querySelector("#authSubmit");
+  const msg = document.querySelector("#authMessage");
+  if(submit.disabled) return; // Prevent duplicate requests on slow mobile connections.
+  const email = document.querySelector("#accountEmail").value.trim().toLowerCase();
+  const password = document.querySelector("#accountPassword").value;
+  const name = document.querySelector("#accountName").value.trim();
+  const portValue = document.querySelector("#accountPort").value.trim();
+  const activity = document.querySelector("#accountActivity").value;
+  msg.style.color = "#b42318";
+  msg.textContent = "";
+
+  if(!email || password.length < 8){ msg.textContent = t("account.errMissing"); return; }
+  if(authMode !== "login"){
+    if(!name){ msg.textContent = t("account.errName"); return; }
+    if(["skipper","provider","owner"].includes(selectedRole) && !portValue){ msg.textContent = t("account.errPort"); return; }
+  }
+
+  submit.disabled = true;
+  submit.setAttribute("aria-busy","true");
+  const modeAtSubmit = authMode;
+  try{
+    if(modeAtSubmit === "login"){
+      const {data, error} = await db.auth.signInWithPassword({email, password});
+      if(error) throw error;
+      if(!data?.user) throw new Error("Missing authenticated user");
+      currentUser = data.user;
+      await loadProfile();
+      closeModal("accountModal");
+      refreshAccountButton();
+      if(sessionStorage.getItem("skippernow-quick-request")) openQuickRequest();
+      else openDashboard();
+      return;
+    }
+
+    const dbRole = selectedRole === "owner" ? "client" : selectedRole;
+    const metadata = {full_name:name, role:dbRole, lang:currentLang};
+    if(selectedRole === "owner") metadata.account_type = "owner";
+    if(selectedRole !== "client") metadata.home_port = portValue;
+    if(selectedRole === "provider") metadata.provider_activity = activity;
+    else if(selectedRole === "skipper") metadata.provider_activity = "skipper";
+
+    const {data, error} = await db.auth.signUp({email, password, options:{data:metadata}});
+    if(error) throw error;
+    if(!data?.user) throw new Error("Missing signup user");
+    if(!data.session){
+      msg.style.color = "#08794e";
+      msg.textContent = t("account.signupSuccess");
+      return;
+    }
+    currentUser = data.user;
+    await loadProfile();
+    closeModal("accountModal");
+    refreshAccountButton();
+    if(sessionStorage.getItem("skippernow-quick-request")) openQuickRequest();
+    else openDashboard();
+  }catch(error){
+    console.error("SkipperNow authentication failed:", error);
+    msg.style.color = "#b42318";
+    const message = String(error?.message || "").toLowerCase();
+    msg.textContent = modeAtSubmit === "login" && message.includes("email not confirmed")
+      ? t("account.emailNotConfirmed")
+      : modeAtSubmit === "login" && (message.includes("invalid login credentials") || message.includes("invalid credentials"))
+        ? t("account.loginError")
+        : friendlyError(error);
+  }finally{
+    submit.disabled = false;
+    submit.removeAttribute("aria-busy");
+  }
+});
+
+document.querySelector("#forgotPasswordBtn").addEventListener("click", async ()=>{
+  const email = document.querySelector("#accountEmail").value.trim().toLowerCase();
+  const msg = document.querySelector("#authMessage");
+  if(!email){ msg.textContent = t("account.forgotNeedEmail"); return; }
+  const {error} = await db.auth.resetPasswordForEmail(email, {redirectTo: location.href.split("#")[0]});
+  msg.style.color = error ? "#b42318" : "#08794e";
+  msg.textContent = error ? t("account.forgotError") + error.message : t("account.forgotSent");
+});
+
+document.querySelector("#recoverySubmit")?.addEventListener("click", async ()=>{
+  const pass=document.querySelector("#recoveryPassword").value;
+  const confirmPass=document.querySelector("#recoveryPasswordConfirm").value;
+  const msg=document.querySelector("#recoveryMessage");
+  if(pass.length<8){ msg.textContent=saleText("Le mot de passe doit contenir au moins 8 caractères.","Password must be at least 8 characters.","La contraseña debe tener al menos 8 caracteres."); return; }
+  if(pass!==confirmPass){ msg.textContent=saleText("Les deux mots de passe ne correspondent pas.","Passwords do not match.","Las contraseñas no coinciden."); return; }
+  const btn=document.querySelector("#recoverySubmit"); btn.disabled=true;
+  const {error}=await db.auth.updateUser({password:pass});
+  btn.disabled=false;
+  msg.style.color=error?"#b42318":"#08794e";
+  msg.textContent=error?friendlyError(error):saleText("Mot de passe modifié. Vous pouvez maintenant vous connecter.","Password changed. You can now sign in.","Contraseña modificada. Ya puedes iniciar sesión.");
+  if(!error){
+    setTimeout(()=>{ closeModal("passwordRecoveryModal"); openDashboard(); },700);
+  }
+});
+
+async function loadProfile(){
+  if(!currentUser){ currentProfile = null; return; }
+  const {data} = await db.from("profiles").select("*").eq("id", currentUser.id).maybeSingle();
+  currentProfile = data;
+}
+function refreshAccountButton(){
+  const loginBtn = document.querySelector("#loginBtn");
+  const signupBtn = document.querySelector("#signupBtn");
+  const avatar = document.querySelector("#accountAvatar");
+  if(currentUser){
+    loginBtn.textContent = t("nav.myAccount");
+    signupBtn.style.display = "none";
+    avatar.style.display = "inline-flex";
+    const photo = currentProfile?.profile_photo_url;
+    if(photo){
+      avatar.style.backgroundImage = `url('${photo}')`;
+      avatar.textContent = "";
+    }else{
+      avatar.style.backgroundImage = "";
+      const source = (currentProfile?.full_name || currentUser.email || "?").trim();
+      avatar.textContent = source.split(/\s+/).map(w=>w[0]).slice(0,2).join("").toUpperCase();
+    }
+  }else{
+    loginBtn.textContent = t("nav.login");
+    signupBtn.style.display = "";
+    avatar.style.display = "none";
+  }
+  document.querySelector("#notifWrap").style.display = currentUser ? "block" : "none";
+  if(currentUser) refreshNotifications(); else document.querySelector("#notifBadge").style.display = "none";
+}
+async function refreshNotifications(){
+  if(!currentUser || !currentProfile) return;
+  const items = [];
+  try{
+    const {count: unreadMsgCount} = await db.from("messages").select("id", {count:"exact", head:true}).is("read_at", null).neq("sender_id", currentUser.id).in("conversation_id",
+      (await db.from("conversations").select("id").or(`client_id.eq.${currentUser.id},skipper_id.eq.${currentUser.id}`)).data?.map(c=>c.id) || []);
+    if(unreadMsgCount) items.push({label: `${unreadMsgCount} ${t("notif.unreadMessages")}`, panel:"messages"});
+  }catch(_e){}
+  const role = currentProfile.role;
+  if(role === "client"){
+    const {data: quoted} = await db.from("missions").select("id",{count:"exact"}).eq("client_id", currentUser.id).eq("status","quoted");
+    if(quoted?.length) items.push({label: `${quoted.length} ${t("notif.quotesReceived")}`, panel:"requests"});
+    const {data: awaiting} = await db.from("missions").select("id",{count:"exact"}).eq("client_id", currentUser.id).eq("status","awaiting_validation");
+    if(awaiting?.length) items.push({label: `${awaiting.length} ${t("notif.awaitingValidation")}`, panel:"requests"});
+  }else if(["skipper","provider"].includes(role)){
+    const {data: pending} = await db.from("missions").select("id",{count:"exact"}).eq("status","pending").is("skipper_id", null);
+    if(pending?.length) items.push({label: `${pending.length} ${t("notif.newRequests")}`, panel:"requests"});
+  }else if(role === "admin"){
+    const {data: newRequests} = await db.from("missions").select("id").eq("status","pending");
+    if(newRequests?.length) items.push({label: `${newRequests.length} ${t("notif.adminNewRequests")}`, panel:"missions"});
+    const {data: pendingUsers} = await db.from("profiles").select("id",{count:"exact"}).eq("verified", false).in("role",["skipper","provider"]);
+    if(pendingUsers?.length) items.push({label: `${pendingUsers.length} ${t("notif.pendingValidations")}`, panel:"validations"});
+    const {data: refunds} = await db.from("missions").select("id",{count:"exact"}).eq("payment_status","refund_requested");
+    if(refunds?.length) items.push({label: `${refunds.length} ${t("notif.refundRequests")}`, panel:"refunds"});
+    const {data: disputes} = await db.from("missions").select("id",{count:"exact"}).eq("dispute_status","open");
+    if(disputes?.length) items.push({label: `${disputes.length} ${t("notif.openDisputes")}`, panel:"disputes"});
+  }
+  const badge = document.querySelector("#notifBadge");
+  const total = items.reduce((s,it)=>s + (Number(String(it.label).match(/^\d+/)?.[0]) || 1), 0);
+  badge.textContent = total > 9 ? "9+" : String(total);
+  badge.style.display = total > 0 ? "flex" : "none";
+  const showPushCta = ("Notification" in window) && Notification.permission !== "granted";
+  const pushCtaHtml = showPushCta ? `<button type="button" id="enablePushBtn" class="request-card" style="width:100%;text-align:left;cursor:pointer;display:block;margin-bottom:6px;background:var(--mist);font-weight:800">🔔 ${esc(t("push.enable"))}</button>` : "";
+  document.querySelector("#notifPanel").innerHTML = pushCtaHtml + (items.length
+    ? items.map(it=>`<button type="button" class="request-card" style="width:100%;text-align:left;cursor:pointer;display:block;margin-bottom:6px" data-notif-panel="${it.panel}">${esc(it.label)}</button>`).join("")
+    : (showPushCta ? "" : `<div class="empty-note" style="padding:12px">${esc(t("notif.empty"))}</div>`));
+  document.querySelector("#enablePushBtn")?.addEventListener("click", async (e)=>{
+    e.stopPropagation();
+    const ok = await enablePushNotifications();
+    if(ok) alert(t("push.enabled"));
+    await refreshNotifications();
+  });
+  document.querySelectorAll("[data-notif-panel]").forEach(btn=>btn.addEventListener("click", async ()=>{
+    document.querySelector("#notifPanel").style.display = "none";
+    await openDashboard();
+    document.querySelectorAll(".dash-side button").forEach(b=>b.classList.toggle("active", b.dataset.panel===btn.dataset.notifPanel));
+    if(currentProfile.role === "client") await renderClientPanel(btn.dataset.notifPanel);
+    else if(currentProfile.role === "admin") await renderAdminPanel(btn.dataset.notifPanel);
+    else await renderProPanel(btn.dataset.notifPanel);
+  }));
+}
+document.querySelector("#notifBtn").addEventListener("click", ()=>{
+  const panel = document.querySelector("#notifPanel");
+  panel.style.display = panel.style.display === "none" ? "block" : "none";
+});
+document.addEventListener("click", (e)=>{
+  const wrap = document.querySelector("#notifWrap");
+  if(wrap && !wrap.contains(e.target)) document.querySelector("#notifPanel").style.display = "none";
+});
+setInterval(()=>{ if(currentUser) refreshNotifications(); }, 45000);
+
+const BOOKING_DRAFT_KEY = "skippernow-quick-request";
+function newBookingSessionId(){
+  if(window.crypto && typeof window.crypto.randomUUID === "function") return window.crypto.randomUUID();
+  return "form-"+Date.now().toString(36)+"-"+Math.random().toString(36).slice(2);
+}
+function bookingFormSnapshot(stage){
+  const duration = document.querySelector("#bookingDuration")?.value || "";
+  const details = sanitizeContactInfo(document.querySelector("#bookingDetails")?.value.trim() || "");
+  const files = document.querySelector("#bookingPhotos")?.files;
+  return {
+    session_id: bookingContext.formSessionId || "",
+    stage: stage || "",
+    activity: bookingContext.activity || activeActivity,
+    subcategory: bookingContext.subcategory || "",
+    source: bookingContext.targetId ? "listing" : "quick_request",
+    port: document.querySelector("#bookingPort")?.value.trim() || "",
+    date: document.querySelector("#bookingDate")?.value || "",
+    duration,
+    days: duration === "multi" ? (document.querySelector("#bookingDays")?.value || "") : "",
+    boat_type: bookingContext.activity === "boat_rental" ? (bookingContext.name || "") : (document.querySelector("#bookingBoat")?.value.trim() || ""),
+    details,
+    target_id: bookingContext.targetId || "",
+    target_name: bookingContext.name || "",
+    has_target: Boolean(bookingContext.targetId),
+    has_photos: Boolean(files?.length),
+    photo_count: files?.length || 0
+  };
+}
+function trackBookingEvent(eventName, metadata){
+  try{
+    if(typeof window.skTrackEvent === "function"){
+      const detail = eventName.startsWith("booking_") ? bookingFormSnapshot(metadata?.stage || eventName.replace("booking_","")) : {};
+      window.skTrackEvent(eventName, {...detail, ...(metadata || {}), session_id: bookingContext.formSessionId || metadata?.session_id || ""});
+    }
+  }catch(_e){}
+}
+let bookingProgressTimer = null;
+function queueBookingProgress(stage){
+  if(!bookingContext.formSessionId || bookingContext.sent) return;
+  bookingContext.lastStage = stage;
+  clearTimeout(bookingProgressTimer);
+  bookingProgressTimer = setTimeout(()=>trackBookingEvent("booking_progress", {stage}), 450);
+}
+function updateBookingDaysVisibility(){
+  const durationValue = document.querySelector("#bookingDuration").value;
+  document.querySelector("#bookingDaysField").style.display = durationValue === "multi" ? "block" : "none";
+}
+document.querySelector("#bookingDuration").addEventListener("change", updateBookingDaysVisibility);
+function clearBookingDraft(){
+  try{ sessionStorage.removeItem(BOOKING_DRAFT_KEY); }catch(_e){}
+}
+window.openBookingFor = function(targetId, name, homePort, activity, subcategory, targetRole){
+  if(currentUser && targetId && String(targetId) === String(currentUser.id)){
+    alert(t("boatDetail.ownListing"));
+    return;
+  }
+  bookingContext = {targetId, name, homePort, activity, subcategory, targetRole, formSessionId:newBookingSessionId(), sent:false, abandonTracked:false, lastStage:"opened"};
+  document.querySelector("#bookingTargetName").textContent = name || t("booking.defaultTarget");
+  document.querySelector("#bookingSummaryPrice").textContent = t("booking.priceTbd");
+  const bookingPort = document.querySelector("#bookingPort");
+  const bookingDate = document.querySelector("#bookingDate");
+  const bookingDuration = document.querySelector("#bookingDuration");
+  bookingPort.value = homePort || portInput.value || "";
+  bookingDate.min = dateInput.min || localDateStr();
+  bookingDate.value = dateInput.value || bookingDate.min;
+  bookingDuration.value = document.querySelector("#durationInput").value || "day";
+  document.querySelector("#bookingDays").value = "2";
+  updateBookingDaysVisibility();
+  document.querySelector("#bookingForm").style.display = "block";
+  document.querySelector("#bookingSuccess").style.display = "none";
+  document.querySelector("#bookingMessage").textContent = "";
+  document.querySelector("#bookingSubmit").disabled = false;
+  const isBoatRental = activity === "boat_rental";
+  const isSupply = activity === "provisioning";
+  document.querySelector("#bookingBoatField").style.display = isBoatRental ? "none" : "block";
+  const detailsLabel = document.querySelector("#bookingDetailsLabel");
+  const detailsInput = document.querySelector("#bookingDetails");
+  const subDef = subcategory && (PROVIDER_SUBCATEGORIES[activity]||[]).find(s=>s.key===subcategory);
+  const subLabel = subDef ? t(subDef.labelKey) : "";
+  if(isSupply){
+    detailsLabel.textContent = subDef ? `${activityLabel(activity)} – ${subLabel}` : t("booking.detailsLabel");
+    detailsInput.placeholder = t("booking.provisioningPlaceholder", {sub: subLabel || t("sub.provisioning.custom")});
+  }else{
+    detailsLabel.textContent = isBoatRental ? t("booking.rentalDetailsLabel") : t("booking.detailsLabel");
+    detailsInput.placeholder = isBoatRental ? t("booking.rentalDetailsPlaceholder") : t("booking.detailsPlaceholder");
+  }
+  detailsInput.value = "";
+  document.querySelector("#bookingBoat").value = "";
+  document.querySelector("#bookingPhotos").value = "";
+  document.querySelector("#bookingPhotosPreview").innerHTML = "";
+  openModal("bookingModal");
+  // Open-service requests return to the two choices instead of closing the journey.
+  const modal = document.querySelector("#bookingModal");
+  let returnBtn = modal?.querySelector("[data-sn-return-choice]");
+  if(!returnBtn && modal){
+    returnBtn=document.createElement("button");
+    returnBtn.type="button";
+    returnBtn.dataset.snReturnChoice="1";
+    returnBtn.textContent="← Retour aux deux options";
+    returnBtn.style.cssText="display:block;margin:0 0 14px;padding:10px 14px;border:1px solid #cadad9;border-radius:10px;background:#fff;color:#123b4a;font-weight:700;cursor:pointer";
+    const heading=modal.querySelector("#bookingTargetName");
+    (heading?.parentElement||modal.firstElementChild||modal).prepend(returnBtn);
+  }
+  if(returnBtn){
+    const openService=!targetId && activity && activity!=="skipper" && activity!=="boat_rental";
+    returnBtn.style.display=openService?"block":"none";
+    returnBtn.onclick=()=>{
+      closeModal("bookingModal");
+      if(typeof window.snServiceChoiceBack==="function") window.snServiceChoiceBack(activity,name);
+      else location.href="/?activity=service&source=home_choice";
+    };
+  }
+  trackBookingEvent("booking_opened", {
+    activity: activity || activeActivity,
+    has_target: Boolean(targetId),
+    source: targetId ? "listing" : "quick_request"
+  });
+};
+// Reprend un brouillon de demande (barre "demande rapide" OU formulaire de
+// réservation complet interrompu par une connexion/inscription) et
+// rouvre automatiquement le bon formulaire, pré-rempli.
+function applyBookingDraftAndOpen(draft){
+  if(draft.port) portInput.value = draft.port;
+  if(draft.date) dateInput.value = draft.date;
+  if(draft.duration) document.querySelector("#durationInput").value = draft.duration;
+  activeActivity = TAB_CONFIG[draft.activity] ? draft.activity : "skipper";
+  clearBookingDraft();
+  const targetId = draft.targetId || null;
+  const name = targetId ? (draft.name || t("booking.defaultTarget")) : t("quickRequest.openTitle");
+  window.openBookingFor(targetId, name, draft.port || portInput.value, activeActivity, draft.subcategory || "", draft.targetRole || "");
+  // openBookingFor vient de réinitialiser le formulaire avec des valeurs par
+  // défaut : on restaure par-dessus les valeurs conservées du brouillon.
+  if(draft.date) document.querySelector("#bookingDate").value = draft.date;
+  if(draft.duration){
+    document.querySelector("#bookingDuration").value = draft.duration;
+    updateBookingDaysVisibility();
+  }
+  if(draft.days) document.querySelector("#bookingDays").value = draft.days;
+  if(draft.boatType) document.querySelector("#bookingBoat").value = draft.boatType;
+  if(draft.details) document.querySelector("#bookingDetails").value = draft.details;
+}
+function openQuickRequest(){
+  let saved = null;
+  try{ saved = JSON.parse(sessionStorage.getItem(BOOKING_DRAFT_KEY) || "null"); }catch(_e){}
+  const draft = saved || {
+    activity: activeActivity,
+    port: portInput.value.trim(),
+    date: dateInput.value,
+    duration: document.querySelector("#durationInput").value
+  };
+  if(!currentUser){
+    try{ sessionStorage.setItem(BOOKING_DRAFT_KEY, JSON.stringify(draft)); }catch(_e){}
+    openAccountModal("create", "client");
+    return;
+  }
+  if(currentProfile && !["client","admin"].includes(currentProfile.role)){
+    alert(t("booking.needClient"));
+    return;
+  }
+  applyBookingDraftAndOpen(draft);
+}
+document.querySelector("#bookingPhotos").addEventListener("change", (e)=>{
+  const preview = document.querySelector("#bookingPhotosPreview");
+  preview.innerHTML = "";
+  [...e.target.files].slice(0,4).forEach(file=>{
+    const url = URL.createObjectURL(file);
+    preview.innerHTML += `<img loading="lazy" src="${url}" style="width:64px;height:64px;object-fit:cover;border-radius:10px">`;
+  });
+  queueBookingProgress("photos");
+});
+["bookingPort","bookingDate","bookingDuration","bookingDays","bookingBoat","bookingDetails"].forEach(id=>{
+  const field = document.querySelector("#"+id);
+  if(!field) return;
+  const stage = ({bookingPort:"port",bookingDate:"date",bookingDuration:"duration",bookingDays:"days",bookingBoat:"boat_type",bookingDetails:"details"})[id];
+  field.addEventListener(id === "bookingDetails" ? "input" : "change", ()=>queueBookingProgress(stage));
+});
+function trackBookingAbandonment(){
+  const modal = document.querySelector("#bookingModal");
+  if(!modal?.classList.contains("open") || !bookingContext.formSessionId || bookingContext.sent || bookingContext.abandonTracked) return;
+  bookingContext.abandonTracked = true;
+  clearTimeout(bookingProgressTimer);
+  trackBookingEvent("booking_abandoned", {stage:"closed_after_"+(bookingContext.lastStage||"opened")});
+}
+document.querySelector("#bookingModal [data-close='bookingModal']")?.addEventListener("click", trackBookingAbandonment, {capture:true});
+document.querySelector("#bookingModal")?.addEventListener("click", e=>{ if(e.target === e.currentTarget) trackBookingAbandonment(); }, {capture:true});
+window.addEventListener("pagehide", trackBookingAbandonment);
+document.querySelector("#bookingSubmit").addEventListener("click", async ()=>{
+  const msg = document.querySelector("#bookingMessage");
+  const submitBtn = document.querySelector("#bookingSubmit");
+  if(submitBtn.disabled) return; // évite un double envoi (double-clic pendant le chargement)
+  if(!currentUser){
+    // On conserve le formulaire en cours (port, date, durée, jours, type de
+    // service, bateau/pro ciblé, description) pour le restaurer après la
+    // connexion ou la création de compte.
+    const durationValue = document.querySelector("#bookingDuration").value;
+    const draft = {
+      targetId: bookingContext.targetId || null,
+      name: bookingContext.name || "",
+      activity: bookingContext.activity || activeActivity,
+      subcategory: bookingContext.subcategory || "",
+      targetRole: bookingContext.targetRole || "",
+      port: document.querySelector("#bookingPort").value.trim(),
+      date: document.querySelector("#bookingDate").value,
+      duration: durationValue,
+      days: durationValue === "multi" ? document.querySelector("#bookingDays").value : "",
+      boatType: bookingContext.activity === "boat_rental" ? "" : document.querySelector("#bookingBoat").value.trim(),
+      details: document.querySelector("#bookingDetails").value.trim()
+    };
+    try{ sessionStorage.setItem(BOOKING_DRAFT_KEY, JSON.stringify(draft)); }catch(_e){}
+    trackBookingEvent("booking_login_required", {
+      activity: draft.activity,
+      has_target: Boolean(draft.targetId)
+    });
+    closeModal("bookingModal");
+    openAccountModal("login");
+    msg.textContent = t("booking.needLogin");
+    return;
+  }
+  if(!currentProfile || (currentProfile.role !== "client" && currentProfile.role !== "admin")){ msg.textContent = t("booking.needClient"); return; }
+  const isBoatRental = bookingContext.activity === "boat_rental";
+  const boatType = isBoatRental ? (bookingContext.name || "") : document.querySelector("#bookingBoat").value.trim();
+  const requestedPort = document.querySelector("#bookingPort").value.trim();
+  const requestedDate = document.querySelector("#bookingDate").value;
+  const details = sanitizeContactInfo(document.querySelector("#bookingDetails").value.trim());
+  // Une mission ne doit jamais être créée sans port, date ou description.
+  if(!requestedPort){ msg.textContent = t("booking.needPort"); return; }
+  if(!requestedDate){ msg.textContent = t("booking.needDate"); return; }
+  if(requestedDate < localDateStr()){ msg.textContent = t("booking.needFutureDate"); return; }
+  if(!details){ msg.textContent = t("booking.needDetails"); return; }
+  const durationValue = document.querySelector("#bookingDuration").value;
+  let days = 1;
+  if(durationValue === "multi"){
+    days = Math.round(Number(document.querySelector("#bookingDays").value));
+    if(!Number.isFinite(days) || days < 2){ msg.textContent = t("booking.needDays"); return; }
+  }
+  msg.style.color = "";
+  msg.textContent = t("booking.sending");
+  submitBtn.disabled = true;
+  trackBookingEvent("booking_submitted", {
+    activity: bookingContext.activity || activeActivity,
+    duration: durationValue,
+    has_target: Boolean(bookingContext.targetId),
+    has_photos: document.querySelector("#bookingPhotos").files.length > 0
+  });
+
+  const start = new Date(requestedDate + "T09:00:00");
+  // Demi-journée = 4h, journée = 8h, plusieurs jours = nombre de jours x 24h.
+  const hours = durationValue === "half" ? 4 : durationValue === "day" ? 8 : days*24;
+  const end = new Date(start.getTime() + hours*3600000);
+
+  try{
+    const photoFiles = [...document.querySelector("#bookingPhotos").files].slice(0,4);
+    const photoUrls = [];
+    for(const file of photoFiles){
+      const path = `${currentUser.id}/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.\-_]/g,"_")}`;
+      const {error: uploadError} = await db.storage.from("mission-photos").upload(path, file);
+      if(uploadError){
+        trackBookingEvent("booking_failed", {stage:"photo_upload"});
+        msg.style.color = "#b42318"; msg.textContent = friendlyError(uploadError); submitBtn.disabled = false; return;
+      }
+      const {data: pub} = db.storage.from("mission-photos").getPublicUrl(path);
+      photoUrls.push(pub.publicUrl);
+    }
+
+    // Open cleaning requests are marketplace listings, not assigned missions.
+    // Direct requests continue through the existing mission/payment workflow.
+    if(!bookingContext.targetId && (bookingContext.activity || activeActivity) === "cleaning"){
+      const {data: openRequest,error: openError} = await db.from("provider_requests").insert({
+        client_id: currentUser.id,
+        provider_id: null,
+        activity: "cleaning",
+        port: requestedPort,
+        boat_name: boatType || "Bateau",
+        task_description: details,
+        desired_date: requestedDate || null,
+        photo_urls: photoUrls,
+        status: "open"
+      }).select("id").single();
+      if(openError){msg.style.color="#b42318";msg.textContent=friendlyError(openError);submitBtn.disabled=false;return;}
+      trackBookingEvent("booking_created",{activity:"cleaning",source:"open_request",request_id:openRequest.id});
+      bookingContext.sent=true;clearBookingDraft();
+      document.querySelector("#bookingForm").style.display="none";
+      document.querySelector("#bookingSuccess").style.display="block";
+      return;
+    }
+    const missionPayload = {
+      client_id: currentUser.id,
+      port: requestedPort,
+      boat_type: boatType,
+      description: details,
+      photo_urls: photoUrls.length ? photoUrls : null,
+      starts_at: start.toISOString(),
+      ends_at: end.toISOString(),
+      amount_cents: 0,
+      urgent_fee_cents: 0,
+      platform_fee_cents: 0,
+      status: "pending",
+      payment_status: "unpaid"
+    };
+    if(bookingContext.targetId){
+      if(bookingContext.targetRole === "provider") missionPayload.provider_id = bookingContext.targetId;
+      else missionPayload.skipper_id = bookingContext.targetId;
+    }
+    const {data: createdMission, error} = await db.from("missions").insert(missionPayload).select("id").single();
+    if(error){
+      trackBookingEvent("booking_failed", {stage:"mission_insert"});
+      msg.style.color = "#b42318"; msg.textContent = friendlyError(error); submitBtn.disabled = false; return;
+    }
+    trackBookingEvent("booking_created", {
+      activity: bookingContext.activity || activeActivity,
+      duration: durationValue,
+      has_target: Boolean(bookingContext.targetId),
+      mission_id: createdMission.id
+    });
+    bookingContext.sent = true;
+    clearBookingDraft();
+    document.querySelector("#bookingForm").style.display = "none";
+    document.querySelector("#bookingSuccess").style.display = "block";
+  }catch(err){
+    // Le bouton est réactivé en cas d'erreur (réseau, etc.) pour permettre un nouvel essai.
+    trackBookingEvent("booking_failed", {stage:"unexpected"});
+    msg.style.color = "#b42318";
+    msg.textContent = friendlyError(err);
+    submitBtn.disabled = false;
+  }
+});
+document.querySelector("#bookingSuccessDone").addEventListener("click", ()=>{ closeModal("bookingModal"); openDashboard(); });
+
+let paymentOpenVersion=0;
+let paymentConfirmedIntent=null;
+async function paymentCall(name,body){
+  const {data:{session}}=await db.auth.getSession();
+  if(!session) throw new Error(t("payment.session"));
+  const res=await fetch(SUPABASE_URL+"/functions/v1/"+name,{method:"POST",headers:{"Content-Type":"application/json",Authorization:"Bearer "+session.access_token,apikey:SUPABASE_KEY},body:JSON.stringify(body)});
+  const json=await res.json();
+  if(!res.ok) throw new Error(json.error||t("payment.unavailable"));
+  return json;
+}
+window.openPaymentFor = async function(missionId, amountCents){
+  const version=++paymentOpenVersion;
+  currentPaymentMissionId=missionId;paymentConfirmedIntent=null;paymentElementsInstance=null;
+  closeModal("dashboardModal");
+  document.querySelector("#paymentAmount").textContent=money(amountCents);
+  document.querySelector("#paymentMessage").textContent="";
+  document.querySelector("#paymentElementWrap").innerHTML=`<div class="empty-note">${esc(t("dash.loading"))}</div>`;
+  const submit=document.querySelector("#paymentSubmit");
+  submit.style.display="none";submit.disabled=false;submit.textContent=t("payment.pay");
+  openModal("paymentModal");
+  try{
+    await loadStripeClient();
+    const json=await paymentCall("smooth-function",{missionId});
+    if(version!==paymentOpenVersion) return;
+    if(json.paid){closeModal("paymentModal");await openDashboard();return;}
+    if(json.processing){document.querySelector("#paymentElementWrap").textContent=t("payment.processing");return;}
+    document.querySelector("#paymentAmount").textContent=moneyC(json.amount,json.currency);
+    document.querySelector("#paymentElementWrap").innerHTML="";
+    paymentElementsInstance=stripeClient.elements({clientSecret:json.client_secret});
+    paymentElementsInstance.create("payment").mount("#paymentElementWrap");
+    submit.style.display="block";
+  }catch(err){document.querySelector("#paymentElementWrap").textContent=friendlyError(err);}
+};
+document.querySelector("#paymentSubmit").addEventListener("click",async ()=>{
+  const msg=document.querySelector("#paymentMessage"), btn=document.querySelector("#paymentSubmit");
+  if(btn.disabled || !paymentElementsInstance) return;
+  btn.disabled=true;msg.textContent="";
+  try{
+    if(!paymentConfirmedIntent){
+      const returnUrl=new URL(location.origin+"/");returnUrl.searchParams.set("payment_mission",currentPaymentMissionId);
+      const {error,paymentIntent}=await stripeClient.confirmPayment({elements:paymentElementsInstance,confirmParams:{return_url:returnUrl.href},redirect:"if_required"});
+      if(error) throw error;
+      if(!paymentIntent) throw new Error(t("payment.processing"));
+      paymentConfirmedIntent=paymentIntent.id;
+    }
+    btn.textContent=t("payment.check");
+    const result=await paymentCall("clever-processor",{missionId:currentPaymentMissionId,paymentIntentId:paymentConfirmedIntent});
+    if(!result.ok){msg.textContent=t("payment.processing");return;}
+    closeModal("paymentModal");await openDashboard();
+  }catch(err){msg.textContent=friendlyError(err);}
+  finally{btn.disabled=false;}
+});
+async function resumePaymentReturn(){
+  const params=new URLSearchParams(location.search), missionId=params.get("payment_mission");
+  if(!missionId) return false;
+  const intentId=params.get("payment_intent"), clean=new URL(location.href);
+  ["payment_intent","payment_intent_client_secret","redirect_status"].forEach(k=>clean.searchParams.delete(k));
+  history.replaceState(null,"",clean.pathname+clean.search+clean.hash);
+  if(!currentUser){openAccountModal("login");return true;}
+  closeModal("accountModal");openModal("paymentModal");
+  document.querySelector("#paymentSubmit").style.display="none";
+  document.querySelector("#paymentElementWrap").textContent=t("dash.loading");
+  try{
+    const result=await paymentCall("clever-processor",{missionId,paymentIntentId:intentId});
+    document.querySelector("#paymentElementWrap").textContent=t(result.ok?"payment.confirmed":"payment.processing");
+    if(result.ok){clean.searchParams.delete("payment_mission");history.replaceState(null,"",clean.pathname+clean.search+clean.hash);closeModal("paymentModal");await openDashboard();}
+  }catch(err){document.querySelector("#paymentElementWrap").textContent=friendlyError(err);}
+  return true;
+}
+
+async function openDashboard(){
+  if(!currentUser){ openAccountModal("login"); return; }
+  if(!currentProfile) await loadProfile();
+  if(!currentProfile){ alert(t("account.signupSuccess")); return; }
+
+  const role = currentProfile.role;
+  const roleEyebrow = role==="admin" ? "dash.adminEyebrow" : ["skipper","provider"].includes(role) ? "dash.proEyebrow" : "dash.clientEyebrow";
+  const roleTitle = role==="admin" ? "dash.adminTitle" : ["skipper","provider"].includes(role) ? "dash.proTitle" : "dash.clientTitle";
+  document.querySelector("#dashRole").textContent = t(roleEyebrow);
+  document.querySelector("#dashTitle").textContent = t(roleTitle);
+
+  if(role === "admin") await renderAdminDashboard();
+  else if(["skipper","provider"].includes(role)) await renderProDashboard();
+  else await renderClientDashboard();
+
+  openModal("dashboardModal");
+}
+
+const NAV_ICONS = {
+  overview:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 19h16M8 19V9m4 10V5m4 14v-7"/></svg>',
+  missions:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v5m0 13v-5M4.2 6.2l3.5 3.5m8.6 8.6l3.5 3.5M2 12h5m10 0h5M4.2 17.8l3.5-3.5m8.6-8.6l3.5-3.5"/></svg>',
+  messages:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>',
+  payments:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>',
+  payouts:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>',
+  refunds:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 109-9 9.75 9.75 0 00-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>',
+  disputes:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><path d="M12 9v4M12 17h.01"/></svg>',
+  commissions:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 5L5 19M6.5 9a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM17.5 20a2.5 2.5 0 100-5 2.5 2.5 0 000 5z"/></svg>',
+  users:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>',
+  boats:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20a3 3 0 003 1.5 3 3 0 003-1.5 3 3 0 003 1.5 3 3 0 003-1.5 3 3 0 003 1.5 3 3 0 003-1.5M4 18l-1-6h18l-2 6M6 12V6h9l3 6"/></svg>',
+  requests:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>',
+  forms:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg>',
+  support:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
+  profile:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>',
+  content:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></svg>',
+  hero:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>',
+  destinations:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 6v16l7-4 8 4 7-4V2l-7 4-8-4-7 4z"/><path d="M8 2v16M16 6v16"/></svg>',
+  activities:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h5l2-8 4 16 2-8h7"/></svg>',
+  excursions:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>'
+};
+function dashboardAccountHtml(p){
+  if(!p) return "";
+  const copy = ({fr:{current:"Compte connecté",client:"Client",skipper:"Skipper",sailor:"Marin à la journée",provider:"Prestataire",owner:"Propriétaire",admin:"Administrateur",verified:"Profil vérifié",pending:"À valider",suspended:"Profil suspendu",available:"Disponible",unavailable:"Indisponible",progress:"Présentation du profil",hint:"Ce pourcentage décrit les informations renseignées, pas la validation du compte."},en:{current:"Signed-in account",client:"Client",skipper:"Skipper",sailor:"Day sailor",provider:"Service provider",owner:"Boat owner",admin:"Administrator",verified:"Verified profile",pending:"Awaiting verification",suspended:"Suspended profile",available:"Available",unavailable:"Unavailable",progress:"Profile details",hint:"This percentage reflects completed information, not account verification."},es:{current:"Cuenta conectada",client:"Cliente",skipper:"Patrón",sailor:"Marinero por día",provider:"Prestador",owner:"Propietario",admin:"Administrador",verified:"Perfil verificado",pending:"Pendiente de validación",suspended:"Perfil suspendido",available:"Disponible",unavailable:"No disponible",progress:"Información del perfil",hint:"Este porcentaje refleja la información completada, no la validación de la cuenta."}})[currentLang] || null;
+  const c = copy || {current:t("dash.navProfile"),client:t("account.roleClient"),skipper:t("account.roleSkipper"),provider:t("account.roleProvider")};
+  const professional = ["skipper","provider"].includes(p.role);
+  const role = p.role === "skipper" || (p.role === "provider" && p.provider_activity === "skipper") ? c.skipper : p.role === "provider" && p.provider_activity === "day_sailor" ? c.sailor : c[p.role] || p.role;
+  const activity = p.role === "provider" && !["skipper","day_sailor"].includes(p.provider_activity) && p.provider_activity ? activityLabel(p.provider_activity) : "";
+  const name = p.full_name || currentUser?.email || role;
+  const completion = profileCompletionPercent(p);
+  const status = p.suspended ? c.suspended : p.verified ? c.verified : c.pending;
+  const photo = /^https?:\/\//i.test(p.profile_photo_url||"") ? p.profile_photo_url : "";
+  return `<section class="dash-account" aria-label="${esc(c.current)}">
+    <div class="dash-identity">${photo ? `<img class="dash-avatar" src="${esc(photo)}" alt="">` : `<div class="dash-avatar" aria-hidden="true">${esc(name.slice(0,1).toUpperCase())}</div>`}
+      <div class="dash-identity-text"><small>${esc(c.current)}</small><h3>${esc(name)}</h3><div class="dash-account-email">${esc(currentUser?.email || p.contact_email || "")}</div>
+        <div class="dash-account-tags"><span>${esc(role)}</span>${activity ? `<span>${esc(activity)}</span>` : ""}${professional ? `<span class="${p.suspended ? "is-suspended" : p.verified ? "is-ok" : "is-pending"}">${esc(status)}</span>${!p.suspended && p.verified ? `<span>${esc(p.available ? c.available : c.unavailable)}</span>` : ""}` : ""}</div>
+        ${p.home_port ? `<div class="dash-account-email" style="margin-top:8px">${esc(p.home_port)}</div>` : ""}
+      </div></div>
+    ${completion !== null ? `<div class="dash-account-progress"><strong>${esc(c.progress)} · ${completion}%</strong><progress max="100" value="${completion}" aria-label="${esc(c.progress)}"></progress><p>${esc(c.hint)}</p></div>` : ""}
+  </section>`;
+}
+function refreshDashboardIdentity(panel){
+  const identity = document.querySelector("#dashAccountIdentity");
+  if(identity) identity.innerHTML = dashboardAccountHtml(currentProfile);
+  const nav = [...document.querySelectorAll(".dash-side [data-panel]")].find(btn=>btn.dataset.panel === panel);
+  const heading = document.querySelector("#dashPanelHeading");
+  if(nav && heading) heading.textContent = nav.textContent.trim();
+}
+function dashShell(navItems, activePanel){
+  let lastGroup = null, rows = "";
+  navItems.forEach(n=>{
+    if(n.group && n.group !== lastGroup){ rows += `<div class="dash-side-group">${esc(n.group)}</div>`; lastGroup = n.group; }
+    rows += `<button class="${n.id===activePanel?"active":""}" data-panel="${n.id}">${NAV_ICONS[n.id]||""}<span>${esc(n.label)}</span></button>`;
+  });
+  return `<div id="dashAccountIdentity">${dashboardAccountHtml(currentProfile)}</div><div class="dash-shell">
+    <aside class="dash-side">
+      ${rows}
+      <button class="logout-btn" data-panel="__logout">${NAV_ICONS.payouts.replace('M12 19V5M5 12l7-7 7 7','M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9')}<span>${esc(t("dash.logout"))}</span></button>
+    </aside>
+    <section class="dash-main"><h3 class="dash-panel-heading" id="dashPanelHeading">${esc(navItems.find(n=>n.id===activePanel)?.label || "")}</h3><div id="dashMain"></div></section>
+  </div>`;
+}
+function bindDashNav(renderFn){
+  document.querySelectorAll(".dash-side button").forEach(btn=>{
+    btn.addEventListener("click", async ()=>{
+      if(btn.dataset.panel === "__logout"){ await logout(); return; }
+      if(btn.dataset.panel === "boats"){ adminBoatsFilterOwnerId = null; editingBoatId = null; }
+      unsubscribeThreadChannel();
+      document.querySelectorAll(".dash-side button").forEach(b=>b.classList.toggle("active", b===btn));
+      const heading = document.querySelector("#dashPanelHeading");
+      if(heading) heading.textContent = btn.textContent.trim();
+      await renderFn(btn.dataset.panel);
+    });
+  });
+}
+async function logout(){
+  unsubscribeThreadChannel();
+  const {error}=await db.auth.signOut();
+  if(error){alert(saleText("Déconnexion impossible. Réessayez.","Unable to sign out. Please try again.","No se pudo cerrar sesión."));return;}
+  currentUser = null; currentProfile = null;
+  closeModal("dashboardModal");
+  refreshAccountButton();
+}
+
+async function renderClientDashboard(){
+  // Owners currently retain the database role "client"; recognize their
+  // original owner signup and existing rental listings without changing auth.
+  const signupOwner = currentUser?.user_metadata?.account_type === "owner" ||
+    (currentUser?.user_metadata?.home_port && currentUser?.user_metadata?.role === "client");
+  const {data:ownerBoats,error:boatsError} = await db.from("boats").select("id").eq("client_id",currentUser.id).in("listing_type",["rental","both"]).limit(1);
+  if(signupOwner || (!boatsError && ownerBoats?.length)){
+    await renderOwnerDashboard();
+    return;
+  }
+  const body = document.querySelector("#dashboardBody");
+  body.innerHTML = dashShell([
+    {id:"requests", label:t("dash.navRequests")},
+    {id:"quotes", label:saleText("Mes devis","My quotes","Mis presupuestos")},
+    {id:"messages", label:t("dash.navMessages")},
+    {id:"support", label:t("dash.navSupport")},
+    {id:"boats", label:saleText("Mes annonces","My listings","Mis anuncios")},
+    {id:"profile", label:t("dash.navProfile")}
+  ], "requests");
+  bindDashNav(renderClientPanel);
+  await renderClientPanel("requests");
+}
+const ownerLabel=(fr,en,es)=>saleText(fr,en,es);
+async function ownerDashboardData(){
+  const [{data:boats,error:boatError},{data:missions,error:missionError}]=await Promise.all([
+    db.from("boats").select("*").eq("client_id",currentUser.id).in("listing_type",["rental","both"]).order("created_at",{ascending:false}),
+    db.from("missions").select("*").eq("skipper_id",currentUser.id).order("created_at",{ascending:false})
+  ]);
+  return {boats:boats||[],missions:missions||[],boatError,missionError};
+}
+async function renderOwnerDashboard(){
+  const nav=[
+    {id:"owner-overview",label:ownerLabel("Vue d’ensemble","Overview","Resumen"),group:ownerLabel("GESTION LOCATIONS","RENTAL MANAGEMENT","GESTIÓN DE ALQUILERES")},
+    {id:"boats",label:ownerLabel("Mes bateaux","My boats","Mis barcos")},
+    {id:"owner-bookings",label:ownerLabel("Réservations reçues","Received bookings","Reservas recibidas")},
+    {id:"quotes",label:ownerLabel("Mes devis","My quotes","Mis presupuestos")},
+    {id:"owner-calendar",label:ownerLabel("Planning","Calendar","Calendario")},
+    {id:"owner-availability",label:ownerLabel("Calendrier & tarifs","Availability & rates","Calendario y tarifas")},
+    {id:"owner-revenue",label:ownerLabel("Revenus","Revenue","Ingresos"),group:ownerLabel("FINANCES","FINANCE","FINANZAS")},
+    {id:"messages",label:t("dash.navMessages"),group:ownerLabel("MON COMPTE","ACCOUNT","MI CUENTA")},
+    {id:"profile",label:t("dash.navProfile")},
+    {id:"support",label:t("dash.navSupport")}
+  ];
+  document.querySelector("#dashRole").textContent=ownerLabel("ESPACE LOUEUR","BOAT OWNER","ESPACIO PROPIETARIO");
+  document.querySelector("#dashTitle").textContent=ownerLabel("Tableau de bord loueur","Owner dashboard","Panel del propietario");
+  document.querySelector("#dashboardBody").innerHTML=dashShell(nav,"owner-overview");
+  bindDashNav(renderOwnerPanel);
+  await renderOwnerPanel("owner-overview");
+}
+async function renderOwnerPanel(panel){
+  refreshDashboardIdentity(panel);
+  if(panel==="quotes"){await renderClientPanel("quotes");return;}
+  const main=document.querySelector("#dashMain");
+  if(panel==="boats") {await renderBoatsManager(main,()=>renderOwnerPanel("boats"));return;}
+  if(panel==="owner-availability"){if(typeof window.renderOwnerAvailability==="function")await window.renderOwnerAvailability(main);else main.innerHTML="<div class=\"empty-note\">Actualisez la page pour charger le calendrier.</div>";return;}
+  if(panel==="messages"){await renderMessagesPanel("skipper_id");return;}
+  if(panel==="profile"){main.innerHTML=profileForm(currentProfile);bindProfileForm();return;}
+  if(panel==="support"){await openSupportThread();return;}
+  main.innerHTML='<div class="empty-note">Chargement…</div>';
+  const {boats,missions,boatError,missionError}=await ownerDashboardData();
+  if(boatError||missionError){
+    main.innerHTML='<div class="empty-note">'+esc(ownerLabel("Impossible de charger les données. Actualisez la page.","Unable to load data. Refresh the page.","No se pudieron cargar los datos. Actualiza la página."))+'</div>';return;
+  }
+  const paid=missions.filter(m=>["paid","payout_ready","transferred"].includes(m.payment_status));
+  const gross=paid.reduce((n,m)=>n+Number(m.amount_cents||0)+Number(m.urgent_fee_cents||0),0);
+  const completed=missions.filter(m=>m.status==="completed").length;
+  const pending=missions.filter(m=>["pending","quoted","accepted"].includes(m.status)).length;
+  const upcoming=missions.filter(m=>m.starts_at&&new Date(m.starts_at)>=new Date()&&!["completed","cancelled","declined","rejected"].includes(m.status)).sort((a,b)=>new Date(a.starts_at)-new Date(b.starts_at));
+  const kpi=(label,value,sub)=>`<div class="request-card" style="padding:18px;min-width:0;border:1px solid #d5e5e7;border-radius:16px"><div class="muted" style="font-weight:700;font-size:13px">${esc(label)}</div><strong style="display:block;font-size:27px;margin:8px 0;color:#07394b">${esc(String(value))}</strong><small class="muted">${esc(sub)}</small></div>`;
+  const readiness=[
+    {ok:Boolean(currentProfile?.full_name&&currentProfile?.phone&&currentProfile?.home_port),label:ownerLabel("Compléter mon profil et mes coordonnées","Complete my profile","Completar mi perfil"),target:"profile"},
+    {ok:boats.length>0,label:ownerLabel("Ajouter mon premier bateau","List my first boat","Publicar mi primer barco"),target:"boats"},
+    {ok:boats.some(b=>b.photo_url||Array.isArray(b.photo_urls)&&b.photo_urls.length),label:ownerLabel("Ajouter des photos à mon annonce","Add boat photos","Añadir fotos"),target:"boats"},
+    {ok:boats.some(b=>Number(b.price_per_day)>0||Number(b.price_half_day)>0),label:ownerLabel("Renseigner mes tarifs de location","Set rental prices","Indicar precios"),target:"boats"}
+  ];
+  const done=readiness.filter(x=>x.ok).length;
+  const onboarding=`<section class="note-box" style="margin-bottom:16px;background:#f2fbfa;border:1px solid #b8e4dd;border-radius:16px;padding:18px">
+    <div style="display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap"><strong style="font-size:17px;color:#07394b">${esc(ownerLabel("Bien démarrer sur SkipperNow","Getting started on SkipperNow","Primeros pasos en SkipperNow"))}</strong><span class="tag">${done}/${readiness.length}</span></div>
+    <p style="color:#436371;margin:8px 0 12px">${esc(ownerLabel("Suivez ces étapes pour mettre votre bateau en location et recevoir vos premières demandes.","Follow these steps to publish your boat and start receiving requests.","Sigue estos pasos para publicar tu barco y recibir solicitudes."))}</p>
+    <div style="height:8px;background:#c8dddd;border-radius:20px;overflow:hidden;margin-bottom:12px"><div style="height:100%;width:${done/readiness.length*100}%;background:#0b9c8d"></div></div>
+    <div style="display:grid;gap:8px">${readiness.map(x=>`<button type="button" data-owner-target="${x.target}" style="width:100%;text-align:left;padding:11px 13px;background:white;border:1px solid #c8dde0;border-radius:10px;color:#123b4b;font-weight:700;cursor:pointer">${x.ok?"✅":"○"} ${esc(x.label)} ${x.ok?"":" →"}</button>`).join("")}</div>
+  </section>`;
+  const metrics=`<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:12px;margin:16px 0 22px">
+    ${kpi(ownerLabel("Bateaux enregistrés","Listed boats","Barcos registrados"),boats.length,ownerLabel("Annonces à gérer","Listings to manage","Anuncios para gestionar"))}
+    ${kpi(ownerLabel("Demandes en attente","Pending requests","Solicitudes pendientes"),pending,ownerLabel("Réservations reçues","Booking requests","Reservas recibidas"))}
+    ${kpi(ownerLabel("Missions terminées","Completed jobs","Servicios terminados"),completed,ownerLabel("Historique","History","Historial"))}
+    ${kpi(ownerLabel("Montants payés","Paid amounts","Importes pagados"),money(gross),ownerLabel("Montant brut, hors frais","Gross before fees","Bruto antes de comisiones"))}
+  </div>`;
+  const action=(target,label)=>`<button type="button" class="small-btn fill" data-owner-target="${target}">${esc(label)}</button>`;
+  const welcome=`<section style="background:linear-gradient(120deg,#07384b,#087f8c);padding:22px;border-radius:18px;color:white;margin-bottom:16px">
+     <small style="color:#c4f3f0;letter-spacing:.08em;font-weight:800">${esc(ownerLabel("CENTRE DE LOCATION","RENTAL CENTER","CENTRO DE ALQUILER"))}</small>
+     <h3 style="color:white;margin:10px 0;font-size:23px">${esc(ownerLabel("Gérez vos locations depuis un seul espace","Manage your rentals in one place","Gestiona tus alquileres en un solo lugar"))}</h3>
+     <p style="color:#e2f3f3;margin:0 0 16px">${esc(ownerLabel("Vos annonces, demandes, échéances et revenus sont regroupés ici.","Listings, requests, schedule and earnings in one place.","Tus anuncios, reservas, calendario e ingresos en un solo lugar."))}</p>
+     <div style="display:flex;gap:8px;flex-wrap:wrap">${action("boats",ownerLabel("Gérer mes bateaux","Manage boats","Gestionar barcos"))} ${action("owner-bookings",ownerLabel("Voir les réservations","View bookings","Ver reservas"))}</div>
+  </section>`;
+  const cards=items=>items.length?items.map(m=>requestCard(m,"pro",new Set())).join(""):`<div class="empty-note">${esc(ownerLabel("Aucune réservation pour le moment.","No bookings yet.","Todavía no hay reservas."))}</div>`;
+  if(panel==="owner-overview"){
+    main.innerHTML=welcome+(done<readiness.length?onboarding:"")+metrics+`<div class="panel-head"><h3>${esc(ownerLabel("Dernières demandes","Latest requests","Últimas solicitudes"))}</h3></div><div class="request-list">${cards(missions.slice(0,5))}</div>`;
+  }else if(panel==="owner-bookings"){
+    main.innerHTML=`<h3>${esc(ownerLabel("Réservations reçues","Received bookings","Reservas recibidas"))}</h3><p class="muted">${esc(ownerLabel("Demandes liées à votre compte loueur.","Requests linked to your owner account.","Solicitudes vinculadas a tu cuenta."))}</p><div class="request-list">${cards(missions)}</div>`;
+  }else if(panel==="owner-calendar"){
+    main.innerHTML=`<h3>${esc(ownerLabel("Prochaines réservations","Upcoming bookings","Próximas reservas"))}</h3><div class="request-list">${cards(upcoming)}</div>`;
+  }else if(panel==="owner-revenue"){
+    main.innerHTML=`<h3>${esc(ownerLabel("Suivi financier","Financial overview","Resumen financiero"))}</h3><div class="note-box">${esc(ownerLabel("Les montants correspondent aux paiements enregistrés, avant commission et versement. Ils ne représentent pas nécessairement votre solde disponible.","Figures reflect recorded payments before fees and payouts, not available balance.","Los importes reflejan pagos registrados antes de comisiones y transferencias."))}</div>${metrics}<div class="request-list">${cards(paid)}</div>`;
+  }
+  main.querySelectorAll("[data-owner-target]").forEach(btn=>btn.addEventListener("click",()=>main.closest(".dash-shell").querySelector(`.dash-side [data-panel="${btn.dataset.ownerTarget}"]`)?.click()));
+  bindRequestActions();
+}
+
+function clientProfileCompletionNotice(){
+  if(currentProfile?.phone && currentProfile?.home_port) return "";
+  const copy = ({
+    fr:{title:"Complétez votre profil",text:"Ajoutez vos coordonnées après votre première connexion pour faciliter le suivi de vos réservations.",cta:"Compléter mon profil"},
+    en:{title:"Complete your profile",text:"Add your contact details after signing in to make booking follow-up easier.",cta:"Complete my profile"},
+    es:{title:"Completa tu perfil",text:"Añade tus datos de contacto después de iniciar sesión para facilitar el seguimiento de tus reservas.",cta:"Completar mi perfil"}
+  })[currentLang] || null;
+  const c = copy || {title:"Complétez votre profil",text:"Ajoutez vos coordonnées pour faciliter le suivi de vos réservations.",cta:"Compléter mon profil"};
+  return `<div class="note-box" data-client-profile-reminder style="display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:14px"><div><strong>${esc(c.title)}</strong><div class="muted" style="margin-top:4px">${esc(c.text)}</div></div><button type="button" class="small-btn fill" data-open-client-profile>${esc(c.cta)} →</button></div>`;
+}
+async function renderClientPanel(panel){
+  refreshDashboardIdentity(panel);
+  const main = document.querySelector("#dashMain");
+  if(panel === "quotes"){
+    main.innerHTML = '<div class="empty-note">Chargement des devis…</div>';
+    const {data,error}=await db.from("missions").select("*").eq("client_id",currentUser.id).in("status",["quoted","accepted","paid","in_progress","awaiting_validation","completed"]).order("created_at",{ascending:false});
+    if(error){main.innerHTML='<div class="empty-note">'+esc(saleText("Impossible de charger les devis. Réessayez.","Unable to load quotes. Please try again.","No se pudieron cargar los presupuestos."))+'</div>';return;}
+    const rows=data||[];
+    main.innerHTML='<h3>'+esc(saleText("Mes devis","My quotes","Mis presupuestos"))+'</h3><p class="muted">'+esc(saleText("Retrouvez ici les devis associés à vos demandes et réglez ceux en attente.","Find quotes associated with your requests and pay those pending.","Consulta los presupuestos de tus solicitudes."))+'</p>'+ (rows.length?rows.map(m=>requestCard(m,"client",new Set())).join(""):'<div class="empty-note">'+esc(t("dash.noRequests"))+'</div>');
+    bindRequestActions();
+    if(typeof window.showCleaningQuotes==="function"){
+      const btn=document.createElement("button");btn.className="small-btn fill";btn.type="button";btn.textContent=saleText("Voir les devis de nettoyage","View cleaning quotes","Ver presupuestos de limpieza");btn.addEventListener("click",window.showCleaningQuotes);main.prepend(btn);
+    }
+    return;
+  }
+  if(panel === "requests"){
+    // Un compte "client" peut aussi être propriétaire de bateau : il doit
+    // donc voir à la fois les demandes qu'il a envoyées (client_id) ET les
+    // demandes de location reçues pour son/ses bateau(x) (skipper_id), sinon
+    // ces dernières restent invisibles pour lui.
+    const {data} = await db.from("missions").select("*").or(`client_id.eq.${currentUser.id},skipper_id.eq.${currentUser.id}`).order("created_at",{ascending:false});
+    let rows = data || [];
+    const pendingChecks=rows.filter(m=>m.client_id===currentUser.id && m.status==='accepted' && m.stripe_payment_intent_id && ['unpaid','failed',null].includes(m.payment_status));
+    let reconciled=false;
+    for(const m of pendingChecks){try{const result=await paymentCall('clever-processor',{missionId:m.id});if(result.ok) reconciled=true;}catch(_error){/* Keep the request visible so the client can retry. */}}
+    if(reconciled){const refreshed=await db.from('missions').select('*').or(`client_id.eq.${currentUser.id},skipper_id.eq.${currentUser.id}`).order('created_at',{ascending:false});if(!refreshed.error) rows=refreshed.data||rows;}
+    const {data: reviewedRows} = await db.from("reviews").select("mission_id").eq("client_id", currentUser.id);
+    const reviewedMissionIds = new Set((reviewedRows||[]).map(r=>String(r.mission_id)));
+    const requestRows = rows.length ? rows.map(m=>{
+      const rowContext = String(m.client_id) === String(currentUser.id) ? "client" : "pro";
+      const tag = String(m.client_id) === String(currentUser.id) ? "" : `<span class="tag" style="margin-bottom:6px;display:inline-block">${esc(t("dash.requestReceived"))}</span>`;
+      return tag + requestCard(m, rowContext, reviewedMissionIds);
+    }).join("") : `<div class="empty-note">${esc(t("dash.noRequests"))}</div>`;
+    main.innerHTML = clientProfileCompletionNotice() + requestRows;
+    document.querySelector("[data-open-client-profile]")?.addEventListener("click", ()=>{
+      document.querySelector('.dash-side [data-panel="profile"]')?.click();
+    });
+    bindRequestActions();
+  }else if(panel === "messages"){
+    await renderMessagesPanel("client_id");
+  }else if(panel === "support"){
+    await openSupportThread();
+  }else if(panel === "boats"){
+    await renderBoatsManager(main, ()=>renderClientPanel("boats"));
+  }else if(panel === "profile"){
+    main.innerHTML = profileForm(currentProfile);
+    bindProfileForm();
+  }
+}
+async function renderBoatsManager(main, refreshFn){
+    const {data} = await db.from("boats").select("*").eq("client_id", currentUser.id).in("listing_type",["rental","both"]).order("created_at",{ascending:false});
+    const rows = data || [];
+    myBoatsCache = rows;
+    const editing = editingBoatId ? rows.find(b=>String(b.id)===String(editingBoatId)) : null;
+    const b = editing || {};
+    const rentalCount = rows.length;
+    const showForm = Boolean(editing) || rows.length===0;
+    main.innerHTML = `
+      <div class="note-box">${esc(saleText("Gérez ici tous vos bateaux proposés à la location.","Manage all your rental boat listings here.","Gestiona aquí todos tus barcos disponibles en alquiler."))}</div>
+      <div class="kpi-grid rental-only-kpis" style="margin-bottom:16px">
+        <button type="button" class="kpi rental-kpi-btn active" data-boat-list-filter="all" aria-pressed="true"><div class="kpi-top"><span>${esc(saleText("Total annonces","Total listings","Total anuncios"))}</span></div><strong>${rows.length}</strong></button>
+        <button type="button" class="kpi rental-kpi-btn" data-boat-list-filter="rental" aria-pressed="false"><div class="kpi-top"><span>${esc(saleText("En location","For rent","En alquiler"))}</span></div><strong>${rentalCount}</strong></button>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:12px">
+        <h3 style="margin:0" id="myBoatListTitle">${esc(saleText("Mes annonces","My listings","Mis anuncios"))} (${rows.length})</h3>
+        <button class="small-btn fill" type="button" id="showAddBoatForm">+ ${esc(saleText("Ajouter un bateau","Add a boat","Añadir un barco"))}</button>
+      </div>
+      ${rows.length ? `<div id="myBoatCards">${rows.map(bt=>myBoatCard(bt)).join("")}</div>` : `<div class="empty-note">${esc(t("dash.noBoats"))}</div>`}
+      <section id="boatEditorSection" style="${showForm?"":"display:none;"}margin-top:24px">
+      <h3>${editing ? esc(saleText("Modifier cette annonce","Edit this listing","Modificar este anuncio")) : esc(saleText("Ajouter un bateau","Add a boat","Añadir un barco"))}</h3>
+      <form id="addBoatForm" style="margin-top:16px">
+        <div class="field"><label>${esc(t("account.nameLabel"))}</label><input id="boatNameInput" required value="${esc(b.name||"")}"></div>
+        <div class="field"><label>${esc(t("boatDetail.brand"))}</label><input id="boatBrandInput" value="${esc(b.brand||"")}"></div>
+        <div class="field"><label>${esc(t("boatDetail.model"))}</label><input id="boatModelInput" value="${esc(b.model||"")}"></div>
+        <div class="field"><label>${esc(t("boatDetail.type"))}</label>
+          <select id="boatTypeInput">
+            <option value="sailboat" ${b.boat_type==="sailboat"?"selected":""}>${esc(t("boatDetail.typeSailboat"))}</option>
+            <option value="motorboat" ${b.boat_type==="motorboat"?"selected":""}>${esc(t("boatDetail.typeMotorboat"))}</option>
+            <option value="rib" ${b.boat_type==="rib"?"selected":""}>${esc(t("boatDetail.typeRib"))}</option>
+            <option value="catamaran" ${b.boat_type==="catamaran"?"selected":""}>${esc(t("boatDetail.typeCatamaran"))}</option>
+          </select>
+        </div>
+        <div class="field"><label>${esc(t("boatDetail.port"))}</label><input id="boatPortInput" value="${esc(b.home_port||"")}"></div>
+        <div class="field"><label>${esc(t("boatDetail.length"))} (m)</label><input id="boatLengthInput" type="number" step="0.1" value="${b.length_m??""}"></div>
+        <div class="field"><label>${esc(t("boatDetail.width"))} (m)</label><input id="boatWidthInput" type="number" step="0.1" value="${b.beam_m??""}"></div>
+        <div class="field"><label>${esc(t("boatDetail.draft"))} (m)</label><input id="boatDraftInput" type="number" step="0.1" value="${b.draft_m??""}"></div>
+        <div class="field"><label>${esc(t("boatDetail.capacity"))}</label><input id="boatCapacityInput" type="number" min="1" step="1" value="${b.capacity??""}"></div>
+        <div class="field"><label>${esc(t("boatDetail.cabinsField"))}</label><input id="boatCabinsInput" type="number" min="0" step="1" value="${b.cabins??""}"></div>
+        <div class="field"><label>${esc(t("boatDetail.berths"))}</label><input id="boatBerthsInput" type="number" min="0" step="1" value="${b.berths??""}"></div>
+        <div class="field"><label>${esc(t("boatDetail.year"))}</label><input id="boatYearInput" type="number" min="1950" max="${new Date().getFullYear()}" step="1" value="${b.year_built??""}"></div>
+        <div class="field"><label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input id="boatSkipperInput" type="checkbox" style="width:auto" ${b.skipper_included?"checked":""}> ${esc(t("boatDetail.skipperIncluded"))}</label></div>
+        <div class="field"><label>${esc(t("boatDetail.engineType"))}</label><input id="boatEngineTypeInput" value="${esc(b.engine_type||"")}"></div>
+        <div class="field"><label>${esc(t("boatDetail.engineCount"))}</label><input id="boatEngineCountInput" type="number" min="0" step="1" value="${b.engine_count??""}"></div>
+        <div class="field"><label>${esc(t("boatDetail.enginePower"))}</label><input id="boatEnginePowerInput" value="${esc(b.engine_power||"")}"></div>
+        <div class="field"><label>${esc(t("boatDetail.fuelType"))}</label><input id="boatFuelTypeInput" value="${esc(b.fuel_type||"")}"></div>
+        <div class="field"><label>${esc(t("boatDetail.fuelTank"))} (L)</label><input id="boatFuelTankInput" type="number" min="0" step="1" value="${b.fuel_tank_l??""}"></div>
+        <div class="field"><label>${esc(t("boatDetail.waterTank"))} (L)</label><input id="boatWaterTankInput" type="number" min="0" step="1" value="${b.water_tank_l??""}"></div>
+        <div class="field"><label>${esc(t("boatDetail.priceHalfDay"))} (€)</label><input id="boatPriceHalfInput" type="number" min="0" step="1" value="${b.price_half_day??""}"></div>
+        <div class="field"><label>${esc(t("boatDetail.priceFullDay"))} (€)</label><input id="boatPriceDayInput" type="number" min="0" step="1" value="${b.price_per_day??""}"></div>
+        <div class="field"><label>${esc(t("boatDetail.deposit"))} (€)</label><input id="boatDepositInput" type="number" min="0" step="1" value="${b.deposit_amount??""}"></div>
+        <div class="field"><label>${esc(t("boatDetail.equipment"))}</label><input id="boatEquipmentInput" placeholder="${esc(t("boatDetail.equipmentPlaceholder"))}" value="${esc(b.equipment||"")}"></div>
+        <div class="field"><label>${esc(t("boatDetail.description"))}</label><textarea id="boatDescInput" rows="3">${esc(b.description||"")}</textarea></div>
+        <div class="field"><label>${esc(t("boatDetail.rules"))}</label><textarea id="boatRulesInput" rows="2">${esc(b.rules_text||"")}</textarea></div>
+        <div class="field"><label>${esc(t("boatDetail.cancellationPolicy"))}</label><textarea id="boatCancelInput" rows="2">${esc(b.cancellation_policy||"")}</textarea></div>
+        <div class="field"><label>${esc(t("boatDetail.photos"))}</label><input id="boatPhotosInput" type="file" accept="image/*" multiple></div>
+        <div id="boatPhotosPreview" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"></div>
+        <button class="primary wide" type="submit">${editing ? esc(t("dash.saveSettings")) : esc(t("join.ownerCta"))}</button>
+        ${editing ? `<button class="small-btn wide" type="button" id="cancelEditBoat" style="margin-top:8px">${esc(t("dash.cancel"))}</button>` : ""}
+      </form></section>`;
+    bindMyBoatActions(refreshFn);
+    document.querySelectorAll("[data-boat-list-filter]").forEach(btn=>btn.addEventListener("click", ()=>{
+      const filter=btn.dataset.boatListFilter;
+      document.querySelectorAll("[data-boat-list-filter]").forEach(other=>{
+        const active=other===btn;
+        other.classList.toggle("active",active);
+        other.setAttribute("aria-pressed",active?"true":"false");
+      });
+      const visibleRows = filter==="rental" ? rows.filter(x=>["rental","both"].includes(x.listing_type||"rental")) : rows;
+      const cards=document.querySelector("#myBoatCards");
+      if(cards) cards.innerHTML = visibleRows.length ? visibleRows.map(bt=>myBoatCard(bt)).join("") : `<div class="empty-note">${esc(t("dash.noBoats"))}</div>`;
+      const title=document.querySelector("#myBoatListTitle");
+      if(title) title.textContent = (filter==="rental" ? saleText("Bateaux en location","Boats for rent","Barcos en alquiler") : saleText("Mes annonces","My listings","Mis anuncios")) + " (" + visibleRows.length + ")";
+      bindMyBoatActions(refreshFn);
+      document.querySelectorAll("[data-edit-boat]").forEach(editBtn=>editBtn.addEventListener("click", ()=>{
+        editingBoatId = editBtn.dataset.editBoat;
+        refreshFn().then?.(()=>document.querySelector("#boatEditorSection")?.scrollIntoView({behavior:"smooth",block:"start"}));
+      }));
+    }));
+    document.querySelector("#showAddBoatForm")?.addEventListener("click", ()=>{
+      editingBoatId = null;
+      const editor=document.querySelector("#boatEditorSection");
+      if(editor){ editor.style.display="block"; editor.scrollIntoView({behavior:"smooth",block:"start"}); }
+    });
+    document.querySelectorAll("[data-edit-boat]").forEach(btn=>btn.addEventListener("click", ()=>{
+      editingBoatId = btn.dataset.editBoat;
+      refreshFn().then?.(()=>document.querySelector("#boatEditorSection")?.scrollIntoView({behavior:"smooth",block:"start"}));
+    }));
+    const cancelBtn = document.querySelector("#cancelEditBoat");
+    if(cancelBtn) cancelBtn.addEventListener("click", ()=>{ editingBoatId = null; refreshFn(); });
+    let boatPhotoFiles = [];
+    let keptPhotoUrls = editing ? [...(Array.isArray(editing.photo_urls) && editing.photo_urls.length ? editing.photo_urls : (editing.photo_url ? [editing.photo_url] : []))] : [];
+    function renderBoatPhotosPreview(){
+      const preview = document.querySelector("#boatPhotosPreview");
+      const total = keptPhotoUrls.length + boatPhotoFiles.length;
+      const keptHtml = keptPhotoUrls.map((url,i)=>`<div style="position:relative"><img loading="lazy" src="${esc(url)}" style="width:64px;height:64px;object-fit:cover;border-radius:10px">
+          <button type="button" data-remove-kept-photo="${i}" style="position:absolute;top:-6px;right:-6px;width:20px;height:20px;border-radius:50%;background:#c0392b;color:#fff;border:0;font-size:12px;cursor:pointer;line-height:1">×</button></div>`).join("");
+      const newHtml = boatPhotoFiles.map((file,i)=>{
+        const url = URL.createObjectURL(file);
+        return `<div style="position:relative"><img loading="lazy" src="${url}" style="width:64px;height:64px;object-fit:cover;border-radius:10px">
+          <button type="button" data-remove-boat-photo="${i}" style="position:absolute;top:-6px;right:-6px;width:20px;height:20px;border-radius:50%;background:#c0392b;color:#fff;border:0;font-size:12px;cursor:pointer;line-height:1">×</button></div>`;
+      }).join("");
+      preview.innerHTML = keptHtml + newHtml + (total < 6 ? `<div class="muted" style="align-self:center;font-size:12.5px">${total}/6</div>` : "");
+      preview.querySelectorAll("[data-remove-boat-photo]").forEach(btn=>btn.addEventListener("click", ()=>{
+        boatPhotoFiles.splice(Number(btn.dataset.removeBoatPhoto), 1);
+        renderBoatPhotosPreview();
+      }));
+      preview.querySelectorAll("[data-remove-kept-photo]").forEach(btn=>btn.addEventListener("click", ()=>{
+        keptPhotoUrls.splice(Number(btn.dataset.removeKeptPhoto), 1);
+        renderBoatPhotosPreview();
+      }));
+    }
+    renderBoatPhotosPreview();
+    document.querySelector("#boatPhotosInput").addEventListener("change", ()=>{
+      const input = document.querySelector("#boatPhotosInput");
+      const room = Math.max(0, 6 - keptPhotoUrls.length);
+      boatPhotoFiles = boatPhotoFiles.concat([...input.files]).slice(0, room);
+      input.value = "";
+      renderBoatPhotosPreview();
+    });
+    document.querySelector("#addBoatForm").addEventListener("submit", async e=>{
+      e.preventDefault();
+      const submitBtn = e.target.querySelector("button[type=submit]");
+      submitBtn.disabled = true;
+      const photoFiles = boatPhotoFiles.slice(0, Math.max(0, 6 - keptPhotoUrls.length));
+      const newUrls = [];
+      for(const file of photoFiles){
+        const path = `${currentUser.id}/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.\-_]/g,"_")}`;
+        const {error: uploadError} = await db.storage.from("mission-photos").upload(path, file);
+        if(uploadError){ alert(friendlyError(uploadError)); submitBtn.disabled = false; return; }
+        const {data: pub} = db.storage.from("mission-photos").getPublicUrl(path);
+        newUrls.push(pub.publicUrl);
+      }
+      const photoUrls = keptPhotoUrls.concat(newUrls);
+      const payload = {
+        name: document.querySelector("#boatNameInput").value.trim(),
+        listing_type: "rental",
+        sale_price: null,
+        engine_hours: null,
+        sale_status: "available",
+        brand: document.querySelector("#boatBrandInput").value.trim(),
+        model: document.querySelector("#boatModelInput").value.trim(),
+        boat_type: document.querySelector("#boatTypeInput").value,
+        home_port: document.querySelector("#boatPortInput").value.trim(),
+        length_m: Number(document.querySelector("#boatLengthInput").value) || null,
+        beam_m: Number(document.querySelector("#boatWidthInput").value) || null,
+        draft_m: Number(document.querySelector("#boatDraftInput").value) || null,
+        capacity: Number(document.querySelector("#boatCapacityInput").value) || null,
+        cabins: Number(document.querySelector("#boatCabinsInput").value) || null,
+        berths: Number(document.querySelector("#boatBerthsInput").value) || null,
+        year_built: Number(document.querySelector("#boatYearInput").value) || null,
+        skipper_included: document.querySelector("#boatSkipperInput").checked,
+        engine_type: document.querySelector("#boatEngineTypeInput").value.trim(),
+        engine_count: Number(document.querySelector("#boatEngineCountInput").value) || null,
+        engine_power: document.querySelector("#boatEnginePowerInput").value.trim(),
+        fuel_type: document.querySelector("#boatFuelTypeInput").value.trim(),
+        fuel_tank_l: Number(document.querySelector("#boatFuelTankInput").value) || null,
+        water_tank_l: Number(document.querySelector("#boatWaterTankInput").value) || null,
+        price_half_day: Number(document.querySelector("#boatPriceHalfInput").value) || null,
+        price_per_day: Number(document.querySelector("#boatPriceDayInput").value) || null,
+        deposit_amount: Number(document.querySelector("#boatDepositInput").value) || null,
+        equipment: document.querySelector("#boatEquipmentInput").value.trim(),
+        rules_text: document.querySelector("#boatRulesInput").value.trim(),
+        cancellation_policy: document.querySelector("#boatCancelInput").value.trim(),
+        description: document.querySelector("#boatDescInput").value.trim(),
+        photo_url: photoUrls[0] || null,
+        photo_urls: photoUrls.length ? photoUrls : null
+      };
+      const {error} = editing
+        ? await db.from("boats").update(payload).eq("id", editing.id)
+        : await db.from("boats").insert({client_id: currentUser.id, ...payload});
+      if(error){ alert(friendlyError(error)); submitBtn.disabled = false; return; }
+      editingBoatId = null;
+      await refreshFn();
+    });
+}
+
+function myBoatCard(b){
+  const photo = b.photo_url || (Array.isArray(b.photo_urls) && b.photo_urls[0]) || "";
+  return `<article class="request-card">
+    <div class="request-top">
+      ${photo ? `<img loading="lazy" src="${esc(photo)}" style="width:76px;height:76px;object-fit:cover;border-radius:12px;flex-shrink:0">` : `<div style="width:76px;height:76px;border-radius:12px;background:var(--mist);display:grid;place-items:center;font-size:26px;flex-shrink:0">⛵</div>`}
+      <div>
+        <h3>${esc(b.name||"Bateau")}</h3>
+        <div class="muted">${esc(b.model||"")}${b.home_port?" · "+esc(b.home_port):""}</div>
+        <div class="muted">${boatSpecsLine(b)||""}</div>
+        <div class="muted">${esc(saleText("Location","Rental","Alquiler"))}</div>
+        <span class="tag" style="display:inline-block;margin-top:7px;background:${b.rental_available===false?"#fff0e4":"#e3f7ee"};color:${b.rental_available===false?"#8b3a0e":"#086748"}">${esc(b.rental_available===false?saleText("Indisponible","Unavailable","No disponible"):saleText("Disponible","Available","Disponible"))}</span>
+      </div>
+    </div>
+    <div class="request-actions">
+      <button class="small-btn" type="button" data-owner-boat-calendar="${esc(b.id)}">${esc(saleText("📅 Calendrier & tarifs","📅 Calendar & rates","📅 Calendario y tarifas"))}</button>
+      <button class="small-btn" type="button" data-toggle-rental-availability="${esc(b.id)}" data-next-availability="${b.rental_available===false?"true":"false"}">${esc(b.rental_available===false?saleText("Rendre disponible","Make available","Marcar disponible"):saleText("Mettre indisponible","Mark unavailable","Marcar no disponible"))}</button>
+      <button class="small-btn fill" data-edit-boat="${b.id}">${esc(saleText("Modifier l'annonce","Edit listing","Modificar anuncio"))}</button>
+      <button class="small-btn danger" data-delete-my-boat="${b.id}">${esc(t("dash.delete"))}</button>
+    </div>
+  </article>`;
+}
+function bindMyBoatActions(refreshFn){
+  document.querySelectorAll("[data-owner-boat-calendar]").forEach(btn=>btn.addEventListener("click",()=>{
+    const nav=document.querySelector('#dashboardModal .dash-side [data-panel="owner-availability"]');
+    if(nav)nav.click();
+  }));
+  document.querySelectorAll("[data-toggle-rental-availability]").forEach(btn=>btn.addEventListener("click",async()=>{
+    const available=btn.dataset.nextAvailability==="true";
+    btn.disabled=true;
+    const {error}=await db.from("boats").update({rental_available:available}).eq("id",btn.dataset.toggleRentalAvailability).eq("client_id",currentUser.id);
+    if(error){alert(friendlyError(error));btn.disabled=false;return;}
+    await refreshFn();
+  }));
+
+  document.querySelectorAll("[data-delete-my-boat]").forEach(btn=>btn.addEventListener("click", async ()=>{
+    if(!confirm(t("dash.delete")+" ?")) return;
+    const {error} = await db.from("boats").delete().eq("id", btn.dataset.deleteMyBoat);
+    if(error){ alert(friendlyError(error)); return; }
+    if(String(editingBoatId)===String(btn.dataset.deleteMyBoat)) editingBoatId = null;
+    refreshFn();
+  }));
+}
+function proPaymentText(fr,en,es){ return currentLang === "en" ? en : currentLang === "es" ? es : fr; }
+function proPaymentBucket(m){
+  if(m.payment_status === "transferred") return "transferred";
+  if(["refunded","refund_requested"].includes(m.payment_status)) return "refund";
+  if(m.dispute_status === "open") return "blocked";
+  if(["paid","payout_ready"].includes(m.payment_status)) return "pending";
+  if(["cancelled","rejected"].includes(m.status)) return "closed";
+  return "unpaid";
+}
+async function renderProPayments(main){
+  const userId = currentUser?.id;
+  if(!userId) return;
+  main.innerHTML = `<p role="status">${esc(t("dash.loading"))}</p>`;
+  const {data,error} = await db.from("missions")
+    .select("id,provider_id,skipper_id,port,starts_at,created_at,status,payment_status,amount_cents,urgent_fee_cents,platform_fee_cents,currency,dispute_status")
+    .or(`provider_id.eq.${userId},skipper_id.eq.${userId}`).order("created_at",{ascending:false});
+  if(currentUser?.id !== userId || !main.isConnected || !document.querySelector('.dash-side [data-panel="payments"].active')) return;
+  if(error){
+    main.innerHTML = `<p role="alert">${esc(proPaymentText("Impossible de charger les paiements. Réessayez.","Unable to load payments. Please retry.","No se pueden cargar los pagos. Inténtalo de nuevo."))}</p>`;
+    return;
+  }
+  const rows = (data||[]).filter(m=>m.provider_id===userId || m.skipper_id===userId);
+  const labels = {
+    unpaid:proPaymentText("En attente du paiement client","Awaiting client payment","Pendiente de pago del cliente"),
+    pending:proPaymentText("Payé par le client · en attente de versement","Client paid · awaiting payout","Cliente pagado · pendiente de abono"),
+    transferred:proPaymentText("Transfert Stripe confirmé","Stripe transfer confirmed","Transferencia Stripe confirmada"),
+    blocked:proPaymentText("Litige · montant bloqué","Dispute · amount on hold","Disputa · importe retenido"),
+    refund:proPaymentText("Remboursement demandé ou déclaré","Refund requested or reported","Reembolso solicitado o declarado"),
+    closed:proPaymentText("Annulée / refusée","Cancelled / rejected","Cancelada / rechazada")
+  };
+  const net = m=>Math.max(0,Number(m.amount_cents||0)+Number(m.urgent_fee_cents||0)-Number(m.platform_fee_cents||0));
+  const format = (amount,currency)=>new Intl.NumberFormat(currentLang,{style:"currency",currency:currency||"EUR"}).format(amount/100);
+  const totals = key=>{
+    const sums = {};
+    rows.filter(m=>proPaymentBucket(m)===key).forEach(m=>{const c=(m.currency||"eur").toUpperCase();sums[c]=(sums[c]||0)+net(m);});
+    return Object.entries(sums).map(([c,n])=>esc(format(n,c))).join(" · ") || "—";
+  };
+  main.innerHTML = `<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:16px">${["unpaid","pending","transferred","blocked"].map(key=>`<div class="request-card"><div class="muted">${esc(labels[key])}</div><strong style="display:block;font-size:24px;margin-top:8px">${totals(key)}</strong></div>`).join("")}</div>
+    <p class="note-box">${esc(proPaymentText("Montants nets après commission de la plateforme. Un paiement client ne confirme pas encore un transfert. Après confirmation du transfert Stripe, vérifiez son arrivée dans votre espace Stripe ou sur votre relevé bancaire.","Net amounts after platform commission. A client payment does not yet confirm a transfer. Once the Stripe transfer is confirmed, verify its arrival in Stripe or on your bank statement.","Importes netos tras la comisión. Un pago del cliente todavía no confirma una transferencia. Cuando Stripe la confirme, comprueba su llegada en Stripe o en tu extracto bancario."))}</p>
+    <label>${esc(proPaymentText("Filtrer les paiements","Filter payments","Filtrar pagos"))} <select id="proPaymentFilter"><option value="all">${esc(t("dash.tabAll"))}</option>${Object.entries(labels).map(([k,v])=>`<option value="${k}">${esc(v)}</option>`).join("")}</select></label>
+    <button class="small-btn" id="proPaymentRefresh" type="button">${esc(proPaymentText("Actualiser","Refresh","Actualizar"))}</button>
+    <div id="proPaymentRows" aria-live="polite" style="margin-top:16px"></div>`;
+  function renderRows(){
+    const filter = main.querySelector("#proPaymentFilter").value;
+    const visible = rows.filter(m=>filter==="all" || proPaymentBucket(m)===filter);
+    main.querySelector("#proPaymentRows").innerHTML = visible.length ? visible.map(m=>`<article class="request-card"><h3>${esc(m.port||"—")}</h3><div class="muted">${esc(String(m.id).slice(0,8))} · ${esc(m.starts_at ? new Date(m.starts_at).toLocaleDateString(currentLang) : "—")}</div><p><span class="tag">${esc(labels[proPaymentBucket(m)])}</span> · ${esc(t("status."+m.status))}</p><div>${esc(t("dash.total"))}: ${esc(format(Number(m.amount_cents||0)+Number(m.urgent_fee_cents||0),m.currency))} · ${esc(t("dash.commission"))}: ${esc(format(Number(m.platform_fee_cents||0),m.currency))}</div><strong>${esc(t("dash.netPro"))}: ${esc(format(net(m),m.currency))}</strong><div data-service-summary="${esc(m.id)}"></div></article>`).join("") : `<p class="empty-note">${esc(proPaymentText("Aucun paiement pour ce filtre.","No payments for this filter.","No hay pagos para este filtro."))}</p>`;
+  }
+  main.querySelector("#proPaymentFilter").addEventListener("change",async()=>{
+    renderRows();
+    await mountServiceSummaries(main, rows);
+  });
+  main.querySelector("#proPaymentRefresh").addEventListener("click",()=>renderProPayments(main));
+  renderRows();
+  await mountConnectSetup(main);
+  await mountServiceSummaries(main, rows);
+}
+async function renderProDashboard(){
+  const body = document.querySelector("#dashboardBody");
+  const isBoatRentalPro = currentProfile?.provider_activity === "boat_rental_pro";
+  const isProvider = currentProfile?.role === "provider";
+  const navItems = [
+    {id:"requests", label:t("dash.navRequests")},
+    {id:"payments", label:proPaymentText("Paiements", "Payments", "Pagos")},
+    {id:"messages", label:t("dash.navMessages")},
+    {id:"support", label:t("dash.navSupport")}
+  ];
+  if(isBoatRentalPro) navItems.push({id:"boats", label:saleText("Mes annonces","My listings","Mis anuncios")});
+  if(isProvider) navItems.push({id:"excursions", label:t("dash.navExcursions")}, {id:"nucDocs",label:"⚓ Documents NUC"});
+  navItems.push({id:"myLink", label:t("dash.navMyLink")});
+  navItems.push({id:"profile", label:t("dash.navProfile")}, {id:"availability", label:t("dash.navAvailability")});
+  body.innerHTML = dashShell(navItems, "requests");
+  bindDashNav(renderProPanel);
+  await renderProPanel("requests");
+}
+function profileNeedsDiploma(profile){
+  return profile?.role === "skipper" ||
+    (profile?.role === "provider" && ["skipper", "day_sailor"].includes(profile.provider_activity));
+}
+function profileReminderBannerHtml(p){
+  if(!p || !["skipper","provider"].includes(p.role)) return "";
+  const missing = [];
+  if(!p.phone) missing.push(t("dash.reqPhone"));
+  if(profileNeedsDiploma(p) && !p.diploma_url) missing.push(t("dash.reqDiploma"));
+  if(!p.profile_photo_url) missing.push(t("dash.reqPhoto"));
+  if(!missing.length) return "";
+  return `<div class="note-box" style="background:#fff4d6;border-color:#e9d197;color:#8a6d1a;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+    <div>⚠️ ${esc(t("dash.profileIncompleteReminder"))}: <strong>${missing.join(", ")}</strong></div>
+    <a href="#" id="profileReminderLink" style="font-weight:800;white-space:nowrap">${esc(t("dash.completeProfile"))} →</a>
+  </div>`;
+}
+function bindProfileReminderLink(){
+  document.querySelector("#profileReminderLink")?.addEventListener("click", (e)=>{
+    e.preventDefault();
+    document.querySelector('[data-panel="profile"]')?.click();
+  });
+}
+async function renderProPanel(panel){
+  refreshDashboardIdentity(panel);
+  const main = document.querySelector("#dashMain");
+  const profileReminder = profileReminderBannerHtml(currentProfile);
+  if(panel === "payments"){
+    await renderProPayments(main);
+  }else if(panel === "requests"){
+    const {data} = await db.from("missions").select("*").order("created_at",{ascending:false});
+    const rows = (data||[]).filter(m => String(m.skipper_id||"") === String(currentUser.id) || String(m.provider_id||"") === String(currentUser.id) || (!m.skipper_id && !m.provider_id && m.status === "pending"));
+    main.innerHTML = profileReminder + (rows.length ? rows.map(m=>requestCard(m,"pro")).join("") : `<div class="empty-note">${esc(t("dash.noMissions"))}</div>`);
+    bindRequestActions();
+    bindProfileReminderLink();
+  }else if(panel === "excursions"){
+    await renderExcursionsManager(main);
+  }else if(panel === "nucDocs"){
+    await renderNucOwnerPanel(main);
+  }else if(panel === "myLink"){
+    const link = location.origin + "/?pro=" + currentUser.id;
+    const qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=" + encodeURIComponent(link);
+    main.innerHTML = `
+      <div class="dash-section-title">${esc(t("dash.navMyLink"))}</div>
+      <p class="muted" style="max-width:520px">${esc(t("directReq.dashboardExplain"))}</p>
+      <div class="hero-admin-card" style="max-width:420px;padding:20px;text-align:center">
+        <img loading="lazy" src="${qrUrl}" alt="QR code" width="200" height="200" style="border-radius:12px;margin-bottom:14px">
+        <div class="field"><input id="myLinkInput" type="text" readonly value="${esc(link)}" style="text-align:center"></div>
+        <button type="button" class="primary wide" id="myLinkCopyBtn" style="margin-top:10px">${esc(t("directReq.copyLink"))}</button>
+        <div id="myLinkCopyMsg" class="muted" style="margin-top:8px;font-size:12.5px"></div>
+      </div>`;
+    document.querySelector("#myLinkCopyBtn")?.addEventListener("click", async ()=>{
+      try{
+        await navigator.clipboard.writeText(link);
+        document.querySelector("#myLinkCopyMsg").textContent = t("directReq.copied");
+      }catch(_e){
+        document.querySelector("#myLinkInput").select();
+      }
+    });
+  }else if(panel === "messages"){
+    await renderMessagesPanel("skipper_id");
+  }else if(panel === "support"){
+    await openSupportThread();
+  }else if(panel === "boats"){
+    await renderBoatsManager(main, ()=>renderProPanel("boats"));
+  }else if(panel === "profile"){
+    main.innerHTML = profileReminder + profileForm(currentProfile);
+    bindProfileForm();
+    bindProfileReminderLink();
+  }else if(panel === "availability"){
+    const {data} = await db.from("skipper_unavailability").select("*").eq("skipper_id", currentUser.id).order("unavailable_date");
+    const rows = data || [];
+    main.innerHTML = `
+      <form id="blockDateForm" class="field" style="display:flex;gap:10px;align-items:end;flex-wrap:wrap">
+        <div style="flex:1;min-width:180px"><label>${esc(t("search.dateLabel"))}</label><input id="blockDateInput" type="date" min="${localDateStr()}" required></div>
+        <button class="primary" type="submit">${esc(t("dash.navAvailability"))}</button>
+      </form>
+      ${rows.map(r=>`<div class="request-card"><strong>${new Date(r.unavailable_date+"T12:00:00").toLocaleDateString(currentLang)}</strong> — ${esc(r.reason||"")} <button class="small-btn danger" data-unblock="${r.id}">×</button></div>`).join("") || `<div class="empty-note">—</div>`}`;
+    document.querySelector("#blockDateForm").addEventListener("submit", async e=>{
+      e.preventDefault();
+      await db.from("skipper_unavailability").insert({skipper_id: currentUser.id, unavailable_date: document.querySelector("#blockDateInput").value});
+      await renderProPanel("availability");
+    });
+    main.querySelectorAll("[data-unblock]").forEach(btn=>btn.addEventListener("click", async ()=>{
+      await db.from("skipper_unavailability").delete().eq("id", btn.dataset.unblock);
+      await renderProPanel("availability");
+    }));
+  }
+}
+
+let editingExcId = null;
+async function renderExcursionsManager(main){
+  const {data: rows} = await db.from("excursions").select("*").eq("provider_id", currentUser.id).order("created_at",{ascending:false});
+  const tiles = rows || [];
+  const editing = editingExcId ? tiles.find(x=>String(x.id)===String(editingExcId)) : null;
+  const s = editing || {};
+  main.innerHTML = `
+    <div class="dash-section-title">${NAV_ICONS.excursions}${esc(t("dash.navExcursions"))} (${tiles.length})</div>
+    <div class="hero-admin-grid">
+      ${tiles.length ? tiles.map(sl=>`
+        <div class="hero-admin-card${sl.active?"":" hero-admin-card--inactive"}">
+          ${Array.isArray(sl.photo_urls) && sl.photo_urls[0] ? `<div class="hero-admin-thumb" style="background-image:url('${esc(sl.photo_urls[0])}')"></div>` : ""}
+          <div class="hero-admin-body">
+            <div class="hero-admin-order" style="font-family:inherit;font-weight:800;color:var(--navy)">${esc(sl.title)}</div>
+            <div class="hero-admin-order">${esc(sl.port)} · ${moneyC(sl.price_cents, sl.currency)} / ${esc(t("dash.guests"))} · ${esc(String(sl.duration_hours))}h${sl.active?"":` · ${esc(t("dash.heroActive"))} ✕`}</div>
+            <div class="hero-admin-actions">
+              <button type="button" class="link" data-edit-exc="${sl.id}">${esc(t("dash.contentEdit"))}</button>
+              <button type="button" class="link" style="color:#c0392b" data-delete-exc="${sl.id}">${esc(t("dash.contentDelete"))}</button>
+            </div>
+          </div>
+        </div>`).join("") : `<div class="empty-note">${esc(t("dash.excNoTiles"))}</div>`}
+    </div>
+    <h3 style="margin-top:24px">${editing ? esc(t("dash.contentEdit")) : esc(t("dash.excAddTile"))}</h3>
+    <form id="excForm" style="margin-top:14px">
+      <div class="field"><label>${esc(t("dash.excPort"))}</label><input id="excPortInput" required value="${esc(s.port||"")}" placeholder="Ex. Fajardo"></div>
+      <div class="field"><label>${esc(t("dash.excTitle"))}</label><input id="excTitleInput" required value="${esc(s.title||"")}"></div>
+      <div class="field"><label>${esc(t("dash.excDesc"))}</label><textarea id="excDescInput" rows="3" required>${esc(s.description||"")}</textarea></div>
+      <div class="field"><label>${esc(t("dash.excIncluded"))}</label><textarea id="excIncludedInput" rows="2">${esc(s.included||"")}</textarea></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="field"><label>${esc(t("dash.excPrice"))}</label><input id="excPriceInput" type="number" min="1" step="0.01" required value="${s.price_cents?(s.price_cents/100):""}"></div>
+        <div class="field"><label>${esc(t("dash.settingsCurrency")||"Devise")}</label>
+          <select id="excCurrencyInput">
+            <option value="eur" ${(s.currency||"eur")==="eur"?"selected":""}>EUR (€)</option>
+            <option value="usd" ${s.currency==="usd"?"selected":""}>USD ($)</option>
+          </select>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="field"><label>${esc(t("dash.excDuration"))}</label><input id="excDurationInput" type="number" min="0.5" step="0.5" required value="${s.duration_hours||""}"></div>
+        <div class="field"><label>${esc(t("dash.excMaxGuests"))}</label><input id="excMaxGuestsInput" type="number" min="1" step="1" required value="${s.max_guests||""}"></div>
+      </div>
+      <div class="field"><label>${esc(t("dash.heroUploadLabel"))}</label>
+        <input id="excFileInput" type="file" accept="image/*">
+        <div id="excUploadStatus" class="muted" style="font-size:12px;margin-top:4px"></div>
+      </div>
+      <div id="excPreviewBox" style="margin:6px 0 14px;${(Array.isArray(s.photo_urls)&&s.photo_urls[0])?"":"display:none"}">
+        <div class="hero-admin-thumb hero-admin-thumb--big" id="excPreviewImg" style="background-image:url('${esc((s.photo_urls&&s.photo_urls[0])||"")}')"></div>
+      </div>
+      <label style="display:flex;align-items:center;gap:8px;font-weight:700;font-size:13.5px;margin-bottom:14px"><input id="excActiveInput" type="checkbox" ${editing && s.active?"checked":""}> ${esc(t("dash.heroActive"))}</label>
+      <div style="display:flex;gap:10px">
+        <button class="primary wide" type="submit">${esc(t("dash.contentSave"))}</button>
+        ${editing ? `<button type="button" class="secondary" id="excCancelEdit">${esc(t("dash.contentCancel")||"Annuler")}</button>` : ""}
+      </div>
+      <div class="note-box">Publication après validation des documents obligatoires par SkipperNow. Déposez vos justificatifs dans « Documents NUC » après avoir enregistré votre excursion.</div><div id="excFormMsg" class="muted" style="margin-top:8px"></div>
+    </form>`;
+  bindExcursionsForm(s);
+  main.querySelectorAll("[data-edit-exc]").forEach(btn=>btn.addEventListener("click", ()=>{ editingExcId = btn.dataset.editExc; renderExcursionsManager(main); }));
+  main.querySelectorAll("[data-delete-exc]").forEach(btn=>btn.addEventListener("click", async ()=>{
+    if(!confirm(t("dash.contentDelete")+" ?")) return;
+    await db.from("excursions").delete().eq("id", btn.dataset.deleteExc).eq("provider_id", currentUser.id);
+    await renderExcursionsManager(main);
+  }));
+}
+function bindExcursionsForm(current){
+  let uploadedUrl = (current.photo_urls && current.photo_urls[0]) || "";
+  const fileInput = document.querySelector("#excFileInput");
+  fileInput?.addEventListener("change", async ()=>{
+    const file = fileInput.files[0];
+    if(!file) return;
+    const status = document.querySelector("#excUploadStatus");
+    status.textContent = t("dash.heroUploading");
+    const path = `${currentUser.id}/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.\-_]/g,"_")}`;
+    const {error} = await db.storage.from("mission-photos").upload(path, file);
+    if(error){ status.textContent = friendlyError(error); return; }
+    const {data} = db.storage.from("mission-photos").getPublicUrl(path);
+    uploadedUrl = data.publicUrl;
+    status.textContent = t("dash.heroUploaded");
+    const box = document.querySelector("#excPreviewBox"), img = document.querySelector("#excPreviewImg");
+    box.style.display = ""; img.style.backgroundImage = `url('${uploadedUrl}')`;
+  });
+  document.querySelector("#excCancelEdit")?.addEventListener("click", ()=>{ editingExcId = null; renderProPanel("excursions"); });
+  document.querySelector("#excForm").addEventListener("submit", async e=>{
+    e.preventDefault();
+    const msg = document.querySelector("#excFormMsg");
+    const payload = {
+      provider_id: currentUser.id,
+      port: document.querySelector("#excPortInput").value.trim(),
+      title: document.querySelector("#excTitleInput").value.trim(),
+      description: document.querySelector("#excDescInput").value.trim(),
+      included: document.querySelector("#excIncludedInput").value.trim() || null,
+      price_cents: Math.round(Number(document.querySelector("#excPriceInput").value)*100),
+      currency: document.querySelector("#excCurrencyInput").value,
+      duration_hours: Number(document.querySelector("#excDurationInput").value),
+      max_guests: Number(document.querySelector("#excMaxGuestsInput").value),
+      photo_urls: uploadedUrl ? [uploadedUrl] : null,
+      active: document.querySelector("#excActiveInput").checked
+    };
+    const {error} = editingExcId
+      ? await db.from("excursions").update(payload).eq("id", editingExcId).eq("provider_id", currentUser.id)
+      : await db.from("excursions").insert(payload);
+    if(error){ msg.style.color = "#b42318"; msg.textContent = friendlyError(error); }
+    else { msg.textContent = t("dash.contentSaved"); msg.style.color = ""; editingExcId = null; await renderProPanel("excursions"); }
+  });
+}
+
+async function renderAdminDashboard(){
+  const body = document.querySelector("#dashboardBody");
+  body.innerHTML = dashShell([
+    {id:"overview", label:t("dash.navOverview"), group:t("dash.groupActivity")},
+    {id:"traffic", label:t("dash.navTraffic"), group:t("dash.groupActivity")},
+    {id:"forms", label:t("dash.navForms"), group:t("dash.groupActivity")},
+    {id:"missions", label:t("dash.navMissions"), group:t("dash.groupActivity")},
+    {id:"directRequests", label:"Demandes aux prestataires", group:t("dash.groupActivity")},
+    {id:"messages", label:t("dash.navMessages"), group:t("dash.groupActivity")},
+    {id:"payments", label:t("dash.navPayments"), group:t("dash.groupFinance")},
+    {id:"payouts", label:t("dash.navPayouts"), group:t("dash.groupFinance")},
+    {id:"refunds", label:t("dash.navRefunds"), group:t("dash.groupFinance")},
+    {id:"disputes", label:t("dash.navDisputes"), group:t("dash.groupFinance")},
+    {id:"commissions", label:t("dash.navCommissions"), group:t("dash.groupFinance")},
+    {id:"users", label:t("dash.navUsers"), group:t("dash.groupAccounts")},
+
+    {id:"nucReviews", label:"⚓ Contrôle NUC",group:t("dash.groupAccounts")},
+    {id:"content", label:t("dash.navContent"), group:t("dash.groupContent")},
+    {id:"hero", label:t("dash.navHero"), group:t("dash.groupContent")},
+    {id:"destinations", label:t("dash.navDestinations"), group:t("dash.groupContent")},
+    {id:"activities", label:t("dash.navActivities"), group:t("dash.groupContent")}
+  ], "overview");
+  bindDashNav(renderAdminPanel);
+  bindAdminDashboardInteractions();
+  await renderAdminPanel("overview");
+}
+async function loadAdminData(){
+  const [{data:profiles},{data:missions},{data:settings},{data:boats},{data:payouts},{data:ports},{data:heroSlides},{data:destTiles},{data:activities}] = await Promise.all([
+    db.from("profiles").select("*").order("created_at",{ascending:false}),
+    db.from("missions").select("*").order("created_at",{ascending:false}),
+    db.from("platform_settings").select("*").eq("id",1).maybeSingle(),
+    db.from("boats").select("*").order("created_at",{ascending:false}),
+    db.from("payout_details").select("*"),
+    db.from("ports").select("*").order("order_index",{ascending:true}),
+    db.from("hero_slides").select("*").order("order_index",{ascending:true}),
+    db.from("destination_tiles").select("*").order("order_index",{ascending:true}),
+    db.from("port_activities").select("*").order("order_index",{ascending:true})
+  ]);
+  return {
+    profiles: profiles || [],
+    missions: missions || [],
+    settings: settings || {first_commission_percent:15, urgent_fee_cents:1900, support_email:""},
+    boats: boats || [],
+    payoutsById: Object.fromEntries((payouts||[]).map(p=>[String(p.profile_id), p])),
+    ports: ports || [],
+    heroSlides: heroSlides || [],
+    destTiles: destTiles || [],
+    activities: activities || []
+  };
+}
+function profilesById(list){ return Object.fromEntries(list.map(p=>[String(p.id), p])); }
+
+function adminUiCopy(){
+  return ({
+    fr:{started:"Commencés",unfinished:"Inachevés",created:"Demandes créées",inProgress:"En cours",failed:"Échec",completed:"Demande créée",anonymous:"Visiteur non connecté",lastStep:"Dernière étape",openDetail:"Ouvrir le détail",contact:"Coordonnées",service:"Service",city:"Ville / port",date:"Date demandée",duration:"Durée",boat:"Bateau",details:"Besoin indiqué",target:"Professionnel ciblé",photos:"Photos",history:"Historique",status:"Statut",createdAt:"Créée le",updatedAt:"Dernière mise à jour",payment:"Paiement",amount:"Montant",mission:"Détail de la demande",user:"Détail de l'utilisateur",form:"Détail du formulaire",all:"Tous",noForms:"Aucun formulaire enregistré pour le moment.",migration:"Le suivi détaillé démarre après l'installation de la migration Supabase.",close:"Fermer",unknown:"Non renseigné",event:{booking_opened:"Formulaire ouvert",booking_progress:"Champ renseigné",booking_abandoned:"Formulaire quitté",booking_login_required:"Connexion demandée",booking_submitted:"Envoi tenté",booking_created:"Demande créée",booking_failed:"Erreur d'envoi"}},
+    en:{started:"Started",unfinished:"Unfinished",created:"Requests created",inProgress:"In progress",failed:"Failed",completed:"Request created",anonymous:"Signed-out visitor",lastStep:"Last step",openDetail:"Open details",contact:"Contact",service:"Service",city:"City / port",date:"Requested date",duration:"Duration",boat:"Boat",details:"Request details",target:"Target professional",photos:"Photos",history:"History",status:"Status",createdAt:"Created",updatedAt:"Last update",payment:"Payment",amount:"Amount",mission:"Request details",user:"User details",form:"Form details",all:"All",noForms:"No forms recorded yet.",migration:"Detailed tracking starts after the Supabase migration is installed.",close:"Close",unknown:"Not provided",event:{booking_opened:"Form opened",booking_progress:"Field completed",booking_abandoned:"Form left",booking_login_required:"Login required",booking_submitted:"Submission attempted",booking_created:"Request created",booking_failed:"Submission error"}},
+    es:{started:"Iniciados",unfinished:"Incompletos",created:"Solicitudes creadas",inProgress:"En curso",failed:"Error",completed:"Solicitud creada",anonymous:"Visitante sin sesión",lastStep:"Último paso",openDetail:"Abrir detalle",contact:"Contacto",service:"Servicio",city:"Ciudad / puerto",date:"Fecha solicitada",duration:"Duración",boat:"Barco",details:"Necesidad indicada",target:"Profesional elegido",photos:"Fotos",history:"Historial",status:"Estado",createdAt:"Creado",updatedAt:"Última actualización",payment:"Pago",amount:"Importe",mission:"Detalle de la solicitud",user:"Detalle del usuario",form:"Detalle del formulario",all:"Todos",noForms:"Todavía no hay formularios registrados.",migration:"El seguimiento detallado empieza después de instalar la migración de Supabase.",close:"Cerrar",unknown:"No indicado",event:{booking_opened:"Formulario abierto",booking_progress:"Campo completado",booking_abandoned:"Formulario abandonado",booking_login_required:"Inicio de sesión solicitado",booking_submitted:"Envío intentado",booking_created:"Solicitud creada",booking_failed:"Error de envío"}}
+  })[currentLang] || null;
+}
+function adminField(label, value, wide){
+  const c = adminUiCopy();
+  const display = value === null || value === undefined || value === "" ? c.unknown : value;
+  return `<div class="admin-detail-field${wide?" admin-detail-field--wide":""}"><small>${esc(label)}</small><div>${esc(display)}</div></div>`;
+}
+function adminDate(value){ return value ? new Date(value).toLocaleString(currentLang) : ""; }
+function closeAdminDetail(){ document.querySelector("#adminDetailBackdrop")?.remove(); }
+function showAdminDetail(title, eyebrow, html){
+  closeAdminDetail();
+  const wrap = document.createElement("div");
+  wrap.id = "adminDetailBackdrop";
+  wrap.className = "admin-detail-backdrop";
+  wrap.innerHTML = `<section class="admin-detail-card" role="dialog" aria-modal="true" aria-labelledby="adminDetailTitle"><div class="admin-detail-head"><div><small>${esc(eyebrow)}</small><h2 id="adminDetailTitle">${esc(title)}</h2></div><button class="close" type="button" data-close-admin-detail aria-label="${esc(adminUiCopy().close)}">×</button></div>${html}</section>`;
+  wrap.addEventListener("click", e=>{ if(e.target===wrap || e.target.closest("[data-close-admin-detail]")) closeAdminDetail(); });
+  document.body.appendChild(wrap);
+  wrap.querySelector("[data-close-admin-detail]")?.focus();
+}
+function missionHistory(m){
+  const rows = [
+    [m.created_at,"Demande créée"],[m.updated_at,"Demande mise à jour"],[m.paid_at,"Paiement reçu"],
+    [m.completed_at,"Prestation terminée"],[m.validated_at,"Prestation validée"],[m.transferred_at,"Virement effectué"],
+    [m.dispute_opened_at,"Litige ouvert"],[m.dispute_resolved_at,"Litige résolu"]
+  ].filter(x=>x[0]).sort((a,b)=>new Date(a[0])-new Date(b[0]));
+  return rows;
+}
+function openAdminMissionDetail(id){
+  const m = adminMissionsCache.find(row=>String(row.id)===String(id));
+  if(!m) return;
+  const byId = profilesById(adminProfilesCache), client = byId[String(m.client_id)], pro = byId[String(m.provider_id||m.skipper_id)], c=adminUiCopy();
+  const total = Number(m.amount_cents||0)+Number(m.urgent_fee_cents||0);
+  const photos = Array.isArray(m.photo_urls) ? m.photo_urls : [];
+  const history = missionHistory(m);
+  showAdminDetail(m.port||c.mission, c.mission, `<div class="admin-detail-grid">
+    ${adminField(c.contact, `${client?.full_name||"—"}\n${client?.contact_email||client?.email||""}\n${client?.phone||""}`, true)}
+    ${adminField(c.service, m.boat_type||m.activity||m.provider_activity)}${adminField(c.city,m.port)}
+    ${adminField(c.date,m.starts_at?new Date(m.starts_at).toLocaleDateString(currentLang):"")}${adminField(c.duration,m.starts_at&&m.ends_at?`${adminDate(m.starts_at)} → ${adminDate(m.ends_at)}`:"")}
+    ${adminField(c.target, `${pro?.full_name||"—"}${pro?.phone?" · "+pro.phone:""}`, true)}
+    ${adminField(c.details,m.description,true)}${adminField(c.status,t("status."+(m.status||"pending")))}${adminField(c.payment,t("paymentStatus."+(m.payment_status||"unpaid")))}${adminField(c.amount,total?money(total):t("booking.priceTbd"))}
+    ${photos.length?`<div class="admin-detail-field admin-detail-field--wide"><small>${esc(c.photos)}</small><div style="display:flex;gap:8px;flex-wrap:wrap">${photos.map(u=>`<a href="${esc(u)}" target="_blank" rel="noopener"><img src="${esc(u)}" alt="" style="width:82px;height:82px;object-fit:cover;border-radius:10px"></a>`).join("")}</div></div>`:""}
+  </div><h3>${esc(c.history)}</h3><ul class="admin-history">${history.map(h=>`<li>${esc(h[1])}<time>${esc(adminDate(h[0]))}</time></li>`).join("")||`<li>${esc(c.unknown)}</li>`}</ul>`);
+}
+function openAdminUserDetail(id){
+  const p = adminProfilesCache.find(row=>String(row.id)===String(id));
+  if(!p) return;
+  const c=adminUiCopy(), related=adminMissionsCache.filter(m=>[m.client_id,m.skipper_id,m.provider_id].some(x=>String(x)===String(p.id)));
+  showAdminDetail(p.full_name||c.user,c.user,`<div class="admin-detail-grid">
+    ${adminField(c.contact,`${p.contact_email||p.email||""}\n${p.phone||""}`,true)}${adminField(c.status,p.suspended?t("dash.suspended"):(p.verified?"✓":"—"))}${adminField("Rôle",p.role)}${adminField(c.city,p.home_port)}${adminField(c.service,p.provider_activity?activityLabel(p.provider_activity):"")}${adminField("Bio",p.bio,true)}${adminField(t("dash.missionsCount"),related.length)}${adminField(c.createdAt,adminDate(p.created_at))}${adminField(t("dash.internalNoteLabel"),p.admin_notes,true)}
+  </div>`);
+}
+function bookingSessionStatus(session){
+  const c=adminUiCopy(), names=session.events.map(e=>e.event_name), last=session.events[0];
+  if(names.includes("booking_created")) return {key:"created",label:c.completed,css:"ok"};
+  if(last?.event_name === "booking_failed") return {key:"unfinished",label:c.failed,css:"danger"};
+  const fresh = last && Date.now()-new Date(last.created_at).getTime()<30*60*1000 && !names.includes("booking_abandoned");
+  return {key:"unfinished",label:fresh?c.inProgress:c.unfinished,css:fresh?"":"danger"};
+}
+function groupBookingSessions(events, profiles){
+  const map=new Map(), byId=profilesById(profiles);
+  (events||[]).forEach(e=>{
+    const key=e.form_session_id || e.metadata?.session_id || `legacy-${e.visitor_id}`;
+    if(!map.has(key)) map.set(key,{id:key,events:[],profile:null,metadata:{}});
+    const s=map.get(key); s.events.push(e); if(e.profile_id) s.profile=byId[String(e.profile_id)]||s.profile;
+  });
+  return [...map.values()].map(s=>{
+    s.events.sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
+    s.metadata=s.events.find(e=>e.metadata && Object.values(e.metadata).some(Boolean))?.metadata||{};
+    s.status=bookingSessionStatus(s); return s;
+  }).sort((a,b)=>{
+    if(a.status.key!==b.status.key) return a.status.key==="unfinished"?-1:b.status.key==="unfinished"?1:0;
+    return new Date(b.events[0]?.created_at||0)-new Date(a.events[0]?.created_at||0);
+  });
+}
+function openAdminFormDetail(id){
+  const s=adminFormSessionsCache.find(row=>row.id===id); if(!s) return;
+  const c=adminUiCopy(), m=s.metadata||{}, contact=s.profile?`${s.profile.full_name||"—"}\n${s.profile.contact_email||s.profile.email||""}\n${s.profile.phone||""}`:c.anonymous;
+  const last=s.events[0], stage=last?.metadata?.stage||last?.event_name||"";
+  const linkedMission = m.mission_id && adminMissionsCache.some(row=>String(row.id)===String(m.mission_id));
+  showAdminDetail(m.port||m.activity||c.form,c.form,`<div class="admin-detail-grid">
+    ${adminField(c.contact,contact,true)}${adminField(c.status,s.status.label)}${adminField(c.lastStep,stage)}${adminField(c.service,m.activity)}${adminField("Sous-catégorie",m.subcategory)}${adminField(c.city,m.port)}${adminField(c.date,m.date)}${adminField(c.duration,m.duration+(m.days?` · ${m.days} jours`:""))}${adminField(c.boat,m.boat_type)}${adminField(c.target,m.target_name||m.target_id,true)}${adminField(c.details,m.details,true)}${adminField(c.photos,m.photo_count||0)}${adminField(c.updatedAt,adminDate(last?.created_at))}
+  </div>${linkedMission?`<button class="primary wide" type="button" data-open-linked-mission="${esc(m.mission_id)}">${esc(c.mission)}</button>`:""}<h3>${esc(c.history)}</h3><ul class="admin-history">${[...s.events].reverse().map(e=>`<li>${esc(c.event[e.event_name]||e.event_name)}${e.metadata?.stage?` · ${esc(e.metadata.stage)}`:""}<time>${esc(adminDate(e.created_at))}</time></li>`).join("")}</ul>`);
+  document.querySelector("[data-open-linked-mission]")?.addEventListener("click", e=>openAdminMissionDetail(e.currentTarget.dataset.openLinkedMission));
+}
+async function loadAdminFormSessions(profiles){
+  const since=new Date(Date.now()-30*24*60*60*1000).toISOString();
+  const bookingEventNames=["booking_opened","booking_progress","booking_abandoned","booking_login_required","booking_submitted","booking_created","booking_failed"];
+  const {data,error}=await db.from("booking_events").select("id,visitor_id,profile_id,form_session_id,event_name,path,metadata,created_at").in("event_name",bookingEventNames).gte("created_at",since).order("created_at",{ascending:false}).limit(1500);
+  if(error) throw error;
+  adminFormSessionsCache=groupBookingSessions(data||[],profiles);
+  return adminFormSessionsCache;
+}
+function renderAdminFormsList(main, sessions, filter="all"){
+  const c=adminUiCopy(), filtered=filter==="all"?sessions:sessions.filter(s=>filter.startsWith("booking_")?s.events.some(e=>e.event_name===filter):s.status.key===filter);
+  main.innerHTML=`<div class="kpi-grid"><div class="kpi" tabindex="0" role="button" data-form-filter="all"><div class="kpi-top"><span>${esc(c.started)}</span></div><strong>${sessions.length}</strong></div><div class="kpi kpi--danger" tabindex="0" role="button" data-form-filter="unfinished"><div class="kpi-top"><span>${esc(c.unfinished)}</span></div><strong>${sessions.filter(s=>s.status.key==="unfinished").length}</strong></div><div class="kpi kpi--good" tabindex="0" role="button" data-form-filter="created"><div class="kpi-top"><span>${esc(c.created)}</span></div><strong>${sessions.filter(s=>s.status.key==="created").length}</strong></div></div>
+    ${filtered.length?`<div class="form-session-list">${filtered.map(s=>{const m=s.metadata||{},p=s.profile,last=s.events[0];return `<article class="form-session-row" tabindex="0" role="button" data-admin-detail="form" data-admin-id="${esc(s.id)}"><div class="form-session-main"><strong>${esc(p?.full_name||c.anonymous)}</strong><span>${esc(p?.contact_email||p?.email||p?.phone||adminDate(last?.created_at))}</span></div><div class="form-session-meta">${esc(m.activity||"—")} · ${esc(m.port||"—")}<span>${esc(m.date||"")}</span></div><div class="form-session-step">${esc(c.lastStep)} : ${esc(last?.metadata?.stage||last?.event_name||"—")}</div><span class="status-pill ${s.status.css}">${esc(s.status.label)}</span></article>`;}).join("")}</div>`:`<div class="empty-note">${esc(c.noForms)}</div>`}`;
+  main.querySelectorAll("[data-form-filter]").forEach(btn=>{
+    const apply=()=>renderAdminFormsList(main,sessions,btn.dataset.formFilter);
+    btn.addEventListener("click",apply); btn.addEventListener("keydown",e=>{if(["Enter"," "].includes(e.key)){e.preventDefault();apply();}});
+  });
+}
+function goToAdminPanel(panel){
+  const btn=[...document.querySelectorAll(".dash-side [data-panel]")].find(b=>b.dataset.panel===panel);
+  if(btn) btn.click();
+}
+function bindAdminDashboardInteractions(){
+  const body=document.querySelector("#dashboardBody");
+  if(!body || body.dataset.adminClickBound) return;
+  body.dataset.adminClickBound="1";
+  const activate=e=>{
+    const target=e.target.closest("[data-admin-panel],[data-admin-detail],[data-open-path]");
+    if(!target || (e.type==="keydown" && !["Enter"," "].includes(e.key))) return;
+    if(e.target.closest("button,select,input,textarea,a") && e.target!==target) return;
+    if(e.type==="keydown") e.preventDefault();
+    if(target.dataset.adminPanel){
+      if(target.dataset.adminPanel==="forms") adminFormsInitialFilter=target.dataset.adminFormFilter||"all";
+      goToAdminPanel(target.dataset.adminPanel);
+    }
+    else if(target.dataset.openPath) window.open(target.dataset.openPath,"_blank","noopener");
+    else if(target.dataset.adminDetail==="mission") openAdminMissionDetail(target.dataset.adminId);
+    else if(target.dataset.adminDetail==="user") openAdminUserDetail(target.dataset.adminId);
+    else if(target.dataset.adminDetail==="form") openAdminFormDetail(target.dataset.adminId);
+  };
+  body.addEventListener("click",activate); body.addEventListener("keydown",activate);
+}
+
+function renderAdminDirectRequests(main, missions, byId, filter="pending"){
+  const rows=missions.filter(m=>m.client_id&&(m.provider_id||m.skipper_id));
+  const unanswered=rows.filter(m=>m.status==="pending");
+  const shown=filter==="pending"?unanswered:rows;
+  const age=m=>{const hours=Math.max(0,Math.floor((Date.now()-new Date(m.created_at).getTime())/3600000));return Number.isFinite(hours)?hours<24?`${hours} h`:`${Math.floor(hours/24)} j`:"—";};
+  main.innerHTML=`<div class="panel-head"><div><h3>Demandes adressées aux prestataires</h3><p class="muted">Suivez les réponses et relancez les professionnels en attente.</p></div></div>
+    <div class="kpi-grid"><button class="kpi ${filter==="pending"?"kpi--warn":""}" type="button" data-direct-filter="pending"><div class="kpi-top">Sans devis</div><strong>${unanswered.length}</strong></button><button class="kpi" type="button" data-direct-filter="all"><div class="kpi-top">Toutes les demandes</div><strong>${rows.length}</strong></button></div>
+    <div class="request-list">${shown.length?shown.map(m=>{const client=byId[String(m.client_id)]||{},pro=byId[String(m.provider_id||m.skipper_id)]||{};const email=pro.contact_email||pro.email||"";const subject=`Relance SkipperNow — demande ${m.port||"nautique"}`;const message=`Bonjour ${pro.full_name||""}, une demande client du ${new Date(m.created_at).toLocaleDateString("fr-FR")} attend votre devis sur SkipperNow. Pouvez-vous la consulter depuis votre espace prestataire ? Merci, Fredery`;const href=email?`mailto:${encodeURIComponent(email)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(message)}`:"";return `<article class="request-card"><div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap"><div><strong>${esc(m.boat_type||"Prestation nautique")} · ${esc(m.port||"—")}</strong><div class="muted">Client : ${esc(client.full_name||"—")} · Prestataire : ${esc(pro.full_name||"—")}</div><div class="muted">Créée le ${esc(adminDate(m.created_at))} · Il y a ${esc(age(m))}</div></div><span class="status-pill ${statusPillClass(m.status)}">${esc(t("status."+(m.status||"pending")))}</span></div><p>${esc(m.description||"")}</p><div class="request-actions"><button class="small-btn" type="button" data-admin-detail="mission" data-admin-id="${esc(m.id)}">Voir la demande</button>${m.status==="pending"&&href?`<a class="small-btn fill" href="${esc(href)}">Relancer par e-mail</a>`:""}${m.status==="pending"&&pro.phone?`<a class="small-btn" href="tel:${esc(pro.phone)}">Appeler</a>`:""}${m.status==="pending"&&!href&&!pro.phone?'<span class="muted">Coordonnées à compléter sur le profil prestataire.</span>':""}</div></article>`;}).join(""):'<div class="empty-note">Aucune demande dans cette catégorie.</div>'}</div>`;
+  main.querySelectorAll("[data-direct-filter]").forEach(btn=>btn.addEventListener("click",()=>renderAdminDirectRequests(main,missions,byId,btn.dataset.directFilter)));
+}
+
+async function renderAdminPanel(panel){
+  refreshDashboardIdentity(panel);
+  const main = document.querySelector("#dashMain");
+  const {profiles, missions, settings, boats, payoutsById, ports, heroSlides, destTiles, activities} = await loadAdminData();
+  adminProfilesCache = profiles;
+  const byId = profilesById(profiles);
+  adminMissionsCache = missions;
+  const pending = profiles.filter(p => ["skipper","provider"].includes(p.role) && !p.verified);
+  const activeMissions = missions.filter(m => !["cancelled","completed"].includes(m.status));
+  const heldFunds = missions.filter(m => ["paid","payout_ready"].includes(m.payment_status)).reduce((s,m)=>s+Number(m.amount_cents||0),0);
+  const toPayout = missions.filter(m => m.payment_status === "payout_ready");
+  const revenue = missions.filter(m => ["paid","transferred","payout_ready"].includes(m.payment_status)).reduce((s,m)=> s + Number(m.platform_fee_cents||0), 0);
+  const weekAgo = new Date(Date.now() - 7*24*60*60*1000);
+  const newUsers = profiles.filter(p => p.created_at && new Date(p.created_at) > weekAgo).length;
+  const openDisputes = missions.filter(m => m.dispute_status === "open").length;
+
+  if(panel === "nucReviews"){ await renderNucAdminPanel(main); return; }
+  if(panel === "overview"){
+    const {count: completedAllTime, error: completedCountError} = await db.from("missions").select("id", {count:"exact",head:true}).eq("status","completed");
+    const completedTotal = completedCountError ? missions.filter(m=>m.status==="completed").length : (completedAllTime ?? 0);
+    const priorityItems = [
+      ...pending.slice(0,5).map(p=>({type:"validation",level:"warn",title:p.full_name||"—",sub:t("dash.priorityValidation")+" · "+(p.role==="skipper"?t("account.roleSkipper"):t("account.roleProvider")),id:p.id})),
+      ...missions.filter(m=>m.dispute_status==="open").slice(0,5).map(m=>({type:"dispute",level:"danger",title:(byId[m.skipper_id]?.full_name||byId[m.client_id]?.full_name||"—"),sub:t("dash.priorityDispute")+" · "+money(m.amount_cents||0),id:m.id})),
+      ...toPayout.slice(0,5).map(m=>({type:"payout",level:"warn",title:byId[m.skipper_id]?.full_name||"—",sub:t("dash.priorityPayout")+" · "+money(m.amount_cents||0),id:m.id}))
+    ];
+    main.innerHTML = `
+      <div class="priority-queue">
+        <div class="priority-queue-head">${NAV_ICONS.disputes}${esc(t("dash.priorityQueueTitle"))}${priorityItems.length?`<span class="count-pill">${priorityItems.length}</span>`:""}</div>
+        ${priorityItems.length ? priorityItems.map(it=>`<div class="priority-row" tabindex="0" role="button" data-admin-panel="${it.type==="validation"?"users":it.type==="dispute"?"disputes":"payouts"}"><span class="pr-dot ${it.level}"></span><div class="pr-body"><div class="pr-title">${esc(it.title)}</div><div class="pr-sub">${esc(it.sub)}</div></div></div>`).join("") : `<div class="priority-empty">${esc(t("dash.priorityEmpty"))}</div>`}
+      </div>
+      <div class="kpi-grid">
+        <div class="kpi kpi--good" tabindex="0" role="button" data-admin-panel="missions"><div class="kpi-top"><span>${esc(saleText("Prestations terminées depuis la création","Completed jobs since launch","Servicios terminados desde el inicio"))}</span><span class="kpi-icon">${NAV_ICONS.missions}</span></div><strong>${completedTotal}</strong><div class="kpi-trend">${esc(saleText("Toutes dates confondues","All-time total","Total histórico"))}</div></div>
+        <div class="kpi" tabindex="0" role="button" data-admin-panel="missions"><div class="kpi-top"><span>${esc(t("dash.kpiActiveMissions"))}</span><span class="kpi-icon">${NAV_ICONS.missions}</span></div><strong>${activeMissions.length}</strong></div>
+        <div class="kpi" tabindex="0" role="button" data-admin-panel="payments"><div class="kpi-top"><span>${esc(t("dash.kpiHeldFunds"))}</span><span class="kpi-icon">${NAV_ICONS.payments}</span></div><strong>${money(heldFunds)}</strong></div>
+        <div class="kpi ${toPayout.length?'kpi--warn':''}" tabindex="0" role="button" data-admin-panel="payouts"><div class="kpi-top"><span>${esc(t("dash.kpiToPayout"))}</span><span class="kpi-icon">${NAV_ICONS.payouts}</span></div><strong>${toPayout.length}</strong></div>
+        <div class="kpi kpi--good" tabindex="0" role="button" data-admin-panel="commissions"><div class="kpi-top"><span>${esc(t("dash.kpiPlatformRevenue"))}</span><span class="kpi-icon">${NAV_ICONS.commissions}</span></div><strong>${money(revenue)}</strong></div>
+        <div class="kpi" tabindex="0" role="button" data-admin-panel="users"><div class="kpi-top"><span>${esc(t("dash.kpiNewUsers"))}</span><span class="kpi-icon">${NAV_ICONS.users}</span></div><strong>${newUsers}</strong><div class="kpi-trend">${esc(t("dash.kpiTrendWeek"))}</div></div>
+        <div class="kpi ${openDisputes?'kpi--danger':''}" tabindex="0" role="button" data-admin-panel="disputes"><div class="kpi-top"><span>${esc(t("dash.kpiOpenDisputes"))}</span><span class="kpi-icon">${NAV_ICONS.disputes}</span></div><strong>${openDisputes}</strong></div>
+      </div>
+      <div class="dash-section-title">${NAV_ICONS.users}${esc(t("dash.navValidations"))} (${pending.length})</div>
+      ${pending.length ? pending.map(p=>profileCard(p)).join("") : `<div class="empty-note">—</div>`}`;
+    bindProfileActions();
+  }else if(panel === "traffic"){
+    // Les statistiques sont agrégées côté serveur par la RPC admin
+    // get_traffic_stats() : le dashboard ne télécharge plus toute la table
+    // page_views (elle peut contenir des dizaines de milliers de lignes).
+    const {data: stats, error: statsError} = await db.rpc("get_traffic_stats");
+    if(statsError){
+      main.innerHTML = `<div class="empty-note">${esc(friendlyError(statsError))}</div>`;
+      return;
+    }
+    const s = stats || {};
+    const now = Date.now();
+    const isWithin30Days = value => value && (now - new Date(value).getTime()) < 30*24*60*60*1000;
+    const accounts30 = profiles.filter(p=>isWithin30Days(p.created_at)).length;
+    const requests30 = missions.filter(m=>isWithin30Days(m.created_at)).length;
+    const completed30 = missions.filter(m=>m.status === "completed" && isWithin30Days(m.updated_at || m.created_at)).length;
+    const verifiedPros = profiles.filter(p=>p.verified && ["skipper","provider"].includes(p.role)).length;
+    const topPages = Array.isArray(s.top_pages_30d) ? s.top_pages_30d : [];
+    const bookingEvents = s.booking_events_30d || {};
+    const trackingSinceText = s.tracking_since ? new Date(s.tracking_since).toLocaleDateString(currentLang) : t("dash.trackingSinceUnknown");
+    main.innerHTML = `
+      <div class="note-box">${esc(t("dash.visitorsTrackingNote",{date: trackingSinceText}))}</div>
+      <div class="kpi-grid">
+        <div class="kpi"><div class="kpi-top"><span>${esc(t("dash.kpiVisitorsToday"))}</span></div><strong>${s.visitors_today ?? 0}</strong></div>
+        <div class="kpi"><div class="kpi-top"><span>${esc(t("dash.kpiVisitors7d"))}</span></div><strong>${s.visitors_7d ?? 0}</strong></div>
+        <div class="kpi"><div class="kpi-top"><span>${esc(t("dash.kpiVisitors30d"))}</span></div><strong>${s.visitors_30d ?? 0}</strong></div>
+        <div class="kpi"><div class="kpi-top"><span>${esc(t("dash.kpiVisitorsYear"))}</span></div><strong>${s.visitors_year ?? 0}</strong></div>
+      </div>
+      <div class="dash-section-title">${esc(t("dash.performance30d"))}</div>
+      <div class="kpi-grid">
+        <div class="kpi" tabindex="0" role="button" data-admin-panel="users"><div class="kpi-top"><span>${esc(t("dash.kpiAccounts30d"))}</span></div><strong>${accounts30}</strong></div>
+        <div class="kpi" tabindex="0" role="button" data-admin-panel="missions"><div class="kpi-top"><span>${esc(t("dash.kpiRequests30d"))}</span></div><strong>${requests30}</strong></div>
+        <div class="kpi kpi--good" tabindex="0" role="button" data-admin-panel="missions"><div class="kpi-top"><span>${esc(t("dash.kpiCompleted30d"))}</span></div><strong>${completed30}</strong></div>
+        <div class="kpi" tabindex="0" role="button" data-admin-panel="users"><div class="kpi-top"><span>${esc(t("stats.pros"))}</span></div><strong>${verifiedPros}</strong></div>
+      </div>
+      <div class="dash-section-title">${esc(t("dash.bookingFunnelTitle"))}</div>
+      <div class="kpi-grid">
+        <div class="kpi" tabindex="0" role="button" data-admin-panel="forms" data-admin-form-filter="booking_opened"><div class="kpi-top"><span>${esc(t("dash.bookingOpened"))}</span></div><strong>${Number(bookingEvents.booking_opened || 0)}</strong></div>
+        <div class="kpi" tabindex="0" role="button" data-admin-panel="forms" data-admin-form-filter="booking_login_required"><div class="kpi-top"><span>${esc(t("dash.bookingLoginRequired"))}</span></div><strong>${Number(bookingEvents.booking_login_required || 0)}</strong></div>
+        <div class="kpi" tabindex="0" role="button" data-admin-panel="forms" data-admin-form-filter="booking_submitted"><div class="kpi-top"><span>${esc(t("dash.bookingSubmitted"))}</span></div><strong>${Number(bookingEvents.booking_submitted || 0)}</strong></div>
+        <div class="kpi kpi--good" tabindex="0" role="button" data-admin-panel="forms" data-admin-form-filter="booking_created"><div class="kpi-top"><span>${esc(t("dash.bookingCreated"))}</span></div><strong>${Number(bookingEvents.booking_created || 0)}</strong></div>
+        <div class="kpi ${Number(bookingEvents.booking_failed || 0) ? 'kpi--danger' : ''}" tabindex="0" role="button" data-admin-panel="forms" data-admin-form-filter="booking_failed"><div class="kpi-top"><span>${esc(t("dash.bookingFailed"))}</span></div><strong>${Number(bookingEvents.booking_failed || 0)}</strong></div>
+      </div>
+      <div class="dash-section-title">${esc(t("dash.topPagesTitle"))}${Number.isFinite(s.views_30d) ? ` · ${esc(t("dash.pageViews30d",{count:s.views_30d}))}` : ""}</div>
+      ${topPages.length ? `<div class="traffic-table">${topPages.map(p=>`<div class="traffic-row" tabindex="0" role="button" data-open-path="${esc(p.path)}"><span class="traffic-path">${esc(p.path)}</span><span class="traffic-count">${p.views}</span></div>`).join("")}</div>` : `<div class="empty-note">${esc(t("dash.noViewsYet"))}</div>`}`;
+  }else if(panel === "forms"){
+    main.innerHTML = `<div class="empty-note">${esc(t("dash.loading"))}</div>`;
+    try{
+      const sessions = await loadAdminFormSessions(profiles);
+      const initialFilter=adminFormsInitialFilter;
+      adminFormsInitialFilter="all";
+      renderAdminFormsList(main,sessions,initialFilter);
+    }catch(error){
+      main.innerHTML = `<div class="empty-note">${esc(friendlyError(error))}<br><small>${esc(adminUiCopy().migration)}</small></div>`;
+    }
+  }else if(panel === "directRequests"){
+    renderAdminDirectRequests(main, missions, byId);
+  }else if(panel === "missions"){
+    main.innerHTML = missions.length ? missions.map(m=>adminMissionCard(m, byId)).join("") : `<div class="empty-note">${esc(t("dash.noMissions"))}</div>`;
+    bindAdminMissionActions("missions");
+  }else if(panel === "messages"){
+    await renderMessagesPanel("both");
+  }else if(panel === "payments"){
+    const rows = missions.filter(m => ["paid","transferred","payout_ready","refund_requested","refunded","refund_rejected"].includes(m.payment_status));
+    main.innerHTML = `<div class="note-box">${esc(t("dash.paymentsNote"))}</div>` + (rows.length ? rows.map(m=>adminMissionCard(m, byId, true)).join("") : `<div class="empty-note">${esc(t("dash.noMissions"))}</div>`);
+    bindAdminMissionActions("payments");
+  }else if(panel === "payouts"){
+    await renderServicePayoutAdmin(main, missions, byId);
+  }else if(panel === "refunds"){
+    const rows = missions.filter(m => ["refund_requested","refunded","refund_rejected"].includes(m.payment_status));
+    main.innerHTML = rows.length ? rows.map(m=>adminMissionCard(m, byId, true)).join("") : `<div class="empty-note">${esc(t("dash.noRefunds"))}</div>`;
+    bindAdminMissionActions("refunds");
+  }else if(panel === "disputes"){
+    const rows = missions.filter(m => m.dispute_status === "open");
+    const closedRows = missions.filter(m => m.dispute_status === "resolved");
+    main.innerHTML = (rows.length ? rows.map(m=>adminMissionCard(m, byId, true)).join("") : `<div class="empty-note">${esc(t("dash.noDisputes"))}</div>`)
+      + (closedRows.length ? `<h3 style="margin-top:24px">${esc(t("dash.disputeResolved"))}</h3>${closedRows.map(m=>adminMissionCard(m, byId, true)).join("")}` : "");
+    bindAdminMissionActions("disputes");
+  }else if(panel === "commissions"){
+    const s = settings;
+    const providers = profiles.filter(p => ["skipper","provider"].includes(p.role));
+    main.innerHTML = `
+      <h3>${esc(t("dash.commissionGlobalTitle"))}</h3>
+      <div class="setting-row"><div><strong>${esc(t("dash.settingsCommission"))}</strong></div><input id="settingCommission" type="number" min="0" max="50" value="${Number(s.first_commission_percent||15)}"></div>
+      <div class="setting-row"><div><strong>${esc(t("dash.settingsUrgent"))}</strong></div><input id="settingUrgent" type="number" min="0" value="${Number(s.urgent_fee_cents||0)/100}"></div>
+      <div class="setting-row"><div><strong>${esc(t("dash.settingsSupport"))}</strong></div><input id="settingSupport" type="email" value="${esc(s.support_email||"")}"></div>
+      <button class="primary wide" id="saveSettingsBtn">${esc(t("dash.saveSettings"))}</button>
+      <p class="ok-text" id="settingsMsg"></p>
+      ${providers.length ? `<h3 style="margin-top:24px">${esc(t("dash.commissionProviderTitle"))}</h3>
+      <div class="field"><label>${esc(t("dash.chooseProvider"))}</label>
+        <select id="commissionProviderSelect">${providers.map(p=>`<option value="${p.id}">${esc(p.full_name||"—")} — ${Number(p.commission_percent ?? s.first_commission_percent ?? 15)}%</option>`).join("")}</select>
+      </div>
+      <div class="field"><label>${esc(t("dash.customRate"))}</label><input id="commissionCustomRate" type="number" min="0" max="50" step="0.5"></div>
+      <button class="primary wide" id="saveProviderRateBtn">${esc(t("dash.saveRate"))}</button>
+      <p class="ok-text" id="providerRateMsg"></p>` : ""}
+      <div class="note-box">${esc(t("dash.stripeNote"))}</div>`;
+    document.querySelector("#saveSettingsBtn").addEventListener("click", async ()=>{
+      const {error} = await db.from("platform_settings").upsert({
+        id:1,
+        first_commission_percent: Number(document.querySelector("#settingCommission").value),
+        urgent_fee_cents: Math.round(Number(document.querySelector("#settingUrgent").value)*100),
+        support_email: document.querySelector("#settingSupport").value.trim(),
+        updated_at: new Date().toISOString()
+      });
+      document.querySelector("#settingsMsg").textContent = error ? error.message : t("dash.saveSettings");
+    });
+    const saveRateBtn = document.querySelector("#saveProviderRateBtn");
+    if(saveRateBtn) saveRateBtn.addEventListener("click", async ()=>{
+      const id = document.querySelector("#commissionProviderSelect").value;
+      const rate = Math.max(0, Math.min(50, Number(document.querySelector("#commissionCustomRate").value)));
+      const msg = document.querySelector("#providerRateMsg");
+      const {error} = await db.from("profiles").update({commission_percent: rate}).eq("id", id);
+      msg.textContent = error ? error.message : t("dash.saveRate");
+      if(!error) await renderAdminPanel("commissions");
+    });
+  }else if(panel === "users"){
+     const defaultCommission = Number(settings?.first_commission_percent ?? 15);
+     main.innerHTML = `<input id="userSearch" type="text" placeholder="Rechercher par nom ou email..." style="width:100%;padding:10px;margin-bottom:12px;border:1px solid var(--line);border-radius:8px;font-size:15px">` + (profiles.length ? `<div id="userCardsList">${profiles.map(p=>adminUserCard(p, missions, defaultCommission)).join("")}</div>` : `<div class="empty-note">Aucun utilisateur</div>`);
+document.querySelector("#userSearch").addEventListener("input", (e)=>{
+  const q = e.target.value.trim().toLowerCase();
+  const filtered = profiles.filter(p => (p.full_name||"").toLowerCase().includes(q) || (p.contact_email||p.email||"").toLowerCase().includes(q));
+  document.querySelector("#userCardsList").innerHTML = filtered.length ? filtered.map(p=>adminUserCard(p, missions, defaultCommission)).join("") : `<div class="empty-note">Aucun résultat</div>`;
+  bindProfileActions();
+});
+    bindProfileActions();
+  }else if(panel === "boats"){
+    const [{data:managedOwners},{data:saleInquiries}] = await Promise.all([
+      db.from("boat_managed_owners").select("*"),
+      db.from("boat_sale_inquiries").select("*").order("created_at",{ascending:false}).limit(50)
+    ]);
+    const managedByBoat=Object.fromEntries((managedOwners||[]).map(row=>[String(row.boat_id),row]));
+    const ownerFilter = adminBoatsFilterOwnerId ? boats.filter(b=>String(b.client_id)===String(adminBoatsFilterOwnerId)) : boats;
+    const ownerName = adminBoatsFilterOwnerId ? (byId[String(adminBoatsFilterOwnerId)]?.full_name || "—") : "";
+    main.innerHTML = adminManagedBoatFormHtml()
+      + (adminBoatsFilterOwnerId ? `<div class="note-box">${esc(t("dash.boatsOf"))} <strong>${esc(ownerName)}</strong> — <a href="#" id="clearBoatsFilter">${esc(t("dash.clearFilter"))}</a></div>` : "")
+      + (ownerFilter.length ? ownerFilter.map(b=>adminBoatCard(b, byId, managedByBoat[String(b.id)])).join("") : `<div class="empty-note">—</div>`)
+      + adminManagedInquiriesHtml(saleInquiries||[], boats);
+    const clearBtn = document.querySelector("#clearBoatsFilter");
+    if(clearBtn) clearBtn.addEventListener("click", (e)=>{ e.preventDefault(); adminBoatsFilterOwnerId = null; renderAdminPanel("boats"); });
+    bindAdminBoatActions();
+    await bindAdminManagedBoatForm();
+  }else if(panel === "content"){
+    renderContentPanel(ports);
+  }else if(panel === "hero"){
+    renderHeroPanel(heroSlides);
+  }else if(panel === "destinations"){
+    renderDestinationsPanel(destTiles);
+  }else if(panel === "activities"){
+    renderActivitiesPanel(activities);
+  }
+}
+let editingPortId = null;
+function renderContentPanel(ports){
+  const main = document.querySelector("#dashMain");
+  const editing = editingPortId ? ports.find(p=>String(p.id)===String(editingPortId)) : null;
+  const p = editing || {};
+  main.innerHTML = `
+    <div class="dash-section-title">${NAV_ICONS.content}${esc(t("dash.navContent"))} (${ports.length})</div>
+    ${ports.length ? ports.map((pt,idx)=>`
+      <div class="port-admin-card${pt.active?"":" port-admin-card--inactive"}">
+        <div class="port-admin-reorder">
+          <button type="button" class="link" data-move-port="${pt.id}" data-dir="up" ${idx===0?"disabled":""} title="↑">↑</button>
+          <button type="button" class="link" data-move-port="${pt.id}" data-dir="down" ${idx===ports.length-1?"disabled":""} title="↓">↓</button>
+        </div>
+        <div class="port-admin-main">
+          <div class="port-admin-name">${esc(pt.name)} ${pt.active?"":`<span class="port-admin-badge">${esc(t("dash.contentPortActive"))} ✕</span>`}</div>
+          <div class="port-admin-coords">${Number(pt.lat).toFixed(4)}, ${Number(pt.lng).toFixed(4)} · #${pt.order_index}</div>
+          ${pt.description ? `<div class="port-admin-desc">${esc(pt.description)}</div>` : ""}
+        </div>
+        <div class="port-admin-actions">
+          <button type="button" class="link" data-edit-port="${pt.id}">${esc(t("dash.contentEdit"))}</button>
+          <button type="button" class="link" style="color:#c0392b" data-delete-port="${pt.id}">${esc(t("dash.contentDelete"))}</button>
+        </div>
+      </div>`).join("") : `<div class="empty-note">${esc(t("dash.contentNoPorts"))}</div>`}
+    <h3 style="margin-top:24px">${editing ? esc(t("dash.contentEdit")) : esc(t("dash.contentAddPort"))}</h3>
+    <form id="portForm" style="margin-top:14px">
+      <div class="field"><label>${esc(t("dash.contentPortName"))}</label><input id="portNameInput" required value="${esc(p.name||"")}"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="field"><label>${esc(t("dash.contentPortLat"))}</label><input id="portLatInput" type="number" step="0.0001" required value="${p.lat??""}"></div>
+        <div class="field"><label>${esc(t("dash.contentPortLng"))}</label><input id="portLngInput" type="number" step="0.0001" required value="${p.lng??""}"></div>
+      </div>
+      <div class="field"><label>${esc(t("dash.contentPortDesc"))}</label><textarea id="portDescInput" rows="2">${esc(p.description||"")}</textarea></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:end">
+        <div class="field"><label>${esc(t("dash.contentPortOrder"))}</label><input id="portOrderInput" type="number" value="${p.order_index??ports.length+1}"></div>
+        <label style="display:flex;align-items:center;gap:8px;font-weight:700;font-size:13.5px;padding-bottom:14px"><input id="portActiveInput" type="checkbox" ${editing ? (p.active?"checked":"") : "checked"}> ${esc(t("dash.contentPortActive"))}</label>
+      </div>
+      <div style="display:flex;gap:10px">
+        <button class="primary wide" type="submit">${esc(t("dash.contentSave"))}</button>
+        ${editing ? `<button type="button" class="secondary-light" id="cancelPortEdit">${esc(t("dash.contentCancel"))}</button>` : ""}
+      </div>
+      <p class="ok-text" id="portFormMsg"></p>
+    </form>`;
+  document.querySelectorAll("[data-edit-port]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{ editingPortId = btn.dataset.editPort; renderAdminPanel("content"); });
+  });
+  document.querySelectorAll("[data-move-port]").forEach(btn=>{
+    btn.addEventListener("click", async ()=>{
+      const id = btn.dataset.movePort;
+      const dir = btn.dataset.dir;
+      const idx = ports.findIndex(p=>String(p.id)===String(id));
+      const swapIdx = dir==="up" ? idx-1 : idx+1;
+      if(swapIdx < 0 || swapIdx >= ports.length) return;
+      const a = ports[idx], b = ports[swapIdx];
+      const {error:e1} = await db.from("ports").update({order_index:b.order_index}).eq("id", a.id);
+      const {error:e2} = await db.from("ports").update({order_index:a.order_index}).eq("id", b.id);
+      if(e1||e2) alert(friendlyError(e1||e2)); else await renderAdminPanel("content");
+    });
+  });
+  document.querySelectorAll("[data-delete-port]").forEach(btn=>{
+    btn.addEventListener("click", async ()=>{
+      if(!confirm(t("dash.contentConfirmDelete"))) return;
+      const {error} = await db.from("ports").delete().eq("id", btn.dataset.deletePort);
+      if(error) alert(friendlyError(error)); else { editingPortId = null; await renderAdminPanel("content"); }
+    });
+  });
+  const cancelBtn = document.querySelector("#cancelPortEdit");
+  if(cancelBtn) cancelBtn.addEventListener("click", ()=>{ editingPortId = null; renderAdminPanel("content"); });
+  document.querySelector("#portForm").addEventListener("submit", async (e)=>{
+    e.preventDefault();
+    const payload = {
+      name: document.querySelector("#portNameInput").value.trim(),
+      lat: Number(document.querySelector("#portLatInput").value),
+      lng: Number(document.querySelector("#portLngInput").value),
+      description: document.querySelector("#portDescInput").value.trim(),
+      order_index: Number(document.querySelector("#portOrderInput").value)||0,
+      active: document.querySelector("#portActiveInput").checked,
+      updated_at: new Date().toISOString()
+    };
+    const msg = document.querySelector("#portFormMsg");
+    const {error} = editingPortId
+      ? await db.from("ports").update(payload).eq("id", editingPortId)
+      : await db.from("ports").insert(payload);
+    if(error){ msg.textContent = friendlyError(error); msg.style.color = "#c0392b"; }
+    else { msg.textContent = t("dash.contentSaved"); msg.style.color = ""; editingPortId = null; await renderAdminPanel("content"); }
+  });
+}
+let editingHeroId = null;
+function renderHeroPanel(slides){
+  const main = document.querySelector("#dashMain");
+  const editing = editingHeroId ? slides.find(s=>String(s.id)===String(editingHeroId)) : null;
+  const s = editing || {};
+  main.innerHTML = `
+    <div class="dash-section-title">${NAV_ICONS.hero}${esc(t("dash.navHero"))} (${slides.length})</div>
+    <div class="hero-admin-grid">
+      ${slides.length ? slides.map((sl,idx)=>`
+        <div class="hero-admin-card${sl.active?"":" hero-admin-card--inactive"}">
+          <div class="hero-admin-thumb" style="background-image:url('${esc(sl.image_url)}')"></div>
+          <div class="hero-admin-body">
+            <div class="hero-admin-order">#${sl.order_index}${sl.active?"":` · ${esc(t("dash.heroActive"))} ✕`}</div>
+            <div class="hero-admin-reorder">
+              <button type="button" class="link" data-move-hero="${sl.id}" data-dir="up" ${idx===0?"disabled":""} title="↑">↑</button>
+              <button type="button" class="link" data-move-hero="${sl.id}" data-dir="down" ${idx===slides.length-1?"disabled":""} title="↓">↓</button>
+            </div>
+            <div class="hero-admin-actions">
+              <button type="button" class="link" data-edit-hero="${sl.id}">${esc(t("dash.contentEdit"))}</button>
+              <button type="button" class="link" style="color:#c0392b" data-delete-hero="${sl.id}">${esc(t("dash.contentDelete"))}</button>
+            </div>
+          </div>
+        </div>`).join("") : `<div class="empty-note">${esc(t("dash.heroNoSlides"))}</div>`}
+    </div>
+    <h3 style="margin-top:24px">${editing ? esc(t("dash.contentEdit")) : esc(t("dash.heroAddSlide"))}</h3>
+    <form id="heroForm" style="margin-top:14px">
+      <div class="field"><label>${esc(t("dash.heroUploadLabel"))}</label>
+        <input id="heroFileInput" type="file" accept="image/*">
+        <div id="heroUploadStatus" class="muted" style="font-size:12px;margin-top:4px"></div>
+      </div>
+      <div class="field"><label>${esc(t("dash.heroImageUrl"))}</label><input id="heroUrlInput" type="url" required value="${esc(s.image_url||"")}" placeholder="https://..."></div>
+      <div class="field"><label>${esc(t("dash.heroAlt"))}</label><input id="heroAltInput" value="${esc(s.alt_text||"")}"></div>
+      <div id="heroPreviewBox" style="margin:6px 0 14px;${s.image_url?"":"display:none"}">
+        <div class="hero-admin-thumb hero-admin-thumb--big" id="heroPreviewImg" style="background-image:url('${esc(s.image_url||"")}')"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:end">
+        <div class="field"><label>${esc(t("dash.heroOrder"))}</label><input id="heroOrderInput" type="number" value="${s.order_index??slides.length+1}"></div>
+        <label style="display:flex;align-items:center;gap:8px;font-weight:700;font-size:13.5px;padding-bottom:14px"><input id="heroActiveInput" type="checkbox" ${editing ? (s.active?"checked":"") : "checked"}> ${esc(t("dash.heroActive"))}</label>
+      </div>
+      <div style="display:flex;gap:10px">
+        <button class="primary wide" type="submit">${esc(t("dash.contentSave"))}</button>
+        ${editing ? `<button type="button" class="secondary-light" id="cancelHeroEdit">${esc(t("dash.contentCancel"))}</button>` : ""}
+      </div>
+      <p class="ok-text" id="heroFormMsg"></p>
+    </form>`;
+  document.querySelectorAll("[data-edit-hero]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{ editingHeroId = btn.dataset.editHero; renderAdminPanel("hero"); });
+  });
+  document.querySelectorAll("[data-move-hero]").forEach(btn=>{
+    btn.addEventListener("click", async ()=>{
+      const id = btn.dataset.moveHero;
+      const dir = btn.dataset.dir;
+      const idx = slides.findIndex(s=>String(s.id)===String(id));
+      const swapIdx = dir==="up" ? idx-1 : idx+1;
+      if(swapIdx < 0 || swapIdx >= slides.length) return;
+      const a = slides[idx], b = slides[swapIdx];
+      const {error:e1} = await db.from("hero_slides").update({order_index:b.order_index}).eq("id", a.id);
+      const {error:e2} = await db.from("hero_slides").update({order_index:a.order_index}).eq("id", b.id);
+      if(e1||e2) alert(friendlyError(e1||e2)); else await renderAdminPanel("hero");
+    });
+  });
+  document.querySelectorAll("[data-delete-hero]").forEach(btn=>{
+    btn.addEventListener("click", async ()=>{
+      if(!confirm(t("dash.contentConfirmDelete"))) return;
+      const {error} = await db.from("hero_slides").delete().eq("id", btn.dataset.deleteHero);
+      if(error) alert(friendlyError(error)); else { editingHeroId = null; await renderAdminPanel("hero"); }
+    });
+  });
+  const cancelBtn = document.querySelector("#cancelHeroEdit");
+  if(cancelBtn) cancelBtn.addEventListener("click", ()=>{ editingHeroId = null; renderAdminPanel("hero"); });
+  const fileInput = document.querySelector("#heroFileInput");
+  const uploadStatus = document.querySelector("#heroUploadStatus");
+  fileInput.addEventListener("change", async ()=>{
+    const file = fileInput.files[0];
+    if(!file) return;
+    uploadStatus.textContent = t("dash.heroUploading");
+    const ext = (file.name.split(".").pop()||"jpg").toLowerCase();
+    const path = `hero/${Date.now()}-${Math.random().toString(36).slice(2,8)}.${ext}`;
+    const {error} = await db.storage.from("site-media").upload(path, file, {cacheControl:"3600", upsert:false});
+    if(error){ uploadStatus.textContent = friendlyError(error); uploadStatus.style.color = "#c0392b"; return; }
+    const {data} = db.storage.from("site-media").getPublicUrl(path);
+    document.querySelector("#heroUrlInput").value = data.publicUrl;
+    document.querySelector("#heroUrlInput").dispatchEvent(new Event("input"));
+    uploadStatus.textContent = t("dash.heroUploaded");
+    uploadStatus.style.color = "";
+  });
+  const urlInput = document.querySelector("#heroUrlInput");
+  urlInput.addEventListener("input", ()=>{
+    const box = document.querySelector("#heroPreviewBox");
+    const img = document.querySelector("#heroPreviewImg");
+    if(urlInput.value.trim()){ box.style.display = ""; img.style.backgroundImage = `url('${urlInput.value.trim()}')`; }
+    else box.style.display = "none";
+  });
+  document.querySelector("#heroForm").addEventListener("submit", async (e)=>{
+    e.preventDefault();
+    const payload = {
+      image_url: document.querySelector("#heroUrlInput").value.trim(),
+      alt_text: document.querySelector("#heroAltInput").value.trim(),
+      order_index: Number(document.querySelector("#heroOrderInput").value)||0,
+      active: document.querySelector("#heroActiveInput").checked,
+      updated_at: new Date().toISOString()
+    };
+    const msg = document.querySelector("#heroFormMsg");
+    const {error} = editingHeroId
+      ? await db.from("hero_slides").update(payload).eq("id", editingHeroId)
+      : await db.from("hero_slides").insert(payload);
+    if(error){ msg.textContent = friendlyError(error); msg.style.color = "#c0392b"; }
+    else { msg.textContent = t("dash.contentSaved"); msg.style.color = ""; editingHeroId = null; await renderAdminPanel("hero"); }
+  });
+}
+let editingDestId = null;
+function renderDestinationsPanel(tiles){
+  const main = document.querySelector("#dashMain");
+  const editing = editingDestId ? tiles.find(s=>String(s.id)===String(editingDestId)) : null;
+  const s = editing || {};
+  main.innerHTML = `
+    <div class="dash-section-title">${NAV_ICONS.destinations}${esc(t("dash.navDestinations"))} (${tiles.length})</div>
+    <div class="hero-admin-grid">
+      ${tiles.length ? tiles.map((sl,idx)=>`
+        <div class="hero-admin-card${sl.active?"":" hero-admin-card--inactive"}">
+          <div class="hero-admin-thumb" style="background-image:url('${esc(sl.image_url)}')"></div>
+          <div class="hero-admin-body">
+            <div class="hero-admin-order" style="font-family:inherit;font-weight:800;color:var(--navy)">${esc(sl.name)}</div>
+            <div class="hero-admin-order">#${sl.order_index}${sl.active?"":` · ${esc(t("dash.heroActive"))} ✕`}</div>
+            <div class="hero-admin-reorder">
+              <button type="button" class="link" data-move-dest="${sl.id}" data-dir="up" ${idx===0?"disabled":""} title="↑">↑</button>
+              <button type="button" class="link" data-move-dest="${sl.id}" data-dir="down" ${idx===tiles.length-1?"disabled":""} title="↓">↓</button>
+            </div>
+            <div class="hero-admin-actions">
+              <button type="button" class="link" data-edit-dest="${sl.id}">${esc(t("dash.contentEdit"))}</button>
+              <button type="button" class="link" style="color:#c0392b" data-delete-dest="${sl.id}">${esc(t("dash.contentDelete"))}</button>
+            </div>
+          </div>
+        </div>`).join("") : `<div class="empty-note">${esc(t("dash.destNoTiles"))}</div>`}
+    </div>
+    <h3 style="margin-top:24px">${editing ? esc(t("dash.contentEdit")) : esc(t("dash.destAddTile"))}</h3>
+    <form id="destForm" style="margin-top:14px">
+      <div class="field"><label>${esc(t("dash.destName"))}</label><input id="destNameInput" required value="${esc(s.name||"")}"></div>
+      <div class="field"><label>${esc(t("dash.heroUploadLabel"))}</label>
+        <input id="destFileInput" type="file" accept="image/*">
+        <div id="destUploadStatus" class="muted" style="font-size:12px;margin-top:4px"></div>
+      </div>
+      <div class="field"><label>${esc(t("dash.heroImageUrl"))}</label><input id="destUrlInput" type="url" required value="${esc(s.image_url||"")}" placeholder="https://..."></div>
+      <div id="destPreviewBox" style="margin:6px 0 14px;${s.image_url?"":"display:none"}">
+        <div class="hero-admin-thumb hero-admin-thumb--big" id="destPreviewImg" style="background-image:url('${esc(s.image_url||"")}')"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:end">
+        <div class="field"><label>${esc(t("dash.heroOrder"))}</label><input id="destOrderInput" type="number" value="${s.order_index??tiles.length+1}"></div>
+        <label style="display:flex;align-items:center;gap:8px;font-weight:700;font-size:13.5px;padding-bottom:14px"><input id="destActiveInput" type="checkbox" ${editing ? (s.active?"checked":"") : "checked"}> ${esc(t("dash.heroActive"))}</label>
+      </div>
+      <div style="display:flex;gap:10px">
+        <button class="primary wide" type="submit">${esc(t("dash.contentSave"))}</button>
+        ${editing ? `<button type="button" class="secondary-light" id="cancelDestEdit">${esc(t("dash.contentCancel"))}</button>` : ""}
+      </div>
+      <p class="ok-text" id="destFormMsg"></p>
+    </form>`;
+  document.querySelectorAll("[data-edit-dest]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{ editingDestId = btn.dataset.editDest; renderAdminPanel("destinations"); });
+  });
+  document.querySelectorAll("[data-move-dest]").forEach(btn=>{
+    btn.addEventListener("click", async ()=>{
+      const id = btn.dataset.moveDest;
+      const dir = btn.dataset.dir;
+      const idx = tiles.findIndex(s=>String(s.id)===String(id));
+      const swapIdx = dir==="up" ? idx-1 : idx+1;
+      if(swapIdx < 0 || swapIdx >= tiles.length) return;
+      const a = tiles[idx], b = tiles[swapIdx];
+      const {error:e1} = await db.from("destination_tiles").update({order_index:b.order_index}).eq("id", a.id);
+      const {error:e2} = await db.from("destination_tiles").update({order_index:a.order_index}).eq("id", b.id);
+      if(e1||e2) alert(friendlyError(e1||e2)); else await renderAdminPanel("destinations");
+    });
+  });
+  document.querySelectorAll("[data-delete-dest]").forEach(btn=>{
+    btn.addEventListener("click", async ()=>{
+      if(!confirm(t("dash.contentConfirmDelete"))) return;
+      const {error} = await db.from("destination_tiles").delete().eq("id", btn.dataset.deleteDest);
+      if(error) alert(friendlyError(error)); else { editingDestId = null; await renderAdminPanel("destinations"); }
+    });
+  });
+  const cancelBtn = document.querySelector("#cancelDestEdit");
+  if(cancelBtn) cancelBtn.addEventListener("click", ()=>{ editingDestId = null; renderAdminPanel("destinations"); });
+  const fileInput = document.querySelector("#destFileInput");
+  const uploadStatus = document.querySelector("#destUploadStatus");
+  fileInput.addEventListener("change", async ()=>{
+    const file = fileInput.files[0];
+    if(!file) return;
+    uploadStatus.textContent = t("dash.heroUploading");
+    const ext = (file.name.split(".").pop()||"jpg").toLowerCase();
+    const path = `destinations/${Date.now()}-${Math.random().toString(36).slice(2,8)}.${ext}`;
+    const {error} = await db.storage.from("site-media").upload(path, file, {cacheControl:"3600", upsert:false});
+    if(error){ uploadStatus.textContent = friendlyError(error); uploadStatus.style.color = "#c0392b"; return; }
+    const {data} = db.storage.from("site-media").getPublicUrl(path);
+    document.querySelector("#destUrlInput").value = data.publicUrl;
+    document.querySelector("#destUrlInput").dispatchEvent(new Event("input"));
+    uploadStatus.textContent = t("dash.heroUploaded");
+    uploadStatus.style.color = "";
+  });
+  const urlInput = document.querySelector("#destUrlInput");
+  urlInput.addEventListener("input", ()=>{
+    const box = document.querySelector("#destPreviewBox");
+    const img = document.querySelector("#destPreviewImg");
+    if(urlInput.value.trim()){ box.style.display = ""; img.style.backgroundImage = `url('${urlInput.value.trim()}')`; }
+    else box.style.display = "none";
+  });
+  document.querySelector("#destForm").addEventListener("submit", async (e)=>{
+    e.preventDefault();
+    const payload = {
+      name: document.querySelector("#destNameInput").value.trim(),
+      image_url: document.querySelector("#destUrlInput").value.trim(),
+      order_index: Number(document.querySelector("#destOrderInput").value)||0,
+      active: document.querySelector("#destActiveInput").checked,
+      updated_at: new Date().toISOString()
+    };
+    const msg = document.querySelector("#destFormMsg");
+    const {error} = editingDestId
+      ? await db.from("destination_tiles").update(payload).eq("id", editingDestId)
+      : await db.from("destination_tiles").insert(payload);
+    if(error){ msg.textContent = friendlyError(error); msg.style.color = "#c0392b"; }
+    else { msg.textContent = t("dash.contentSaved"); msg.style.color = ""; editingDestId = null; await renderAdminPanel("destinations"); }
+  });
+}
+let editingActId = null;
+function renderActivitiesPanel(tiles){
+  const main = document.querySelector("#dashMain");
+  const editing = editingActId ? tiles.find(s=>String(s.id)===String(editingActId)) : null;
+  const s = editing || {};
+  main.innerHTML = `
+    <div class="dash-section-title">${NAV_ICONS.activities}${esc(t("dash.navActivities"))} (${tiles.length})</div>
+    <div class="hero-admin-grid">
+      ${tiles.length ? tiles.map((sl,idx)=>`
+        <div class="hero-admin-card${sl.active?"":" hero-admin-card--inactive"}">
+          <div class="hero-admin-thumb" style="background-image:url('${esc(sl.image_url)}')"></div>
+          <div class="hero-admin-body">
+            <div class="hero-admin-order" style="font-family:inherit;font-weight:800;color:var(--navy)">${esc(sl.title)}</div>
+            <div class="hero-admin-order">${esc(sl.port_name)} · #${sl.order_index}${sl.active?"":` · ${esc(t("dash.heroActive"))} ✕`}</div>
+            <div class="hero-admin-reorder">
+              <button type="button" class="link" data-move-act="${sl.id}" data-dir="up" ${idx===0?"disabled":""} title="↑">↑</button>
+              <button type="button" class="link" data-move-act="${sl.id}" data-dir="down" ${idx===tiles.length-1?"disabled":""} title="↓">↓</button>
+            </div>
+            <div class="hero-admin-actions">
+              <button type="button" class="link" data-edit-act="${sl.id}">${esc(t("dash.contentEdit"))}</button>
+              <button type="button" class="link" style="color:#c0392b" data-delete-act="${sl.id}">${esc(t("dash.contentDelete"))}</button>
+            </div>
+          </div>
+        </div>`).join("") : `<div class="empty-note">${esc(t("dash.actNoTiles"))}</div>`}
+    </div>
+    <h3 style="margin-top:24px">${editing ? esc(t("dash.contentEdit")) : esc(t("dash.actAddTile"))}</h3>
+    <form id="actForm" style="margin-top:14px">
+      <div class="field"><label>${esc(t("dash.actPortName"))}</label><input id="actPortInput" required value="${esc(s.port_name||"")}" placeholder="Ex. Cannes"></div>
+      <div class="field"><label>${esc(t("dash.actTitle"))}</label><input id="actTitleInput" required value="${esc(s.title||"")}"></div>
+      <div class="field"><label>${esc(t("dash.actDesc"))}</label><textarea id="actDescInput" rows="2">${esc(s.description||"")}</textarea></div>
+      <div class="field"><label>${esc(t("dash.heroUploadLabel"))}</label>
+        <input id="actFileInput" type="file" accept="image/*">
+        <div id="actUploadStatus" class="muted" style="font-size:12px;margin-top:4px"></div>
+      </div>
+      <div class="field"><label>${esc(t("dash.heroImageUrl"))}</label><input id="actUrlInput" type="url" required value="${esc(s.image_url||"")}" placeholder="https://..."></div>
+      <div id="actPreviewBox" style="margin:6px 0 14px;${s.image_url?"":"display:none"}">
+        <div class="hero-admin-thumb hero-admin-thumb--big" id="actPreviewImg" style="background-image:url('${esc(s.image_url||"")}')"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:end">
+        <div class="field"><label>${esc(t("dash.heroOrder"))}</label><input id="actOrderInput" type="number" value="${s.order_index??tiles.length+1}"></div>
+        <label style="display:flex;align-items:center;gap:8px;font-weight:700;font-size:13.5px;padding-bottom:14px"><input id="actActiveInput" type="checkbox" ${editing ? (s.active?"checked":"") : "checked"}> ${esc(t("dash.heroActive"))}</label>
+      </div>
+      <div style="display:flex;gap:10px">
+        <button class="primary wide" type="submit">${esc(t("dash.contentSave"))}</button>
+        ${editing ? `<button type="button" class="secondary-light" id="cancelActEdit">${esc(t("dash.contentCancel"))}</button>` : ""}
+      </div>
+      <p class="ok-text" id="actFormMsg"></p>
+    </form>`;
+  document.querySelectorAll("[data-edit-act]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{ editingActId = btn.dataset.editAct; renderAdminPanel("activities"); });
+  });
+  document.querySelectorAll("[data-move-act]").forEach(btn=>{
+    btn.addEventListener("click", async ()=>{
+      const id = btn.dataset.moveAct;
+      const dir = btn.dataset.dir;
+      const idx = tiles.findIndex(s=>String(s.id)===String(id));
+      const swapIdx = dir==="up" ? idx-1 : idx+1;
+      if(swapIdx < 0 || swapIdx >= tiles.length) return;
+      const a = tiles[idx], b = tiles[swapIdx];
+      const {error:e1} = await db.from("port_activities").update({order_index:b.order_index}).eq("id", a.id);
+      const {error:e2} = await db.from("port_activities").update({order_index:a.order_index}).eq("id", b.id);
+      if(e1||e2) alert(friendlyError(e1||e2)); else await renderAdminPanel("activities");
+    });
+  });
+  document.querySelectorAll("[data-delete-act]").forEach(btn=>{
+    btn.addEventListener("click", async ()=>{
+      if(!confirm(t("dash.contentConfirmDelete"))) return;
+      const {error} = await db.from("port_activities").delete().eq("id", btn.dataset.deleteAct);
+      if(error) alert(friendlyError(error)); else { editingActId = null; await renderAdminPanel("activities"); }
+    });
+  });
+  const cancelBtn = document.querySelector("#cancelActEdit");
+  if(cancelBtn) cancelBtn.addEventListener("click", ()=>{ editingActId = null; renderAdminPanel("activities"); });
+  const fileInput = document.querySelector("#actFileInput");
+  const uploadStatus = document.querySelector("#actUploadStatus");
+  fileInput.addEventListener("change", async ()=>{
+    const file = fileInput.files[0];
+    if(!file) return;
+    uploadStatus.textContent = t("dash.heroUploading");
+    const ext = (file.name.split(".").pop()||"jpg").toLowerCase();
+    const path = `activities/${Date.now()}-${Math.random().toString(36).slice(2,8)}.${ext}`;
+    const {error} = await db.storage.from("site-media").upload(path, file, {cacheControl:"3600", upsert:false});
+    if(error){ uploadStatus.textContent = friendlyError(error); uploadStatus.style.color = "#c0392b"; return; }
+    const {data} = db.storage.from("site-media").getPublicUrl(path);
+    document.querySelector("#actUrlInput").value = data.publicUrl;
+    document.querySelector("#actUrlInput").dispatchEvent(new Event("input"));
+    uploadStatus.textContent = t("dash.heroUploaded");
+    uploadStatus.style.color = "";
+  });
+  const urlInput = document.querySelector("#actUrlInput");
+  urlInput.addEventListener("input", ()=>{
+    const box = document.querySelector("#actPreviewBox");
+    const img = document.querySelector("#actPreviewImg");
+    if(urlInput.value.trim()){ box.style.display = ""; img.style.backgroundImage = `url('${urlInput.value.trim()}')`; }
+    else box.style.display = "none";
+  });
+  document.querySelector("#actForm").addEventListener("submit", async (e)=>{
+    e.preventDefault();
+    const payload = {
+      port_name: document.querySelector("#actPortInput").value.trim(),
+      title: document.querySelector("#actTitleInput").value.trim(),
+      description: document.querySelector("#actDescInput").value.trim(),
+      image_url: document.querySelector("#actUrlInput").value.trim(),
+      order_index: Number(document.querySelector("#actOrderInput").value)||0,
+      active: document.querySelector("#actActiveInput").checked,
+      updated_at: new Date().toISOString()
+    };
+    const msg = document.querySelector("#actFormMsg");
+    const {error} = editingActId
+      ? await db.from("port_activities").update(payload).eq("id", editingActId)
+      : await db.from("port_activities").insert(payload);
+    if(error){ msg.textContent = friendlyError(error); msg.style.color = "#c0392b"; }
+    else { msg.textContent = t("dash.contentSaved"); msg.style.color = ""; editingActId = null; await renderAdminPanel("activities"); }
+  });
+}
+function adminMissionCard(m, byId, showFinance, payoutsById){
+  const client = byId[String(m.client_id)];
+  const pro = byId[String(m.provider_id||m.skipper_id)];
+  const total = Number(m.amount_cents||0) + Number(m.urgent_fee_cents||0);
+  const fee = Number(m.platform_fee_cents||0);
+  const net = Math.max(0, total - fee);
+  const payout = payoutsById ? payoutsById[String(m.provider_id||m.skipper_id)] : null;
+  return `<article class="request-card" tabindex="0" role="button" data-admin-detail="mission" data-admin-id="${esc(m.id)}">
+    <div class="request-top">
+      <div>
+        <h3>${esc(m.port||"—")} · ${esc(m.boat_type||"")}</h3>
+        <div class="muted">${m.starts_at ? new Date(m.starts_at).toLocaleDateString(currentLang) : ""}</div>
+        <div class="muted">${esc(t("dash.client"))}: ${esc(client?.full_name || "—")}${client?.phone?` · 📞 ${esc(client.phone)}`:""} · ${esc(t("dash.professional"))}: ${esc(pro?.full_name || "—")}${pro?.phone?` · 📞 ${esc(pro.phone)}`:""}</div>
+      </div>
+      <span class="status-pill ${statusPillClass(m.status)}">${esc(t("status."+(m.status||"pending")))}</span>
+    </div>
+    ${showFinance ? `<div class="muted" style="margin-top:6px">${esc(t("dash.total"))}: <strong>${money(total)}</strong> · ${esc(t("dash.commission"))}: ${money(fee)} · ${esc(t("dash.netPro"))}: ${money(net)}</div>` : `<div class="muted" style="margin-top:6px">${total ? money(total) : t("booking.priceTbd")}</div>`}
+    <div class="muted">${esc(t("dash.paymentStatus"))}: ${esc(t("paymentStatus."+(m.payment_status||"unpaid")))}</div>
+    ${payoutsById ? (payout?.iban ? `<div class="note-box">${esc(t("dash.ibanLabel"))}: <strong>${esc(payout.iban)}</strong>${payout.bic?` · ${esc(t("dash.bicLabel"))}: ${esc(payout.bic)}`:""}${payout.bank_holder_name?` · ${esc(payout.bank_holder_name)}`:""}</div>` : `<div class="note-box">${esc(t("dash.noIban"))}</div>`) : ""}
+    ${m.dispute_status ? `<div class="note-box" style="background:#fff0f0;border-color:#f0c4c4;color:#8a2020"><strong>${esc(t(m.dispute_status==="open"?"dash.disputeOpen":"dash.disputeResolved"))}</strong> — ${esc(m.dispute_reason||"")}</div>` : ""}
+    <div class="request-actions">
+      <select data-status-select="${m.id}">
+        ${["pending","quoted","accepted","rejected","in_progress","awaiting_validation","completed","cancelled"].map(s=>`<option value="${s}" ${s===m.status?"selected":""}>${esc(t("status."+s))}</option>`).join("")}
+      </select>
+      ${m.payment_status==="refund_requested" ? `<button class="small-btn fill" data-approve-refund="${m.id}">${esc(t("dash.approveRefund"))}</button><button class="small-btn danger" data-reject-refund="${m.id}">${esc(t("dash.rejectRefund"))}</button>` : ""}
+      ${m.dispute_status==="open" ? `<button class="small-btn fill" data-resolve-dispute="${m.id}">${esc(t("dash.resolveDispute"))}</button>` : ""}
+      ${m.stripe_payment_intent_id ? `<button class="small-btn" data-open-invoice="${m.id}">${esc(t("dash.viewInvoice"))}</button>` : ""}
+      <button class="small-btn danger" data-delete-mission="${m.id}">${esc(t("dash.delete"))}</button>
+    </div>
+  </article>`;
+}
+function bindAdminMissionActions(panel){
+  document.querySelectorAll("[data-open-invoice]").forEach(btn=>btn.addEventListener("click", ()=>openInvoice(btn.dataset.openInvoice)));
+  document.querySelectorAll("[data-status-select]").forEach(sel=>sel.addEventListener("change", async ()=>{
+    const {error} = await db.from("missions").update({status: sel.value}).eq("id", sel.dataset.statusSelect);
+    if(error) alert(friendlyError(error)); else renderAdminPanel(panel);
+  }));
+  document.querySelectorAll("[data-delete-mission]").forEach(btn=>btn.addEventListener("click", async ()=>{
+    if(!confirm(t("dash.delete")+" ?")) return;
+    const {error} = await db.from("missions").delete().eq("id", btn.dataset.deleteMission);
+    if(error) alert(friendlyError(error)); else renderAdminPanel(panel);
+  }));
+  document.querySelectorAll("[data-approve-refund]").forEach(btn=>btn.addEventListener("click", async ()=>{
+    if(!confirm(t("dash.approveRefund")+" ?")) return;
+    const {data:{session}} = await db.auth.getSession();
+    const res = await fetch(SUPABASE_URL + "/functions/v1/rapid-task", {
+      method: "POST",
+      headers: {"Content-Type":"application/json", "Authorization":"Bearer "+session.access_token, "apikey": SUPABASE_KEY},
+      body: JSON.stringify({missionId: btn.dataset.approveRefund})
+    });
+    if(res.ok) renderAdminPanel(panel); else { const j = await res.json(); alert(j.error || "Erreur"); }
+  }));
+  document.querySelectorAll("[data-reject-refund]").forEach(btn=>btn.addEventListener("click", async ()=>{
+    const {error} = await db.from("missions").update({payment_status:"refund_rejected"}).eq("id", btn.dataset.rejectRefund);
+    if(error) alert(friendlyError(error)); else renderAdminPanel(panel);
+  }));
+  document.querySelectorAll("[data-resolve-dispute]").forEach(btn=>btn.addEventListener("click", async ()=>{
+    if(!confirm(t("dash.resolveDispute")+" ?")) return;
+    const {error} = await db.from("missions").update({dispute_status:"resolved", dispute_resolved_at: new Date().toISOString()}).eq("id", btn.dataset.resolveDispute);
+    if(error) alert(friendlyError(error)); else renderAdminPanel(panel);
+  }));
+}
+function adminUserCard(p, missions, defaultCommission){
+  const missionCount = missions.filter(m => String(m.client_id)===String(p.id) || String(m.skipper_id)===String(p.id)).length;
+  const isProfessional = ["skipper","provider"].includes(p.role);
+  return `<article class="request-card" tabindex="0" role="button" data-admin-detail="user" data-admin-id="${esc(p.id)}">
+    <div class="request-top">
+      <div>
+        <h3>${esc(p.full_name||"—")}${featuredBadgeHtml(p)}</h3>
+        <div class="muted">${esc(p.role||"")}${p.provider_activity?" · "+esc(activityLabel(p.provider_activity)):""} · ${esc(p.home_port||"—")}</div>
+        <div class="muted">${esc(p.contact_email||p.email||"—")} · ${esc(p.phone||"—")}</div>
+        <div class="muted">${esc(t("dash.missionsCount"))}: ${missionCount}${p.rating?` · ★ ${Number(p.rating).toFixed(1)}`:""}</div>
+      </div>
+      <span class="status-pill ${p.suspended?"danger":p.verified?"ok":""}">${p.suspended?esc(t("dash.suspended")):p.verified?"✓":"—"}</span>
+    </div>
+    ${p.document_rejection_reason ? `<div class="note-box" style="background:#fff0f0;border-color:#f0c4c4;color:#8a2020">${esc(t("dash.documentRejected"))}: ${esc(p.document_rejection_reason)}</div>` : ""}
+    ${isProfessional ? `<div style="display:flex;align-items:center;gap:8px;margin-top:8px">
+      <label class="muted" style="font-size:12.5px;white-space:nowrap">${esc(t("dash.commissionProviderTitle"))}</label>
+      <input type="number" min="0" max="50" step="0.5" value="${Number(p.commission_percent ?? defaultCommission)}" data-commission-input="${p.id}" style="width:70px;padding:6px 8px;border:1px solid var(--line);border-radius:8px">
+      <span class="muted" style="font-size:12.5px">%</span>
+      <button class="small-btn" data-save-commission="${p.id}">${esc(t("dash.saveRate"))}</button>
+      <span class="ok-text" data-commission-msg="${p.id}" style="font-size:12.5px"></span>
+    </div>` : ""}
+    <div style="margin-top:8px">
+      <label class="muted" style="font-size:12.5px">${esc(t("dash.internalNoteLabel"))}</label>
+      <textarea data-note-input="${p.id}" rows="2" style="width:100%;padding:8px;border:1px solid var(--line);border-radius:8px;font-size:13px;margin-top:4px">${esc(p.admin_notes||"")}</textarea>
+      <button class="small-btn" data-save-note="${p.id}" style="margin-top:4px">${esc(t("dash.saveNote"))}</button>
+      <span class="ok-text" data-note-msg="${p.id}" style="font-size:12.5px"></span>
+    </div>
+    <div class="request-actions">
+${!p.verified ? `<button class="small-btn fill" data-approve="${p.id}">${esc(t("dash.approve"))}</button><button class="small-btn danger" data-reject-doc="${p.id}">${esc(t("dash.rejectDocument"))}</button>` : (String(p.id)===String(currentUser.id) ? `` : `<button class="small-btn danger" data-suspend="${p.id}">${esc(t("dash.suspend"))}</button>`)}
+      ${(isProfessional && p.verified) ? (p.featured ? `<button class="small-btn" data-unfeature="${p.id}">${esc(t("dash.unfeature"))}</button>` : `<button class="small-btn" data-feature="${p.id}">${esc(t("dash.markFeatured"))}</button>`) : ""}
+      ${(p.suspended && String(p.id)!==String(currentUser.id)) ? `<button class="small-btn danger" data-delete-user="${p.id}">${esc(t("dash.delete"))}</button>` : ""}
+      <button class="small-btn" data-view-profile="${p.id}">${esc(t("card.viewProfile"))}</button>
+      
+      ${p.role !== "admin" ? `<button class="small-btn" data-message-user="${p.id}">${esc(t("dash.navMessages"))}</button>` : ""}
+    </div>
+  </article>`;
+}
+
+function adminManagedBoatFormHtml(){
+  return `<section class="request-card" style="border:1px solid var(--aqua);margin-bottom:18px">
+    <div class="request-top"><div><h3 style="margin:0">Publier un bateau pour un propriétaire</h3><div class="muted">L'équipe SkipperNow publie et gère l'annonce. Le propriétaire n'a pas besoin de créer de compte.</div></div><span class="tag">SkipperNow</span></div>
+    <form id="adminManagedBoatForm" style="margin-top:14px">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px">
+        <div class="field"><label>NOM DU PROPRIÉTAIRE *</label><input id="managedOwnerName" required></div>
+        <div class="field"><label>TÉLÉPHONE</label><input id="managedOwnerPhone" inputmode="tel"></div>
+        <div class="field"><label>EMAIL</label><input id="managedOwnerEmail" type="email"></div>
+        <div class="field"><label>NOM DE L'ANNONCE *</label><input id="managedBoatName" required placeholder="Ex. Jeanneau Cap Camarat 7.5 WA"></div>
+        <div class="field"><label>MARQUE</label><input id="managedBoatBrand"></div>
+        <div class="field"><label>MODÈLE</label><input id="managedBoatModel"></div>
+        <div class="field"><label>TYPE</label><select id="managedBoatType"><option value="motorboat">Bateau à moteur</option><option value="sailboat">Voilier</option><option value="rib">Semi-rigide</option><option value="catamaran">Catamaran</option></select></div>
+        <div class="field"><label>PORT / LOCALISATION *</label><input id="managedBoatPort" required></div>
+        <div class="field"><label>ANNÉE</label><input id="managedBoatYear" type="number" min="1950" max="${new Date().getFullYear()}"></div>
+        <div class="field"><label>LONGUEUR (m)</label><input id="managedBoatLength" type="number" min="0" step="0.1"></div>
+        <div class="field"><label>PRIX DE VENTE (€) *</label><input id="managedBoatSalePrice" type="number" min="1" step="100" required></div>
+        <div class="field"><label>HEURES MOTEUR</label><input id="managedBoatEngineHours" type="number" min="0" step="1"></div>
+      </div>
+      <div class="field"><label>DESCRIPTION</label><textarea id="managedBoatDescription" rows="4" placeholder="État, entretien, équipements, travaux récents…"></textarea></div>
+      <div class="field"><label>PHOTOS</label><input id="managedBoatPhotos" type="file" accept="image/*" multiple></div>
+      <div class="field"><label>NOTE INTERNE PROPRIÉTAIRE</label><textarea id="managedOwnerNotes" rows="2" placeholder="Informations privées visibles uniquement par l'équipe SkipperNow"></textarea></div>
+      <button class="primary wide" type="submit">Publier au nom de SkipperNow</button>
+      <p class="ok-text" id="managedBoatMsg"></p>
+    </form>
+  </section>`;
+}
+async function bindAdminManagedBoatForm(){
+  const form=document.querySelector("#adminManagedBoatForm");
+  if(!form) return;
+  form.addEventListener("submit", async e=>{
+    e.preventDefault();
+    const btn=form.querySelector('button[type="submit"]'), msg=document.querySelector("#managedBoatMsg");
+    btn.disabled=true; msg.style.color=""; msg.textContent="Publication en cours…";
+    try{
+      const files=[...(document.querySelector("#managedBoatPhotos")?.files||[])].slice(0,12);
+      const photoUrls=[];
+      for(const file of files){
+        const path=`${currentUser.id}/managed-sale-${Date.now()}-${Math.random().toString(36).slice(2,8)}-${file.name.replace(/[^a-zA-Z0-9.\-_]/g,"_")}`;
+        const {error:uploadError}=await db.storage.from("mission-photos").upload(path,file);
+        if(uploadError) throw uploadError;
+        photoUrls.push(db.storage.from("mission-photos").getPublicUrl(path).data.publicUrl);
+      }
+      const n=value=>{const x=Number(value);return Number.isFinite(x)&&x>0?x:null;};
+      const payload={
+        owner_name:document.querySelector("#managedOwnerName").value.trim(),
+        owner_phone:document.querySelector("#managedOwnerPhone").value.trim()||null,
+        owner_email:document.querySelector("#managedOwnerEmail").value.trim()||null,
+        owner_notes:document.querySelector("#managedOwnerNotes").value.trim()||null,
+        name:document.querySelector("#managedBoatName").value.trim(),
+        brand:document.querySelector("#managedBoatBrand").value.trim()||null,
+        model:document.querySelector("#managedBoatModel").value.trim()||null,
+        boat_type:document.querySelector("#managedBoatType").value,
+        home_port:document.querySelector("#managedBoatPort").value.trim(),
+        year_built:n(document.querySelector("#managedBoatYear").value),
+        length_m:n(document.querySelector("#managedBoatLength").value),
+        sale_price:n(document.querySelector("#managedBoatSalePrice").value),
+        engine_hours:n(document.querySelector("#managedBoatEngineHours").value),
+        description:document.querySelector("#managedBoatDescription").value.trim()||null,
+        photo_urls:photoUrls
+      };
+      const {error}=await db.rpc("admin_create_managed_boat",{p_payload:payload});
+      if(error) throw error;
+      msg.style.color="#08794e";
+      msg.textContent="Annonce publiée par SkipperNow pour le compte du propriétaire.";
+      await renderAdminPanel("boats");
+    }catch(error){
+      msg.style.color="#b42318";
+      msg.textContent=friendlyError(error);
+      btn.disabled=false;
+    }
+  });
+}
+function adminManagedInquiriesHtml(rows, boats){
+  if(!rows?.length) return "";
+  const byBoat=Object.fromEntries((boats||[]).map(b=>[String(b.id),b]));
+  return `<div class="dash-section-title" style="margin-top:22px">Demandes d'achat reçues (${rows.length})</div>${rows.map(q=>{
+    const boat=byBoat[String(q.boat_id)];
+    return `<article class="request-card"><div class="request-top"><div><h3>${esc(boat?normalizeBoatTitle(boat):"Bateau")}</h3><div class="muted">${new Date(q.created_at).toLocaleString(currentLang)} · ${esc(q.buyer_email||"")}</div></div><span class="status-pill ${q.status==="new"?"ok":""}">${esc(q.status==="new"?"Nouveau":q.status)}</span></div><p style="white-space:pre-wrap">${esc(q.message||"")}</p>${q.buyer_email?`<a class="small-btn fill" href="mailto:${esc(q.buyer_email)}">Répondre par e-mail</a>`:""}</article>`;
+  }).join("")}`;
+}
+
+function adminBoatCard(b, byId, managedOwner){
+  const owner = byId[String(b.client_id)];
+  const photo = b.photo_url || (Array.isArray(b.photo_urls) && b.photo_urls[0]) || "";
+  const isFeaturedNow = b.featured && b.featured_until && new Date(b.featured_until) > new Date();
+  const daysLeft = isFeaturedNow ? Math.ceil((new Date(b.featured_until) - new Date())/(1000*60*60*24)) : 0;
+  return `<article class="request-card">
+    <div class="request-top">
+      ${photo ? `<img loading="lazy" src="${esc(photo)}" style="width:88px;height:88px;object-fit:cover;border-radius:12px;flex-shrink:0" onclick="window.open('${esc(photo)}','_blank')">` : `<div style="width:88px;height:88px;border-radius:12px;background:var(--mist);display:grid;place-items:center;font-size:28px;flex-shrink:0">⛵</div>`}
+      <div>
+        <h3>${esc(b.name||"—")}${b.verified ? verifiedBoatBadgeHtml() : ""}${b.managed_by_platform ? ` <span class="verified-badge" style="background:#e8f3ff;color:#174a75">SkipperNow · pour le propriétaire</span>` : ""}${isFeaturedNow ? ` <span class="verified-badge" style="background:#fff4d6;color:#8a6d1a">★ ${esc(t("dash.featuredBadge"))}</span>` : ""}</h3>
+        <div class="muted">${esc(b.model||"")}${b.boat_type?" · "+esc(boatTypeLabel(b.boat_type)):""} · ${esc(b.home_port||"—")}</div>
+        <div class="muted">${b.length_m?b.length_m+" m · ":""}${b.capacity?b.capacity+" pers. · ":""}${b.cabins!=null?b.cabins+" cabines · ":""}${b.year_built?b.year_built:""}</div>
+        <div class="muted">${esc(t("dash.owner"))}: ${b.managed_by_platform && managedOwner ? `${esc(managedOwner.owner_name||"—")}${managedOwner.owner_email?` · ${esc(managedOwner.owner_email)}`:""}${managedOwner.owner_phone?` · 📞 ${esc(managedOwner.owner_phone)}`:""}` : `${esc(owner?.full_name||"—")} · ${esc(owner?.contact_email||owner?.email||"—")}${owner?.phone?` · 📞 ${esc(owner.phone)}`:""}`}${b.skipper_included?` · ${esc(t("boatDetail.skipperIncluded"))}`:""}</div>
+        ${b.managed_by_platform && managedOwner?.notes ? `<div class="muted" style="margin-top:4px"><strong>Note interne :</strong> ${esc(managedOwner.notes)}</div>` : ""}
+        ${b.description ? `<div class="muted" style="margin-top:4px">${esc(b.description)}</div>` : ""}
+        ${Array.isArray(b.photo_urls) && b.photo_urls.length > 1 ? `<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">${b.photo_urls.map(u=>`<img loading="lazy" src="${esc(u)}" style="width:48px;height:48px;object-fit:cover;border-radius:8px;cursor:pointer" onclick="window.open('${esc(u)}','_blank')">`).join("")}</div>` : ""}
+        ${isFeaturedNow ? `<div class="muted" style="margin-top:6px;color:#8a6d1a;font-weight:700">${esc(t("dash.featuredUntil"))} ${new Date(b.featured_until).toLocaleDateString()} (${daysLeft} ${esc(t("dash.daysLeft"))})</div>` : ""}
+      </div>
+    </div>
+    <div class="request-actions">
+      ${b.verified ? `<button class="small-btn" data-unverify-boat="${b.id}">${esc(t("dash.unverifyBoat"))}</button>` : `<button class="small-btn fill" data-verify-boat="${b.id}">${esc(t("dash.verifyBoat"))}</button>`}
+      ${isFeaturedNow
+        ? `<button class="small-btn" data-unfeature-boat="${b.id}">${esc(t("dash.removeFeatured"))}</button>`
+        : `<select class="small-btn" data-feature-days="${b.id}" style="cursor:pointer">
+            <option value="">${esc(t("dash.featureFor"))}</option>
+            <option value="3">3 ${esc(t("dash.days"))}</option>
+            <option value="7">7 ${esc(t("dash.days"))}</option>
+            <option value="14">14 ${esc(t("dash.days"))}</option>
+            <option value="30">30 ${esc(t("dash.days"))}</option>
+          </select>`}
+      <button class="small-btn danger" data-delete-boat="${b.id}">${esc(t("dash.delete"))}</button>
+    </div>
+  </article>`;
+}
+function bindAdminBoatActions(){
+  document.querySelectorAll("[data-delete-boat]").forEach(btn=>btn.addEventListener("click", async ()=>{
+    if(!confirm(t("dash.delete")+" ?")) return;
+    btn.disabled = true;
+    const {data:{session}} = await db.auth.getSession();
+    try{
+      const res = await fetch(SUPABASE_URL + "/functions/v1/delete-boat-admin", {
+        method: "POST",
+        headers: {"Content-Type":"application/json", "Authorization":"Bearer "+session.access_token, "apikey": SUPABASE_KEY},
+        body: JSON.stringify({boatId: btn.dataset.deleteBoat})
+      });
+      const j = await res.json();
+      if(!res.ok || !j.ok){ alert(j.error || "Erreur"); btn.disabled = false; return; }
+      renderAdminPanel("boats");
+    }catch(err){ alert(friendlyError(err)); btn.disabled = false; }
+  }));
+  document.querySelectorAll("[data-verify-boat]").forEach(btn=>btn.addEventListener("click", async ()=>{
+    if(!confirm(t("dash.boatVerifyChecklist"))) return;
+    const {error} = await db.from("boats").update({verified:true}).eq("id", btn.dataset.verifyBoat);
+    if(error) alert(friendlyError(error)); else renderAdminPanel("boats");
+  }));
+  document.querySelectorAll("[data-unverify-boat]").forEach(btn=>btn.addEventListener("click", async ()=>{
+    const {error} = await db.from("boats").update({verified:false}).eq("id", btn.dataset.unverifyBoat);
+    if(error) alert(friendlyError(error)); else renderAdminPanel("boats");
+  }));
+  document.querySelectorAll("[data-feature-days]").forEach(sel=>sel.addEventListener("change", async ()=>{
+    const days = Number(sel.value);
+    if(!days) return;
+    const until = new Date(Date.now() + days*24*60*60*1000).toISOString();
+    const {error} = await db.from("boats").update({featured:true, featured_until:until}).eq("id", sel.dataset.featureDays);
+    if(error) alert(friendlyError(error)); else renderAdminPanel("boats");
+  }));
+  document.querySelectorAll("[data-unfeature-boat]").forEach(btn=>btn.addEventListener("click", async ()=>{
+    const {error} = await db.from("boats").update({featured:false, featured_until:null}).eq("id", btn.dataset.unfeatureBoat);
+    if(error) alert(friendlyError(error)); else renderAdminPanel("boats");
+  }));
+}
+
+function statusPillClass(status){
+  if(["accepted","paid","completed"].includes(status)) return "ok";
+  if(["rejected","cancelled"].includes(status)) return "danger";
+  return "";
+}
+function missionNextStep(m, context, reviewedMissionIds){
+  const pro=context==="pro";
+  if(m.status==="cancelled"||m.status==="rejected") return t("flow."+m.status);
+  if(m.status==="completed") return t(pro?"flow.completedPro":reviewedMissionIds?.has(String(m.id))?"flow.reviewed":"flow.completed");
+  if(m.status==="awaiting_validation") return t(pro?"flow.validationPro":"flow.validation");
+  if(m.status==="in_progress" || ["paid","payout_ready","transferred"].includes(m.payment_status)) return t("flow.progress");
+  if(m.status==="accepted" && m.stripe_payment_intent_id && !pro) return t("flow.prepared");
+  const key=["pending","quoted","accepted"].includes(m.status)?m.status:"pending";
+  return t("flow."+key+(pro?"Pro":""));
+}
+function requestCard(m, context, reviewedMissionIds){
+  const total = Number(m.amount_cents||0) + Number(m.urgent_fee_cents||0);
+  const priceText = total ? money(total) : t("booking.priceTbd");
+  let actions = "";
+  if(context === "pro" && m.status === "pending" && ((!m.skipper_id && !m.provider_id) || String(m.skipper_id||"")===String(currentUser.id) || String(m.provider_id||"")===String(currentUser.id))){
+    actions += `<button class="small-btn fill" data-quote="${m.id}" data-has-provider="${m.provider_id?"1":""}">${esc(t("dash.proposePrice"))}</button>`;
+  }
+  if(context === "client" && m.status === "quoted"){
+    actions += `<button class="small-btn fill" data-accept-quote="${m.id}">${esc(t("dash.acceptQuote"))}</button>`;
+    actions += `<button class="small-btn danger" data-reject-quote="${m.id}">${esc(t("dash.refuseQuote"))}</button>`;
+  }
+  if(context === "client" && m.status === "accepted" && [null,"unpaid","failed"].includes(m.payment_status)){
+   actions += `<button class="small-btn fill" data-pay-mission="${m.id}" data-pay-amount="${total}">${esc(t("dash.pay"))}</button>`;if(!m.stripe_payment_intent_id) actions += `<button class="small-btn danger" data-cancel="${m.id}">${esc(t("dash.cancel"))}</button>`;
+  }
+  if(context === "pro" && m.status === "in_progress"){
+    actions += `<button class="small-btn fill" data-complete="${m.id}">${esc(t("dash.markDone"))}</button>`;
+  }
+  if(context === "client" && m.status === "awaiting_validation"){
+    actions += `<button class="small-btn fill" data-validate="${m.id}">${esc(t("dash.validate"))}</button>`;
+  }
+  if(context === "client" && m.status === "completed" && ["paid","transferred","payout_ready"].includes(m.payment_status)){
+    actions += `<button class="small-btn danger" data-request-refund="${m.id}">${esc(t("dash.requestRefund"))}</button>`;
+  }
+  if(context === "client" && m.status === "completed" && (m.skipper_id||m.provider_id) && reviewedMissionIds && !reviewedMissionIds.has(String(m.id))){
+    actions += `<button class="small-btn fill" data-leave-review="${m.id}" data-review-target="${m.skipper_id||m.provider_id}">${esc(t("dash.leaveReview"))}</button>`;
+  }
+  if((context === "client" || context === "pro") && ["paid","transferred","payout_ready","refund_requested","refunded","refund_rejected"].includes(m.payment_status)){
+    actions += `<button class="small-btn" data-open-invoice="${m.id}">${esc(t("dash.viewInvoice"))}</button>`;
+  }
+  if((context === "client" || context === "pro") && ["completed","in_progress","awaiting_validation"].includes(m.status) && !m.dispute_status){
+    actions += `<button class="small-btn" data-open-dispute="${m.id}">${esc(t("dash.reportProblem"))}</button>`;
+  }
+  if(m.dispute_status === "open"){
+    actions += `<span class="tag" style="background:#fff0f0;color:#b42318">${esc(t("dash.disputeOpen"))}</span>`;
+  }else if(m.dispute_status === "resolved"){
+    actions += `<span class="tag">${esc(t("dash.disputeResolved"))}</span>`;
+  }
+  if(context === "admin" && !["cancelled","completed"].includes(m.status)){
+    actions += `<button class="small-btn danger" data-cancel="${m.id}">${esc(t("dash.cancel"))}</button>`;
+  }
+  if((context === "client" || context === "pro") && (m.skipper_id||m.provider_id)){
+    actions += `<button class="small-btn" data-open-chat="${m.client_id}|${m.skipper_id||m.provider_id}">${esc(t("dash.navMessages"))}</button>`;
+  }
+  return `<article class="request-card">
+    <div class="request-top">
+      <div><h3>${esc(m.port||"—")} · ${esc(m.boat_type||"")}</h3><div class="muted">${m.starts_at ? new Date(m.starts_at).toLocaleDateString(currentLang) : ""} — ${esc(m.description||"")}</div></div>
+      <span class="status-pill ${statusPillClass(m.status)}">${esc(t("status."+(m.status||"pending")))}</span>
+    </div>
+    ${Array.isArray(m.photo_urls) && m.photo_urls.length ? `<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">${m.photo_urls.map(u=>`<img loading="lazy" src="${esc(u)}" style="width:56px;height:56px;object-fit:cover;border-radius:8px;cursor:pointer" onclick="window.open('${esc(u)}','_blank')">`).join("")}</div>` : ""}
+    <div class="muted" style="margin-top:6px">${priceText}${m.guest_count ? ` · ${esc(String(m.guest_count))} ${esc(t("dash.guests"))}` : ""}</div>
+    <div class="muted">${esc(t("dash.paymentStatus"))}: ${esc(t("paymentStatus."+(m.payment_status||"unpaid")))}</div>
+    <div class="request-next"><strong>${esc(t("flow.next"))}</strong>${esc(missionNextStep(m,context,reviewedMissionIds))}</div>
+    <div data-service-summary="${esc(m.id)}"></div>
+    <div class="request-actions">${actions}</div>
+  </article>`;
+}
+window.openInvoice = function(){
+  alert(currentLang === "fr" ? "Les documents ne sont pas disponibles. Actualisez la page." : "Documents unavailable. Please reload the page.");
+};
+function bindRequestActions(){
+  document.querySelectorAll("[data-leave-review]").forEach(btn=>btn.addEventListener("click", ()=>{
+    openReviewModal(btn.dataset.leaveReview, btn.dataset.reviewTarget);
+  }));
+  document.querySelectorAll("[data-quote]").forEach(btn=>btn.addEventListener("click", async ()=>{
+    const amount = prompt(t("dash.proposePrice") + " (€) :");
+    if(amount === null) return;
+    const euros = Number(String(amount).replace(",", "."));
+    if(!Number.isFinite(euros) || euros <= 0) return;
+    const {data:settings} = await db.from("platform_settings").select("*").eq("id",1).maybeSingle();
+    const rate = Number(settings?.first_commission_percent ?? 15) / 100;
+    const patch = {
+      amount_cents: Math.round(euros*100),
+      platform_fee_cents: Math.round(euros*100*rate),
+      status: "quoted"
+    };
+    if(!btn.dataset.hasProvider) patch.skipper_id = currentUser.id;
+    const {error} = await db.from("missions").update(patch).eq("id", btn.dataset.quote);
+    if(error) alert(friendlyError(error)); else openDashboard();
+  }));
+  document.querySelectorAll("[data-accept-quote]").forEach(btn=>btn.addEventListener("click", async ()=>{
+    const {error} = await db.from("missions").update({status:"accepted"}).eq("id", btn.dataset.acceptQuote).eq("client_id", currentUser.id);
+    if(error) alert(friendlyError(error)); else openDashboard();
+  }));
+  document.querySelectorAll("[data-reject-quote]").forEach(btn=>btn.addEventListener("click", async ()=>{
+    const {error} = await db.from("missions").update({status:"rejected"}).eq("id", btn.dataset.rejectQuote).eq("client_id", currentUser.id);
+    if(error) alert(friendlyError(error)); else openDashboard();
+  }));
+  document.querySelectorAll("[data-complete]").forEach(btn=>btn.addEventListener("click", async ()=>{
+    openServiceCompletion(btn.dataset.complete);
+  }));
+  document.querySelectorAll("[data-validate]").forEach(btn=>btn.addEventListener("click", async ()=>{
+    const {error} = await db.from("missions").update({status:"completed"}).eq("id", btn.dataset.validate).eq("client_id", currentUser.id);
+    if(error) alert(friendlyError(error)); else openDashboard();
+  }));
+  document.querySelectorAll("[data-cancel]").forEach(btn=>btn.addEventListener("click", async ()=>{
+    if(!confirm(t("dash.cancel")+" ?")) return;
+    const {error} = await db.from("missions").update({status:"cancelled"}).eq("id", btn.dataset.cancel);
+    if(error) alert(friendlyError(error)); else openDashboard();
+  }));
+  document.querySelectorAll("[data-pay-mission]").forEach(btn=>btn.addEventListener("click", ()=>{
+    openPaymentFor(btn.dataset.payMission, Number(btn.dataset.payAmount));
+  }));
+  document.querySelectorAll("[data-request-refund]").forEach(btn=>btn.addEventListener("click", async ()=>{
+    if(!confirm(t("dash.requestRefund")+" ?")) return;
+    const {error} = await db.from("missions").update({payment_status:"refund_requested"}).eq("id", btn.dataset.requestRefund).eq("client_id", currentUser.id);
+    if(error) alert(friendlyError(error)); else openDashboard();
+  }));
+  document.querySelectorAll("[data-open-invoice]").forEach(btn=>btn.addEventListener("click", ()=>openInvoice(btn.dataset.openInvoice)));
+  document.querySelectorAll("[data-open-dispute]").forEach(btn=>btn.addEventListener("click", async ()=>{
+    const reason = prompt(t("dash.reportProblem") + " — " + t("dispute.reasonPrompt"));
+    if(reason === null || !reason.trim()) return;
+    const {error} = await db.from("missions").update({
+      dispute_status: "open",
+      dispute_reason: reason.trim(),
+      dispute_opened_by: currentUser.id,
+      dispute_opened_at: new Date().toISOString()
+    }).eq("id", btn.dataset.openDispute);
+    if(error) alert(friendlyError(error)); else openDashboard();
+  }));
+  document.querySelectorAll("[data-open-chat]").forEach(btn=>btn.addEventListener("click", async ()=>{
+    const [clientId, skipperId] = btn.dataset.openChat.split("|");
+    document.querySelectorAll(".dash-side button").forEach(b=>b.classList.toggle("active", b.dataset.panel==="messages"));
+    if(currentProfile.role === "client") await renderClientPanel("messages");
+    else await renderProPanel("messages");
+    await openConversationThread(clientId, skipperId);
+  }));
+}
+let reviewMissionId = null;
+let reviewTargetId = null;
+let reviewSelectedStars = 0;
+function openReviewModal(missionId, targetId){
+  reviewMissionId = missionId;
+  reviewTargetId = targetId;
+  reviewSelectedStars = 0;
+  document.querySelector("#reviewComment").value = "";
+  document.querySelector("#reviewMsg").textContent = "";
+  paintReviewStars();
+  openModal("reviewModal");
+}
+function paintReviewStars(){
+  document.querySelectorAll(".review-star").forEach(s=>{
+    s.setAttribute("aria-label",t("review.stars",{n:s.dataset.star}));
+    s.setAttribute("aria-pressed",String(Number(s.dataset.star)===reviewSelectedStars));
+    s.style.color = Number(s.dataset.star) <= reviewSelectedStars ? "var(--brass)" : "var(--line)";
+  });
+}
+document.querySelectorAll(".review-star").forEach(s=>s.addEventListener("click", ()=>{
+  reviewSelectedStars = Number(s.dataset.star);
+  paintReviewStars();
+}));
+document.querySelector("#submitReviewBtn").addEventListener("click", async ()=>{
+  const msg = document.querySelector("#reviewMsg");
+  if(!reviewSelectedStars){ msg.style.color = "#b42318"; msg.textContent = t("dash.reviewNeedStars"); return; }
+  const btn = document.querySelector("#submitReviewBtn");
+  btn.disabled = true;
+  const {error} = await db.from("reviews").insert({
+    mission_id: reviewMissionId,
+    client_id: currentUser.id,
+    skipper_id: reviewTargetId,
+    rating: reviewSelectedStars,
+    comment: document.querySelector("#reviewComment").value.trim() || null
+  });
+  btn.disabled = false;
+  if(error){ msg.style.color = "#b42318"; msg.textContent = friendlyError(error); return; }
+  closeModal("reviewModal");
+  await renderClientPanel("requests");
+});
+function profileCard(p){
+  const badge = p.verified ? "ok" : "";
+  const isProfessional = ["skipper","provider"].includes(p.role);
+  const missing = [];
+  if(isProfessional){
+    if(!p.phone) missing.push(t("dash.reqPhone"));
+    if(profileNeedsDiploma(p) && !p.diploma_url) missing.push(t("dash.reqDiploma"));
+    if(!p.profile_photo_url) missing.push(t("dash.reqPhoto"));
+  }
+  const canApprove = !p.verified && missing.length === 0;
+  return `<article class="request-card" tabindex="0" role="button" data-admin-detail="user" data-admin-id="${esc(p.id)}">
+    <div class="request-top">
+      <div><h3>${esc(p.full_name||"—")}</h3><div class="muted">${esc(p.role||"")} · ${esc(p.home_port||"—")}${p.provider_activity?" · "+esc(activityLabel(p.provider_activity)):""}</div>
+      <div class="muted">${esc(p.contact_email||p.email||"—")}${p.phone?` · 📞 ${esc(p.phone)}`:` · <span style="color:#c0392b">${esc(t("dash.reqPhone"))}</span>`}</div>
+      <div class="muted">${p.diploma_url ? `<a href="${esc(p.diploma_url)}" target="_blank">${esc(t("account.diplomaCurrent"))}</a>` : (profileNeedsDiploma(p) ? `<span style="color:#c0392b">${esc(t("dash.reqDiploma"))}</span>` : "")}</div>
+      <div class="muted">${p.profile_photo_url ? `<a href="${esc(p.profile_photo_url)}" target="_blank">${esc(t("dash.reqPhotoLink"))}</a>` : `<span style="color:#c0392b">${esc(t("dash.reqPhoto"))}</span>`}</div></div>
+      <span class="status-pill ${badge}">${p.verified ? "✓" : "—"}</span>
+    </div>
+    ${!p.verified && missing.length ? `<div class="note-box" style="background:#fff0f0;border-color:#f0c4c4;color:#8a2020">${esc(t("dash.missingBeforeApproval"))}: ${missing.join(", ")}</div>` : ""}
+    <div class="request-actions">
+      ${!p.verified ? `<button class="small-btn fill" data-approve="${p.id}">${esc(t("dash.approve"))}</button>` : `<button class="small-btn danger" data-suspend="${p.id}">${esc(t("dash.suspend"))}</button>`}
     </div>
   </article>`;
 }
