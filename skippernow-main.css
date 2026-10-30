@@ -753,3 +753,21 @@ header{background:rgba(255,248,239,.95);border-bottom-color:rgba(73,47,70,.12)}
 .seo-footer-group{border-color:#e7d8d1;background:rgba(255,255,255,.64)}
 footer{background:#1e122c;color:#eadfe6}
 .faq-toggle{background:linear-gradient(145deg,#ff6b4a,#e84b5f)!important;color:#fff!important;box-shadow:0 10px 28px rgba(232,75,95,.3)!important}
+
+/* Accueil — trois univers clairement séparés, avec l'identité coucher de soleil */
+body .sn-home-choice{background:radial-gradient(circle at 8% 0%,rgba(255,209,102,.24),transparent 24%),radial-gradient(circle at 95% 100%,rgba(255,107,74,.18),transparent 28%),linear-gradient(145deg,#fff8ef 0%,#fff0e7 100%)!important;border-color:rgba(155,54,88,.20)!important;box-shadow:0 24px 65px rgba(44,25,55,.16)!important}
+body .sn-home-kicker{color:#9b3658!important}
+body .sn-home-choice-card{position:relative;overflow:hidden;border:0!important;box-shadow:0 14px 32px rgba(44,25,55,.15)!important}
+body .sn-home-choice-card:before{content:""!important;position:absolute!important;inset:0!important;height:auto!important;background:radial-gradient(circle at 100% 0%,rgba(255,255,255,.20),transparent 34%)!important;pointer-events:none}
+body .sn-home-choice-card:nth-child(1){background:linear-gradient(145deg,#241633,#533258)!important;color:#fff!important}
+body .sn-home-choice-card:nth-child(2){background:linear-gradient(145deg,#ff744f,#d94668)!important;color:#fff!important}
+body .sn-home-choice-card:nth-child(3){background:linear-gradient(145deg,#ffd166,#ee9b3f)!important;color:#2d2135!important}
+body .sn-home-choice-card:hover{transform:translateY(-5px)!important;box-shadow:0 20px 42px rgba(44,25,55,.23)!important}
+body .sn-home-choice-card strong,body .sn-home-choice-card small,body .sn-home-choice-card b{position:relative;z-index:1}
+body .sn-home-choice-card:nth-child(1) strong,body .sn-home-choice-card:nth-child(1) small,body .sn-home-choice-card:nth-child(1) b,
+body .sn-home-choice-card:nth-child(2) strong,body .sn-home-choice-card:nth-child(2) small,body .sn-home-choice-card:nth-child(2) b{color:#fff!important}
+body .sn-home-choice-card:nth-child(3) strong,body .sn-home-choice-card:nth-child(3) small,body .sn-home-choice-card:nth-child(3) b{color:#2d2135!important}
+body .sn-home-choice-icon{position:relative;z-index:1;width:48px;height:48px;display:grid!important;place-items:center;border-radius:15px;background:rgba(255,255,255,.22);box-shadow:inset 0 1px 0 rgba(255,255,255,.32)}
+body .sn-home-choice-card:nth-child(3) .sn-home-choice-icon{background:rgba(255,248,239,.62)}
+body .sn-home-reassurance{border-top-color:rgba(155,54,88,.16)!important;color:#5f4f61!important}
+body .search-btn{background:linear-gradient(135deg,#ff764f,#e84668)!important;color:#fff!important;box-shadow:0 12px 30px rgba(232,70,104,.30)!important}
