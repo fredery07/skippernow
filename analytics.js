@@ -115,7 +115,7 @@
     });
 
     const conversion = document.createElement("script");
-    conversion.src = "/conversion-ux-v1.js?v=20260920-cta-tracking";
+    conversion.src = "/conversion-ux-v1.js?v=20261030-sunset-cards-v1";
     conversion.defer = true;
     document.head.appendChild(conversion);
 
