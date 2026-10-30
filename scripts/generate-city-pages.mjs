@@ -15,9 +15,26 @@ const SUPABASE_ANON_KEY = "sb_publishable_OxikOn1mhDcxkAVAucN5Lg_za-bJMS5";
 const SITE_URL = "https://skippernow.fr";
 const ROOT = path.resolve(new URL(".", import.meta.url).pathname, "..");
 
-// Ces 5 villes ont déjà une page écrite à la main (contenu plus riche) :
+// Ces villes ont déjà une page écrite à la main (contenu plus riche) :
 // on ne les régénère jamais automatiquement pour ne pas les écraser.
-const STATIC_CITIES = new Set(["cannes", "antibes", "nice", "monaco", "saint-tropez"]);
+const STATIC_CITIES = new Set([
+  "cannes",
+  "antibes",
+  "nice",
+  "monaco",
+  "saint-tropez",
+  "mandelieu-la-napoule",
+  "theoule-sur-mer",
+  "cap-d-ail"
+]);
+
+// Pages locales dédiées aux prestataires nautiques. Elles complètent les pages
+// skipper et location sans mélanger les trois offres dans les résultats locaux.
+const STATIC_FR_SERVICE_PAGES = [
+  "services-nautiques-mandelieu-la-napoule",
+  "services-nautiques-theoule-sur-mer",
+  "services-nautiques-cap-d-ail"
+];
 
 // Pages Espagne écrites à la main (contenu SEO riche, en espagnol) : jamais
 // régénérées ni supprimées, et toujours incluses dans le sitemap.
@@ -282,10 +299,10 @@ async function main() {
     created++;
   }
 
-  // Reconstruit le sitemap : les 5 pages statiques + toutes les pages
+  // Reconstruit le sitemap : les pages statiques + toutes les pages
   // dynamiques trouvées ci-dessus.
   const urls = [`${SITE_URL}/`];
-  for (const c of ["cannes", "antibes", "nice", "monaco", "saint-tropez"]) {
+  for (const c of STATIC_CITIES) {
     urls.push(`${SITE_URL}/skipper-${c}/`, `${SITE_URL}/location-bateau-${c}/`);
   }
   for (const slug of skipperCities.keys()) urls.push(`${SITE_URL}/skipper-${slug}/`);
@@ -295,6 +312,7 @@ async function main() {
   for (const slug of STATIC_BS_PAGES) urls.push(`${SITE_URL}/${slug}/`);
   for (const slug of STATIC_PR_PAGES) urls.push(`${SITE_URL}/${slug}/`);
   for (const slug of STATIC_DO_PAGES) urls.push(`${SITE_URL}/${slug}/`);
+  for (const slug of STATIC_FR_SERVICE_PAGES) urls.push(`${SITE_URL}/${slug}/`);
   for (const slug of STATIC_BLOG_PAGES) urls.push(`${SITE_URL}/${slug}/`);
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls
