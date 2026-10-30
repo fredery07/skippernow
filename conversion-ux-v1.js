@@ -121,7 +121,7 @@
       .hero-shade{background:linear-gradient(90deg,rgba(4,19,31,.72),rgba(4,19,31,.42) 48%,rgba(4,19,31,.14))!important}
       .hero h1{color:#fffdf7!important}
       .hero p,.trust{color:#e6f3f0!important}
-      .hero-cta .primary,.search-btn{background:linear-gradient(135deg,#39dfce,#27beaF)!important;color:#04131f!important;box-shadow:0 10px 28px rgba(53,215,200,.28)!important}
+      .hero-cta .primary,.search-btn{background:linear-gradient(135deg,#ff764f,#e84668)!important;color:#fff!important;box-shadow:0 12px 30px rgba(232,70,104,.30)!important}
       .hero-cta .secondary-light{border-color:rgba(231,201,133,.65)!important;color:#fff9eb!important;background:rgba(231,201,133,.10)!important}
       .port-chips button{border-color:rgba(231,201,133,.42)!important;background:rgba(255,255,255,.10)!important}
       .port-chips button:hover{background:rgba(231,201,133,.18)!important;border-color:#e7c985!important}
@@ -137,13 +137,21 @@
       .pill-link,.eyebrow{color:#b88a45!important}
       .primary{background:linear-gradient(135deg,#061827,#0b6570)!important;box-shadow:0 8px 20px rgba(6,24,39,.14)}
       .ghost,.small-btn,.language-select{background:#fffaf1!important;border-color:#ddd2bc!important}
-      .sn-home-choice{background:linear-gradient(145deg,#fffdf8 0%,#fbf7ef 100%)!important;border-color:rgba(184,138,69,.27)!important;box-shadow:0 22px 60px rgba(6,24,39,.12)!important}
-      .sn-home-kicker{color:#a97b37!important}
-      .sn-home-choice-card{background:linear-gradient(155deg,#fffdf8,#f8f3e9)!important;border-color:#ded4c1!important;position:relative;overflow:hidden}
-      .sn-home-choice-card:before{content:"";position:absolute;inset:0 0 auto;height:3px;background:linear-gradient(90deg,#35d7c8,#e7c985);opacity:.9}
-      .sn-home-choice-card:hover{border-color:#c9a96d!important;box-shadow:0 14px 34px rgba(6,24,39,.10)!important}
-      .sn-home-choice-card b{color:#0b6570!important}
-      .sn-home-reassurance{border-top-color:#e8dfd0!important}
+      .sn-home-choice{background:radial-gradient(circle at 8% 0%,rgba(255,209,102,.24),transparent 24%),radial-gradient(circle at 95% 100%,rgba(255,107,74,.18),transparent 28%),linear-gradient(145deg,#fff8ef 0%,#fff0e7 100%)!important;border-color:rgba(155,54,88,.20)!important;box-shadow:0 24px 65px rgba(44,25,55,.16)!important}
+      .sn-home-kicker{color:#9b3658!important}
+      .sn-home-choice-card{position:relative;overflow:hidden;border:0!important;box-shadow:0 14px 32px rgba(44,25,55,.15)!important}
+      .sn-home-choice-card:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 100% 0%,rgba(255,255,255,.20),transparent 34%);pointer-events:none}
+      .sn-home-choice-card:nth-child(1){background:linear-gradient(145deg,#241633,#533258)!important;color:#fff!important}
+      .sn-home-choice-card:nth-child(2){background:linear-gradient(145deg,#ff744f,#d94668)!important;color:#fff!important}
+      .sn-home-choice-card:nth-child(3){background:linear-gradient(145deg,#ffd166,#ee9b3f)!important;color:#2d2135!important}
+      .sn-home-choice-card:hover{transform:translateY(-5px)!important;box-shadow:0 20px 42px rgba(44,25,55,.23)!important}
+      .sn-home-choice-card strong,.sn-home-choice-card small,.sn-home-choice-card b{position:relative;z-index:1}
+      .sn-home-choice-card:nth-child(1) strong,.sn-home-choice-card:nth-child(1) small,.sn-home-choice-card:nth-child(1) b,
+      .sn-home-choice-card:nth-child(2) strong,.sn-home-choice-card:nth-child(2) small,.sn-home-choice-card:nth-child(2) b{color:#fff!important}
+      .sn-home-choice-card:nth-child(3) strong,.sn-home-choice-card:nth-child(3) small,.sn-home-choice-card:nth-child(3) b{color:#2d2135!important}
+      .sn-home-choice-icon{position:relative;z-index:1;width:48px;height:48px;display:grid!important;place-items:center;border-radius:15px;background:rgba(255,255,255,.22);box-shadow:inset 0 1px 0 rgba(255,255,255,.32)}
+      .sn-home-choice-card:nth-child(3) .sn-home-choice-icon{background:rgba(255,248,239,.62)}
+      .sn-home-reassurance{border-top-color:rgba(155,54,88,.16)!important;color:#5f4f61!important}
       footer{background:#04131f!important;color:#e6f3f0!important}
       @media(max-width:760px){
         header{background:rgba(250,247,239,.97)!important}
