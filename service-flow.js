@@ -345,10 +345,8 @@ function mountHomepageConversionBoost(){
   quick.style.border="2px solid var(--aqua)";
   quick.style.boxShadow="0 12px 32px rgba(13,102,114,.13)";
   const proof=document.createElement("div");proof.style.cssText="font-size:12px;color:var(--muted);font-weight:700;margin:-2px 0 12px 24px";proof.textContent="✓ "+c.proof;quick.insertAdjacentElement("afterend",proof);
-  const hero=document.querySelector(".hero-cta");
-  if(hero && !document.querySelector("#heroConversionRequest")){
-    const btn=document.createElement("button");btn.id="heroConversionRequest";btn.type="button";btn.className="primary";btn.textContent=c.hero;btn.addEventListener("click",()=>openConversionRequest("hero"));hero.prepend(btn);
-  }
+  // The hero already exposes the three distinct SkipperNow universes.
+  // Keep the generic request entry point in the quick-request bar below.
   quickBtn.addEventListener("click",()=>{try{if(typeof trackBookingEvent==="function") trackBookingEvent("conversion_cta_clicked",{source:"quick_bar"});}catch(_e){}});
   const style=document.createElement("style");style.textContent=`#mobileConversionCta{display:none}@media(max-width:720px){body{padding-bottom:76px}#mobileConversionCta{display:block;position:fixed;left:12px;right:12px;bottom:10px;z-index:999;border:0;border-radius:15px;background:var(--aqua);color:var(--navy);font-weight:900;padding:15px 16px;box-shadow:0 12px 34px rgba(7,29,50,.28);font-size:15px}.quick-request-bar{border-width:2px!important}.quick-request-copy strong{font-size:18px!important}#conversionProfiles>div:nth-child(2){grid-template-columns:1fr!important}}`;document.head.append(style);
   const mobile=document.createElement("button");mobile.id="mobileConversionCta";mobile.type="button";mobile.textContent="⚓ "+c.cta;mobile.addEventListener("click",()=>openConversionRequest("mobile_sticky"));document.body.append(mobile);
