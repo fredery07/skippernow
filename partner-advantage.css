@@ -1,0 +1,23 @@
+
+/* SkipperNow partner advantage: intentionally distinct from listings and service providers */
+.sn-difference{position:relative;isolation:isolate;overflow:hidden;margin:28px auto 34px;border-radius:24px;padding:clamp(22px,4vw,46px);background:linear-gradient(127deg,#06263d 3%,#0c5470 56%,#117d88 100%);color:#fff;box-shadow:0 18px 50px rgba(5,48,72,.22)}
+.sn-difference::before{content:"";position:absolute;right:-90px;top:-130px;width:390px;height:390px;border:1px solid rgba(255,255,255,.2);border-radius:50%;box-shadow:0 0 0 55px rgba(255,255,255,.04),0 0 0 110px rgba(255,255,255,.025);z-index:-1;pointer-events:none}
+.sn-difference-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(290px,.85fr);gap:clamp(20px,4vw,54px);align-items:center}
+.sn-diff-kicker{display:inline-flex;background:#d9ff93;color:#123729;border-radius:100px;font-size:11px;font-weight:850;letter-spacing:1.15px;padding:9px 13px;margin-bottom:18px}
+.sn-difference h2{color:white;font-size:clamp(29px,3.6vw,49px);line-height:1.12;letter-spacing:-1.1px;max-width:650px;margin:0 0 16px;text-wrap:balance}
+.sn-diff-lead{font-size:clamp(15px,1.7vw,18px);line-height:1.65;max-width:620px;color:#e0f5fa;margin:0 0 22px}
+.sn-diff-points{list-style:none;margin:0 0 25px;padding:0;display:grid;gap:11px}
+.sn-diff-points li{display:flex;align-items:flex-start;gap:10px;font-size:14px;font-weight:650;color:#f2fdff}
+.sn-diff-points li:before{content:"✓";background:#d9ff93;color:#07394b;border-radius:100%;width:22px;height:22px;display:inline-grid;place-items:center;flex:0 0 22px;font-weight:900}
+.sn-diff-cta{border:0!important;border-radius:12px!important;background:#d9ff93!important;color:#07354a!important;padding:15px 24px!important;font-weight:850!important;font-size:15px!important;cursor:pointer;box-shadow:0 8px 23px rgba(0,0,0,.14)}
+.sn-diff-cta:hover{filter:brightness(.96);transform:translateY(-1px)}
+.sn-diff-fine{max-width:600px;font-size:11.5px!important;line-height:1.5;color:#cae8ec;margin:13px 0 0}
+.sn-diff-pricing{background:#fff;color:#132d3e;border-radius:19px;padding:clamp(20px,3vw,28px);box-shadow:0 14px 45px rgba(0,21,39,.22)}
+.sn-diff-pricing small{display:block;color:#49778a;letter-spacing:1.5px;font-weight:850;font-size:10px;margin-bottom:18px}
+.sn-diff-line{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid #e4edef;font-size:13px}
+.sn-diff-line strong{font-size:clamp(18px,2vw,24px);white-space:nowrap;color:#102f40}
+.sn-diff-total{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding:20px 0 14px;font-size:14px;font-weight:800}
+.sn-diff-total strong{font-size:clamp(27px,3vw,36px);color:#0b6972}
+.sn-diff-keep{background:#e9faeb;color:#176044;padding:12px;border-radius:11px;font-size:12px;font-weight:800;text-align:center}
+.sn-diff-after{margin:22px 0 0;font-size:12px;color:#c7eaf1;line-height:1.5}
+@media(max-width:750px){.sn-difference{border-radius:17px;padding:22px;margin:20px auto 26px}.sn-difference-grid{grid-template-columns:1fr;gap:23px}.sn-difference h2{font-size:31px}.sn-diff-pricing{max-width:none}.sn-diff-cta{width:100%}}
