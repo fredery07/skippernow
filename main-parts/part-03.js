@@ -229,12 +229,36 @@ function renderPortSuggestions(items){
 function normalizePortText(value){
   return String(value||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[’']/g," ").replace(/[-–—]/g," ").replace(/\s+/g," ").trim();
 }
+// Destinations ciblées lors de la prospection internationale.
+// Le libellé régional est conservé dans les suggestions pour éviter les homonymes.
+const INTERNATIONAL_PROSPECT_DESTINATIONS = [
+  ["Fajardo","Puerto Rico"],["Culebra","Puerto Rico"],["Vieques","Puerto Rico"],
+  ["Icacos","Puerto Rico"],["Palomino","Puerto Rico"],["La Parguera","Puerto Rico"],
+  ["Ponce","Puerto Rico"],["San Juan","Puerto Rico"],
+  ["Cap Cana","République dominicaine"],["Punta Cana","République dominicaine"],
+  ["Las Terrenas","République dominicaine"],["Samaná","République dominicaine"],
+  ["Nassau","Bahamas"],["Exuma","Bahamas"],["Eleuthera","Bahamas"],
+  ["Spanish Wells","Bahamas"],["Harbour Island","Bahamas"],["Freeport","Bahamas"],
+  ["Bridgetown","Barbade"],["Carlisle Bay","Barbade"],
+  ["Chaguaramas","Trinité-et-Tobago"],["Monos","Trinité-et-Tobago"],
+  ["Scotland Bay","Trinité-et-Tobago"],["Turtle Bay","Trinité-et-Tobago"],
+  ["Castries","Sainte-Lucie"],["Rodney Bay","Sainte-Lucie"],["Soufrière","Sainte-Lucie"],
+  ["Grand Cayman","Îles Caïmans"],["North Sound","Îles Caïmans"],
+  ["Stingray City","Îles Caïmans"],
+  ["Providenciales","Turks-et-Caïcos"],["Grace Bay","Turks-et-Caïcos"],
+  ["St. Thomas","Îles Vierges américaines"],["St. John","Îles Vierges américaines"],
+  ["St. Croix","Îles Vierges américaines"],
+  ["Tortola","Îles Vierges britanniques"],["Virgin Gorda","Îles Vierges britanniques"],
+  ["Anguilla","Anguilla"],["Simpson Bay","Sint Maarten"],
+  ["Marigot","Saint-Martin"],["Gustavia","Saint-Barthélemy"]
+];
 function destinationCatalogItems(){
   if(typeof DESTINATION_ZONES === "undefined") return [];
   const items = [];
   Object.values(DESTINATION_ZONES).forEach(zone=>{
     (zone.places||[]).forEach(name=>items.push({name,place:zone.country||zone.title}));
   });
+  INTERNATIONAL_PROSPECT_DESTINATIONS.forEach(([name,place])=>items.push({name,place}));
   return items;
 }
 function localPortMatches(q){
@@ -334,7 +358,7 @@ const DESTINATION_ZONES = {
     title:"Caraïbes",
     country:"Caraïbes",
     subtitle:"Choisissez une destination où la plaisance, les marinas ou le charter sont réellement présents.",
-    places:["Las Terrenas","Samaná","Cap Cana","Puerto Plata","Le Marin","Fort-de-France","Trois-Îlets","Pointe-à-Pitre","Saint-François","Deshaies","Gustavia","Marigot","Anse Marcel","Simpson Bay","Rodney Bay","Nassau","Exuma","Bimini"]
+    places:["Las Terrenas","Samaná","Cap Cana","Punta Cana","Puerto Plata","Fajardo","Culebra","Vieques","Icacos","Palomino","La Parguera","Ponce","San Juan","Le Marin","Fort-de-France","Trois-Îlets","Pointe-à-Pitre","Saint-François","Deshaies","Gustavia","Marigot","Anse Marcel","Simpson Bay","Anguilla","Rodney Bay","Castries","Soufrière","Nassau","Exuma","Bimini","Freeport","Eleuthera","Harbour Island","Spanish Wells","Bridgetown","Carlisle Bay","Chaguaramas","Monos","Scotland Bay","Turtle Bay","Grand Cayman","North Sound","Stingray City","Providenciales","Grace Bay","St. Thomas","St. John","St. Croix","Tortola","Virgin Gorda"]
   },
   "italie":{
     title:"Italie",
