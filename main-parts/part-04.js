@@ -7,7 +7,7 @@ async function openBoatFinder(presetPort, presetType){
   if(presetPort) finderPort.value = presetPort;
   else if(portInput.value.trim()) finderPort.value = portInput.value.trim();
   if(presetType) document.querySelector("#boatFinderTypeInput").value = presetType;
-  const {data, error} = await db.from("boats").select("*").in("listing_type",["rental","both"]).eq("rental_available",true).order("created_at",{ascending:false});
+  const {data, error} = await db.from("boats").select("*").in("listing_type",["rental","both"]).eq("rental_available",true).eq("verified",true).order("created_at",{ascending:false});
   if(error){ box.innerHTML = `<div class="empty-note">${esc(friendlyError(error))}</div>`; return; }
   boatCache = data || [];
   renderBoatResults();
@@ -351,11 +351,11 @@ function renderHomeBoatStrip(){
 }
 async function preloadHomeBoats(){
   const nowIso = new Date().toISOString();
-  const {data:featuredData} = await db.from("boats").select("*").in("listing_type",["rental","both"]).eq("rental_available",true).eq("featured", true).gt("featured_until", nowIso).order("featured_until",{ascending:true}).limit(4);
+  const {data:featuredData} = await db.from("boats").select("*").in("listing_type",["rental","both"]).eq("rental_available",true).eq("verified",true).eq("featured", true).gt("featured_until", nowIso).order("featured_until",{ascending:true}).limit(4);
   const featured = featuredData || [];
   let list = featured;
   if(list.length < 4){
-    const {data:recentData} = await db.from("boats").select("*").in("listing_type",["rental","both"]).eq("rental_available",true).order("created_at",{ascending:false}).limit(4 + featured.length);
+    const {data:recentData} = await db.from("boats").select("*").in("listing_type",["rental","both"]).eq("rental_available",true).eq("verified",true).order("created_at",{ascending:false}).limit(4 + featured.length);
     const featuredIds = new Set(featured.map(b=>String(b.id)));
     const recent = (recentData||[]).filter(b=>!featuredIds.has(String(b.id)));
     list = featured.concat(recent).slice(0,4);
