@@ -21,3 +21,11 @@
 .sn-diff-keep{background:#e9faeb;color:#176044;padding:12px;border-radius:11px;font-size:12px;font-weight:800;text-align:center}
 .sn-diff-after{margin:22px 0 0;font-size:12px;color:#c7eaf1;line-height:1.5}
 @media(max-width:750px){.sn-difference{border-radius:17px;padding:22px;margin:20px auto 26px}.sn-difference-grid{grid-template-columns:1fr;gap:23px}.sn-difference h2{font-size:31px}.sn-diff-pricing{max-width:none}.sn-diff-cta{width:100%}}
+
+/* Owner-first advantages, replacing fixed-price example */
+.sn-diff-benefits{display:grid;gap:2px}
+.sn-benefit-row{display:flex;gap:13px;align-items:flex-start;padding:17px 0;border-bottom:1px solid #e5edf0}
+.sn-benefit-row:last-child{border-bottom:0;padding-bottom:2px}
+.sn-benefit-icon{display:grid;place-items:center;flex:0 0 42px;width:42px;height:42px;border-radius:13px;background:#eaf5f3;font-size:23px}
+.sn-benefit-row strong{display:block;color:#073d4f;font-size:16px;line-height:1.3}
+.sn-benefit-row p{color:#587180;font-size:13px;line-height:1.55;margin:5px 0 0}
